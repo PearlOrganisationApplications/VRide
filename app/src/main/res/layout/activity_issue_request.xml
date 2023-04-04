@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    tools:context="com.pearl.v_ride.IssueRequestActivity">
+
+
+<include
+    layout="@layout/custom_appbar"
+    />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Request Form"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/black"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:textAlignment="center"/>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_marginTop="100dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email-id"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+       android:backgroundTint="@color/color_secondary">
+
+       <!-- <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:imeOptions="actionNext"
+           />-->
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
+            android:inputType="textEmailAddress"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Subject"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+       >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:orientation="vertical">
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_marginTop="30dp"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:inputType="text|textMultiLine|textCapSentences"
+        android:maxLines="4"
+        android:imeOptions="actionDone"
+        android:hint="Issue Description"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:backgroundTint="@color/color_secondary">
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:maxLines="4"
+            android:inputType="text" />
+    <!--    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:inputType="text|textMultiLine|textCapSentences"
+            android:maxLines="4"
+            android:imeOptions="actionDone"
+            android:hint="Issue Description"/>-->
+
+    </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+    <Button
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:shadowRadius="20"
+        android:backgroundTint="@color/color_secondary"
+        android:layout_marginTop="30dp"
+        app:cornerRadius="8dp"/>
+
+
+</LinearLayout>
+</LinearLayout>
+</layout>

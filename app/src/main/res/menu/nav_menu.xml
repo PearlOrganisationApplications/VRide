@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:id="@+id/homemenu"
+        android:title="Home"
+        android:icon="@drawable/ic_home"
+        />
+    <item
+        android:id="@+id/profile"
+        android:title="profile"
+        android:icon="@drawable/user"
+        />
+
+    <item
+        android:id="@+id/wallet"
+        android:icon="@drawable/ic_account_balance_wallet"
+        android:title="Wallet"
+
+        />
+
+    <item
+        android:id="@+id/earning"
+        android:title="My Earning"
+        android:icon="@drawable/ic_baseline_wallet"
+
+        />
+
+    <item
+        android:id="@+id/history"
+        android:icon="@drawable/ic_baseline_history"
+        android:title="History"/>
+
+    <item
+        android:id="@+id/nearest_service"
+        android:title="My Nearest Service"
+        android:icon="@drawable/nearby"
+        />
+
+    <item
+        android:id="@+id/issue"
+        android:icon="@drawable/report"
+        android:title="issue Request"/>
+
+    <item
+        android:id="@+id/document"
+        android:title="Document"
+        android:icon="@drawable/file"
+        />
+
+    <item
+        android:id="@+id/logout"
+        android:title="Logout"
+        android:icon="@drawable/ic_ogin"/>
+
+
+</menu>

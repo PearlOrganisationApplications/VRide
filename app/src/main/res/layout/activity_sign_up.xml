@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.pearl.v_ride.SignUpActivity">
+
+
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="20dp">
+
+        <ImageView
+            android:layout_width="119dp"
+            android:layout_height="39dp"
+            android:layout_gravity="start"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/splash" />
+
+        <TextView
+            android:id="@+id/signup_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="8dp"
+            android:text="Create new Account"
+            android:textAlignment="center"
+            android:textSize="36sp" />
+
+        <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/signup_name"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/signup_edittext"
+                android:hint="Name"
+                android:drawableLeft="@drawable/ic_person"
+                android:inputType="textPersonName"
+                android:padding="8dp"
+                android:drawablePadding="8dp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/signup_email"
+                android:layout_marginTop="20dp"
+                android:inputType="textEmailAddress"
+                android:background="@drawable/signup_edittext"
+                android:hint="Email"
+                android:drawableLeft="@drawable/ic_baseline_email"
+                android:padding="8dp"
+                android:drawablePadding="8dp"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/signup_phone"
+                android:layout_marginTop="20dp"
+                android:inputType="phone"
+                android:background="@drawable/signup_edittext"
+                android:hint="Phone"
+                android:drawableLeft="@drawable/ic_baseline_phone_"
+                android:padding="8dp"
+                android:drawablePadding="8dp"/>
+
+    <EditText
+        android:id="@+id/signup_dob"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/signup_edittext"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:drawableLeft="@drawable/ic_baseline_calendar_month_24"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:hint="DD/MM/YY"
+        android:imeOptions="actionNext"
+        android:padding="8dp"
+        android:drawablePadding="8dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/signup_adhar"
+        android:layout_marginTop="20dp"
+        android:inputType="phone"
+        android:background="@drawable/signup_edittext"
+        android:hint="Aadhar No"
+        android:drawableLeft="@drawable/ic_baseline_phone_"
+        android:padding="8dp"
+        android:drawablePadding="8dp"/>
+
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/signup_pan"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/signup_edittext"
+        android:hint="Pan Card No"
+        android:textAllCaps="true"
+        android:inputType="textCapCharacters"
+        android:maxLength="8"
+        android:drawableLeft="@drawable/ic_baseline_phone_"
+        android:padding="8dp"
+        android:drawablePadding="8dp"/>
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/signup_password"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/signup_edittext"
+        android:hint="password"
+        android:inputType="textPassword"
+        android:drawableLeft="@drawable/ic_baseline_lock"
+        android:padding="8dp"
+        android:drawablePadding="8dp"/>
+
+
+    <EditText
+        android:id="@+id/signup_confirm_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/signup_edittext"
+        android:drawableLeft="@drawable/ic_baseline_lock"
+        android:drawablePadding="8dp"
+        android:hint="confirm password"
+        android:inputType="textPassword"
+        android:padding="8dp" />
+
+    <Button
+        android:id="@+id/signupBt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sign up"
+        android:textAllCaps="true"
+        android:textSize="18sp"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/color_secondary"
+        app:cornerRadius="15dp"/>
+
+    <TextView
+        android:id="@+id/already"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Already Register? \n sign in"
+        android:textColor="@color/black"
+        android:textAlignment="center"/>
+
+
+</LinearLayout>
+    </ScrollView>
+</LinearLayout>
