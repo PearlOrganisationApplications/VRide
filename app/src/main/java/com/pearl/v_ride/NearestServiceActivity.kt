@@ -20,6 +20,14 @@ class NearestServiceActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_nearest_service)
 
+    ivback=findViewById(R.id.ivBack)
+    apptitle = findViewById(R.id.titleTVAppbar)
+
+    apptitle.text =title
+    ivback.setOnClickListener {
+        onBackPressed()
+    }
+
         val listCard = ArrayList<NearestList>()
 
         listCard.add(

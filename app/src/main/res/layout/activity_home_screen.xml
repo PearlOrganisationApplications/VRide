@@ -29,7 +29,19 @@
                 style="@style/Widget.MaterialComponents.Toolbar.Primary"
                 app:navigationIcon="@drawable/ic_baseline_menu"
                 app:title="@string/app_name"
-                />
+                >
+                <LinearLayout
+                    android:layout_marginStart="230dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    >
+                    <ImageView
+                        android:id="@+id/nBell"
+                        android:layout_width="35dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/bell"/>
+                </LinearLayout>
+            </com.google.android.material.appbar.MaterialToolbar>
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -53,12 +65,35 @@
 
         </LinearLayout>
 
-       <!-- <FrameLayout
-            android:id="@+id/frameLayout"
-            app:layout_constraintTop_toBottomOf="@+id/appbarLayout"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <!-- <FrameLayout
+             android:id="@+id/frameLayout"
+             app:layout_constraintTop_toBottomOf="@+id/appbarLayout"
+             app:layout_constraintBottom_toBottomOf="parent"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"/>-->
+
+        <!-- <include
+             layout="@layout/activity_home_screen_maps"
+             app:layout_constraintTop_toBottomOf="@+id/appbarLayout"
+             app:layout_constraintBottom_toBottomOf="parent"/>-->
+
+        <LinearLayout
+            android:id="@+id/mapLL"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>-->
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/appbarLayout"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <fragment
+                android:id="@+id/homeScreenmap"
+                class="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible"
+
+                />
+
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/notificationI"
