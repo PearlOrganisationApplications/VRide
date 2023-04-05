@@ -2,7 +2,7 @@
     <string name="app_name">V-Ride</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
-    <string name="google_map_api_key">AIzaSyC1uqsZFjBRpnP2On9w1L9P3ayv-bjjOBI</string>
+    <string name="google_map_api_key">${MAPS_API_KEY}</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_home_screen_maps">HomeScreenMapsActivity</string>

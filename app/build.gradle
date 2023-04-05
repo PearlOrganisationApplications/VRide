@@ -58,8 +58,9 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
 
-    implementation 'com.google.gms:google-services:4.3.14'
+    implementation 'com.google.gms:google-services:4.3.15'
     implementation 'com.google.maps.android:android-maps-utils:0.4'
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
 
 
 }

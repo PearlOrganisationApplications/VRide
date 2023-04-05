@@ -1,9 +1,11 @@
 package com.pearl.v_ride
 
+
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.pm.ApplicationInfo
+
 import android.content.pm.PackageManager
+import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -14,17 +16,22 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.app.ActivityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.tasks.Task
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationView
 import com.pearl.test5.R
-import com.google.android.libraries.places.api.Places
+
+
 
 class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
     lateinit var toggle: ActionBarDrawerToggle
@@ -40,7 +47,11 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
     lateinit var nBell: ImageView
     private lateinit var mMap: GoogleMap
     lateinit var mapLL: LinearLayout
-//    lateinit var mapFragment: Fragment
+
+    //    lateinit var mapFragment: Fragment
+    private lateinit var currentLocation: Location
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private val REQUEST_CODE = 101
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +59,8 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.homeScreenmap) as SupportMapFragment
+        fetchLocation()
+
 
 /*        val ai: ApplicationInfo = applicationContext.packageManager
             ?.getApplicationInfo(applicationContext.applicationContext!!.packageName, PackageManager.GET_META_DATA)!!
@@ -59,7 +72,7 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
         }*/
         mapFragment.getMapAsync(this)
 
-        mapFragment.getMapAsync {
+      /*  mapFragment.getMapAsync {
             mMap = it
 
             val originLocation = LatLng( 30.2891496, 78.0437616)
@@ -68,7 +81,9 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
             mMap.moveCamera(CameraUpdateFactory.newLatLng(originLocation))
 
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(originLocation, 15F))
-        }
+        }*/
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+
         appbar = findViewById<MaterialToolbar>(R.id.appBar)
 
         drawerLayout = findViewById(R.id.drawerLayout)
@@ -117,7 +132,7 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
             onBackPressed()
 
         }
-        navView.setNavigationItemSelectedListener {
+          navView.setNavigationItemSelectedListener {
 
 //           it.isChecked = true
             when(it.itemId){
@@ -238,14 +253,104 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
         toggle.syncState()
     }
 
+    @SuppressLint("MissingPermission")
+    private fun fetchLocation() {
+
+/*        if (ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                REQUEST_CODE
+            )
+        }
+        val task: Task<Location> = fusedLocationProviderClient.lastLocation
+        task.addOnSuccessListener { location ->
+            if (location != null) {
+                currentLocation = location
+                Toast.makeText(
+                    applicationContext,
+                    "${currentLocation.latitude} ${currentLocation.longitude}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }*/
+    }
+
+
+    @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
+
+     /*   if (ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                REQUEST_CODE
+            )
+        }*/
+        val task: Task<Location> = fusedLocationProviderClient.lastLocation
+        task.addOnSuccessListener { location ->
+            if (location != null) {
+                currentLocation = location
+                Toast.makeText(
+                    applicationContext,
+                    "${currentLocation.latitude} ${currentLocation.longitude}",
+                    Toast.LENGTH_SHORT
+                ).show()
+//                fetchLocation()
+                mMap = googleMap
+
+                val latLng = LatLng(currentLocation.latitude, currentLocation.longitude)
+                val markerOptions = MarkerOptions().position(latLng).title("I am here!")
+
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng))
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+//            mMap.addMarker(MarkerOptions().position(latLng).title("hey"))
+                mMap.addMarker(markerOptions)
+                /*val supportMapFragment =
+                    supportFragmentManager.findFragmentById(R.id.myMap) as SupportMapFragment
+                supportMapFragment.getMapAsync(this)*/
+            }
+        }
+
         /*    val sydney = LatLng(-33.852, 151.211)
             googleMap.addMarker(
                 MarkerOptions()
                     .position(sydney)
                     .title("Marker in Sydney")
             )*/
-        mMap = googleMap
+
+
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    fetchLocation()
+                }
+            }
+        }
     }
 /*    private fun replaceFragment(fragment: Fragment,title: String){
         val fragmentManager = supportFragmentManager
