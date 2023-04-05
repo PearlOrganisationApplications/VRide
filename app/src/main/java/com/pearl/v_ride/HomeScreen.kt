@@ -39,7 +39,7 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
     lateinit var navView: NavigationView
     lateinit var drawerLayout:DrawerLayout
     lateinit var  appbar: MaterialToolbar
-    lateinit var notificationI: ImageView
+//    lateinit var notificationI: ImageView
     lateinit var notificationLL: LinearLayout
     lateinit var ivback: AppCompatImageView
     lateinit var apptitle: AppCompatTextView
@@ -88,7 +88,7 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
 
         drawerLayout = findViewById(R.id.drawerLayout)
         navView = findViewById(R.id.nav_view)
-        notificationI = findViewById(R.id.notificationI)
+//        notificationI = findViewById(R.id.notificationI)
         notificationLL = findViewById(R.id.notificationLL)
         notificationRV = findViewById(R.id.notificationRV)
         nBell = findViewById(R.id.nBell)
@@ -107,7 +107,6 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
         nBell.setOnClickListener {
 //            onBackPressed()
             notificationLL.visibility=View.VISIBLE
-            notificationI.visibility =View.GONE
             appbar.visibility = View.GONE
             mapLL.setVisibility(View.GONE)
 
@@ -125,13 +124,13 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
         }
 
 
-        notificationI.setOnClickListener {
+/*        notificationI.setOnClickListener {
                    notificationLL.visibility = View.VISIBLE
                    notificationI.visibility =View.GONE
                    appbar.visibility = View.GONE
             onBackPressed()
 
-        }
+        }*/
           navView.setNavigationItemSelectedListener {
 
 //           it.isChecked = true
@@ -224,7 +223,6 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
         }else{
             appbar.visibility = View.VISIBLE
             notificationLL.visibility = View.GONE
-            notificationI.visibility =View.VISIBLE
             mapLL.visibility = View.VISIBLE
         }
         /*   notificationLL.visibility = View.GONE
