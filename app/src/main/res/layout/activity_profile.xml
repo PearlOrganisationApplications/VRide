@@ -113,26 +113,6 @@
                                     android:textSize="13sp"/>
 
                             </com.google.android.material.textfield.TextInputLayout>
-                            <!--
-                                                    <com.google.android.material.textfield.TextInputLayout
-                                                        android:id="@+id/driver_emailTL"
-                                                        android:layout_width="match_parent"
-                                                        android:layout_height="wrap_content"
-                                                        android:layout_margin="10dp">
-
-                                                        <EditText
-                                                            android:id="@+id/show_driveremail"
-                                                            android:layout_width="match_parent"
-                                                            android:layout_height="wrap_content"
-                                                            android:background="@drawable/signup_edittext"
-                                                            android:hint="Email-id."
-                                                            android:imeOptions="actionNext"
-                                                            android:inputType="text"
-                                                            android:padding="15dp"
-                                                            android:textSize="13sp"
-                                                            tools:ignore="TouchTargetSizeCheck" />
-                                                    </com.google.android.material.textfield.TextInputLayout>
-                            -->
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:id="@+id/emailTL"
