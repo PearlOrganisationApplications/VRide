@@ -120,6 +120,17 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
+
+      <!--  <provider
+            android:authorities="com.pearl.v_ride.fileProvider"
+            android:name="androidx.core.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <meta-data android:name="android.support.FILE_PROVIDER_PATH"
+                android:resource="@xml/file_path"/>
+        </provider>-->
     </application>
 
 </manifest>
