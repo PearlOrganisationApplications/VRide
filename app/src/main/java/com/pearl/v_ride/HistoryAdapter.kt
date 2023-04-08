@@ -16,6 +16,8 @@ class HistoryAdapter(private val historyList: ArrayList<HistoryList>):
         return MyItemViewHolder(itemView)
     }
 
+
+
     override fun onBindViewHolder(holder: MyItemViewHolder, position: Int) {
 
         val currentItem = historyList[position]

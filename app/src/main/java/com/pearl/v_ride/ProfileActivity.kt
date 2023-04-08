@@ -1,15 +1,23 @@
 package com.pearl.v_ride
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.textfield.TextInputEditText
+import com.pearl.Global
 import com.pearl.test5.R
+import de.hdodenhof.circleimageview.CircleImageView
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -19,6 +27,8 @@ class ProfileActivity : AppCompatActivity() {
     lateinit var apptitle: AppCompatTextView
     lateinit var dob: TextInputEditText
     private val myCalendar = Calendar.getInstance()
+    lateinit var selfiee: CircleImageView
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +37,7 @@ class ProfileActivity : AppCompatActivity() {
 
         ivback=findViewById(R.id.ivBack)
         apptitle = findViewById(R.id.titleTVAppbar)
+        selfiee = findViewById(R.id.show_selfiee)
 
         apptitle.text =title
         ivback.setOnClickListener {
@@ -37,6 +48,32 @@ class ProfileActivity : AppCompatActivity() {
 
         dob.setOnClickListener {
             showDatePicker()
+        }
+        selfiee.setOnClickListener {
+            ImagePicker.with(this)
+                .crop()
+                .compress(1024)
+                .maxResultSize(1080, 1080)
+                .start()
+        }
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            //Image Uri will not be null for RESULT_OK
+            val uri: Uri = data?.data!!
+
+            // Use Uri object instead of File to avoid storage permissions
+            selfiee.setImageURI(uri)
+//            Global.imageString = uri
+            Global.imageString = uri.toString()
+            Log.d("abc2",Global.imageString)
+        } else if (resultCode == ImagePicker.RESULT_ERROR) {
+            Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
         }
     }
 

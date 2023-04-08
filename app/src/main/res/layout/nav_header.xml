@@ -8,23 +8,26 @@
     >
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/drawerImage"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginTop="15dp"
-        android:src="@drawable/bicycle"/>
+        android:src="@drawable/profile"/>
     <TextView
+        android:id="@+id/drawerName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="NAME"
         android:padding="5dp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
+        android:fontFamily="sans-serif-black"
+        android:textColor="@color/white"
         android:textSize="20sp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="hello there how are you"
         android:padding="5dp"
+        android:textColor="@color/white"
         android:textSize="12sp"/>
 
     <View
