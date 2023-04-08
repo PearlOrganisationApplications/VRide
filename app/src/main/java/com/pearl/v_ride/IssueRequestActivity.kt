@@ -26,7 +26,7 @@ class IssueRequestActivity : AppCompatActivity() {
         ivback=findViewById(R.id.ivBack)
         apptitle = findViewById(R.id.titleTVAppbar)
 
-        apptitle.text =title
+        apptitle.text ="Issue Report"
         ivback.setOnClickListener {
             onBackPressed()
         }

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "145048103653",
+    "project_id": "vride-8372c",
+    "storage_bucket": "vride-8372c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:145048103653:android:261e3ecf5168ba09c4020c",
+        "android_client_info": {
+          "package_name": "com.pearl.test5"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "145048103653-8qut7r1r9dim26s7igr7gt0m474qgtol.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDc9oRPBKNCvfszEQsjToPpc9ru-s-KoFY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "145048103653-8qut7r1r9dim26s7igr7gt0m474qgtol.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

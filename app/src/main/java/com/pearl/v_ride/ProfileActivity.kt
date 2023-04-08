@@ -39,7 +39,7 @@ class ProfileActivity : AppCompatActivity() {
         apptitle = findViewById(R.id.titleTVAppbar)
         selfiee = findViewById(R.id.show_selfiee)
 
-        apptitle.text =title
+        apptitle.text ="Profile"
         ivback.setOnClickListener {
             onBackPressed()
         }

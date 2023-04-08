@@ -33,6 +33,8 @@ class MyWalletActivity : AppCompatActivity() {
         setContentView(R.layout.activity_my_wallet)
 
 
+        ivback=findViewById(R.id.ivBack)
+        apptitle = findViewById(R.id.titleTVAppbar)
                myearningLL = findViewById(R.id.earningLL)
                mywalletLL = findViewById(R.id.walletLL)
         walletProfile = findViewById(R.id.walletProfile)
@@ -40,18 +42,18 @@ class MyWalletActivity : AppCompatActivity() {
       val i: Int = intent.getIntExtra("key", 0)
 
         if (i == 0) {
-
+            apptitle.text = "My Earning"
             myearningLL.visibility = View.VISIBLE
             mywalletLL.visibility = View.GONE
         } else if(i == 1) {
+            apptitle.text = "Wallet"
             mywalletLL.visibility = View.VISIBLE
             myearningLL.visibility = View.GONE
         }
 
-        ivback=findViewById(R.id.ivBack)
-        apptitle = findViewById(R.id.titleTVAppbar)
 
-        apptitle.text = "Wallet"
+
+
         ivback.setOnClickListener {
             onBackPressed()
         }

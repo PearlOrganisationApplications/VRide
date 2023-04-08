@@ -74,7 +74,7 @@ class DocumentActivity : AppCompatActivity() {
         apptitle = findViewById(R.id.titleTVAppbar)
 
 
-        apptitle.text = title
+        apptitle.text = "Document"
         ivback.setOnClickListener {
             onBackPressed()
         }

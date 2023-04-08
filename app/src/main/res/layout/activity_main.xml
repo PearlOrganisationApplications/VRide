@@ -146,31 +146,46 @@
 
         >-->
 
-    <!--    <LinearLayout
+        <LinearLayout
+            android:layout_marginTop="30dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView">
 
-&lt;!&ndash;
-            <androidx.appcompat.widget.AppCompatButton
-                android:text="Sign in with Google"
+            <!--<Button
+                android:id="@+id/googleSignIn"
+                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:background="@drawable/btn_backgraund"
+                android:text="Sign in with Google"
+                android:drawableLeft="@drawable/google"
                 android:textAllCaps="false"
-                android:background="#09D5EF"
+                android:textColor="@color/white"
                 android:textSize="18sp"
-                android:drawableStart="@drawable/google"
-                app:cornerRadius="20dp"/>
-&ndash;&gt;
+                app:cornerRadius="20dp" />-->
+
+            <Button
+                android:id="@+id/google_signIn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#03A9F4"
+                android:drawableLeft="@drawable/google"
+                android:text="Sign In with Google"
+                android:textColor="#fff"
+                app:cornerRadius="30dp"
+                />
 
 
-        </LinearLayout>-->
+
+        </LinearLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
+
+    <!--android:backgroundTint="#09D5EF"-->
