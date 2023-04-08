@@ -3,12 +3,16 @@ package com.pearl.v_ride
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import com.pearl.Global
 import com.pearl.test5.R
 
 class MyWalletActivity : AppCompatActivity() {
@@ -19,6 +23,8 @@ class MyWalletActivity : AppCompatActivity() {
 
     lateinit var ivback: AppCompatImageView
     lateinit var apptitle: AppCompatTextView
+    lateinit var walletProfile: ImageView
+//    lateinit var earningProfile: ImageView
 
 
     @SuppressLint("SuspiciousIndentation", "MissingInflatedId")
@@ -29,6 +35,7 @@ class MyWalletActivity : AppCompatActivity() {
 
                myearningLL = findViewById(R.id.earningLL)
                mywalletLL = findViewById(R.id.walletLL)
+        walletProfile = findViewById(R.id.walletProfile)
 
       val i: Int = intent.getIntExtra("key", 0)
 
@@ -49,5 +56,13 @@ class MyWalletActivity : AppCompatActivity() {
             onBackPressed()
         }
 }
+    override fun onResume() {
+        super.onResume()
+        if(Global.imageString != "") {
+            val uri = Uri.parse(Global.imageString)
+            walletProfile.setImageURI(uri)
+            Log.d("abc", Global.imageString)
+        }
+    }
 }
 

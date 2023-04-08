@@ -77,23 +77,6 @@
 
                             </LinearLayout>
 
-                            <!--  <com.google.android.material.textfield.TextInputLayout
-                                  android:id="@+id/driver_nameTL"
-                                  android:layout_width="350dp"
-                                  android:layout_height="50dp"
-                                  android:layout_margin="12dp">
-
-                                  <EditText
-                                      android:id="@+id/show_drivername"
-                                      android:layout_width="350dp"
-                                      android:layout_height="50dp"
-                                      android:background="@drawable/signup_edittext"
-                                      android:hint="Name"
-                                      android:imeOptions="actionNext"
-                                      android:inputType="text"
-                                      android:padding="15dp"
-                                      android:textSize="13sp"
-                                      tools:ignore="TouchTargetSizeCheck" />-->
                             <com.google.android.material.textfield.TextInputLayout
                                 android:id="@+id/nameTL"
                                 android:layout_marginTop="20dp"
@@ -133,27 +116,6 @@
                                     android:textSize="13sp"/>
 
                             </com.google.android.material.textfield.TextInputLayout>
-
-                            <!--
-                                                    <com.google.android.material.textfield.TextInputLayout
-                                                        android:id="@+id/driver_mobilenoTL"
-                                                        android:layout_width="match_parent"
-                                                        android:layout_height="wrap_content"
-                                                        android:layout_margin="10dp">
-
-                                                        <EditText
-                                                            android:id="@+id/show_drivermobileno"
-                                                            android:layout_width="match_parent"
-                                                            android:layout_height="wrap_content"
-                                                            android:background="@drawable/signup_edittext"
-                                                            android:hint="Mobile No."
-                                                            android:imeOptions="actionNext"
-                                                            android:inputType="text"
-                                                            android:padding="15dp"
-                                                            android:textSize="13sp"
-                                                            tools:ignore="TouchTargetSizeCheck" />
-                                                    </com.google.android.material.textfield.TextInputLayout>
-                            -->
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:id="@+id/mobileTL"

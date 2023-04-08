@@ -2,12 +2,15 @@ package com.pearl.v_ride
 
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 
 import android.content.pm.PackageManager
 import android.location.Location
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
@@ -21,6 +24,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
@@ -29,8 +33,9 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.Task
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationView
+import com.pearl.Global
 import com.pearl.test5.R
-
+import de.hdodenhof.circleimageview.CircleImageView
 
 
 class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
@@ -47,6 +52,7 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
     lateinit var nBell: ImageView
     private lateinit var mMap: GoogleMap
     lateinit var mapLL: LinearLayout
+    lateinit var  dImage: CircleImageView
 
     //    lateinit var mapFragment: Fragment
     private lateinit var currentLocation: Location
@@ -60,6 +66,9 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.homeScreenmap) as SupportMapFragment
         fetchLocation()
+
+
+
 
 
 /*        val ai: ApplicationInfo = applicationContext.packageManager
@@ -93,6 +102,15 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
         notificationRV = findViewById(R.id.notificationRV)
         nBell = findViewById(R.id.nBell)
         mapLL = findViewById(R.id.mapLL)
+
+        val headerLayout: View = navView.inflateHeaderView(R.layout.nav_header)
+        dImage = headerLayout.findViewById(R.id.drawerImage)
+
+
+
+            //set Image
+//                dImage.setImageURI(uri)
+
 
 
 
@@ -208,6 +226,31 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
 
 
 
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        if(Global.imageString != "") {
+            val uri = Uri.parse(Global.imageString)
+            dImage.setImageURI(uri)
+            Log.d("abc", Global.imageString)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            //Image Uri will not be null for RESULT_OK
+            var uri: Uri = data?.data!!
+
+            // Use Uri object instead of File to avoid storage permissions
+
+        } else if (resultCode == ImagePicker.RESULT_ERROR) {
+            Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
+        }
     }
 
 

@@ -98,7 +98,6 @@
         android:inputType="phone"
         android:background="@drawable/signup_edittext"
         android:hint="Aadhar No"
-        android:drawableLeft="@drawable/ic_baseline_phone_"
         android:padding="8dp"
         android:drawablePadding="8dp"/>
 
@@ -114,7 +113,6 @@
         android:textAllCaps="true"
         android:inputType="textCapCharacters"
         android:maxLength="8"
-        android:drawableLeft="@drawable/ic_baseline_phone_"
         android:padding="8dp"
         android:drawablePadding="8dp"/>
 

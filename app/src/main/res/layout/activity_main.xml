@@ -44,6 +44,7 @@
 
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
@@ -144,6 +145,31 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         >-->
+
+    <!--    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView">
+
+&lt;!&ndash;
+            <androidx.appcompat.widget.AppCompatButton
+                android:text="Sign in with Google"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:background="#09D5EF"
+                android:textSize="18sp"
+                android:drawableStart="@drawable/google"
+                app:cornerRadius="20dp"/>
+&ndash;&gt;
+
+
+        </LinearLayout>-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
