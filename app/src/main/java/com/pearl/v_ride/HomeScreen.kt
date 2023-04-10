@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -14,7 +13,6 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -23,21 +21,21 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.app.ActivityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.tasks.Task
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -45,7 +43,6 @@ import com.pearl.Global
 import com.pearl.test5.R
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
@@ -77,6 +74,7 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private val REQUEST_CODE = 101
     lateinit var mAuth: FirebaseAuth
+    lateinit var mGoogleSignInClient: GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -215,13 +213,28 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
                 }
                 R.id.logout -> {
 
-                    if (::mAuth.isInitialized) {
+                    mAuth = FirebaseAuth.getInstance()
+                   /* if (::mAuth.isInitialized) {
                         mAuth.signOut()
+//                        GoogleSignIn.
                         Toast.makeText(applicationContext,"Logout", Toast.LENGTH_SHORT).show()
-                    }
+                        finish()
+                    }*/
 
-                    startActivity(Intent(this@HomeScreen, MainActivity::class.java))
-                    finish()
+                    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestEmail()
+                        .build()
+                     mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+//                    mGoogleSignInClient= GoogleSignInClient
+
+                    mGoogleSignInClient.signOut().addOnCompleteListener {
+                        startActivity(Intent(this@HomeScreen, MainActivity::class.java))
+                        finish()
+                    }
+                    mAuth.signOut()
+                    Toast.makeText(applicationContext,"Logout", Toast.LENGTH_SHORT).show()
+
+
                 }
             }
             true
@@ -315,8 +328,7 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
 
         setSupportActionBar(appbar)
         toggle= ActionBarDrawerToggle( this,drawerLayout,R.string.open,R.string.close)
-//        drawerLayout.addDrawerListener(toggle)
-
+        drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
     }
 

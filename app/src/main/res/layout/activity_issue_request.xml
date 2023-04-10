@@ -13,6 +13,9 @@
 <include
     layout="@layout/custom_appbar"
     />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -71,7 +74,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
+<!--
     <com.google.android.material.textfield.TextInputLayout
         android:layout_marginTop="30dp"
         android:layout_width="300dp"
@@ -89,20 +94,38 @@
             android:layout_height="match_parent"
             android:maxLines="4"
             android:inputType="text" />
-    <!--    <EditText
+    &lt;!&ndash;    <EditText
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:inputType="text|textMultiLine|textCapSentences"
             android:maxLines="4"
             android:imeOptions="actionDone"
-            android:hint="Issue Description"/>-->
+            android:hint="Issue Description"/>&ndash;&gt;
 
     </com.google.android.material.textfield.TextInputLayout>
+-->
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/btn_backgraund"
+            android:hint="Issue Description"
+            android:imeOptions="actionDone"
+            android:minHeight="150dp"
+            android:minLines="4"
+            android:minEms="15"
+            android:padding="8dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:gravity="start"
+            android:inputType="text|textMultiLine|textCapSentences"
+            android:maxLines="4"/>
+
     </LinearLayout>
     <Button
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:text="Submit"
+
         android:shadowRadius="20"
         android:backgroundTint="@color/color_secondary"
         android:layout_marginTop="30dp"
@@ -110,5 +133,6 @@
 
 
 </LinearLayout>
+    </ScrollView>
 </LinearLayout>
 </layout>
