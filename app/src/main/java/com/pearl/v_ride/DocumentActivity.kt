@@ -6,21 +6,12 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.webkit.WebView.HitTestResult.IMAGE_TYPE
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Toast
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
+import android.widget.*
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.content.FileProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.pearl.test5.R
-import java.io.File
+import de.hdodenhof.circleimageview.CircleImageView
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.properties.Delegates
@@ -43,6 +34,19 @@ class DocumentActivity : AppCompatActivity() {
     lateinit var passbookIV: ImageView
     lateinit var addDL: ImageView
     lateinit var licenceIV: ImageView
+    lateinit var select_merchant: Spinner
+    lateinit var doc_profile: CircleImageView
+    lateinit var add_selfie: ImageView
+    lateinit var doc_dob: EditText
+    private var req_code = 1
+    lateinit var selfieCor: CircleImageView
+    lateinit var addCorporateSelfie: ImageView
+    lateinit var companyID: ImageView
+    lateinit var corporateAadharF: ImageView
+    lateinit var corporateAadharR: ImageView
+    lateinit var addCorporateAadharF: ImageView
+    lateinit var addCorporateAadharR: ImageView
+
     /*  lateinit var imageUri: Uri
       private val contract = registerForActivityResult(ActivityResultContracts.TakePicture()){
           adharFrontIV.setImageURI(null)
@@ -64,8 +68,29 @@ class DocumentActivity : AppCompatActivity() {
         addDL = findViewById(R.id.add_dl_cam)
         licenceIV = findViewById(R.id.licenceIV)
 
+        doc_profile = findViewById(R.id.doc_selfie)
+        add_selfie = findViewById(R.id.add_selfie)
+        select_merchant = findViewById(R.id.merchantSL)
+        selfieCor = findViewById(R.id.corporate_doc_selfie)
+        addCorporateSelfie = findViewById(R.id.add_corporate_selfie)
+        companyID = findViewById(R.id.corporate_docID)
+        corporateAadharF = findViewById(R.id.corporate_adharFrotIV)
+        corporateAadharR = findViewById(R.id.corporate_adharrearIV)
+        addCorporateAadharF = findViewById(R.id.corporate_addfront)
+        addCorporateAadharR = findViewById(R.id.corporate_addrear)
+
+        val items = arrayOf("Select Merchant", "Amazon","Flipcard","Zomato","Rapido","Uber","Other")
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
+        select_merchant.adapter = adapter
+
         pan_dob = findViewById(R.id.pan_dobET)
         pan_dob.setOnClickListener {
+            req_code =1
+            showDatePicker()
+        }
+        doc_dob = findViewById(R.id.doc_dob)
+        doc_dob.setOnClickListener {
+            req_code = 2
             showDatePicker()
         }
         updateBT = findViewById<Button>(R.id.updateBT)
@@ -126,6 +151,46 @@ class DocumentActivity : AppCompatActivity() {
                 .start()
             image_type = 5
         }
+        add_selfie.setOnClickListener {
+            ImagePicker.with(this)
+                .crop()
+                .compress(1024)
+                .maxResultSize(1080, 1080)
+                .start()
+            image_type = 6
+        }
+        addCorporateSelfie.setOnClickListener {
+            ImagePicker.with(this)
+                .crop()
+                .compress(1024)
+                .maxResultSize(1080, 1080)
+                .start()
+            image_type = 7
+        }
+        companyID.setOnClickListener {
+            ImagePicker.with(this)
+                .crop()
+                .compress(1024)
+                .maxResultSize(1080, 1080)
+                .start()
+            image_type = 8
+        }
+        addCorporateAadharF.setOnClickListener {
+            ImagePicker.with(this)
+                .crop()
+                .compress(1024)
+                .maxResultSize(1080, 1080)
+                .start()
+            image_type = 9
+        }
+        addCorporateAadharR.setOnClickListener {
+            ImagePicker.with(this)
+                .crop()
+                .compress(1024)
+                .maxResultSize(1080, 1080)
+                .start()
+            image_type = 10
+        }
 
     }
 
@@ -159,6 +224,17 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
             passbookIV.setImageURI(uri)
         } else if (image_type == 5){
             licenceIV.setImageURI(uri)
+        }else if (image_type == 6){
+            doc_profile.setImageURI(uri)
+        }else if (image_type == 7){
+            selfieCor.setImageURI(uri)
+        }else if (image_type == 8){
+            companyID.setImageURI(uri)
+        }
+        else if (image_type == 9) {
+            corporateAadharF.setImageURI(uri)
+        }else if (image_type == 10){
+            corporateAadharR.setImageURI(uri)
         }
 
 
@@ -196,7 +272,12 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
     private fun updateLabel() {
         val myFormat = "MM/dd/yyyy"
         val dateFormat = SimpleDateFormat(myFormat, Locale.US)
-        pan_dob.setText(dateFormat.format(myCalendar.time))
+        if (req_code == 1) {
+            pan_dob.setText(dateFormat.format(myCalendar.time))
+        }else if (req_code == 2){
+            doc_dob.setText(dateFormat.format(myCalendar.time))
+
+        }
     }
 
     private fun getMinimumDate(): Long {

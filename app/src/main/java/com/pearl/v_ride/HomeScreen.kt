@@ -50,7 +50,6 @@ import kotlin.collections.ArrayList
 
 class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
     lateinit var toggle: ActionBarDrawerToggle
-
     lateinit var navView: NavigationView
     lateinit var drawerLayout:DrawerLayout
     lateinit var  appbar: MaterialToolbar
@@ -131,8 +130,7 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
 
 
             //set Image
-//                dImage.setImageURI(uri)
-
+//          dImage.setImageURI(uri)
 
 
 
@@ -162,10 +160,8 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
 /*            notificationLL.visibility = View.GONE
             notificationI.visibility =View.VISIBLE
             appbar.visibility = View.VISIBLE*/
-//            mapFragment.view?.setVisibility(View.VISIBLE)
+// mapFragment.view?.setVisibility(View.VISIBLE)
         }
-
-
 /*        notificationI.setOnClickListener {
                    notificationLL.visibility = View.VISIBLE
                    notificationI.visibility =View.GONE
@@ -320,6 +316,7 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
         setSupportActionBar(appbar)
         toggle= ActionBarDrawerToggle( this,drawerLayout,R.string.open,R.string.close)
 //        drawerLayout.addDrawerListener(toggle)
+
         toggle.syncState()
     }
 
@@ -479,9 +476,6 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
 
 
             }
-            // use latitude and longitude as per your need
-            // }
-            // }
 
 
         }
@@ -496,12 +490,9 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
             if (addresses != null) {
                 val returnedAddress = addresses[0]
                 val strReturnedAddress = java.lang.StringBuilder("")
-                /* for (i in 0..returnedAddress.maxAddressLineIndex) {
-                     strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n")
-                 }*/
+
                 val cityState = returnedAddress.locality +","+returnedAddress.adminArea;
                 strAdd = cityState
-              //  Log.w(" Current loction address", strReturnedAddress.toString())
             } else {
               //  Log.w(" Current loction address", "No Address returned!")
             }
@@ -520,7 +511,6 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
         )
         mMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(location!!, 15F))
 
-      //  liveLoc?.setText(strAdd)
     }
     val gpsLocationListener: LocationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
@@ -535,7 +525,6 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
     val networkLocationListener: LocationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
             locationByNetwork= location
-            // locationByNetwork= location
         }
 
         override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}

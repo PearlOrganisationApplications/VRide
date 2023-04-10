@@ -34,15 +34,15 @@ class UserHistoryActivity : AppCompatActivity() {
 
         histroyListCard.add(
             HistoryList(
-            R.drawable.bicycle,"Dehradoon","hello there hiw are you hello there hiw are youhello there hiw are you","31/03/2023","11.43"
+            R.drawable.bicycle,"Dehradoon","hello there hiw are you hello there hiw are youhello there hiw are you","31/03/2023","11.43PM"
         ))
         histroyListCard.add(
             HistoryList(
-                R.drawable.profile,"Dehradoon","hello there hiw are you hello there hiw are youhello there hiw are you","22/03/2023","11.43"
+                R.drawable.profile,"Dehradoon","hello there hiw are you hello there hiw are youhello there hiw are you","22/03/2023","11.43AM"
             ))
         histroyListCard.add(
             HistoryList(
-                R.drawable.delivery_man,"Dehradoon","hello there hiw are you hello there hiw are youhello there hiw are you","1/03/2023","11.43"
+                R.drawable.delivery_man,"Dehradoon","hello there hiw are you hello there hiw are youhello there hiw are you","1/03/2023","11.43PM"
             ))
         histroyListCard.add(
             HistoryList(

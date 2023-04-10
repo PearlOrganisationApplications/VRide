@@ -93,7 +93,7 @@
                                     android:imeOptions="actionNext"
                                     android:inputType="text"
                                     android:padding="15dp"
-                                    android:textSize="13sp"/>
+                                    android:textSize="13sp" />
 
                             </com.google.android.material.textfield.TextInputLayout>
 
