@@ -263,6 +263,7 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
         notificationRV.adapter = nAdapter
 
 
+//        startService(Intent(this,MyService::class.java))
 
     }
 
@@ -461,7 +462,7 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
         lastKnownLocationByNetwork?.let {
             locationByNetwork = lastKnownLocationByNetwork
         }
-//------------------------------------------------------//
+     //------------------------------------------------------//
         if (locationByGps != null && locationByNetwork != null) {
             if (locationByGps!!.accuracy > locationByNetwork!!.accuracy) {
 
@@ -513,6 +514,8 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
             //Log.w(" Current loction address",  e.printStackTrace().toString())
         }
         location = LatLng(to_lat.toString().toDouble(), to_lng.toString().toDouble())
+
+//        location = LatLng(Global.curr_lat.toString().toDouble(), Global.curr_long.toString().toDouble())
         val bitmapdraw = resources.getDrawable(R.drawable.logo_round) as BitmapDrawable
         val b = bitmapdraw.bitmap
         val smallMarker = Bitmap.createScaledBitmap(b, 80, 80, false)

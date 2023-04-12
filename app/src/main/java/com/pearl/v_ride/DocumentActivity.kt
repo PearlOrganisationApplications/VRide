@@ -1,11 +1,14 @@
 package com.pearl.v_ride
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
@@ -46,6 +49,12 @@ class DocumentActivity : AppCompatActivity() {
     lateinit var corporateAadharR: ImageView
     lateinit var addCorporateAadharF: ImageView
     lateinit var addCorporateAadharR: ImageView
+    lateinit var docLL: LinearLayout
+    lateinit var corporateLL: LinearLayout
+    lateinit var persnalIV: ImageView
+    lateinit var corporateIV: ImageView
+    lateinit var personalTV: TextView
+    lateinit var corporateTV: TextView
 
     /*  lateinit var imageUri: Uri
       private val contract = registerForActivityResult(ActivityResultContracts.TakePicture()){
@@ -53,6 +62,7 @@ class DocumentActivity : AppCompatActivity() {
           adharFrontIV.setImageURI(imageUri)
       }*/
 
+    @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_document)
@@ -78,11 +88,43 @@ class DocumentActivity : AppCompatActivity() {
         corporateAadharR = findViewById(R.id.corporate_adharrearIV)
         addCorporateAadharF = findViewById(R.id.corporate_addfront)
         addCorporateAadharR = findViewById(R.id.corporate_addrear)
+        docLL = findViewById(R.id.docLL)
+        corporateLL = findViewById(R.id.corporateLL)
+        val otherEdt = findViewById<EditText>(R.id.otherET)
+        persnalIV = findViewById(R.id.personalIV)
+        corporateIV = findViewById(R.id.corporateIV)
+        personalTV = findViewById(R.id.personalTV)
+        corporateTV = findViewById(R.id.corporateTV)
+        val submitMerchantBtn = findViewById<Button>(R.id.submitMerchantBT)
 
         val items = arrayOf("Select Merchant", "Amazon","Flipcard","Zomato","Rapido","Uber","Other")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
         select_merchant.adapter = adapter
 
+  /*      if(select_merchant.selectedItem.toString().equals("Other")){
+            otherEdt.visibility = View.VISIBLE
+            Toast.makeText(this, "hello", Toast.LENGTH_SHORT).show()
+        }*/
+
+
+
+        select_merchant.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                if (position == 6){
+                    otherEdt.visibility = View.VISIBLE
+                    submitMerchantBtn.visibility = View.VISIBLE
+                }else{
+                    otherEdt.visibility = View.GONE
+                    submitMerchantBtn.visibility = View.GONE
+
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+
+                Toast.makeText(this@DocumentActivity, "hi", Toast.LENGTH_SHORT).show()
+            }
+        }
         pan_dob = findViewById(R.id.pan_dobET)
         pan_dob.setOnClickListener {
             req_code =1
@@ -94,6 +136,40 @@ class DocumentActivity : AppCompatActivity() {
             showDatePicker()
         }
         updateBT = findViewById<Button>(R.id.updateBT)
+
+        /*updateBT.setOnClickListener {
+            docLL.visibility = View.GONE
+            corporateLL.visibility = View.VISIBLE
+        }*/
+  /*      if (req_code == 3){
+            personalTV.setTextColor(Color.parseColor("#096E0A"))
+            Toast.makeText(this, "personal", Toast.LENGTH_SHORT).show()
+        }
+        else if (req_code == 4){
+            Toast.makeText(this, "personal2", Toast.LENGTH_SHORT).show()
+            corporateTV.setTextColor(Color.parseColor("#096E0A"))
+        }*/
+        if ( docLL.visibility == View.VISIBLE){
+            personalTV.setTextColor(Color.parseColor("#096E0A"))
+            corporateTV.setTextColor(Color.parseColor("#000000"))
+        }else if (corporateLL.visibility == View.VISIBLE){
+            corporateTV.setTextColor(Color.parseColor("#096E0A"))
+            personalTV.setTextColor(Color.parseColor("#000000"))
+        }
+        persnalIV.setOnClickListener {
+            docLL.visibility =View.VISIBLE
+            corporateLL.visibility = View.GONE
+//            req_code =3
+
+        }
+        corporateIV.setOnClickListener {
+            docLL.visibility = View.GONE
+            corporateLL.visibility = View.VISIBLE
+//            req_code = 4
+         /*   if ( docLL.visibility == View.GONE){
+                corporateTV.setTextColor(Color.parseColor("#096E0A"))
+            }*/
+        }
 
         ivback = findViewById(R.id.ivBack)
         apptitle = findViewById(R.id.titleTVAppbar)

@@ -6,6 +6,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.Window
 import android.widget.Button
@@ -80,6 +82,11 @@ class MainActivity : AppCompatActivity() {
         login.setOnClickListener {
             startActivity(Intent(this@MainActivity,HomeScreen::class.java))
         }
+        var forgotPassword = findViewById<TextView>(R.id.forgotPassword)
+        forgotPassword.setOnClickListener {
+            startActivity(Intent(this@MainActivity,ForgotPasswordActivity::class.java))
+            finish()
+        }
     }
 
     private fun signIn() {
@@ -130,6 +137,18 @@ class MainActivity : AppCompatActivity() {
                 }
 // ...
             }
+    }
+    private var doubleBackToExitPressedOnce = false
+    override fun onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed()
+            return
+        }
+
+        this.doubleBackToExitPressedOnce = true
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show()
+
+        Handler(Looper.getMainLooper()).postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
     }
 
     override fun onRequestPermissionsResult(

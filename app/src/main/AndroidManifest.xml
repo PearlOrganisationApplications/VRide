@@ -2,9 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-
-
-
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -19,17 +18,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Test5"
         tools:targetApi="31">
+        <activity
+            android:name="com.pearl.v_ride.ForgotPasswordActivity"
+            android:exported="false"
+            android:theme="@style/AppThemeTest">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
         <activity
             android:name="com.pearl.v_ride.ProfileActivity"
             android:exported="false"
             android:theme="@style/AppThemeTest">
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -53,7 +61,7 @@
         <activity
             android:name="com.pearl.v_ride.NearestServiceActivity"
             android:exported="false"
-            android:theme="@style/AppThemeTest">
+            android:theme="@style/AppThemeTest" >
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -61,7 +69,7 @@
         <activity
             android:name="com.pearl.v_ride.MyWalletActivity"
             android:exported="false"
-            android:theme="@style/AppThemeTest">
+            android:theme="@style/AppThemeTest" >
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -69,16 +77,15 @@
         <activity
             android:name="com.pearl.v_ride.IssueRequestActivity"
             android:exported="false"
-            android:theme="@style/AppThemeTest">
+            android:theme="@style/AppThemeTest" >
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
         <activity
             android:name="com.pearl.v_ride.SignUpActivity"
             android:exported="false"
-            android:theme="@style/AppThemeTest">
+            android:theme="@style/AppThemeTest" >
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -86,7 +93,7 @@
         <activity
             android:name="com.pearl.v_ride.HomeScreen"
             android:exported="false"
-            android:theme="@style/AppThemeTest">
+            android:theme="@style/AppThemeTest" >
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -94,7 +101,7 @@
         <activity
             android:name="com.pearl.v_ride.WelcomeScreen"
             android:exported="false"
-            android:theme="@style/AppThemeTest">
+            android:theme="@style/AppThemeTest" >
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -102,7 +109,7 @@
         <activity
             android:name="com.pearl.v_ride.SplashScreenActivity"
             android:exported="true"
-            android:theme="@style/AppThemeTest">
+            android:theme="@style/AppThemeTest" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -116,22 +123,11 @@
         <activity
             android:name="com.pearl.v_ride.MainActivity"
             android:exported="false"
-            android:theme="@style/AppThemeTest">
+            android:theme="@style/AppThemeTest" >
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
-
-      <!--  <provider
-            android:authorities="com.pearl.v_ride.fileProvider"
-            android:name="androidx.core.content.FileProvider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-
-            <meta-data android:name="android.support.FILE_PROVIDER_PATH"
-                android:resource="@xml/file_path"/>
-        </provider>-->
     </application>
 
 </manifest>
