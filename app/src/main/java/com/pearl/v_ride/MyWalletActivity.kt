@@ -2,7 +2,6 @@ package com.pearl.v_ride
 
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,7 +11,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import com.pearl.Global
+import com.pearl.v_ride_lib.Global
 import com.pearl.test5.R
 
 class MyWalletActivity : AppCompatActivity() {

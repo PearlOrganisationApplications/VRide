@@ -1,10 +1,11 @@
-package com.pearl.v_ride
+package com.pearl.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.pearl.data.NearestList
 import com.pearl.test5.R
 
 class NearestListAapter(private  val nearestList: ArrayList<NearestList>):

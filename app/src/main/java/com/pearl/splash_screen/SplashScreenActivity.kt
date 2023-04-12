@@ -1,14 +1,13 @@
-package com.pearl.v_ride
+package com.pearl.splash_screen
 
 import android.content.Intent
-import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.WindowManager
-import androidx.core.app.ActivityCompat
 import com.pearl.test5.R
+import com.pearl.v_ride.WelcomeScreen
 
 class SplashScreenActivity : AppCompatActivity() {
 

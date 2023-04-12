@@ -10,6 +10,8 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.pearl.adapter.OnboardingItemAdapter
+import com.pearl.data.OnboardingItem
 import com.pearl.test5.R
 
 class WelcomeScreen : AppCompatActivity() {

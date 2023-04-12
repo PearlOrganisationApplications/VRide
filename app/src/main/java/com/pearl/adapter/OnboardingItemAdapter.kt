@@ -1,4 +1,4 @@
-package com.pearl.v_ride
+package com.pearl.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.pearl.test5.R
+import com.pearl.data.OnboardingItem
 
 class OnboardingItemAdapter(private  val  onboardingItem: List<OnboardingItem>):
 RecyclerView.Adapter<OnboardingItemAdapter.OnboardingItemViewHolder>()

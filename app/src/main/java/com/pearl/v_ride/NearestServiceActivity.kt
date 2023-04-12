@@ -1,12 +1,13 @@
 package com.pearl.v_ride
 
-import android.location.Address
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.pearl.adapter.NearestListAapter
+import com.pearl.data.NearestList
 import com.pearl.test5.R
 
 class NearestServiceActivity : AppCompatActivity() {

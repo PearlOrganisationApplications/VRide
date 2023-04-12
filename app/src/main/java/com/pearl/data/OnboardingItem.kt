@@ -1,6 +1,6 @@
-package com.pearl.v_ride
+package com.pearl.data
 
-class OnboardingItem (
+data class OnboardingItem (
     val onboardingImage: Int,
     val title: String,
     val discription: String

@@ -1,4 +1,4 @@
-package com.pearl.v_ride
+package com.pearl.data
 
 data class HistoryList(
     var histroyImage: Int,

@@ -1,4 +1,4 @@
-package com.pearl.v_ride
+package com.pearl.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

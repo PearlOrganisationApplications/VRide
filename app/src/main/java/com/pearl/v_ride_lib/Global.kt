@@ -1,4 +1,4 @@
-package com.pearl
+package com.pearl.v_ride_lib
 
 import android.net.Uri
 

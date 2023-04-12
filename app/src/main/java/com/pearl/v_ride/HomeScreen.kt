@@ -39,13 +39,17 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
-import com.pearl.Global
+import com.pearl.v_ride_lib.Global
+import com.pearl.adapter.NotificationAdapter
+import com.pearl.data.NotificationList
 import com.pearl.test5.R
+import com.pearl.ui.DocumentActivity
+import com.pearl.v_ride_lib.BaseClass
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
 
 
-class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
+class HomeScreen : BaseClass(), OnMapReadyCallback {
     lateinit var toggle: ActionBarDrawerToggle
     lateinit var navView: NavigationView
     lateinit var drawerLayout:DrawerLayout
@@ -76,42 +80,12 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
     lateinit var mAuth: FirebaseAuth
     lateinit var mGoogleSignInClient: GoogleSignInClient
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
+    override fun setLayoutXml() {
         setContentView(R.layout.activity_home_screen)
+    }
 
-        /*val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.homeScreenmap) as SupportMapFragment
-        fetchLocation()*/
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.homeScreenmap) as SupportMapFragment?
-        mapFragment!!.getMapAsync(this)
-
-
-
-
-
-/*        val ai: ApplicationInfo = applicationContext.packageManager
-            ?.getApplicationInfo(applicationContext.applicationContext!!.packageName, PackageManager.GET_META_DATA)!!
-        val value = ai.metaData["com.google.android.geo.${R.string.google_map_api_key}"]
-        val apiKey = value.toString()
-        // Initializing the Places API with the help of our API_KEY
-        if (!Places.isInitialized()) {
-            Places.initialize(applicationContext.applicationContext,apiKey)
-        }*/
-
-      /*  mapFragment.getMapAsync {
-            mMap = it
-
-            val originLocation = LatLng( 30.2891496, 78.0437616)
-
-            mMap.addMarker(MarkerOptions().position(originLocation).title("hey"))
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(originLocation))
-
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(originLocation, 15F))
-        }*/
-      //  fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-
+    override fun initializeViews() {
         appbar = findViewById<MaterialToolbar>(R.id.appBar)
 
         drawerLayout = findViewById(R.id.drawerLayout)
@@ -124,50 +98,25 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
 
         val headerLayout: View = navView.inflateHeaderView(R.layout.nav_header)
         dImage = headerLayout.findViewById(R.id.drawerImage)
-
-
-
-            //set Image
-//          dImage.setImageURI(uri)
-
-
-
-        val notificationCard = ArrayList<NotificationList>()
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         hasGps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
         hasNetwork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-
         ivback=findViewById(R.id.ivBack)
         apptitle = findViewById(R.id.titleTVAppbar)
+    }
 
-        setUpViews()
-
+    override fun initializeClickListners() {
         nBell.setOnClickListener {
 //            onBackPressed()
             notificationLL.visibility=View.VISIBLE
             appbar.visibility = View.GONE
             mapLL.setVisibility(View.GONE)
-
         }
-        apptitle.text ="Notification"
         ivback.setOnClickListener {
-
-
             mapLL.setVisibility(View.VISIBLE)
             onBackPressed()
-/*            notificationLL.visibility = View.GONE
-            notificationI.visibility =View.VISIBLE
-            appbar.visibility = View.VISIBLE*/
-// mapFragment.view?.setVisibility(View.VISIBLE)
         }
-/*        notificationI.setOnClickListener {
-                   notificationLL.visibility = View.VISIBLE
-                   notificationI.visibility =View.GONE
-                   appbar.visibility = View.GONE
-            onBackPressed()
-
-        }*/
-          navView.setNavigationItemSelectedListener {
+        navView.setNavigationItemSelectedListener {
 
 //           it.isChecked = true
             when(it.itemId){
@@ -214,17 +163,17 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
                 R.id.logout -> {
 
                     mAuth = FirebaseAuth.getInstance()
-                   /* if (::mAuth.isInitialized) {
-                        mAuth.signOut()
-//                        GoogleSignIn.
-                        Toast.makeText(applicationContext,"Logout", Toast.LENGTH_SHORT).show()
-                        finish()
-                    }*/
+                    /* if (::mAuth.isInitialized) {
+                         mAuth.signOut()
+ //                        GoogleSignIn.
+                         Toast.makeText(applicationContext,"Logout", Toast.LENGTH_SHORT).show()
+                         finish()
+                     }*/
 
                     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                         .requestEmail()
                         .build()
-                     mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+                    mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 //                    mGoogleSignInClient= GoogleSignInClient
 
                     mGoogleSignInClient.signOut().addOnCompleteListener {
@@ -239,7 +188,62 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
             }
             true
         }
+    }
 
+    override fun initializeInputs() {
+    }
+    override fun initializeLabels() {
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+
+        /*val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.homeScreenmap) as SupportMapFragment
+        fetchLocation()*/
+
+        setLayoutXml()
+        initializeViews()
+        initializeClickListners()
+        initializeInputs()
+        initializeLabels()
+        val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.homeScreenmap) as SupportMapFragment?
+        mapFragment!!.getMapAsync(this)
+/*        val ai: ApplicationInfo = applicationContext.packageManager
+            ?.getApplicationInfo(applicationContext.applicationContext!!.packageName, PackageManager.GET_META_DATA)!!
+        val value = ai.metaData["com.google.android.geo.${R.string.google_map_api_key}"]
+        val apiKey = value.toString()
+        // Initializing the Places API with the help of our API_KEY
+        if (!Places.isInitialized()) {
+            Places.initialize(applicationContext.applicationContext,apiKey)
+        }*/
+
+      /*  mapFragment.getMapAsync {
+            mMap = it
+
+            val originLocation = LatLng( 30.2891496, 78.0437616)
+
+            mMap.addMarker(MarkerOptions().position(originLocation).title("hey"))
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(originLocation))
+
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(originLocation, 15F))
+        }*/
+      //  fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        val notificationCard = ArrayList<NotificationList>()
+        setUpViews()
+
+
+        apptitle.text ="Notification"
+
+/*        notificationI.setOnClickListener {
+                   notificationLL.visibility = View.VISIBLE
+                   notificationI.visibility =View.GONE
+                   appbar.visibility = View.GONE
+            onBackPressed()
+
+        }*/
         notificationCard.add(
             NotificationList(
                 "Notification Title","this is my notification body"
@@ -264,8 +268,10 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
 
 
 //        startService(Intent(this,MyService::class.java))
+        unregisterBroadcast()
 
     }
+
 
 
     override fun onResume() {
@@ -276,6 +282,7 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
             Log.d("abc", Global.imageString)
         }
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -402,10 +409,10 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
-        permissions: Array<out String>,
+        permissions: Array<String>,
         grantResults: IntArray
     ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        super.onRequestPermissionsResult(requestCode, permissions , grantResults)
         when (requestCode) {
             REQUEST_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -481,8 +488,6 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
                 // Toast.makeText(this, "No Network", Toast.LENGTH_LONG).show()
 
             } else {
-
-
 
                 to_lat = locationByNetwork?.latitude.toString()
                 to_lng = locationByNetwork?.longitude.toString()

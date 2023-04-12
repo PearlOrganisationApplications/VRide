@@ -8,14 +8,12 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.textfield.TextInputEditText
-import com.pearl.Global
+import com.pearl.v_ride_lib.Global
 import com.pearl.test5.R
 import de.hdodenhof.circleimageview.CircleImageView
 import java.text.SimpleDateFormat
@@ -69,7 +67,7 @@ class ProfileActivity : AppCompatActivity() {
             selfiee.setImageURI(uri)
 //            Global.imageString = uri
             Global.imageString = uri.toString()
-            Log.d("abc2",Global.imageString)
+            Log.d("abc2", Global.imageString)
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
         } else {

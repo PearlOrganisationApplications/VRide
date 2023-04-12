@@ -1,10 +1,11 @@
-package com.pearl.v_ride
+package com.pearl.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.pearl.data.NotificationList
 import com.pearl.test5.R
 
 class NotificationAdapter(private val notificationList: ArrayList<NotificationList>):

@@ -1,4 +1,4 @@
-package com.pearl.v_ride
+package com.pearl.ui
 
 import android.annotation.SuppressLint
 import android.app.Activity

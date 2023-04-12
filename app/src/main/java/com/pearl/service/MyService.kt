@@ -27,7 +27,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.OnTokenCanceledListener
-import com.pearl.Global
+import com.pearl.v_ride_lib.Global
 import kotlinx.coroutines.*
 import org.json.JSONObject
 import java.util.*
