@@ -64,7 +64,6 @@ abstract  class BaseClass: AppCompatActivity() {
         printLogs("Logs", "initializeViews", "init")
         registerBroadcast()
     }
-
     @get:SuppressLint("ObsoleteSdkInt")
     val cTheme: Unit
         get() {

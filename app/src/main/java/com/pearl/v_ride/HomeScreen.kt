@@ -208,6 +208,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         initializeClickListners()
         initializeInputs()
         initializeLabels()
+
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.homeScreenmap) as SupportMapFragment?
         mapFragment!!.getMapAsync(this)

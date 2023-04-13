@@ -1110,7 +1110,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@color/color_secondary"
+                                android:background="@color/app_background"
                                 android:gravity="center_horizontal"
                                 android:text="Your Selfie"
                                 android:textSize="18sp"
@@ -1190,7 +1190,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@color/color_secondary"
+                                android:background="@color/app_background"
                                 android:gravity="center_horizontal"
                                 android:text="Aadhar Card"
                                 android:textSize="18sp"
@@ -1307,7 +1307,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:text="submit"
-                                            android:backgroundTint="@color/color_primary"/>
+                                            android:backgroundTint="@color/color_secondary"/>
                                     </LinearLayout>
 
 
@@ -1343,30 +1343,97 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:background="@color/color_secondary"
+                                    android:background="@color/app_background"
                                     android:gravity="center_horizontal"
                                     android:text="Merchant Mapping"
                                     android:textSize="18sp"
                                     android:textColor="@color/white"
                                     tools:ignore="TextContrastCheck" />
 
+
                             </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/checkboxLL"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:background="@color/card_bg"
+                            >
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@color/white"
+                                android:background="@color/card_bg"
                                 >
 
-                                <Spinner
+                                <CheckBox
+                                    android:id="@+id/zomatoCB"
+                                    android:layout_weight="1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Zomato"/>
+                                <CheckBox
+                                    android:id="@+id/swiggiCB"
+                                    android:layout_weight="1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Swiggi"/>
+
+
+
+                                <!--<Spinner
                                     android:padding="5dp"
                                     android:id="@+id/merchantSL"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="Select Merchant"
                                     android:textAlignment="center"
-                                    />
+                                    />-->
                             </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/card_bg"
+                                >
+
+                                <CheckBox
+                                    android:id="@+id/amazonCB"
+                                    android:layout_weight="1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Amazon"/>
+                                <CheckBox
+                                    android:id="@+id/flipcardCB"
+                                    android:layout_weight="1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Flipcard"/>
+
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/card_bg"
+                                >
+
+                                <CheckBox
+                                    android:id="@+id/rapidoCB"
+                                    android:layout_weight="1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rapido"/>
+                                <CheckBox
+                                    android:id="@+id/otherCB"
+                                    android:layout_weight="1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Other"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
                             <EditText
                                 android:layout_marginTop="10dp"
                                 android:id="@+id/otherET"
@@ -1388,7 +1455,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="submit"
-                                android:backgroundTint="@color/color_primary"/>
+                                android:backgroundTint="@color/color_secondary"/>
 
 
                         </LinearLayout>
@@ -1415,7 +1482,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@color/color_secondary"
+                                android:background="@color/app_background"
                                 android:gravity="center_horizontal"
                                 android:text="Pan Card"
                                 android:textSize="18sp"
@@ -1529,7 +1596,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:text="submit"
-                                            android:backgroundTint="@color/color_primary"/>
+                                            android:backgroundTint="@color/color_secondary"/>
 
 
                                     </LinearLayout>
@@ -1566,7 +1633,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@color/color_secondary"
+                                android:background="@color/app_background"
                                 android:gravity="center_horizontal"
                                 android:text="Bank Details"
                                 android:textSize="18sp"
@@ -1688,7 +1755,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:text="Submit"
-                                            android:backgroundTint="@color/color_primary"/>
+                                            android:backgroundTint="@color/color_secondary"/>
 
                                     </LinearLayout>
 
@@ -1722,7 +1789,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@color/color_secondary"
+                                android:background="@color/app_background"
                                 android:gravity="center_horizontal"
                                 android:text="Driving Licence"
                                 android:textSize="18sp"
@@ -1818,7 +1885,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:text="Submit"
-                                            android:backgroundTint="@color/color_primary"/>
+                                            android:backgroundTint="@color/color_secondary"/>
 
 
                                     </LinearLayout>
@@ -1848,7 +1915,7 @@
         android:layout_width="350dp"
         android:layout_height="50dp"
         android:text="Update"
-        android:backgroundTint="@color/color_secondary"
+        android:backgroundTint="@color/app_background"
         app:cornerRadius="15dp"/>
 
     <ProgressBar

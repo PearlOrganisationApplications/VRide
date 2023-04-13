@@ -1,24 +1,30 @@
 package com.pearl.v_ride
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import com.pearl.test5.R
+import com.pearl.ui.ForgotPasswordActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
 class SignUpActivity : AppCompatActivity() {
 
     lateinit var dob: EditText
+    lateinit var signup: Button
     private val myCalendar = Calendar.getInstance()
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
+        signup = findViewById(R.id.signupBtn)
         val register = findViewById<TextView>(R.id.already)
         dob= findViewById(R.id.signup_dob)
 
@@ -28,6 +34,9 @@ class SignUpActivity : AppCompatActivity() {
 
         register.setOnClickListener {
             startActivity(Intent(this@SignUpActivity,MainActivity::class.java))
+        }
+        signup.setOnClickListener {
+            startActivity(Intent(this@SignUpActivity,ForgotPasswordActivity::class.java))
         }
     }
 

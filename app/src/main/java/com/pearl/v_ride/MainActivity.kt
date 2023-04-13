@@ -1,7 +1,9 @@
 package com.pearl.v_ride
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.app.Dialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -39,7 +41,7 @@ class MainActivity : BaseClass() {
     private lateinit var mAuth: FirebaseAuth
     private lateinit var dialog: Dialog
     lateinit var gooleSignIn: SignInButton
-    lateinit var forgotPassword: TextView
+//    lateinit var forgotPassword: TextView
     lateinit var signup: TextView
     lateinit var login: Button
     private val REQUEST_CODE = 101
@@ -51,7 +53,7 @@ class MainActivity : BaseClass() {
         gooleSignIn = findViewById(R.id.google_signIn)
         signup = findViewById<TextView>(R.id.signupBt)
         login = findViewById<Button>(R.id.loginBT)
-        forgotPassword = findViewById<TextView>(R.id.forgotPassword)
+//        forgotPassword = findViewById<TextView>(R.id.forgotPassword)
         mAuth = FirebaseAuth.getInstance()
     }
 
@@ -68,10 +70,10 @@ class MainActivity : BaseClass() {
         login.setOnClickListener {
             startActivity(Intent(this@MainActivity,HomeScreen::class.java))
         }
-        forgotPassword.setOnClickListener {
-            startActivity(Intent(this@MainActivity, ForgotPasswordActivity::class.java))
-            finish()
-        }
+//        forgotPassword.setOnClickListener {
+//            startActivity(Intent(this@MainActivity, ForgotPasswordActivity::class.java))
+//            finish()
+//        }
     }
 
     override fun initializeInputs() {
@@ -84,12 +86,39 @@ class MainActivity : BaseClass() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val isConnected = isNetworkConnected(this.applicationContext)
 
         setLayoutXml()
         initializeViews()
         initializeClickListners()
         initializeInputs()
         initializeLabels()
+        internetChangeBroadCast()
+
+        if(!isConnected){
+
+            val alertDialog2: AlertDialog.Builder = AlertDialog.Builder(
+                this@MainActivity
+            )
+            alertDialog2.setTitle("No Internet Connection")
+            alertDialog2.setPositiveButton("Try Again",
+                DialogInterface.OnClickListener { dialog, which ->
+                    val intent = intent
+                    finish()
+                    startActivity(intent)
+                })
+            alertDialog2.setNegativeButton("Cancel",
+                DialogInterface.OnClickListener { dialog, which ->
+                    dialog.cancel()
+                    finishAffinity()
+                    System.exit(0)
+                })
+            alertDialog2.setCancelable(false)
+            alertDialog2.show()
+
+        }
+
+
 
         if (ActivityCompat.checkSelfPermission(
                 this,

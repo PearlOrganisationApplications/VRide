@@ -37,7 +37,7 @@ class DocumentActivity : AppCompatActivity() {
     lateinit var passbookIV: ImageView
     lateinit var addDL: ImageView
     lateinit var licenceIV: ImageView
-    lateinit var select_merchant: Spinner
+//    lateinit var select_merchant: Spinner
     lateinit var doc_profile: CircleImageView
     lateinit var add_selfie: ImageView
     lateinit var doc_dob: EditText
@@ -80,7 +80,7 @@ class DocumentActivity : AppCompatActivity() {
 
         doc_profile = findViewById(R.id.doc_selfie)
         add_selfie = findViewById(R.id.add_selfie)
-        select_merchant = findViewById(R.id.merchantSL)
+//        select_merchant = findViewById(R.id.merchantSL)
         selfieCor = findViewById(R.id.corporate_doc_selfie)
         addCorporateSelfie = findViewById(R.id.add_corporate_selfie)
         companyID = findViewById(R.id.corporate_docID)
@@ -99,7 +99,7 @@ class DocumentActivity : AppCompatActivity() {
 
         val items = arrayOf("Select Merchant", "Amazon","Flipcard","Zomato","Rapido","Uber","Other")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
-        select_merchant.adapter = adapter
+//        select_merchant.adapter = adapter
 
   /*      if(select_merchant.selectedItem.toString().equals("Other")){
             otherEdt.visibility = View.VISIBLE
@@ -108,7 +108,7 @@ class DocumentActivity : AppCompatActivity() {
 
 
 
-        select_merchant.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        /*select_merchant.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 if (position == 6){
                     otherEdt.visibility = View.VISIBLE
@@ -124,7 +124,8 @@ class DocumentActivity : AppCompatActivity() {
 
                 Toast.makeText(this@DocumentActivity, "hi", Toast.LENGTH_SHORT).show()
             }
-        }
+        }*/
+
         pan_dob = findViewById(R.id.pan_dobET)
         pan_dob.setOnClickListener {
             req_code =1
@@ -230,6 +231,7 @@ class DocumentActivity : AppCompatActivity() {
         add_selfie.setOnClickListener {
             ImagePicker.with(this)
                 .crop()
+                .cameraOnly()
                 .compress(1024)
                 .maxResultSize(1080, 1080)
                 .start()
