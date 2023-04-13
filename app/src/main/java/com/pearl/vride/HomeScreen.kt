@@ -1,4 +1,4 @@
-package com.pearl.v_ride
+package com.pearl.vride
 
 
 import android.annotation.SuppressLint
@@ -19,9 +19,7 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.app.ActivityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.dhaval2404.imagepicker.ImagePicker
@@ -53,7 +51,7 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     lateinit var mapLL: LinearLayout
     lateinit var  dImage: CircleImageView
-
+    private var count = 0
     //    lateinit var mapFragment: Fragment
     private lateinit var currentLocation: Location
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -189,7 +187,6 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
                     it.isChecked = false
                 }
                 R.id.document-> {
-
                     startActivity(Intent(this@HomeScreen, DocumentActivity::class.java))
                     drawerLayout.closeDrawers()
                 }
@@ -234,7 +231,7 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
         if(Global.imageString != "") {
             val uri = Uri.parse(Global.imageString)
             dImage.setImageURI(uri)
-            Log.d("abc", Global.imageString)
+          //  Log.d("abc", Global.imageString)
         }
     }
 
@@ -254,25 +251,25 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
     }
 
 
-    override fun onBackPressed() {
+  /*  override fun onBackPressed() {
         //startActivity(Intent(this@HomeScreen,HomeScreen::class.java))
 //        finish()
         if(notificationLL.visibility == View.GONE){
             //finish
-/*            notificationLL.visibility = View.VISIBLE
+*//*            notificationLL.visibility = View.VISIBLE
             notificationI.visibility =View.GONE
-            appbar.visibility = View.GONE   */
+            appbar.visibility = View.GONE   *//*
             finish()
         }else{
             appbar.visibility = View.VISIBLE
             notificationLL.visibility = View.GONE
             mapLL.visibility = View.VISIBLE
         }
-        /*   notificationLL.visibility = View.GONE
+        *//*   notificationLL.visibility = View.GONE
            notificationI.visibility =View.VISIBLE
-           appbar.visibility = View.VISIBLE*/
+           appbar.visibility = View.VISIBLE*//*
 //        super.onBackPressed()
-    }
+    }*/
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (toggle.onOptionsItemSelected(item)){
@@ -401,5 +398,13 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
         drawerLayout.closeDrawers()
         setTitle(title)
     }*/
+override fun onBackPressed() {
+    if (count == 0){
+        Toast.makeText(this@HomeScreen, "Press again to exit :", Toast.LENGTH_LONG).show()
+        count++
+    }else{
+        finishAffinity()
+    }
 
+}
 }

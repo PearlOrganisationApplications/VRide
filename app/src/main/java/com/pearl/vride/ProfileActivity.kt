@@ -1,4 +1,4 @@
-package com.pearl.v_ride
+package com.pearl.vride
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -8,8 +8,6 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView

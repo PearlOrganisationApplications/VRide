@@ -1,6 +1,5 @@
-package com.pearl.v_ride
+package com.pearl.vride
 
-import android.location.Address
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.widget.AppCompatImageView

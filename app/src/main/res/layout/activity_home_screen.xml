@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawerLayout"
-    tools:context="com.pearl.v_ride.HomeScreen">
+    tools:context="com.pearl.vride.HomeScreen">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout

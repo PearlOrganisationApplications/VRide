@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.pearl.v_ride.SignUpActivity">
+    tools:context="com.pearl.vride.SignUpActivity">
 
 
 
@@ -62,18 +62,47 @@
                 android:drawableLeft="@drawable/ic_baseline_email"
                 android:padding="8dp"
                 android:drawablePadding="8dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+
+            android:layout_marginTop="20dp"
+
+            android:gravity="center_vertical"
+            android:background="@drawable/signup_edittext"
+            android:orientation="horizontal">
+
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_baseline_phone_"/>
+            <TextView
+                android:id="@+id/prefix"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingStart="8dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:text="+91" />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/signup_phone"
-                android:layout_marginTop="20dp"
+
                 android:inputType="phone"
-                android:background="@drawable/signup_edittext"
+
+                android:maxLength="10"
                 android:hint="Phone"
-                android:drawableLeft="@drawable/ic_baseline_phone_"
+
                 android:padding="8dp"
                 android:drawablePadding="8dp"/>
 
+        </LinearLayout>
     <EditText
         android:id="@+id/signup_dob"
         android:layout_width="match_parent"

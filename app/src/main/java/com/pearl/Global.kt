@@ -2,6 +2,7 @@ package com.pearl
 
 import android.net.Uri
 
-object Global {
+object
+Global {
        var imageString: String = ""
 }

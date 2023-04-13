@@ -1,4 +1,4 @@
-package com.pearl.v_ride
+package com.pearl.vride
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

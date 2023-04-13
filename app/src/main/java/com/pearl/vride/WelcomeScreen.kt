@@ -1,4 +1,4 @@
-package com.pearl.v_ride
+package com.pearl.vride
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -132,4 +132,5 @@ class WelcomeScreen : AppCompatActivity() {
             }
         }
     }
+
 }

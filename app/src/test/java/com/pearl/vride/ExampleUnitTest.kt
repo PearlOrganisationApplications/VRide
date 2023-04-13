@@ -1,4 +1,4 @@
-package com.pearl.v_ride
+package com.pearl.vride
 
 import org.junit.Test
 

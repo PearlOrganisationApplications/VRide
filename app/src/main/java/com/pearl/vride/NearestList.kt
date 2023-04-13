@@ -1,6 +1,4 @@
-package com.pearl.v_ride
-
-import android.icu.text.CaseMap.Title
+package com.pearl.vride
 
 data class NearestList(
     var place_name: String,

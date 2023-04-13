@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/logo"
@@ -18,14 +18,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Test5"
         tools:targetApi="31">
+
         <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="${MAPS_API_KEY}" />
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="@string/google_maps_key" />
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+        <receiver
+            android:name="com.razorpay.RzpTokenReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="rzp.device_token.share" />
+            </intent-filter>
+        </receiver>
         <activity
-            android:name="com.pearl.v_ride.ProfileActivity"
+            android:name="com.pearl.vride.ProfileActivity"
             android:exported="false"
             android:theme="@style/AppThemeTest">
 
@@ -34,7 +43,18 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.pearl.v_ride.DocumentActivity"
+            android:name="com.razorpay.CheckoutActivity"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <data
+                    android:host="rzp.io"
+                    android:scheme="io.rzp" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.pearl.vride.DocumentActivity"
             android:exported="false"
             android:theme="@style/AppThemeTest">
             <meta-data
@@ -42,7 +62,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.pearl.v_ride.UserHistoryActivity"
+            android:name="com.pearl.vride.UserHistoryActivity"
             android:exported="false"
             android:theme="@style/AppThemeTest">
             <meta-data
@@ -50,7 +70,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.pearl.v_ride.NearestServiceActivity"
+            android:name="com.pearl.vride.NearestServiceActivity"
             android:exported="false"
             android:theme="@style/AppThemeTest">
             <meta-data
@@ -58,7 +78,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.pearl.v_ride.MyWalletActivity"
+            android:name="com.pearl.vride.MyWalletActivity"
             android:exported="false"
             android:theme="@style/AppThemeTest">
             <meta-data
@@ -66,7 +86,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.pearl.v_ride.IssueRequestActivity"
+            android:name="com.pearl.vride.IssueRequestActivity"
             android:exported="false"
             android:theme="@style/AppThemeTest">
             <meta-data
@@ -75,7 +95,7 @@
         </activity>
 
         <activity
-            android:name="com.pearl.v_ride.SignUpActivity"
+            android:name="com.pearl.vride.SignUpActivity"
             android:exported="false"
             android:theme="@style/AppThemeTest">
             <meta-data
@@ -83,7 +103,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.pearl.v_ride.HomeScreen"
+            android:name="com.pearl.vride.HomeScreen"
             android:exported="false"
             android:theme="@style/AppThemeTest">
             <meta-data
@@ -91,7 +111,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.pearl.v_ride.WelcomeScreen"
+            android:name="com.pearl.vride.WelcomeScreen"
             android:exported="false"
             android:theme="@style/AppThemeTest">
             <meta-data
@@ -99,7 +119,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.pearl.v_ride.SplashScreenActivity"
+            android:name="com.pearl.vride.SplashScreenActivity"
             android:exported="true"
             android:theme="@style/AppThemeTest">
             <intent-filter>
@@ -113,7 +133,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.pearl.v_ride.MainActivity"
+            android:name="com.pearl.vride.MainActivity"
             android:exported="false"
             android:theme="@style/AppThemeTest">
             <meta-data
