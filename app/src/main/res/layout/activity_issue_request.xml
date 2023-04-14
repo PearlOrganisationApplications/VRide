@@ -105,27 +105,28 @@
     </com.google.android.material.textfield.TextInputLayout>
 -->
         <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:layout_marginTop="@dimen/_12sdp"
             android:background="@drawable/btn_backgraund"
             android:hint="Issue Description"
             android:imeOptions="actionDone"
-            android:minHeight="150dp"
-            android:minLines="4"
-            android:minEms="15"
+            android:lines="8"
+            android:minLines="6"
+            android:gravity="top|start"
             android:padding="8dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:gravity="start"
-            android:inputType="text|textMultiLine|textCapSentences"
+            android:inputType="textMultiLine"
             android:maxLines="4"/>
+
+
+
 
     </LinearLayout>
     <Button
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Submit"
-
         android:shadowRadius="20"
         android:backgroundTint="@color/color_secondary"
         android:layout_marginTop="30dp"

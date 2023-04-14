@@ -37,7 +37,7 @@ class DocumentActivity : AppCompatActivity() {
     lateinit var passbookIV: ImageView
     lateinit var addDL: ImageView
     lateinit var licenceIV: ImageView
-//    lateinit var select_merchant: Spinner
+    lateinit var select_state: Spinner
     lateinit var doc_profile: CircleImageView
     lateinit var add_selfie: ImageView
     lateinit var doc_dob: EditText
@@ -80,7 +80,7 @@ class DocumentActivity : AppCompatActivity() {
 
         doc_profile = findViewById(R.id.doc_selfie)
         add_selfie = findViewById(R.id.add_selfie)
-//        select_merchant = findViewById(R.id.merchantSL)
+        select_state = findViewById(R.id.statelistSP)
         selfieCor = findViewById(R.id.corporate_doc_selfie)
         addCorporateSelfie = findViewById(R.id.add_corporate_selfie)
         companyID = findViewById(R.id.corporate_docID)
@@ -97,15 +97,16 @@ class DocumentActivity : AppCompatActivity() {
         corporateTV = findViewById(R.id.corporateTV)
         val submitMerchantBtn = findViewById<Button>(R.id.submitMerchantBT)
 
-        val items = arrayOf("Select Merchant", "Amazon","Flipcard","Zomato","Rapido","Uber","Other")
+        val items = arrayOf("Select State","Andhra Pradesh", "Arunachal Pradesh","Assam", "Bihar","Chhattisgarh","Goa","Gujarat","Haryana","Himachal Pradesh","Jammu and Kashmir","Jharkhand",
+            "Karnataka","Kerala","Madhya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Odisha","Punjab","Sikkim","Tamil Nadu","Telangana","Tripura","Uttar Pradesh","Uttarakhand","West Bengal")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
-//        select_merchant.adapter = adapter
+        select_state.adapter = adapter
+
 
   /*      if(select_merchant.selectedItem.toString().equals("Other")){
             otherEdt.visibility = View.VISIBLE
             Toast.makeText(this, "hello", Toast.LENGTH_SHORT).show()
         }*/
-
 
 
         /*select_merchant.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -137,7 +138,6 @@ class DocumentActivity : AppCompatActivity() {
             showDatePicker()
         }
         updateBT = findViewById<Button>(R.id.updateBT)
-
         /*updateBT.setOnClickListener {
             docLL.visibility = View.GONE
             corporateLL.visibility = View.VISIBLE
@@ -186,7 +186,7 @@ class DocumentActivity : AppCompatActivity() {
 //        imageUri = createImageUri()!!
         adhadharF.setOnClickListener {
             ImagePicker.with(this)
-                .crop()	    			//Crop image(Optional), Check Customization for more option
+                .crop()
                 .compress(1024)			//Final image size will be less than 1 MB(Optional)
                 .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
                 .start()
@@ -240,6 +240,7 @@ class DocumentActivity : AppCompatActivity() {
         addCorporateSelfie.setOnClickListener {
             ImagePicker.with(this)
                 .crop()
+                .cameraOnly()
                 .compress(1024)
                 .maxResultSize(1080, 1080)
                 .start()

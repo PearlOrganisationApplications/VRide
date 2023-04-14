@@ -6,15 +6,14 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
-import android.graphics.Typeface
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.View
 import android.view.Window
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -28,7 +27,6 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.pearl.test5.R
-import com.pearl.ui.ForgotPasswordActivity
 import com.pearl.v_ride_lib.BaseClass
 
 class MainActivity : BaseClass() {
@@ -45,6 +43,12 @@ class MainActivity : BaseClass() {
     lateinit var signup: TextView
     lateinit var login: Button
     private val REQUEST_CODE = 101
+
+   /* lateinit var verify: Button
+    lateinit var cancel: ImageView*/
+    lateinit var loginOtp: EditText
+    lateinit var otpBt: Button
+
     override fun setLayoutXml() {
         setContentView(R.layout.activity_main)
     }
@@ -55,6 +59,10 @@ class MainActivity : BaseClass() {
         login = findViewById<Button>(R.id.loginBT)
 //        forgotPassword = findViewById<TextView>(R.id.forgotPassword)
         mAuth = FirebaseAuth.getInstance()
+        loginOtp = findViewById(R.id.loginOtp)
+        otpBt = findViewById(R.id.otpBT)
+
+
     }
 
     override fun initializeClickListners() {
@@ -66,9 +74,39 @@ class MainActivity : BaseClass() {
             startActivity(Intent(this@MainActivity,SignUpActivity::class.java))
 //            finish()
         }
+        otpBt.setOnClickListener {
+
+            loginOtp.visibility = View.VISIBLE
+            login.visibility = View.VISIBLE
+            otpBt.visibility = View.GONE
+        }
 
         login.setOnClickListener {
-            startActivity(Intent(this@MainActivity,HomeScreen::class.java))
+
+/*            dialog.setContentView(R.layout.activity_forgot_password)
+            dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            dialog.setCancelable(false)
+            dialog.window?.attributes?.windowAnimations = R.style.animation
+
+            verify = dialog.findViewById(R.id.otp_Verify_button)
+            cancel = dialog.findViewById(R.id.view_cancel_dialog)
+
+            verify.setOnClickListener {
+                dialog.dismiss()
+                Toast.makeText(this@MainActivity, "okay clicked", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this@MainActivity,HomeScreen::class.java))
+            }
+
+            cancel.setOnClickListener {
+                dialog.dismiss()
+                Toast.makeText(this@MainActivity, "Cancel clicked", Toast.LENGTH_SHORT).show()
+            }
+
+            dialog.show()*/
+
+             startActivity(Intent(this,HomeScreen::class.java))
+
+
         }
 //        forgotPassword.setOnClickListener {
 //            startActivity(Intent(this@MainActivity, ForgotPasswordActivity::class.java))

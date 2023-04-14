@@ -3,57 +3,137 @@ package com.pearl.v_ride
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.pearl.v_ride_lib.Global
 import com.pearl.test5.R
+import com.pearl.v_ride_lib.BaseClass
 import de.hdodenhof.circleimageview.CircleImageView
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ProfileActivity : AppCompatActivity() {
+class ProfileActivity : BaseClass() {
 
     lateinit var ivback: AppCompatImageView
     lateinit var apptitle: AppCompatTextView
     lateinit var dob: TextInputEditText
     private val myCalendar = Calendar.getInstance()
     lateinit var selfiee: CircleImageView
+    lateinit var edtProfile: Button
+    lateinit var update_profile: Button
+    private lateinit var dialog: Dialog
+    lateinit var moblie_no: TextInputLayout
+    lateinit var email_id: TextInputLayout
+    lateinit var verify: Button
+    lateinit var cancel: ImageView
+//    lateinit var emaiTIL:TextInputLayout
+    override fun setLayoutXml() {
+        setContentView(R.layout.activity_profile)
+    }
+
+    override fun initializeViews() {
+        ivback=findViewById(R.id.ivBack)
+        apptitle = findViewById(R.id.titleTVAppbar)
+        selfiee = findViewById(R.id.show_selfiee)
+        dob= findViewById(R.id.dobTL)
+        apptitle.text ="Profile"
+        edtProfile = findViewById(R.id.editprofile)
+        update_profile = findViewById(R.id.updateButton)
+        moblie_no = findViewById(R.id.mobileTL)
+        email_id = findViewById(R.id.emailTL)
+//        emaiTIL = findViewById(R.id.emailTIL)
+         dialog = Dialog(this)
+    }
+
+    override fun initializeClickListners() {
+        ivback.setOnClickListener {
+            onBackPressed()
+        }
+       /* dob.setOnClickListener {
+            showDatePicker()
+        }*/
+
+        edtProfile.setOnClickListener {
+            update_profile.visibility = View.VISIBLE
+            edtProfile.visibility = View.GONE
+            moblie_no.isEnabled = true
+//            moblie_no.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,getDrawable(R.drawable.ic_baseline_lock)), null)
+            email_id.isEnabled = true
+
+            selfiee.setOnClickListener {
+                ImagePicker.with(this)
+                    .crop()
+                    .cameraOnly()
+                    .compress(1024)
+                    .maxResultSize(1080, 1080)
+                    .start()
+
+            }
+
+        }
+
+        update_profile.setOnClickListener {
+            moblie_no.isEnabled = false
+            email_id.isEnabled = false
+
+            dialog.setContentView(R.layout.activity_forgot_password)
+            dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            dialog.setCancelable(false)
+            dialog.window?.attributes?.windowAnimations = R.style.animation
+
+            verify = dialog.findViewById(R.id.otp_Verify_button)
+            cancel = dialog.findViewById(R.id.view_cancel_dialog)
+
+            verify.setOnClickListener {
+                dialog.dismiss()
+                Toast.makeText(this@ProfileActivity, "okay clicked", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this@ProfileActivity,HomeScreen::class.java))
+            }
+
+            cancel.setOnClickListener {
+                dialog.dismiss()
+                Toast.makeText(this@ProfileActivity, "Cancel clicked", Toast.LENGTH_SHORT).show()
+            }
+            dialog.show()
+
+            edtProfile.visibility = View.VISIBLE
+            update_profile.visibility = View.GONE
+
+
+        }
+    }
+
+    override fun initializeInputs() {
+
+    }
+
+    override fun initializeLabels() {
+    }
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_profile)
 
+        setLayoutXml()
+        initializeViews()
+        initializeClickListners()
+        initializeInputs()
+        initializeLabels()
 
-        ivback=findViewById(R.id.ivBack)
-        apptitle = findViewById(R.id.titleTVAppbar)
-        selfiee = findViewById(R.id.show_selfiee)
-
-        apptitle.text ="Profile"
-        ivback.setOnClickListener {
-            onBackPressed()
-        }
-
-        dob= findViewById(R.id.dobTL)
-
-        dob.setOnClickListener {
-            showDatePicker()
-        }
-        selfiee.setOnClickListener {
-            ImagePicker.with(this)
-                .crop()
-                .compress(1024)
-                .maxResultSize(1080, 1080)
-                .start()
-        }
     }
 
 

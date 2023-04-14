@@ -1024,13 +1024,13 @@
                                     android:layout_width="30dp"
                                     android:layout_height="30dp"
                                     android:layout_marginTop="10dp"
-                                    android:layout_marginEnd="80dp"
                                     android:layout_marginBottom="10dp"
                                     android:src="@drawable/ic_camera"
                                     app:layout_constraintBottom_toTopOf="@+id/corporate_addharLL"
                                     app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/corporate_addfront"
                                     app:layout_constraintTop_toBottomOf="@+id/corporate_adharrearIV"
-                                    app:layout_constraintVertical_bias="0.0" />
+                                    />
 
                                 <LinearLayout
                                     android:id="@+id/corporate_addharLL"
@@ -1274,11 +1274,11 @@
                                         android:layout_width="30dp"
                                         android:layout_height="30dp"
                                         android:layout_marginTop="10dp"
-                                        android:layout_marginEnd="80dp"
                                         android:layout_marginBottom="10dp"
                                         android:src="@drawable/ic_camera"
                                         app:layout_constraintBottom_toTopOf="@+id/addharLL"
                                         app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toEndOf="@+id/addfront"
                                         app:layout_constraintTop_toBottomOf="@+id/adharrearIV"
                                         app:layout_constraintVertical_bias="0.0" />
 
@@ -1317,6 +1317,112 @@
                             </LinearLayout>
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        app:cardElevation="8dp"
+                        app:cardCornerRadius="10dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:background="@color/card_bg"
+                            android:layout_margin="5dp"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/app_background"
+                                    android:gravity="center_horizontal"
+                                    android:text="Current Address"
+                                    android:textSize="18sp"
+                                    android:textColor="@color/white"
+                                    tools:ignore="TextContrastCheck" />
+
+
+<!--
+                                <EditText
+                                android:inputType="textMultiLine"
+                                android:lines="8"
+                                android:minLines="6"
+                                android:gravity="top|start"
+                                android:maxLines="10"
+                                android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
+                                android:scrollbars="vertical"
+                                />
+-->
+
+                                <EditText
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_10ssp"
+                                    android:maxLines="2"
+                                    android:inputType="textPostalAddress"
+                                    android:imeOptions="actionNext"
+                                    android:hint="address" />
+
+                                <EditText
+                                    android:layout_marginTop="@dimen/_10ssp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="textPostalAddress"
+                                    android:imeOptions="actionNext"
+                                    android:maxLines="1"
+                                    android:hint="City"/>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:padding="@dimen/_5ssp"
+                                    >
+                                    <Spinner
+                                        android:id="@+id/statelistSP"
+                                        android:layout_weight="1"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        />
+                                    <EditText
+                                        android:layout_weight="1"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:imeOptions="actionDone"
+                                        android:maxLength="6"
+                                        android:autofillHints="postalCode"
+                                        android:inputType="number"
+                                        android:hint="Pin code"/>
+
+                                </LinearLayout>
+
+
+
+                            </LinearLayout>
+
+
+                            <Button
+                                android:layout_marginTop="5dp"
+                                android:visibility="gone"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="submit"
+                                android:backgroundTint="@color/color_secondary"/>
+
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
 
 
                     <androidx.cardview.widget.CardView
@@ -1915,7 +2021,7 @@
         android:layout_width="350dp"
         android:layout_height="50dp"
         android:text="Update"
-        android:backgroundTint="@color/app_background"
+        android:backgroundTint="@color/color_secondary"
         app:cornerRadius="15dp"/>
 
     <ProgressBar

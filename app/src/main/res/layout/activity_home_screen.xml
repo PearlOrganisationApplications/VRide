@@ -30,17 +30,12 @@
                 app:navigationIcon="@drawable/ic_baseline_menu"
                 app:title="@string/app_name"
                 >
-                <LinearLayout
-                    android:layout_marginStart="230dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    >
-                    <ImageView
-                        android:id="@+id/nBell"
-                        android:layout_width="35dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/bell"/>
-                </LinearLayout>
+                <ImageView
+                    android:layout_gravity="end"
+                    android:id="@+id/nBell"
+                    android:layout_width="35dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/bell"/>
             </com.google.android.material.appbar.MaterialToolbar>
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -88,7 +83,7 @@
                 android:id="@+id/homeScreenmap"
                 class="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="@dimen/_232sdp"
                 android:visibility="visible"
                 />
 

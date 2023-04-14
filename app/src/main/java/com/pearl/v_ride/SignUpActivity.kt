@@ -2,14 +2,14 @@ package com.pearl.v_ride
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
+import android.view.ViewGroup
+import android.widget.*
 import com.pearl.test5.R
-import com.pearl.ui.ForgotPasswordActivity
+import com.pearl.ui.DocumentActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -18,6 +18,8 @@ class SignUpActivity : AppCompatActivity() {
     lateinit var dob: EditText
     lateinit var signup: Button
     private val myCalendar = Calendar.getInstance()
+    lateinit var verify: Button
+    lateinit var cancel: ImageView
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +29,7 @@ class SignUpActivity : AppCompatActivity() {
         signup = findViewById(R.id.signupBtn)
         val register = findViewById<TextView>(R.id.already)
         dob= findViewById(R.id.signup_dob)
+        val dialog = Dialog(this)
 
         dob.setOnClickListener {
             showDatePicker()
@@ -36,7 +39,28 @@ class SignUpActivity : AppCompatActivity() {
             startActivity(Intent(this@SignUpActivity,MainActivity::class.java))
         }
         signup.setOnClickListener {
-            startActivity(Intent(this@SignUpActivity,ForgotPasswordActivity::class.java))
+//            startActivity(Intent(this@SignUpActivity,ForgotPasswordActivity::class.java))
+//
+                dialog.setContentView(R.layout.activity_forgot_password)
+                dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                dialog.setCancelable(false)
+                dialog.window?.attributes?.windowAnimations = R.style.animation
+
+                verify = dialog.findViewById(R.id.otp_Verify_button)
+                cancel = dialog.findViewById(R.id.view_cancel_dialog)
+
+                verify.setOnClickListener {
+                    dialog.dismiss()
+                    Toast.makeText(this, "okay clicked", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this@SignUpActivity,DocumentActivity::class.java))
+                }
+
+                cancel.setOnClickListener {
+                    dialog.dismiss()
+                    Toast.makeText(this@SignUpActivity, "Cancel clicked", Toast.LENGTH_SHORT).show()
+                }
+
+                dialog.show()
         }
     }
 
