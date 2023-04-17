@@ -15,12 +15,13 @@ import androidx.appcompat.widget.AppCompatTextView
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.pearl.test5.R
 import com.pearl.v_ride.HomeScreen
+import com.pearl.v_ride_lib.BaseClass
 import de.hdodenhof.circleimageview.CircleImageView
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.properties.Delegates
 
-class DocumentActivity : AppCompatActivity() {
+class DocumentActivity : BaseClass() {
 
     lateinit var pan_dob: EditText
     lateinit var ivback: AppCompatImageView
@@ -56,18 +57,13 @@ class DocumentActivity : AppCompatActivity() {
     lateinit var corporateIV: ImageView
     lateinit var personalTV: TextView
     lateinit var corporateTV: TextView
+    lateinit var adharNoEdt: EditText
 
-    /*  lateinit var imageUri: Uri
-      private val contract = registerForActivityResult(ActivityResultContracts.TakePicture()){
-          adharFrontIV.setImageURI(null)
-          adharFrontIV.setImageURI(imageUri)
-      }*/
-
-    @SuppressLint("ResourceAsColor")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun setLayoutXml() {
         setContentView(R.layout.activity_document)
+    }
 
+    override fun initializeViews() {
         adhadharF = findViewById(R.id.addfront)
         adharFrontIV = findViewById(R.id.adharFrotIV)
         adhadharRear = findViewById(R.id.adharrearIV)
@@ -91,76 +87,32 @@ class DocumentActivity : AppCompatActivity() {
         addCorporateAadharR = findViewById(R.id.corporate_addrear)
         docLL = findViewById(R.id.docLL)
         corporateLL = findViewById(R.id.corporateLL)
-        val otherEdt = findViewById<EditText>(R.id.otherET)
+
         persnalIV = findViewById(R.id.personalIV)
         corporateIV = findViewById(R.id.corporateIV)
         personalTV = findViewById(R.id.personalTV)
         corporateTV = findViewById(R.id.corporateTV)
-        val submitMerchantBtn = findViewById<Button>(R.id.submitMerchantBT)
-
-        val items = arrayOf("Select State","Andhra Pradesh", "Arunachal Pradesh","Assam", "Bihar","Chhattisgarh","Goa","Gujarat","Haryana","Himachal Pradesh","Jammu and Kashmir","Jharkhand",
-            "Karnataka","Kerala","Madhya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Odisha","Punjab","Sikkim","Tamil Nadu","Telangana","Tripura","Uttar Pradesh","Uttarakhand","West Bengal")
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
-        select_state.adapter = adapter
-
-
-  /*      if(select_merchant.selectedItem.toString().equals("Other")){
-            otherEdt.visibility = View.VISIBLE
-            Toast.makeText(this, "hello", Toast.LENGTH_SHORT).show()
-        }*/
-
-
-        /*select_merchant.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                if (position == 6){
-                    otherEdt.visibility = View.VISIBLE
-                    submitMerchantBtn.visibility = View.VISIBLE
-                }else{
-                    otherEdt.visibility = View.GONE
-                    submitMerchantBtn.visibility = View.GONE
-
-                }
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-
-                Toast.makeText(this@DocumentActivity, "hi", Toast.LENGTH_SHORT).show()
-            }
-        }*/
-
         pan_dob = findViewById(R.id.pan_dobET)
+        doc_dob = findViewById(R.id.doc_dob)
+        updateBT = findViewById<Button>(R.id.updateBT)
+        ivback = findViewById(R.id.ivBack)
+        apptitle = findViewById(R.id.titleTVAppbar)
+        apptitle.text = "Document"
+    }
+
+    override fun initializeClickListners() {
         pan_dob.setOnClickListener {
             req_code =1
             showDatePicker()
         }
-        doc_dob = findViewById(R.id.doc_dob)
         doc_dob.setOnClickListener {
             req_code = 2
             showDatePicker()
         }
-        updateBT = findViewById<Button>(R.id.updateBT)
+
         updateBT.setOnClickListener {
             startActivity(Intent(this@DocumentActivity,HomeScreen::class.java))
             finish()
-        }
-        /*updateBT.setOnClickListener {
-            docLL.visibility = View.GONE
-            corporateLL.visibility = View.VISIBLE
-        }*/
-  /*      if (req_code == 3){
-            personalTV.setTextColor(Color.parseColor("#096E0A"))
-            Toast.makeText(this, "personal", Toast.LENGTH_SHORT).show()
-        }
-        else if (req_code == 4){
-            Toast.makeText(this, "personal2", Toast.LENGTH_SHORT).show()
-            corporateTV.setTextColor(Color.parseColor("#096E0A"))
-        }*/
-        if ( docLL.visibility == View.VISIBLE){
-            personalTV.setTextColor(Color.parseColor("#096E0A"))
-            corporateTV.setTextColor(Color.parseColor("#000000"))
-        }else if (corporateLL.visibility == View.VISIBLE){
-            corporateTV.setTextColor(Color.parseColor("#096E0A"))
-            personalTV.setTextColor(Color.parseColor("#000000"))
         }
         persnalIV.setOnClickListener {
             docLL.visibility =View.VISIBLE
@@ -172,21 +124,13 @@ class DocumentActivity : AppCompatActivity() {
             docLL.visibility = View.GONE
             corporateLL.visibility = View.VISIBLE
 //            req_code = 4
-         /*   if ( docLL.visibility == View.GONE){
-                corporateTV.setTextColor(Color.parseColor("#096E0A"))
-            }*/
+            /*   if ( docLL.visibility == View.GONE){
+                   corporateTV.setTextColor(Color.parseColor("#096E0A"))
+               }*/
         }
-
-        ivback = findViewById(R.id.ivBack)
-        apptitle = findViewById(R.id.titleTVAppbar)
-
-
-        apptitle.text = "Document"
         ivback.setOnClickListener {
             onBackPressed()
         }
-
-
         // camera
 //        imageUri = createImageUri()!!
         adhadharF.setOnClickListener {
@@ -195,7 +139,7 @@ class DocumentActivity : AppCompatActivity() {
                 .compress(1024)			//Final image size will be less than 1 MB(Optional)
                 .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
                 .start()
-             image_type = 1
+            image_type = 1
 
 //                .galleryOnly()
 //            contract.launch(imageUri)
@@ -275,6 +219,88 @@ class DocumentActivity : AppCompatActivity() {
                 .start()
             image_type = 10
         }
+    }
+
+    override fun initializeInputs() {
+
+    }
+
+    override fun initializeLabels() {
+
+    }
+
+    /*  lateinit var imageUri: Uri
+      private val contract = registerForActivityResult(ActivityResultContracts.TakePicture()){
+          adharFrontIV.setImageURI(null)
+          adharFrontIV.setImageURI(imageUri)
+      }*/
+
+    @SuppressLint("ResourceAsColor")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setLayoutXml()
+        initializeViews()
+        initializeClickListners()
+        initializeInputs()
+        initializeLabels()
+
+        val otherEdt = findViewById<EditText>(R.id.otherET)
+
+        val submitMerchantBtn = findViewById<Button>(R.id.submitMerchantBT)
+
+        val items = arrayOf("Select State","Andhra Pradesh", "Arunachal Pradesh","Assam", "Bihar","Chhattisgarh","Goa","Gujarat","Haryana","Himachal Pradesh","Jammu and Kashmir","Jharkhand",
+            "Karnataka","Kerala","Madhya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Odisha","Punjab","Sikkim","Tamil Nadu","Telangana","Tripura","Uttar Pradesh","Uttarakhand","West Bengal")
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
+        select_state.adapter = adapter
+
+
+  /*      if(select_merchant.selectedItem.toString().equals("Other")){
+            otherEdt.visibility = View.VISIBLE
+            Toast.makeText(this, "hello", Toast.LENGTH_SHORT).show()
+        }*/
+
+
+        /*select_merchant.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                if (position == 6){
+                    otherEdt.visibility = View.VISIBLE
+                    submitMerchantBtn.visibility = View.VISIBLE
+                }else{
+                    otherEdt.visibility = View.GONE
+                    submitMerchantBtn.visibility = View.GONE
+
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+
+                Toast.makeText(this@DocumentActivity, "hi", Toast.LENGTH_SHORT).show()
+            }
+        }*/
+
+
+
+        /*updateBT.setOnClickListener {
+            docLL.visibility = View.GONE
+            corporateLL.visibility = View.VISIBLE
+        }*/
+  /*      if (req_code == 3){
+            personalTV.setTextColor(Color.parseColor("#096E0A"))
+            Toast.makeText(this, "personal", Toast.LENGTH_SHORT).show()
+        }
+        else if (req_code == 4){
+            Toast.makeText(this, "personal2", Toast.LENGTH_SHORT).show()
+            corporateTV.setTextColor(Color.parseColor("#096E0A"))
+        }*/
+
+        if ( docLL.visibility == View.VISIBLE){
+            personalTV.setTextColor(Color.parseColor("#096E0A"))
+            corporateTV.setTextColor(Color.parseColor("#000000"))
+        }else if (corporateLL.visibility == View.VISIBLE){
+            corporateTV.setTextColor(Color.parseColor("#096E0A"))
+            personalTV.setTextColor(Color.parseColor("#000000"))
+        }
 
     }
 
@@ -336,7 +362,6 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
             myCalendar.set(Calendar.DAY_OF_MONTH, day)
             updateLabel()
         }
-
         val datePickerDialog = DatePickerDialog(
             this@DocumentActivity,
             R.style.MyDatePickerDialogTheme, // use your custom theme here

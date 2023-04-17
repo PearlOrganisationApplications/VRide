@@ -10,27 +10,35 @@ import android.view.ViewGroup
 import android.widget.*
 import com.pearl.test5.R
 import com.pearl.ui.DocumentActivity
+import com.pearl.v_ride_lib.BaseClass
 import java.text.SimpleDateFormat
 import java.util.*
 
-class SignUpActivity : AppCompatActivity() {
+class SignUpActivity : BaseClass() {
 
     lateinit var dob: EditText
     lateinit var signup: Button
     private val myCalendar = Calendar.getInstance()
     lateinit var verify: Button
     lateinit var cancel: ImageView
-
-    @SuppressLint("MissingInflatedId")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    lateinit var  dialog : Dialog
+    lateinit var register: TextView
+    lateinit var sName: EditText
+    lateinit var sPhone: EditText
+    override fun setLayoutXml() {
         setContentView(R.layout.activity_sign_up)
+    }
 
+    override fun initializeViews() {
         signup = findViewById(R.id.signupBtn)
-        val register = findViewById<TextView>(R.id.already)
+        register = findViewById<TextView>(R.id.already)
         dob= findViewById(R.id.signup_dob)
-        val dialog = Dialog(this)
+        sName = findViewById(R.id.signup_name)
+        sPhone = findViewById(R.id.signup_phone)
+        dialog = Dialog(this)
+    }
 
+    override fun initializeClickListners() {
         dob.setOnClickListener {
             showDatePicker()
         }
@@ -41,27 +49,50 @@ class SignUpActivity : AppCompatActivity() {
         signup.setOnClickListener {
 //            startActivity(Intent(this@SignUpActivity,ForgotPasswordActivity::class.java))
 //
-                dialog.setContentView(R.layout.activity_forgot_password)
-                dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-                dialog.setCancelable(false)
-                dialog.window?.attributes?.windowAnimations = R.style.animation
+            dialog.setContentView(R.layout.activity_forgot_password)
+            dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            dialog.setCancelable(false)
+            dialog.window?.attributes?.windowAnimations = R.style.animation
 
-                verify = dialog.findViewById(R.id.otp_Verify_button)
-                cancel = dialog.findViewById(R.id.view_cancel_dialog)
+            verify = dialog.findViewById(R.id.otp_Verify_button)
+            cancel = dialog.findViewById(R.id.view_cancel_dialog)
 
-                verify.setOnClickListener {
-                    dialog.dismiss()
-                    Toast.makeText(this, "okay clicked", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this@SignUpActivity,DocumentActivity::class.java))
-                }
+            verify.setOnClickListener {
+                dialog.dismiss()
+                Toast.makeText(this, "okay clicked", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this@SignUpActivity,DocumentActivity::class.java))
+            }
 
-                cancel.setOnClickListener {
-                    dialog.dismiss()
-                    Toast.makeText(this@SignUpActivity, "Cancel clicked", Toast.LENGTH_SHORT).show()
-                }
+            cancel.setOnClickListener {
+                dialog.dismiss()
+                Toast.makeText(this@SignUpActivity, "Cancel clicked", Toast.LENGTH_SHORT).show()
+            }
 
-                dialog.show()
+            dialog.show()
+
         }
+    }
+
+    override fun initializeInputs() {
+
+    }
+
+    override fun initializeLabels() {
+
+    }
+
+    @SuppressLint("MissingInflatedId")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setLayoutXml()
+        initializeViews()
+        initializeClickListners()
+        initializeInputs()
+        initializeLabels()
+
+        validateName(sName)
+        validateNumber(sPhone)
+        validateDob(dob)
     }
 
     private fun showDatePicker() {

@@ -49,6 +49,7 @@ class MainActivity : BaseClass() {
     lateinit var signup: TextView
     lateinit var login: Button
     private val REQUEST_CODE = 101
+    private lateinit var usrID:EditText
 
    /* lateinit var verify: Button
     lateinit var cancel: ImageView*/
@@ -67,9 +68,11 @@ class MainActivity : BaseClass() {
         mAuth = FirebaseAuth.getInstance()
         loginOtp = findViewById(R.id.loginOtp)
         otpBt = findViewById(R.id.otpBT)
-
+        usrID = findViewById(R.id.userID)
 
     }
+
+
 
     override fun initializeClickListners() {
 
@@ -80,11 +83,14 @@ class MainActivity : BaseClass() {
             startActivity(Intent(this@MainActivity,SignUpActivity::class.java))
 //            finish()
         }
-        otpBt.setOnClickListener {
 
-            loginOtp.visibility = View.VISIBLE
-            login.visibility = View.VISIBLE
-            otpBt.visibility = View.GONE
+        if(validateNumber(usrID)) {
+            otpBt.setOnClickListener {
+
+                loginOtp.visibility = View.VISIBLE
+                login.visibility = View.VISIBLE
+                otpBt.visibility = View.GONE
+            }
         }
 
         login.setOnClickListener {
@@ -109,6 +115,8 @@ class MainActivity : BaseClass() {
             }
 
             dialog.show()*/
+
+
 
              startActivity(Intent(this,HomeScreen::class.java))
 
@@ -138,6 +146,9 @@ class MainActivity : BaseClass() {
         initializeInputs()
         initializeLabels()
         internetChangeBroadCast()
+
+        validateNumber(usrID)
+//        validateMpin(loginOtp)
 
         if(!isConnected){
 
@@ -224,6 +235,22 @@ class MainActivity : BaseClass() {
         }
     }*/
 
+    private fun validateForm(){
+
+ /*
+      baseclass.validateName(binding.drivername)
+        baseclass.validateNumber(binding.drivermobileno)
+        baseclass.validateAadharNo(binding.driverAdharNo)
+        baseclass.validatePanNo(binding.driverPanNo)
+        baseclass.validateDLNo(binding.driverdlno)
+
+        if (baseclass.validateName(binding.drivername)&&baseclass.validateNumber(binding.drivermobileno)&&baseclass.validateDLNo(binding.driverdlno)&&baseclass.validatePanNo(binding.driverPanNo)&&baseclass.validateAadharNo(binding.driverAdharNo)){
+
+          Navigation.findNavController(requireView()).navigate(R.id.action_figgo_Capton_to_driverCabDetailsFragment,args)
+
+        }*/
+
+    }
     private fun signIn() {
         val signInIntent = mGoogleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
