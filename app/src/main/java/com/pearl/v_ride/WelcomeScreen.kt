@@ -13,15 +13,39 @@ import androidx.viewpager2.widget.ViewPager2
 import com.pearl.adapter.OnboardingItemAdapter
 import com.pearl.data.OnboardingItem
 import com.pearl.test5.R
+import com.pearl.v_ride_lib.BaseClass
 
-class WelcomeScreen : AppCompatActivity() {
+class WelcomeScreen : BaseClass() {
     private  lateinit var onboardingItemAdapter: OnboardingItemAdapter
 
     private lateinit var indicatorContainer: LinearLayout
+    override fun setLayoutXml() {
+        setContentView(R.layout.activity_welcome_screen)
+    }
+
+    override fun initializeViews() {
+
+    }
+
+    override fun initializeClickListners() {
+    }
+
+    override fun initializeInputs() {
+    }
+
+    override fun initializeLabels() {
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_welcome_screen)
+
+
+        setLayoutXml()
+        initializeViews()
+        initializeClickListners()
+        initializeInputs()
+        initializeLabels()
 
         setOnboardingItem()
         setUpIndicator()
@@ -48,6 +72,10 @@ class WelcomeScreen : AppCompatActivity() {
                     discription = "We are a highly acknowledged name for Bike Rental in Dehradun, Providing Bikes, Activa Scooty Bullets on Rent in Dehradun at an affordable price near ISBT"
                 ),
                 OnboardingItem(
+                    onboardingImage = R.drawable.delivery_man,
+                    title = "Rent Bikes",
+                    discription = "We are a highly acknowledged name for Bike Rental in Dehradun, Providing Bikes, Activa Scooty Bullets on Rent in Dehradun at an affordable price near ISBT"
+                ),    OnboardingItem(
                     onboardingImage = R.drawable.delivery_man,
                     title = "Rent Bikes",
                     discription = "We are a highly acknowledged name for Bike Rental in Dehradun, Providing Bikes, Activa Scooty Bullets on Rent in Dehradun at an affordable price near ISBT"

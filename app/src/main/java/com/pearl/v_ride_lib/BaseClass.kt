@@ -44,7 +44,7 @@ abstract  class BaseClass: AppCompatActivity() {
     protected var CAId: String? = null
     protected var LogString: String? = null
     var STORAGE_PERMISSION_CODE = 1
-//    var session: Session? = null
+    var session: Session? = null
     var classname = "Login"
     fun setBaseApcContextParent(
         cnt: Context?,
@@ -73,18 +73,6 @@ abstract  class BaseClass: AppCompatActivity() {
                 window.statusBarColor = getResources().getColor(R.color.color_primary)
             }
         }
-
-
-
-/*
-    @SuppressLint("ObsoleteSdkInt")
-    fun getgreenTheme() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val window: Window = getWindow()
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            window.statusBarColor = getResources().getColor(R.color.green)
-        }
-    }*/
 
     @SuppressLint("ObsoleteSdkInt")
     fun getwhiteTheme() {
@@ -126,6 +114,7 @@ abstract  class BaseClass: AppCompatActivity() {
     }
 
     fun registerBroadcast() {
+
         try {
             printLogs(LogTag, "registerBroadcast", "init")
             val filter = IntentFilter("android.net.conn.CONNECTIVITY_CHANGE")
@@ -149,39 +138,6 @@ abstract  class BaseClass: AppCompatActivity() {
             printLogs(LogTag, "unregisterBroadcast", "Exception " + e.message)
         }
     }
-
-    /* protected fun showProgress(show: Boolean) {
-         val ll_main: View = findViewById<View>(R.id.ll_main)
-         val loader: View = findViewById<View>(R.id.loader)
-         if (show) {
-             ll_main.visibility = View.GONE
-             loader.visibility = View.VISIBLE
-         } else {
-             ll_main.visibility = View.VISIBLE
-             loader.visibility = View.GONE
-         }
-     }*/
-
-    /*fun syncUpdates(baseApcContext: Context?, activityIn: AppCompatActivity?) {
-        var versionCode = 1
-        try {
-            val packageInfo: PackageInfo = getPackageManager().getPackageInfo(getPackageName(), 0)
-            versionName = packageInfo.versionName
-            versionCode = packageInfo.versionCode
-        } catch (e: PackageManager.NameNotFoundException) {
-            e.printStackTrace()
-        }
-        versionNew = versionCode.toString()
-        //        versionNew = versionName;
-        printLogs(
-            LogTag,
-            "syncUpdates",
-            "versionName $versionName VersionCode $versionCode NewVersion $versionNew"
-        )
-        mIsUpdateAppTask = IsAppUpdated(versionNew, baseApcContext)
-        mIsUpdateAppTask.execute(null as Void?)
-    }*/
-
     fun verifyVersion() {
         /* syncUpdates(baseApcContext, activityIn);
         printLogs(LogTag, "verifyVersion", "init");
@@ -217,25 +173,6 @@ abstract  class BaseClass: AppCompatActivity() {
         mEditView.setError(null)
         mEditView.setBackgroundResource(R.drawable.input_boder_profile)
     }
-/*
-
-    fun validateName(name: EditText): Boolean {
-        val name: String = name.text().toString()
-        setCustomError(null, name)
-        return if (name.isEmpty()) {
-            val sMessage = "Please enter number..!!"
-            setCustomError(sMessage, name)
-            false
-        } else if (!isValidMobile(num)) {
-            val sMessage = "Name must be character only.!!"
-            setCustomError(sMessage, number)
-            false
-        } else {
-            setCustomErrorDisabled(number)
-            true
-        }
-    }
-*/
 
     fun validateName(inputUser: EditText):Boolean{
         val name = inputUser.text.toString()
@@ -653,34 +590,6 @@ abstract  class BaseClass: AppCompatActivity() {
             }
         }
     }
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (resultCode != RESULT_CANCELED) {
-//            when (requestCode) {
-//                0 -> if (resultCode == RESULT_OK && data != null) {
-//                    val selectedImage = data.extras!!["data"] as Bitmap?
-//                    imageView.setImageBitmap(selectedImage)
-//                }
-//                1 -> if (resultCode == RESULT_OK && data != null) {
-//                    val selectedImage = data.data
-//                    val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
-//                    if (selectedImage != null) {
-//                        val cursor =
-//                            contentResolver.query(selectedImage, filePathColumn, null, null, null)
-//                        if (cursor != null) {
-//                            cursor.moveToFirst()
-//                            val columnIndex = cursor.getColumnIndex(filePathColumn[0])
-//                            val picturePath = cursor.getString(columnIndex)
-//                            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath))
-//                            cursor.close()
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
-
     fun onBackpress(to: Context, from: AppCompatActivity){
 
         val intent = Intent(to, from::class.java)

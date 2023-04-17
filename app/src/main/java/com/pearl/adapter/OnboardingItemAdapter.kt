@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.pearl.test5.R
 import com.pearl.data.OnboardingItem
+import pl.droidsonroids.gif.GifImageView
 
 class OnboardingItemAdapter(private  val  onboardingItem: List<OnboardingItem>):
 RecyclerView.Adapter<OnboardingItemAdapter.OnboardingItemViewHolder>()
@@ -16,12 +17,14 @@ RecyclerView.Adapter<OnboardingItemAdapter.OnboardingItemViewHolder>()
     inner class OnboardingItemViewHolder(view: View): RecyclerView.ViewHolder(view){
 
         private val imgOnboarding = view.findViewById<ImageView>(R.id.imgOnboarding)
+//        private val onboardingImg = view.findViewById<GifImageView>(R.id.onboardingImg)
         private val textTitle = view.findViewById<TextView>(R.id.textTitle)
         private val textDescription = view.findViewById<TextView>(R.id.textDescription)
 
 
         fun  bind(onboardingItem: OnboardingItem) {
             imgOnboarding.setImageResource(onboardingItem.onboardingImage)
+//            onboardingImg.setImageResource(onboardingItem.onboardingImg)
             textTitle.text = onboardingItem.title
             textDescription.text = onboardingItem.discription
         }
