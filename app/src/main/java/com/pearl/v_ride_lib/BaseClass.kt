@@ -625,29 +625,31 @@ abstract  class BaseClass: AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            REQUEST_ID_MULTIPLE_PERMISSIONS -> if (ContextCompat.checkSelfPermission(
-                    baseApcContext2,
-                    Manifest.permission.CAMERA
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                Toast.makeText(
-                    applicationContext,
-                    "FlagUp Requires Access to Camara.", Toast.LENGTH_SHORT
-                )
-                    .show()
-            } else if (ContextCompat.checkSelfPermission(
-                    baseApcContext2,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                Toast.makeText(
-                    applicationContext,
-                    "FlagUp Requires Access to Your Storage.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                chooseImage(baseApcContext2)
+        if (::baseApcContext2.isInitialized) {
+            when (requestCode) {
+                REQUEST_ID_MULTIPLE_PERMISSIONS -> if (ContextCompat.checkSelfPermission(
+                        baseApcContext2,
+                        Manifest.permission.CAMERA
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    Toast.makeText(
+                        applicationContext,
+                        "FlagUp Requires Access to Camara.", Toast.LENGTH_SHORT
+                    )
+                        .show()
+                } else if (ContextCompat.checkSelfPermission(
+                        baseApcContext2,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    Toast.makeText(
+                        applicationContext,
+                        "FlagUp Requires Access to Your Storage.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    chooseImage(baseApcContext2)
+                }
             }
         }
     }

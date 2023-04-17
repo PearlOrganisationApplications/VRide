@@ -72,7 +72,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     private var locationByGps: Location? = null
     private var locationByNetwork: Location? = null
     lateinit var locationManager: LocationManager
-    private lateinit var location:LatLng
+    private lateinit var  location:LatLng
     //    lateinit var mapFragment: Fragment
     private lateinit var currentLocation: Location
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient

@@ -1,14 +1,19 @@
 package com.pearl.v_ride
 
+import android.Manifest
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.view.Window
@@ -17,6 +22,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -280,6 +286,84 @@ class MainActivity : BaseClass() {
         Handler(Looper.getMainLooper()).postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
     }
 
+   /* override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                }
+            }
+        }
+    }*/
+/*   override fun onRequestPermissionsResult(
+       requestCode: Int,
+       permissions: Array<String>,
+       grantResults: IntArray
+   ) {
+       super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+       when (requestCode) {
+           REQUEST_CODE -> {
+               if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                   // Permission granted, do something
+               } else {
+                   // Permission denied, re-prompt the user for permission
+                   ActivityCompat.requestPermissions(
+                       this,
+                       arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                       REQUEST_CODE
+                   )
+               }
+           }
+       }
+   }*/
+
+   private fun checkLocationPermission() {
+       if (ContextCompat.checkSelfPermission(
+               this,
+               Manifest.permission.ACCESS_FINE_LOCATION
+           ) != PackageManager.PERMISSION_GRANTED
+       ) {
+           if (ActivityCompat.shouldShowRequestPermissionRationale(
+                   this,
+                   Manifest.permission.ACCESS_FINE_LOCATION
+               )
+           ) {
+               // Explain why the permission is necessary
+               AlertDialog.Builder(this)
+                   .setTitle("Location Permission Required")
+                   .setMessage("This app requires location permission to function properly.")
+                   .setPositiveButton("OK") { _, _ ->
+                       // Request the permission again
+                       ActivityCompat.requestPermissions(
+                           this,
+                           arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                           REQUEST_CODE
+                       )
+                   }
+                   .setNegativeButton("Cancel", null)
+                   .show()
+           } else {
+               // Show a message and open the app's settings page
+               AlertDialog.Builder(this)
+                   .setTitle("Location Permission Denied")
+                   .setMessage("This app requires location permission to function properly. Please grant the permission manually.")
+                   .setPositiveButton("Open Settings") { _, _ ->
+                       val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                       intent.data = Uri.fromParts("package", packageName, null)
+                       startActivity(intent)
+                   }
+                   .setNegativeButton("Cancel", null)
+                   .show()
+           }
+       } else {
+           // Permission granted, do something
+       }
+   }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
@@ -289,9 +373,15 @@ class MainActivity : BaseClass() {
         when (requestCode) {
             REQUEST_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
+                    // Permission granted, do something
+                } else {
+                    // Permission denied, handle the lack of permission
+                    checkLocationPermission()
                 }
             }
         }
     }
+
+
+
 }

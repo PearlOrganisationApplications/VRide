@@ -1273,6 +1273,7 @@
                                         android:id="@+id/addrear"
                                         android:layout_width="30dp"
                                         android:layout_height="30dp"
+                                        android:layout_marginStart="@dimen/_10sdp"
                                         android:layout_marginTop="10dp"
                                         android:layout_marginBottom="10dp"
                                         android:src="@drawable/ic_camera"

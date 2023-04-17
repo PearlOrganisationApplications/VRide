@@ -14,6 +14,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.pearl.test5.R
+import com.pearl.v_ride.HomeScreen
 import de.hdodenhof.circleimageview.CircleImageView
 import java.text.SimpleDateFormat
 import java.util.*
@@ -138,6 +139,10 @@ class DocumentActivity : AppCompatActivity() {
             showDatePicker()
         }
         updateBT = findViewById<Button>(R.id.updateBT)
+        updateBT.setOnClickListener {
+            startActivity(Intent(this@DocumentActivity,HomeScreen::class.java))
+            finish()
+        }
         /*updateBT.setOnClickListener {
             docLL.visibility = View.GONE
             corporateLL.visibility = View.VISIBLE

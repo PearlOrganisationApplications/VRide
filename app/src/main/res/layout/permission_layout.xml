@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/card_bg"
+    android:layout_margin="10dp"
+    android:padding="10dp"
+   android:layout_gravity="center"
+    android:layout_height="wrap_content">
+
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/profile"
+        android:layout_gravity="center"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:textSize="16sp"
+        android:id="@+id/error"
+        android:layout_marginTop="8dp"
+        android:textAlignment="center" />
+
+    <Button
+        android:id="@+id/ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:background="@color/white"
+        android:text="OK"
+        android:textSize="20sp"
+        tools:ignore="TextContrastCheck" />
+
+
+</LinearLayout>
