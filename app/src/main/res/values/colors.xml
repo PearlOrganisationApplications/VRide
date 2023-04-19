@@ -16,6 +16,10 @@
     <color name="card_bg">#E7F6E7</color>
     <color name="text_color">#222020</color>
     <!--<color name="text_color">#096E0A</color>-->
+
+
+    <color name="yellow">#FFEB3B</color>
+    <color name="red">#F44336</color>
 </resources>
 
 

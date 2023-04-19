@@ -18,7 +18,14 @@
         android:theme="@style/Theme.Test5"
         tools:targetApi="31">
         <activity
-            android:name="com.pearl.ui.ForgotPasswordActivity"
+            android:name="com.pearl.ui.FormActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".ForgotPasswordActivity"
             android:exported="false"
             android:theme="@style/AppThemeTest">
             <meta-data
@@ -60,7 +67,7 @@
         <activity
             android:name="com.pearl.v_ride.NearestServiceActivity"
             android:exported="false"
-            android:theme="@style/AppThemeTest" >
+            android:theme="@style/AppThemeTest">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -68,7 +75,7 @@
         <activity
             android:name="com.pearl.v_ride.MyWalletActivity"
             android:exported="false"
-            android:theme="@style/AppThemeTest" >
+            android:theme="@style/AppThemeTest">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -76,7 +83,7 @@
         <activity
             android:name="com.pearl.v_ride.IssueRequestActivity"
             android:exported="false"
-            android:theme="@style/AppThemeTest" >
+            android:theme="@style/AppThemeTest">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -84,7 +91,7 @@
         <activity
             android:name="com.pearl.v_ride.SignUpActivity"
             android:exported="false"
-            android:theme="@style/AppThemeTest" >
+            android:theme="@style/AppThemeTest">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -92,7 +99,7 @@
         <activity
             android:name="com.pearl.v_ride.HomeScreen"
             android:exported="false"
-            android:theme="@style/AppThemeTest" >
+            android:theme="@style/AppThemeTest">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -100,7 +107,7 @@
         <activity
             android:name="com.pearl.v_ride.WelcomeScreen"
             android:exported="false"
-            android:theme="@style/AppThemeTest" >
+            android:theme="@style/AppThemeTest">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -108,7 +115,7 @@
         <activity
             android:name="com.pearl.splash_screen.SplashScreenActivity"
             android:exported="true"
-            android:theme="@style/AppThemeTest" >
+            android:theme="@style/AppThemeTest">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -122,7 +129,7 @@
         <activity
             android:name="com.pearl.v_ride.MainActivity"
             android:exported="false"
-            android:theme="@style/AppThemeTest" >
+            android:theme="@style/AppThemeTest">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

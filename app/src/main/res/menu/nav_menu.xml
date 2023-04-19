@@ -49,6 +49,10 @@
         android:title="Document"
         android:icon="@drawable/file"
         />
+    <item
+        android:id="@+id/form"
+        android:title="Data sheet"
+        />
 
     <item
         android:id="@+id/logout"

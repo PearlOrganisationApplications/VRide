@@ -74,6 +74,7 @@ class DocumentActivity : BaseClass() {
         passbookIV = findViewById(R.id.bankPassbookIV)
         addDL = findViewById(R.id.add_dl_cam)
         licenceIV = findViewById(R.id.licenceIV)
+        adharNoEdt = findViewById(R.id.adharNoET)
 
         doc_profile = findViewById(R.id.doc_selfie)
         add_selfie = findViewById(R.id.add_selfie)
@@ -244,6 +245,7 @@ class DocumentActivity : BaseClass() {
         initializeClickListners()
         initializeInputs()
         initializeLabels()
+        validateAadharNo(adharNoEdt)
 
         val otherEdt = findViewById<EditText>(R.id.otherET)
 

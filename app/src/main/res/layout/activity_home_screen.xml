@@ -76,16 +76,192 @@
             android:id="@+id/mapLL"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:orientation="vertical"
+            android:padding="@dimen/_10ssp"
             app:layout_constraintTop_toBottomOf="@+id/appbarLayout"
             app:layout_constraintBottom_toBottomOf="parent">
 
-            <fragment
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:gravity="end"
+               android:orientation="horizontal">
+
+               <TextView
+                   android:id="@+id/stateTV"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:textSize="@dimen/_18ssp"
+                   android:padding="@dimen/_2ssp"
+                   android:text="Uttarakhand"/>
+
+           </LinearLayout>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="10dp"
+                app:cardBackgroundColor="#CED6CF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.github.mikephil.charting.charts.PieChart
+                            android:id="@+id/pieChart"
+                            android:layout_width="@dimen/_180sdp"
+                            android:layout_height="@dimen/_180sdp"
+                            android:layout_centerHorizontal="true"
+                             />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="40dp"
+                            android:orientation="vertical"
+                            android:weightSum="3">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="3dp"
+                                android:layout_weight="1"
+                                android:drawableLeft="@drawable/ic_circle"
+                                android:drawableTint="@color/purple_200"
+                                android:gravity="center"
+                                android:padding="4dp"
+                                android:text="Android"
+                                android:textAlignment="center"
+                                android:textColor="@color/black" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="3dp"
+                                android:layout_weight="1"
+                                android:drawableLeft="@drawable/ic_circle"
+                                android:drawableTint="@color/yellow"
+                                android:gravity="center"
+                                android:padding="4dp"
+                                android:text="Apple"
+                                android:textAlignment="center"
+                                android:textColor="@color/black" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="3dp"
+                                android:layout_weight="1"
+                                android:drawableLeft="@drawable/ic_circle"
+                                android:drawableTint="@color/red"
+                                android:gravity="center"
+                                android:padding="4dp"
+                                android:text="Microsoft"
+                                android:textAlignment="center"
+                                android:textColor="@color/black" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+                <!--on below line we are creating a swipe to refresh layout-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fillViewport="true"
+                    android:orientation="vertical"
+                  >
+
+               <!--     <TextView
+                        android:id="@+id/idTVHead"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="Pie Chart"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_200"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />-->
+
+                    <!--Ui component for our pie chart-->
+        <!--            <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/pieChart"
+                        android:layout_width="@dimen/_180sdp"
+                        android:layout_height="@dimen/_180sdp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="50dp" />-->
+
+                   <!-- <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="40dp"
+                        android:orientation="horizontal"
+                        android:weightSum="3">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="3dp"
+                            android:layout_weight="1"
+                            android:drawableLeft="@drawable/ic_circle"
+                            android:drawableTint="@color/purple_200"
+                            android:gravity="center"
+                            android:padding="4dp"
+                            android:text="Android"
+                            android:textAlignment="center"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="3dp"
+                            android:layout_weight="1"
+                            android:drawableLeft="@drawable/ic_circle"
+                            android:drawableTint="@color/yellow"
+                            android:gravity="center"
+                            android:padding="4dp"
+                            android:text="Apple"
+                            android:textAlignment="center"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="3dp"
+                            android:layout_weight="1"
+                            android:drawableLeft="@drawable/ic_circle"
+                            android:drawableTint="@color/red"
+                            android:gravity="center"
+                            android:padding="4dp"
+                            android:text="Microsoft"
+                            android:textAlignment="center"
+                            android:textColor="@color/black" />
+                    </LinearLayout>-->
+
+                </RelativeLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+    <!--        <fragment
                 android:id="@+id/homeScreenmap"
                 class="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_232sdp"
                 android:visibility="visible"
-                />
+                />-->
 
         </LinearLayout>
 

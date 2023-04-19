@@ -34,6 +34,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.pearl.test5.R
 import com.pearl.v_ride_lib.BaseClass
+import com.pearl.v_ride_lib.PrefManager
 
 class MainActivity : BaseClass() {
 
@@ -55,12 +56,14 @@ class MainActivity : BaseClass() {
     lateinit var cancel: ImageView*/
     lateinit var loginOtp: EditText
     lateinit var otpBt: Button
+    lateinit var prefManager: PrefManager
 
     override fun setLayoutXml() {
         setContentView(R.layout.activity_main)
     }
 
     override fun initializeViews() {
+        prefManager = PrefManager(this)
         gooleSignIn = findViewById(R.id.google_signIn)
         signup = findViewById<TextView>(R.id.signupBt)
         login = findViewById<Button>(R.id.loginBT)
@@ -84,14 +87,14 @@ class MainActivity : BaseClass() {
 //            finish()
         }
 
-        if(validateNumber(usrID)) {
+//        if(validateNumber(usrID)) {
             otpBt.setOnClickListener {
 
                 loginOtp.visibility = View.VISIBLE
                 login.visibility = View.VISIBLE
                 otpBt.visibility = View.GONE
             }
-        }
+//        }
 
         login.setOnClickListener {
 
@@ -147,8 +150,11 @@ class MainActivity : BaseClass() {
         initializeLabels()
         internetChangeBroadCast()
 
+
+
         validateNumber(usrID)
 //        validateMpin(loginOtp)
+        prefManager.setLogin("yes")
 
         if(!isConnected){
 

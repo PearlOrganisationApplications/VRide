@@ -6,8 +6,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
+import android.graphics.Color
+import android.graphics.Typeface
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationListener
@@ -19,6 +19,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -28,6 +29,13 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.formatter.PercentFormatter
+import com.github.mikephil.charting.utils.MPPointF
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -44,6 +52,7 @@ import com.pearl.adapter.NotificationAdapter
 import com.pearl.data.NotificationList
 import com.pearl.test5.R
 import com.pearl.ui.DocumentActivity
+import com.pearl.ui.FormActivity
 import com.pearl.v_ride_lib.BaseClass
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
@@ -79,6 +88,8 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     private val REQUEST_CODE = 101
     lateinit var mAuth: FirebaseAuth
     lateinit var mGoogleSignInClient: GoogleSignInClient
+    lateinit var city: TextView
+    lateinit var pieChart: PieChart
 
 
     override fun setLayoutXml() {
@@ -103,6 +114,9 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         hasNetwork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
         ivback=findViewById(R.id.ivBack)
         apptitle = findViewById(R.id.titleTVAppbar)
+
+        city = findViewById(R.id.stateTV)
+        pieChart = findViewById(R.id.pieChart)
     }
 
     override fun initializeClickListners() {
@@ -160,6 +174,10 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                     startActivity(Intent(this@HomeScreen, DocumentActivity::class.java))
                     drawerLayout.closeDrawers()
                 }
+                R.id.form -> {
+                    startActivity(Intent(this,FormActivity::class.java))
+                    drawerLayout.closeDrawers()
+                }
                 R.id.logout -> {
 
                     mAuth = FirebaseAuth.getInstance()
@@ -209,9 +227,16 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         initializeInputs()
         initializeLabels()
 
-        val mapFragment = supportFragmentManager
+        getLocation()
+        pieChart()
+
+
+     /*   val mapFragment = supportFragmentManager
             .findFragmentById(R.id.homeScreenmap) as SupportMapFragment?
-        mapFragment!!.getMapAsync(this)
+        mapFragment!!.getMapAsync(this)*/
+
+
+
 /*        val ai: ApplicationInfo = applicationContext.packageManager
             ?.getApplicationInfo(applicationContext.applicationContext!!.packageName, PackageManager.GET_META_DATA)!!
         val value = ai.metaData["com.google.android.geo.${R.string.google_map_api_key}"]
@@ -488,6 +513,9 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
             if (locationByNetwork == null) {
                 // Toast.makeText(this, "No Network", Toast.LENGTH_LONG).show()
 
+                to_lat = locationByGps?.latitude.toString()
+                to_lng = locationByGps?.longitude.toString()
+
             } else {
 
                 to_lat = locationByNetwork?.latitude.toString()
@@ -519,6 +547,10 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
             e.printStackTrace()
             //Log.w(" Current loction address",  e.printStackTrace().toString())
         }
+
+       city.text = strAdd.toString()
+/*
+
         location = LatLng(to_lat.toString().toDouble(), to_lng.toString().toDouble())
 
 //        location = LatLng(Global.curr_lat.toString().toDouble(), Global.curr_long.toString().toDouble())
@@ -531,6 +563,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                 .title("Driver Location")
         )
         mMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(location!!, 15F))
+*/
 
     }
     val gpsLocationListener: LocationListener = object : LocationListener {
@@ -551,6 +584,90 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
         override fun onProviderEnabled(provider: String) {}
         override fun onProviderDisabled(provider: String) {}
+    }
+
+    public fun pieChart(){
+        // on below line we are setting user percent value,
+        // setting description as enabled and offset for pie chart
+        pieChart.setUsePercentValues(true)
+        pieChart.description.isEnabled = false
+        pieChart.setExtraOffsets(5f, 10f, 5f, 5f)
+
+        // on below line we are setting drag for our pie chart
+        pieChart.setDragDecelerationFrictionCoef(0.95f)
+
+        // on below line we are setting hole
+        // and hole color for pie chart
+        pieChart.isDrawHoleEnabled = true
+        pieChart.setHoleColor(Color.WHITE)
+
+        // on below line we are setting circle color and alpha
+        pieChart.setTransparentCircleColor(Color.WHITE)
+        pieChart.setTransparentCircleAlpha(110)
+
+        // on  below line we are setting hole radius
+        pieChart.setHoleRadius(0f)
+        pieChart.transparentCircleRadius = 0f
+
+        // on below line we are setting center text
+        pieChart.setDrawCenterText(true)
+
+        // on below line we are setting
+        // rotation for our pie chart
+        pieChart.setRotationAngle(0f)
+
+        // enable rotation of the pieChart by touch
+        pieChart.setRotationEnabled(true)
+        pieChart.setHighlightPerTapEnabled(true)
+
+        // on below line we are setting animation for our pie chart
+        pieChart.animateY(1400, Easing.EaseInOutQuad)
+
+        // on below line we are disabling our legend for pie chart
+        pieChart.legend.isEnabled = false
+        pieChart.setEntryLabelColor(Color.WHITE)
+        pieChart.setEntryLabelTextSize(12f)
+
+        // on below line we are creating array list and
+        // adding data to it to display in pie chart
+        val entries: ArrayList<PieEntry> = ArrayList()
+        entries.add(PieEntry(70f))
+        entries.add(PieEntry(20f))
+        entries.add(PieEntry(10f))
+
+        // on below line we are setting pie data set
+        val dataSet = PieDataSet(entries, "Mobile OS")
+
+        // on below line we are setting icons.
+        dataSet.setDrawIcons(false)
+
+        // on below line we are setting slice for pie
+        dataSet.sliceSpace = 3f
+        dataSet.iconsOffset = MPPointF(0f, 40f)
+        dataSet.selectionShift = 5f
+
+        // add a lot of colors to list
+        val colors: ArrayList<Int> = ArrayList()
+        colors.add(resources.getColor(R.color.purple_200))
+        colors.add(resources.getColor(R.color.yellow))
+        colors.add(resources.getColor(R.color.red))
+
+        // on below line we are setting colors.
+        dataSet.colors = colors
+
+        // on below line we are setting pie data set
+        val data = PieData(dataSet)
+        data.setValueFormatter(PercentFormatter())
+        data.setValueTextSize(15f)
+        data.setValueTypeface(Typeface.DEFAULT_BOLD)
+        data.setValueTextColor(Color.WHITE)
+        pieChart.setData(data)
+
+        // undo all highlights
+        pieChart.highlightValues(null)
+
+        // loading chart
+        pieChart.invalidate()
     }
 
 }

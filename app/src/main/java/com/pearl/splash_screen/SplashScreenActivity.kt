@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentSender
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -27,6 +28,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.LocationSettingsStates
 import com.pearl.test5.R
+import com.pearl.v_ride.MainActivity
 import com.pearl.v_ride.WelcomeScreen
 import com.pearl.v_ride_lib.PrefManager
 
@@ -40,6 +42,7 @@ class SplashScreenActivity : AppCompatActivity() {
     var prefManager: PrefManager? = null
 
     var goneToSettings :Boolean = false*/
+    lateinit var onBoardingScreen: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,9 +52,26 @@ class SplashScreenActivity : AppCompatActivity() {
 
         val handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
-            val i = Intent(this@SplashScreenActivity, WelcomeScreen::class.java)
-            startActivity(i)
-            finish()
+
+            onBoardingScreen = getSharedPreferences("onBoardingScreen", MODE_PRIVATE)
+            var isFirstTime = onBoardingScreen.getBoolean("firstTime",true)
+
+            if (isFirstTime) {
+
+                val editor = onBoardingScreen.edit()
+                editor.putBoolean("firstTime",false)
+                editor.commit()
+
+                val i = Intent(this@SplashScreenActivity, WelcomeScreen::class.java)
+                startActivity(i)
+                finish()
+            }else{
+                val i = Intent(this@SplashScreenActivity, MainActivity::class.java)
+                startActivity(i)
+                finish()
+            }
+
+
         },2000)
 
 /*        if (ActivityCompat.checkSelfPermission(

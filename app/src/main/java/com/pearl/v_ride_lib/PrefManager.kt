@@ -28,5 +28,15 @@ import android.content.SharedPreferences
      fun getPermissionDeniedCount():Int{
          return pref?.getInt("deniedCount",0)!!
      }
+     fun setLogin(Login: String) {
+         editor?.putString("set",Login)
+         editor?.commit()
+
+     }
+
+     fun getLogin(): String {
+         return pref?.getString("Login","null").toString()
+     }
+
 
  }

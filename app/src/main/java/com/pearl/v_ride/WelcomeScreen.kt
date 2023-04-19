@@ -3,6 +3,7 @@ package com.pearl.v_ride
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -50,6 +51,7 @@ class WelcomeScreen : BaseClass() {
         setOnboardingItem()
         setUpIndicator()
         setCurrenIndicator(0)
+
     }
 
     private fun setOnboardingItem(){
