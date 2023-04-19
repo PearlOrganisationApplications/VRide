@@ -586,7 +586,8 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         override fun onProviderDisabled(provider: String) {}
     }
 
-    public fun pieChart(){
+    private fun pieChart(){
+
         // on below line we are setting user percent value,
         // setting description as enabled and offset for pie chart
         pieChart.setUsePercentValues(true)
@@ -631,8 +632,9 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         // on below line we are creating array list and
         // adding data to it to display in pie chart
         val entries: ArrayList<PieEntry> = ArrayList()
-        entries.add(PieEntry(70f))
+        entries.add(PieEntry(60f))
         entries.add(PieEntry(20f))
+        entries.add(PieEntry(10f))
         entries.add(PieEntry(10f))
 
         // on below line we are setting pie data set
@@ -651,6 +653,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         colors.add(resources.getColor(R.color.purple_200))
         colors.add(resources.getColor(R.color.yellow))
         colors.add(resources.getColor(R.color.red))
+        colors.add(resources.getColor(R.color.lite_blue))
 
         // on below line we are setting colors.
         dataSet.colors = colors
@@ -668,6 +671,8 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
         // loading chart
         pieChart.invalidate()
+
+
     }
 
 }

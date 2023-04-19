@@ -21,22 +21,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
+                android:hint="Full Name"
+                android:paddingStart="@dimen/_10ssp"
                 android:background="@drawable/signup_edittext"
                 android:minHeight="48dp" />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:background="@drawable/custom_edittext"
+                android:hint="Merchant Name"
+                android:paddingStart="@dimen/_10ssp"
+                android:background="@drawable/signup_edittext"
                 android:minHeight="48dp" />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:background="@drawable/custom_edittext"
+                android:hint="Total Earning"
+                android:paddingStart="@dimen/_10ssp"
+                android:background="@drawable/signup_edittext"
                 android:minHeight="48dp" />
             <EditText
-                android:id="@+id/time"
+                android:id="@+id/timeFET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
@@ -46,12 +52,12 @@
                 android:drawablePadding="@dimen/_8ssp"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:hint="DD/MM/YY"
+                android:hint="Time"
                 android:imeOptions="actionNext"
                 android:minHeight="48dp"
                 android:padding="@dimen/_8ssp" />
             <EditText
-                android:id="@+id/date"
+                android:id="@+id/dateFET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
@@ -61,7 +67,7 @@
                 android:drawablePadding="@dimen/_8ssp"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:hint="DD/MM/YY"
+                android:hint="Date"
                 android:imeOptions="actionNext"
                 android:minHeight="48dp"
                 android:padding="@dimen/_8ssp" />
@@ -70,25 +76,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:background="@drawable/custom_edittext"
+                android:hint="From Location"
+                android:paddingStart="@dimen/_10ssp"
+                android:background="@drawable/signup_edittext"
                 android:minHeight="48dp" />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:background="@drawable/custom_edittext"
+                android:hint="To Location"
+                android:paddingStart="@dimen/_10ssp"
+                android:background="@drawable/signup_edittext"
                 android:minHeight="48dp" />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:background="@drawable/custom_edittext"
+                android:hint="To Location"
+                android:paddingStart="@dimen/_10ssp"
+                android:background="@drawable/signup_edittext"
                 android:minHeight="48dp" />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:background="@drawable/custom_edittext"
+                android:hint="To Location"
+                android:paddingStart="@dimen/_10ssp"
+                android:background="@drawable/signup_edittext"
                 android:minHeight="48dp" />
 
 
