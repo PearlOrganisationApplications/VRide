@@ -52,6 +52,8 @@
     <item
         android:id="@+id/form"
         android:title="Data sheet"
+        android:icon="@drawable/file"
+
         />
 
     <item

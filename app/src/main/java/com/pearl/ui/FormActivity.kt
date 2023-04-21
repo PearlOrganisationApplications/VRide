@@ -6,6 +6,8 @@ import android.app.TimePickerDialog
 import android.os.Bundle
 import android.text.Editable
 import android.widget.EditText
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import com.pearl.test5.R
 import com.pearl.v_ride_lib.BaseClass
 import java.text.SimpleDateFormat
@@ -22,19 +24,29 @@ class FormActivity : BaseClass() {
 /*    lateinit var cTimer : CountDownTimer
     private var am_pm: String? = ""*/
 
+    lateinit var ivback: AppCompatImageView
+    lateinit var apptitle: AppCompatTextView
 
     override fun setLayoutXml() {
         setContentView(R.layout.activity_form)
+
     }
 
     override fun initializeViews() {
         time= findViewById(R.id.timeFET)
         date= findViewById(R.id.dateFET)
+
+        ivback=findViewById(R.id.ivBack)
+        apptitle = findViewById(R.id.titleTVAppbar)
+        apptitle.text = "Data Sheet"
     }
 
     @SuppressLint("SetTextI18n")
     override fun initializeClickListners() {
 
+        ivback.setOnClickListener {
+            onBackPressed()
+        }
        /* time?.setOnClickListener {
             val cal = Calendar.getInstance()
             val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->

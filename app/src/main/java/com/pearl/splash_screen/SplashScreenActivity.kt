@@ -17,7 +17,9 @@ import android.preference.PreferenceManager
 import android.provider.Settings
 import android.view.Window
 import android.view.WindowManager
+import android.view.animation.AnimationUtils
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -66,6 +68,9 @@ class SplashScreenActivity : AppCompatActivity() {
             launchHomeScreen()
             finish()
         }*/
+        val backgroundImage: ImageView = findViewById(R.id.iv_node)
+        val zoomAnimation = AnimationUtils.loadAnimation(this, R.anim.anim)
+        backgroundImage.startAnimation(zoomAnimation)
 if(isLocationPermissionGranted())
 {
     Handler(Looper.getMainLooper()).postDelayed({
