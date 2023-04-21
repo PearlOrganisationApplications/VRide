@@ -60,10 +60,10 @@ class MainActivity : BaseClass() {
 
     override fun setLayoutXml() {
         setContentView(R.layout.activity_main)
+        prefManager.setLogin(true)
     }
 
     override fun initializeViews() {
-        prefManager = PrefManager(this)
         gooleSignIn = findViewById(R.id.google_signIn)
         signup = findViewById<TextView>(R.id.signupBt)
         login = findViewById<Button>(R.id.loginBT)
@@ -98,7 +98,7 @@ class MainActivity : BaseClass() {
 
         login.setOnClickListener {
 
-/*            dialog.setContentView(R.layout.activity_forgot_password)
+/*           dialog.setContentView(R.layout.activity_forgot_password)
             dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             dialog.setCancelable(false)
             dialog.window?.attributes?.windowAnimations = R.style.animation
@@ -143,6 +143,8 @@ class MainActivity : BaseClass() {
         super.onCreate(savedInstanceState)
         val isConnected = isNetworkConnected(this.applicationContext)
 
+        prefManager = PrefManager(this)
+
         setLayoutXml()
         initializeViews()
         initializeClickListners()
@@ -153,8 +155,6 @@ class MainActivity : BaseClass() {
 
 
         validateNumber(usrID)
-//        validateMpin(loginOtp)
-        prefManager.setLogin("yes")
 
         if(!isConnected){
 
@@ -181,7 +181,7 @@ class MainActivity : BaseClass() {
 
 
 
-        if (ActivityCompat.checkSelfPermission(
+       /* if (ActivityCompat.checkSelfPermission(
                 this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED &&
@@ -195,21 +195,36 @@ class MainActivity : BaseClass() {
                 arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
                 REQUEST_CODE
             )
+        }*/
+/*        if (ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            val permissions = arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
+            val requestCode = 1
+            ActivityCompat.requestPermissions(this, permissions, requestCode)
+        }*/
+
+            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build()
+            mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+
+            dialog = Dialog(this)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setContentView(R.layout.dialog_wait)
+            dialog.setCanceledOnTouchOutside(false)
         }
 
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+    // Getting the Button Click
 
-        dialog = Dialog(this)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.dialog_wait)
-        dialog.setCanceledOnTouchOutside(false)
-        // Getting the Button Click
 
-    }
 
 /*    private fun googleBtnUi() {
         // Get a reference to the sign-in button
@@ -354,6 +369,7 @@ class MainActivity : BaseClass() {
        }
    }*/
 
+/*
    private fun checkLocationPermission() {
        if (ContextCompat.checkSelfPermission(
                this,
@@ -415,6 +431,7 @@ class MainActivity : BaseClass() {
         }
     }
 
+*/
 
 
 }

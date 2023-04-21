@@ -51,7 +51,6 @@ class WelcomeScreen : BaseClass() {
         setOnboardingItem()
         setUpIndicator()
         setCurrenIndicator(0)
-
     }
 
     private fun setOnboardingItem(){

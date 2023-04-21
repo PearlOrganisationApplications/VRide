@@ -54,6 +54,7 @@ import com.pearl.test5.R
 import com.pearl.ui.DocumentActivity
 import com.pearl.ui.FormActivity
 import com.pearl.v_ride_lib.BaseClass
+import com.pearl.v_ride_lib.PrefManager
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
 
@@ -90,6 +91,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     lateinit var mGoogleSignInClient: GoogleSignInClient
     lateinit var city: TextView
     lateinit var pieChart: PieChart
+    lateinit var prefManager: PrefManager
 
 
     override fun setLayoutXml() {
@@ -180,6 +182,9 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                 }
                 R.id.logout -> {
 
+
+                    prefManager.setLogin(false)
+
                     mAuth = FirebaseAuth.getInstance()
                     /* if (::mAuth.isInitialized) {
                          mAuth.signOut()
@@ -230,6 +235,8 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         getLocation()
         pieChart()
 
+        prefManager = PrefManager(this)
+        prefManager.setLogin(true)
 
      /*   val mapFragment = supportFragmentManager
             .findFragmentById(R.id.homeScreenmap) as SupportMapFragment?

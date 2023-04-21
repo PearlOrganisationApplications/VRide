@@ -11,12 +11,12 @@
     <color name="color_primary">#FF8000</color>
     <color name="app_background">#FF9933</color>
     <color name="color_secondary">#F4B330</color>
+    <color name="pie_chart">#FF7043</color>
     <color name="lite_blue">#0498DC</color>
     <color name="color_secondary2">#BFA175</color>
     <color name="card_bg">#E7F6E7</color>
     <color name="text_color">#222020</color>
     <!--<color name="text_color">#096E0A</color>-->
-
 
     <color name="yellow">#FFEB3B</color>
     <color name="red">#F44336</color>

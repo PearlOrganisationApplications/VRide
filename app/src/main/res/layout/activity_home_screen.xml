@@ -30,6 +30,7 @@
                 app:navigationIcon="@drawable/ic_baseline_menu"
                 app:title="@string/app_name"
                 >
+
                 <ImageView
                     android:layout_gravity="end"
                     android:id="@+id/nBell"
@@ -134,7 +135,7 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="10dp"
-                app:cardBackgroundColor="#CED6CF">
+                app:cardBackgroundColor="@color/pie_chart">
 
                 <LinearLayout
                     android:layout_width="match_parent"
