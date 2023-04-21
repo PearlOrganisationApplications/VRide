@@ -60,7 +60,6 @@ class MainActivity : BaseClass() {
 
     override fun setLayoutXml() {
         setContentView(R.layout.activity_main)
-        prefManager.setLogin(true)
     }
 
     override fun initializeViews() {
@@ -122,6 +121,7 @@ class MainActivity : BaseClass() {
 
 
              startActivity(Intent(this,HomeScreen::class.java))
+            prefManager.setLogin(true)
 
 
         }

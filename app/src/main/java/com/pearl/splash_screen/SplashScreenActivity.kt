@@ -66,7 +66,45 @@ class SplashScreenActivity : AppCompatActivity() {
             launchHomeScreen()
             finish()
         }*/
+if(isLocationPermissionGranted())
+{
+    Handler(Looper.getMainLooper()).postDelayed({
 
+    /*    if(prefManager?.getLogin() == true){
+
+            startActivity(Intent(this, HomeScreen::class.java))
+        }else{
+            startActivity(Intent(this@SplashScreenActivity, WelcomeScreen::class.java))
+        }
+
+    },3000)*/
+        onBoardingScreen = getSharedPreferences("onBoardingScreen", MODE_PRIVATE)
+        var isFirstTime = onBoardingScreen.getBoolean("firstTime", true)
+
+        if (isFirstTime) {
+            val editor = onBoardingScreen.edit()
+            editor.putBoolean("firstTime", false)
+            editor.commit()
+
+            val i = Intent(this@SplashScreenActivity, WelcomeScreen::class.java)
+            startActivity(i)
+            finish()
+
+        } else {
+//                    val i = Intent(this@SplashScreenActivity, MainActivity::class.java)
+            if (prefManager!!.getLogin()) {
+                startActivity(Intent(this, HomeScreen::class.java))
+            } else {
+                startActivity(Intent(this, MainActivity::class.java))
+            }
+//                    startActivity(i)
+            finish()
+
+
+        }
+
+    },3000)
+}
         if (ActivityCompat.checkSelfPermission(
                 this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION
@@ -86,65 +124,27 @@ class SplashScreenActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
 
-      /*  val handler = Handler(Looper.getMainLooper())
-        handler.postDelayed({
 
-            onBoardingScreen = getSharedPreferences("onBoardingScreen", MODE_PRIVATE)
-            var isFirstTime = onBoardingScreen.getBoolean("firstTime", true)
-
-//            val isLoggedIn = prefManager!!.isLoggedIn
-
-            if (isFirstTime) {
-                val editor = onBoardingScreen.edit()
-                editor.putBoolean("firstTime", false)
-                editor.commit()
-
-                val i = Intent(this@SplashScreenActivity, WelcomeScreen::class.java)
-                startActivity(i)
-                finish()
-
-            } else {
-                val i = Intent(this@SplashScreenActivity, MainActivity::class.java)
-                startActivity(i)
-                finish()
-
-                if(prefManager!!.getLogin()){
-                    startActivity(Intent(this,HomeScreen::class.java))
-                }else {
-                    startActivity(Intent(this,MainActivity::class.java))
-                }
-            }
-
-
-        }, 3000)*/
     }
 
-    fun checkLocationService() {
+    fun checkLocationService() :Boolean{
 
         locationRequest = LocationRequest.create()
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
-
+var ret=true
         val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
         // builder.setAlwaysShow(true);
         val client = LocationServices.getSettingsClient(this@SplashScreenActivity)
         val task = client.checkLocationSettings(builder.build())
         task.addOnSuccessListener(this@SplashScreenActivity){it->
             it.locationSettingsStates
-            Handler().postDelayed({
-
-                 if(prefManager?.getLogin() == true){
-
-                   startActivity(Intent(this, MainActivity::class.java))
-                 }else{
-                startActivity(Intent(this@SplashScreenActivity, WelcomeScreen::class.java))
-                    }
-
-            },3000)
+   ret = true
         }
 
         task.addOnFailureListener(this@SplashScreenActivity) { e ->
             if (e is ResolvableApiException) {
+                ret = false
                 // Location settings are not satisfied, but this can be fixed
                 // by showing the user a dialog.
                 try {
@@ -165,6 +165,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
             }
         }
+        return ret
     }
 
     @SuppressLint("SuspiciousIndentation")
