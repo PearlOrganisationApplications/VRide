@@ -1,19 +1,13 @@
 package com.pearl.v_ride
 
-import android.Manifest
-import android.Manifest.permission.ACCESS_COARSE_LOCATION
-import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.view.Window
@@ -21,8 +15,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -60,6 +52,7 @@ class MainActivity : BaseClass() {
 
     override fun setLayoutXml() {
         setContentView(R.layout.activity_main)
+
     }
 
     override fun initializeViews() {
@@ -82,7 +75,7 @@ class MainActivity : BaseClass() {
                signIn()
            }
         signup.setOnClickListener {
-            startActivity(Intent(this@MainActivity,SignUpActivity::class.java))
+            startActivity(Intent(this@MainActivity, SignUpActivity::class.java))
 //            finish()
         }
 
@@ -96,7 +89,7 @@ class MainActivity : BaseClass() {
 //        }
 
         login.setOnClickListener {
-
+            prefManager.setLogin(true)
 /*           dialog.setContentView(R.layout.activity_forgot_password)
             dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             dialog.setCancelable(false)
@@ -121,7 +114,7 @@ class MainActivity : BaseClass() {
 
 
              startActivity(Intent(this,HomeScreen::class.java))
-            prefManager.setLogin(true)
+
 
 
         }

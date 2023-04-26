@@ -22,7 +22,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.drawerlayout.widget.DrawerLayout
@@ -42,9 +41,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -98,6 +95,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
     override fun setLayoutXml() {
         setContentView(R.layout.activity_home_screen)
+
     }
 
     override fun initializeViews() {
@@ -186,7 +184,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                 R.id.logout -> {
 
 
-                    prefManager.setLogin(false)
+
 
                     mAuth = FirebaseAuth.getInstance()
                     /* if (::mAuth.isInitialized) {
@@ -209,7 +207,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                     mAuth.signOut()
                     Toast.makeText(applicationContext,"Logout", Toast.LENGTH_SHORT).show()
 
-
+                    prefManager.setLogin(false)
                 }
             }
             true
@@ -236,6 +234,11 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
             .findFragmentById(R.id.homeScreenmap) as SupportMapFragment
         fetchLocation()*/
 
+
+        prefManager = PrefManager(this)
+
+        prefManager.setLogin(true)
+
         setLayoutXml()
         initializeViews()
         initializeClickListners()
@@ -244,10 +247,6 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
         getLocation()
         pieChart()
-
-        prefManager = PrefManager(this)
-        prefManager.setLogin(true)
-
      /*   val mapFragment = supportFragmentManager
             .findFragmentById(R.id.homeScreenmap) as SupportMapFragment?
         mapFragment!!.getMapAsync(this)*/

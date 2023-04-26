@@ -15,12 +15,13 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pearl.adapter.TransactionsAdapter
-import com.pearl.data.HistoryList
+
 import com.pearl.data.TransactionList
 import com.pearl.v_ride_lib.Global
 import com.pearl.test5.R
 
-class MyWalletActivity : AppCompatActivity() {
+class
+    MyWalletActivity : AppCompatActivity() {
 
      lateinit var mywalletLL: LinearLayout
 

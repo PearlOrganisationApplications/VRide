@@ -1,9 +1,7 @@
 package com.pearl.v_ride
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -15,6 +13,7 @@ import com.pearl.adapter.OnboardingItemAdapter
 import com.pearl.data.OnboardingItem
 import com.pearl.test5.R
 import com.pearl.v_ride_lib.BaseClass
+import com.pearl.vride.PermissionActivity
 
 class WelcomeScreen : BaseClass() {
     private  lateinit var onboardingItemAdapter: OnboardingItemAdapter
@@ -115,8 +114,11 @@ class WelcomeScreen : BaseClass() {
     }
 
     private fun navigateToDashboarde() {
-        startActivity(Intent(applicationContext,MainActivity::class.java))
-        finish()
+
+            val i = Intent(this@WelcomeScreen, PermissionActivity::class.java)
+            startActivity(i)
+            finish()
+
     }
 
 
@@ -163,4 +165,5 @@ class WelcomeScreen : BaseClass() {
             }
         }
     }
+
 }

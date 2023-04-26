@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.*
@@ -44,7 +43,7 @@ class SignUpActivity : BaseClass() {
         }
 
         register.setOnClickListener {
-            startActivity(Intent(this@SignUpActivity,MainActivity::class.java))
+            startActivity(Intent(this@SignUpActivity, MainActivity::class.java))
         }
         signup.setOnClickListener {
 //            startActivity(Intent(this@SignUpActivity,ForgotPasswordActivity::class.java))

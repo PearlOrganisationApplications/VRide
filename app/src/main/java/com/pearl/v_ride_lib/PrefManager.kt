@@ -27,6 +27,14 @@ import android.content.SharedPreferences
          return pref!!.getBoolean("login",false)
      }
 
+     fun setPr(Login: Boolean) {
+         editor?.putBoolean("pr",Login)
+         editor?.commit()
+     }
+     fun getPr(): Boolean {
+         return pref!!.getBoolean("pr",false)
+     }
+
      fun setPermissionDeniedCount(cut:Int){
          var x = this.getPermissionDeniedCount()
          if(cut==0)
@@ -39,73 +47,93 @@ import android.content.SharedPreferences
      fun getPermissionDeniedCount():Int{
          return pref?.getInt("deniedCount",0)!!
      }
+     fun setPerm(set: String) {
+         editor?.putString("set",set)
+         editor?.commit()
+
+     }
+
+     fun getPerm(): String {
+         return pref?.getString("set","null").toString()
+     }
+     fun setLogin(Login: String) {
+         editor?.putString("set",Login)
+         editor?.commit()
+
+     }
+
+
+
+     fun isLovPer():Boolean{
+         return pref?.getBoolean("perm1",false)!!
+     }
+
+     fun setFile(status:Boolean){
+         editor?.putBoolean("perm2",status)
+         editor?.commit()
+     }
+     fun isFile():Boolean{
+         return pref?.getBoolean("perm2",false)!!
+     }
+     fun setC(Login: String) {
+         editor?.putString("cou",Login)
+         editor?.commit()
+
+     }
+
+     fun getC(): String {
+         return pref?.getString("cou","null").toString()
+     }
+
+
+     fun setWelcomeScreen(welcome: Boolean) {
+         editor!!.putBoolean("welcome", welcome)
+         editor!!.commit()
+     }
+
+     fun getWelcomeScreen(): Boolean {
+         return pref!!.getBoolean("welcome", true)
+     }
+
+     fun setLocPer(welcome: Boolean) {
+         editor!!.putBoolean("locper", welcome)
+         editor!!.commit()
+     }
+
+     fun getLocPer(): Boolean {
+         return pref!!.getBoolean("locper", false)
+     }
+
+     fun setReadPer(welcome: Boolean) {
+         editor!!.putBoolean("readperm", welcome)
+         editor!!.commit()
+     }
+
+     fun getReadPer(): Boolean {
+         return pref!!.getBoolean("readperm", false)
+     }
+     fun setCallPer(welcome: Boolean) {
+         editor!!.putBoolean("callperm", welcome)
+         editor!!.commit()
+     }
+
+     fun getCallPer(): Boolean {
+         return pref!!.getBoolean("callperm", false)
+     }
+     fun getCall(): Boolean {
+         return pref!!.getBoolean("call", false)
+     }
+     fun setSetting(welcome: Boolean) {
+         editor!!.putBoolean("setting", welcome)
+         editor!!.commit()
+     }
+
+     fun getSetting(): Boolean {
+         return pref!!.getBoolean("setting", false)
+     }
+     fun setCall(welcome: Boolean) {
+         editor!!.putBoolean("call", welcome)
+         editor!!.commit()
+     }
  }
 
-
-
-
-/*     var isLoggedIn: Boolean
-         get() = pref!!.getBoolean(IS_FIRST_TIME_LAUNCH, false)
-         set(value) {
-             val editor = pref!!.edit()
-             editor.putBoolean(IS_FIRST_TIME_LAUNCH, value)
-             editor.apply()
-         } */
-
-
-/*
-{
-    fun setPermissionDeniedCount(cut: Int) {
-        var x = this.getPermissionDeniedCount()
-        if (cut == 0)
-            x = 0
-        else
-            x += 1
-        editor?.putInt("deniedCount", x)
-        editor?.commit()
-    }
-
-    fun getPermissionDeniedCount(): Int {
-        return pref?.getInt("deniedCount", 0)!!
-    }
-
-
-    var isLoggedIn: Boolean
-    get() = pref!!.getBoolean(IS_LOGGED_IN, false)
-    set(value) {
-        val editor = pref!!.edit()
-        editor.putBoolean(IS_LOGGED_IN, value)
-        editor.apply()
-    }
-// Get isFirstTimeLaunch value
-
-    fun isFirstTimeLaunch(): Boolean {
-
-        return pref!!.getBoolean(IS_FIRST_TIME_LAUNCH, true)
-    }
-
-    fun setFirstTimeLaunch(isFirstTime: Boolean) {
-        editor!!.putBoolean(IS_FIRST_TIME_LAUNCH, isFirstTime)
-        editor!!.commit()
-    }
-
-    fun setWelcomeSkip(welcome: String) {
-        editor!!.putString("welcome", welcome)
-        editor?.commit()
-    }
-
-
-    fun getWelcomeSkip(): String {
-        return pref?.getString("welcome", "").toString()
-    }
-
-
-    fun setToken(token: String) {
-        editor?.putString("token", token)
-        editor?.commit()
-    }
-
-    fun getToken(): String {
-        return pref?.getString("token", "null").toString()
-    }
-}*/
