@@ -31,6 +31,8 @@ class MyWalletActivity : AppCompatActivity() {
     lateinit var walletProfile: ImageView
     lateinit var transaction: RecyclerView
     lateinit var seeTransaction: TextView
+
+    //erg
     lateinit var hideTransaction: TextView
 //    lateinit var earningProfile: ImageView
    val transactionListCard = ArrayList<TransactionList>()
