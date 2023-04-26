@@ -19,7 +19,8 @@ import de.hdodenhof.circleimageview.CircleImageView
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ProfileActivity : AppCompatActivity() {
+class
+ProfileActivity : AppCompatActivity() {
 
     lateinit var ivback: AppCompatImageView
     lateinit var apptitle: AppCompatTextView
