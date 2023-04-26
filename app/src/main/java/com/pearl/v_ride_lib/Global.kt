@@ -5,6 +5,4 @@ object Global {
        var CODE = 1
        var curr_lat: Double = 0.0
        var curr_long: Double = 0.0
-       //sdsdSDF
 }
-//asd
