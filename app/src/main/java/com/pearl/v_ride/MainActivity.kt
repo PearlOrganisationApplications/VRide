@@ -156,6 +156,7 @@ class MainActivity : BaseClass() {
 
         validateNumber(usrID)
 
+
         if(!isConnected){
 
             val alertDialog2: AlertDialog.Builder = AlertDialog.Builder(

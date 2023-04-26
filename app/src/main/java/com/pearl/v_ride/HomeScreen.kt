@@ -28,6 +28,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
@@ -92,6 +93,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     lateinit var city: TextView
     lateinit var pieChart: PieChart
     lateinit var prefManager: PrefManager
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
 
     override fun setLayoutXml() {
@@ -119,6 +121,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
         city = findViewById(R.id.stateTV)
         pieChart = findViewById(R.id.pieChart)
+        swipeRefreshLayout = findViewById(R.id.container)
     }
 
     override fun initializeClickListners() {
@@ -211,6 +214,13 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
             }
             true
         }
+
+        swipeRefreshLayout.setOnRefreshListener {
+
+            // on below line we are setting is refreshing to false.
+            swipeRefreshLayout.isRefreshing = false
+
+        }
     }
 
     override fun initializeInputs() {
@@ -264,11 +274,13 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(originLocation, 15F))
         }*/
       //  fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+
         val notificationCard = ArrayList<NotificationList>()
         setUpViews()
 
 
         apptitle.text ="Notification"
+
 
 /*        notificationI.setOnClickListener {
                    notificationLL.visibility = View.VISIBLE
@@ -277,6 +289,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
             onBackPressed()
 
         }*/
+
         notificationCard.add(
             NotificationList(
                 "Notification Title","this is my notification body"
