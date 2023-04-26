@@ -7,3 +7,4 @@ object Global {
        var curr_long: Double = 0.0
        //sdsdSDF
 }
+//asd
