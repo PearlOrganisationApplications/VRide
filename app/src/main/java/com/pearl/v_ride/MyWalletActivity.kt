@@ -35,7 +35,7 @@ class MyWalletActivity : AppCompatActivity() {
 //    lateinit var earningProfile: ImageView
    val transactionListCard = ArrayList<TransactionList>()
 
-
+//qwwewrwer
     @SuppressLint("SuspiciousIndentation", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
