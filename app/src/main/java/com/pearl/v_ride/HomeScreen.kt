@@ -45,8 +45,10 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.pearl.adapter.AttendanceAdapter
 import com.pearl.v_ride_lib.Global
 import com.pearl.adapter.NotificationAdapter
+import com.pearl.data.AttendanceList
 import com.pearl.data.NotificationList
 import com.pearl.test5.R
 import com.pearl.ui.DocumentActivity
@@ -55,6 +57,7 @@ import com.pearl.v_ride_lib.BaseClass
 import com.pearl.v_ride_lib.PrefManager
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class HomeScreen : BaseClass(), OnMapReadyCallback {
@@ -91,6 +94,10 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     lateinit var pieChart: PieChart
     lateinit var prefManager: PrefManager
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    lateinit var calendarRV: RecyclerView
+    lateinit var monthlyCal: TextView
+    lateinit var hideCal: TextView
+    val attendanceCard = ArrayList<AttendanceList>()
 
 
     override fun setLayoutXml() {
@@ -120,6 +127,9 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         city = findViewById(R.id.stateTV)
         pieChart = findViewById(R.id.pieChart)
         swipeRefreshLayout = findViewById(R.id.container)
+        calendarRV = findViewById(R.id.calenderRV)
+        monthlyCal = findViewById(R.id.monthlyCalender)
+        hideCal = findViewById(R.id.hideCalendar)
     }
 
     override fun initializeClickListners() {
@@ -219,6 +229,10 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
             swipeRefreshLayout.isRefreshing = false
 
         }
+
+        monthlyCal.setOnClickListener {
+            calendarRV.visibility = View.VISIBLE
+        }
     }
 
     override fun initializeInputs() {
@@ -247,11 +261,12 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
         getLocation()
         pieChart()
-     /*   val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.homeScreenmap) as SupportMapFragment?
-        mapFragment!!.getMapAsync(this)*/
+        showAttendance()
 
 
+        /*    {       val mapFragment = supportFragmentManager
+               .findFragmentById(R.id.homeScreenmap) as SupportMapFragment?
+           mapFragment!!.getMapAsync(this)*/
 
 /*        val ai: ApplicationInfo = applicationContext.packageManager
             ?.getApplicationInfo(applicationContext.applicationContext!!.packageName, PackageManager.GET_META_DATA)!!
@@ -260,21 +275,23 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         // Initializing the Places API with the help of our API_KEY
         if (!Places.isInitialized()) {
             Places.initialize(applicationContext.applicationContext,apiKey)
+        }
+
+            /*  mapFragment.getMapAsync {
+                  mMap = it
+
+                  val originLocation = LatLng( 30.2891496, 78.0437616)
+
+                  mMap.addMarker(MarkerOptions().position(originLocation).title("hey"))
+                  mMap.moveCamera(CameraUpdateFactory.newLatLng(originLocation))
+
+                  mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(originLocation, 15F))
+              }*/
+            //  fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         }*/
-
-      /*  mapFragment.getMapAsync {
-            mMap = it
-
-            val originLocation = LatLng( 30.2891496, 78.0437616)
-
-            mMap.addMarker(MarkerOptions().position(originLocation).title("hey"))
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(originLocation))
-
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(originLocation, 15F))
-        }*/
-      //  fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
         val notificationCard = ArrayList<NotificationList>()
+
         setUpViews()
 
 
@@ -310,6 +327,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         notificationRV.layoutManager = LinearLayoutManager(this)
         val nAdapter = NotificationAdapter(notificationCard)
         notificationRV.adapter = nAdapter
+
 
 
 //        startService(Intent(this,MyService::class.java))
@@ -692,6 +710,53 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         pieChart.invalidate()
 
 
+    }
+
+
+    private fun showAttendance(){
+        attendanceCard.add(
+            AttendanceList(
+                "shubham","20/12/2022",R.drawable.online
+            )
+        )
+        attendanceCard.add(
+            AttendanceList(
+                "shubham","20/12/2022",R.drawable.online
+            )
+        )
+        attendanceCard.add(
+            AttendanceList(
+                "shubham","20/12/2022",R.drawable.online
+            )
+        )
+        attendanceCard.add(
+            AttendanceList(
+                "shubham","20/12/2022",R.drawable.online
+            )
+        )
+        attendanceCard.add(
+            AttendanceList(
+                "shubham","20/12/2022",R.drawable.online
+            )
+        )
+        attendanceCard.add(
+            AttendanceList(
+                "shubham","20/12/2022",R.drawable.online
+            )
+        )
+        attendanceCard.add(
+            AttendanceList(
+                "shubham","20/12/2022",R.drawable.online
+            )
+        )
+        attendanceCard.add(
+            AttendanceList(
+                "shubham","20/12/2022",R.drawable.online
+            )
+        )
+        calendarRV.layoutManager = LinearLayoutManager(this)
+        val calAdapter = AttendanceAdapter(attendanceCard)
+        calendarRV.adapter = calAdapter
     }
 
 }

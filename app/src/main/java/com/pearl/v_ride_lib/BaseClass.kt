@@ -26,6 +26,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.pearl.data.AttendanceList
 import com.pearl.test5.R
 import java.io.ByteArrayOutputStream
 import java.util.regex.Matcher
@@ -614,6 +615,7 @@ abstract  class BaseClass: AppCompatActivity() {
     protected abstract fun initializeClickListners()
     protected abstract fun initializeInputs()
     protected abstract fun initializeLabels()
+//    abstract fun AttendanceList(agentName: String, calDate: String): AttendanceList
 
     companion object {
         var isInternetReceiver = false

@@ -40,6 +40,7 @@ class PermissionActivity : AppCompatActivity() {
     var callCheck: Boolean = false
     var storageCheck: Boolean = false
     var gonetoSettings: Boolean = false
+
     var cond = 0
         var cond1 =0
 

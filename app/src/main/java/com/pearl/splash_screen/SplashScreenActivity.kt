@@ -74,7 +74,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
                     finish()
                 }
-               else {
+               else if(isFirstTime) {
 
                     val editor = onBoardingScreen.edit()
                     editor.putBoolean("firstTime", false)
@@ -84,6 +84,9 @@ class SplashScreenActivity : AppCompatActivity() {
                     startActivity(i)
                     finish()
 
+                }else{
+                    startActivity(Intent(this@SplashScreenActivity,PermissionActivity::class.java))
+                    finish()
                 }
 
 
