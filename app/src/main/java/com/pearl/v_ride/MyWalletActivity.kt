@@ -19,9 +19,10 @@ import com.pearl.adapter.TransactionsAdapter
 import com.pearl.data.TransactionList
 import com.pearl.v_ride_lib.Global
 import com.pearl.test5.R
+import com.pearl.v_ride_lib.BaseClass
 
 class
-    MyWalletActivity : AppCompatActivity() {
+    MyWalletActivity : BaseClass() {
 
      lateinit var mywalletLL: LinearLayout
 
@@ -34,26 +35,26 @@ class
     lateinit var seeTransaction: TextView
 
     lateinit var hideTransaction: TextView
+    var i: Int = 0
 
 //    lateinit var earningProfile: ImageView
    val transactionListCard = ArrayList<TransactionList>()
 
-//qwwewrwer
-    @SuppressLint("SuspiciousIndentation", "MissingInflatedId")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun setLayoutXml() {
         setContentView(R.layout.activity_my_wallet)
+    }
 
-       ivback=findViewById(R.id.ivBack)
+    override fun initializeViews() {
+        ivback=findViewById(R.id.ivBack)
         apptitle = findViewById(R.id.titleTVAppbar)
-               myearningLL = findViewById(R.id.earningLL)
-               mywalletLL = findViewById(R.id.walletLL)
+        myearningLL = findViewById(R.id.earningLL)
+        mywalletLL = findViewById(R.id.walletLL)
         walletProfile = findViewById(R.id.walletProfile)
         seeTransaction = findViewById(R.id.seeAllTV)
         transaction = findViewById(R.id.transactionRV)
         hideTransaction = findViewById(R.id.hideAllTV)
 
-      val i: Int = intent.getIntExtra("key", 0)
+        i = intent.getIntExtra("key", 0)
 
         if (i == 0) {
             apptitle.text = "My Earning"
@@ -64,10 +65,9 @@ class
             mywalletLL.visibility = View.VISIBLE
             myearningLL.visibility = View.GONE
         }
+    }
 
-
-
-
+    override fun initializeClickListners() {
         ivback.setOnClickListener {
             onBackPressed()
         }
@@ -82,6 +82,30 @@ class
             seeTransaction.visibility = View.VISIBLE
             hideTransaction.visibility = View.GONE
         }
+    }
+
+    override fun initializeInputs() {
+
+    }
+
+    override fun initializeLabels() {
+
+    }
+
+
+    @SuppressLint("SuspiciousIndentation", "MissingInflatedId")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+
+        setLayoutXml()
+        initializeViews()
+        initializeClickListners()
+        initializeInputs()
+        initializeLabels()
+
+
+
 
         transactionListCard.add(
             TransactionList("Transaction Title","₹ 8500","24/04/2024","11.43PM")
@@ -111,5 +135,7 @@ class
             Log.d("abc", Global.imageString)
         }
     }
+
+
 }
 
