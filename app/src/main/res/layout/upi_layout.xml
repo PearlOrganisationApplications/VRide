@@ -27,6 +27,7 @@
         android:layout_below="@id/idEdtAmount"
         android:layout_marginStart="8dp"
         android:layout_marginTop="15dp"
+        android:visibility="gone"
         android:layout_marginEnd="8dp"
         android:hint="Enter your UPI Id"
         android:inputType="text" />

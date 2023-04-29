@@ -105,6 +105,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     lateinit var toggle_on: LinearLayout
     lateinit var on_duty: TextView
     lateinit var off_duty: TextView
+    lateinit var hideCalendar: TextView
 
 
     override fun setLayoutXml() {
@@ -137,6 +138,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         calendarRV = findViewById(R.id.calenderRV)
         monthlyCal = findViewById(R.id.monthlyCalender)
         hideCal = findViewById(R.id.hideCalendar)
+        hideCalendar = findViewById(R.id.hideCalendar)
 
         toggle_off = findViewById(R.id.toggle_off)
         toggle_on = findViewById(R.id.toggle_on)
@@ -257,6 +259,13 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
         monthlyCal.setOnClickListener {
             calendarRV.visibility = View.VISIBLE
+            hideCalendar.visibility = View.VISIBLE
+            monthlyCal.visibility = View.GONE
+        }
+        hideCalendar.setOnClickListener {
+            calendarRV.visibility = View.GONE
+            monthlyCal.visibility= View.VISIBLE
+            hideCalendar.visibility = View.GONE
         }
     }
 
@@ -362,6 +371,91 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
         }*/
 
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
         notificationCard.add(
             NotificationList(
                 "Notification Title","this is my notification body"

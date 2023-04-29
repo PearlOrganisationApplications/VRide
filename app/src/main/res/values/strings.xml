@@ -4,6 +4,7 @@
     <string name="close">Close</string>
     <string name="note">NOTE:\n1.Name/DOB/ID card Number/Photos/Address should be clearly visible on your ID card respectively.\n 2.ID card image should not be blur,titled, photocopied or rotated. Kindly ensure that your face is clearly visible in the id card."</string>
     <string name="google_map_api_key">${MAPS_API_KEY}</string>
+    <string name="razorpay_key">${RAZORPAY_API_KEY}</string>
     <string name="selfie">Please upload your clear front facing selfie (face should be clearly visible, avoid wearing shades and headgears)</string>
     <string name="otp_text">An OTP has been sent to you for verification of your mobile number.\nPlease enter the OTP to proceed.</string>
     <!-- TODO: Remove or change this placeholder text -->
