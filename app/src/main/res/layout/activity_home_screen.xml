@@ -24,20 +24,143 @@
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/appBar"
+                style="@style/Widget.MaterialComponents.Toolbar.Primary"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                style="@style/Widget.MaterialComponents.Toolbar.Primary"
                 app:navigationIcon="@drawable/ic_baseline_menu"
-                app:title="@string/app_name"
-                >
+                app:title="@string/app_name">
+
 
                 <ImageView
-                    android:layout_gravity="end"
                     android:id="@+id/nBell"
-                    android:layout_width="35dp"
+                    android:layout_width="38dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/bell"/>
+                    android:layout_gravity="end"
+                    android:src="@drawable/bell" />
+
+           <!--     <androidx.appcompat.widget.AppCompatToggleButton
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/track_selector"
+                    android:layout_gravity="end"
+                    android:textOn=""
+                    android:textOff=""/>-->
+
+
+             <!--   <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/customSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    android:autoSizeTextType="uniform"
+                    android:layout_marginEnd="@dimen/_25sdp"
+                    android:enabled="true"
+                    android:textOff="off"
+                    app:splitTrack="false"
+                    android:scrollbarTrackVertical="@color/green"
+                    android:textOn="ON"
+                    android:textSize="15sp"
+                    app:showText="true"
+                    app:switchTextAppearance="@style/SwitchTextAppearance"
+                    app:trackTint="@color/green"
+                    app:trackTintMode="screen"
+                    app:track="@drawable/track" />-->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="@dimen/_86sdp"
+                    android:layout_gravity="end"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="20dp"
+                    android:layout_margin="2dp"
+                    android:layout_marginEnd="15dp"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="@dimen/_40sdp"
+                            android:layout_height="match_parent"
+                            android:visibility="gone"
+                            android:id="@+id/toggle_off"
+                            android:padding="@dimen/_5sdp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:layout_weight="1"
+                                android:textSize="@dimen/_12sdp"
+                                android:textStyle="bold"
+                                android:padding="5dp"
+                                android:background="@drawable/toggle_off"
+                                android:textColor="@color/black"
+                                />
+                        </LinearLayout>
+
+
+                        <TextView
+                            android:id="@+id/dutyON"
+                            android:visibility="visible"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="On Duty"
+                            android:paddingStart="1dp"
+                            android:gravity="center"
+                            android:layout_weight="1"
+                            android:textSize="@dimen/_12sdp"
+                            android:textStyle="bold"
+                            android:textColor="@color/color_secondary"
+                            />
+                        <TextView
+                            android:id="@+id/dutyOFF"
+                            android:visibility="gone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="OFF Duty"
+                            android:paddingEnd="5dp"
+                            android:gravity="center"
+                            android:textSize="@dimen/_12sdp"
+                            android:textStyle="bold"
+                            android:textColor="@color/red"
+                            />
+                        <LinearLayout
+                            android:layout_width="@dimen/_40sdp"
+                            android:layout_height="match_parent"
+                            android:id="@+id/toggle_on"
+                            android:visibility="visible"
+                            android:padding="@dimen/_5sdp">
+                        <TextView
+                            android:layout_width="5dp"
+                            android:layout_height="match_parent"
+                            android:text=""
+                            android:gravity="center"
+                            android:layout_weight="1"
+                            android:padding="5dp"
+                            android:textSize="@dimen/_12sdp"
+                            android:textStyle="bold"
+                            android:background="@drawable/toggle_on"
+                            android:textColor="@color/black"
+                            />
+                        </LinearLayout>
+
+                       <!-- <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="Duty"
+                            android:visibility="gone"
+                            android:id="@+id/toggle__duty_off"
+                            android:gravity="center"
+                            android:layout_weight="1"
+                            android:textSize="@dimen/_12sdp"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            />-->
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+
             </com.google.android.material.appbar.MaterialToolbar>
+
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -332,3 +455,8 @@
     <!--app:headerLayout="@layout/nav_header"-->
 
 </androidx.drawerlayout.widget.DrawerLayout>
+
+
+
+
+

@@ -3,7 +3,9 @@ package com.pearl.v_ride
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -97,7 +99,12 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     lateinit var calendarRV: RecyclerView
     lateinit var monthlyCal: TextView
     lateinit var hideCal: TextView
+    lateinit var headerLayout: View
     val attendanceCard = ArrayList<AttendanceList>()
+    lateinit var toggle_off: LinearLayout
+    lateinit var toggle_on: LinearLayout
+    lateinit var on_duty: TextView
+    lateinit var off_duty: TextView
 
 
     override fun setLayoutXml() {
@@ -116,7 +123,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         nBell = findViewById(R.id.nBell)
         mapLL = findViewById(R.id.mapLL)
 
-        val headerLayout: View = navView.inflateHeaderView(R.layout.nav_header)
+        headerLayout = navView.inflateHeaderView(R.layout.nav_header)
         dImage = headerLayout.findViewById(R.id.drawerImage)
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         hasGps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
@@ -130,9 +137,27 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         calendarRV = findViewById(R.id.calenderRV)
         monthlyCal = findViewById(R.id.monthlyCalender)
         hideCal = findViewById(R.id.hideCalendar)
+
+        toggle_off = findViewById(R.id.toggle_off)
+        toggle_on = findViewById(R.id.toggle_on)
+        on_duty = findViewById(R.id.dutyON)
+        off_duty = findViewById(R.id.dutyOFF)
     }
 
     override fun initializeClickListners() {
+
+        toggle_on.setOnClickListener {
+            on_duty.visibility = View.GONE
+            off_duty.visibility = View.VISIBLE
+            toggle_off.visibility = View.VISIBLE
+            toggle_on.visibility = View.GONE
+        }
+        toggle_off.setOnClickListener {
+            on_duty.visibility = View.VISIBLE
+            off_duty.visibility = View.GONE
+            toggle_off.visibility = View.GONE
+            toggle_on.visibility = View.VISIBLE
+        }
         nBell.setOnClickListener {
 //            onBackPressed()
             notificationLL.visibility=View.VISIBLE
@@ -244,6 +269,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
 
 
+        val isConnected = isNetworkConnected(this.applicationContext)
         /*val mapFragment = supportFragmentManager
             .findFragmentById(R.id.homeScreenmap) as SupportMapFragment
         fetchLocation()*/
@@ -258,6 +284,36 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         initializeClickListners()
         initializeInputs()
         initializeLabels()
+
+
+        internetChangeBroadCast()
+
+
+
+
+
+        if(!isConnected){
+
+            val alertDialog2: AlertDialog.Builder = AlertDialog.Builder(
+                this@HomeScreen
+            )
+            alertDialog2.setTitle("No Internet Connection")
+            alertDialog2.setPositiveButton("Try Again",
+                DialogInterface.OnClickListener { dialog, which ->
+                    val intent = intent
+                    finish()
+                    startActivity(intent)
+                })
+            alertDialog2.setNegativeButton("Cancel",
+                DialogInterface.OnClickListener { dialog, which ->
+                    dialog.cancel()
+                    finishAffinity()
+                    System.exit(0)
+                })
+            alertDialog2.setCancelable(false)
+            alertDialog2.show()
+
+        }
 
         getLocation()
         pieChart()
@@ -534,6 +590,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         }
      //------------------------------------------------------//
         if (locationByGps != null && locationByNetwork != null) {
+            Log.d("locaitonGPS3",locationByGps.toString()+" "+locationByNetwork)
             if (locationByGps!!.accuracy > locationByNetwork!!.accuracy) {
 
 
@@ -547,14 +604,15 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
             }
         }else {
+
             if (locationByNetwork == null) {
                 // Toast.makeText(this, "No Network", Toast.LENGTH_LONG).show()
-
+                Log.d("locaitonGPS1"," "+locationByNetwork)
                 to_lat = locationByGps?.latitude.toString()
                 to_lng = locationByGps?.longitude.toString()
 
             } else {
-
+                Log.d("locaitonGPS2",locationByGps.toString()+" ")
                 to_lat = locationByNetwork?.latitude.toString()
                 to_lng = locationByNetwork?.longitude.toString()
 
@@ -570,6 +628,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
         var strAdd : String? = null
         try {
+            Log.d("addressX",to_lat+" "+to_lng)
             val addresses = geocoder.getFromLocation(to_lat!!.toDouble(), to_lng!!.toDouble(), 1)
             if (addresses != null) {
                 val returnedAddress = addresses[0]
@@ -577,8 +636,9 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
                 val cityState = returnedAddress.locality +","+returnedAddress.adminArea;
                 strAdd = cityState
+                Log.d("cityX",returnedAddress.toString()+"")
             } else {
-              //  Log.w(" Current loction address", "No Address returned!")
+//                Log.w(" Current loction address", "No Address returned!")
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -675,7 +735,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         entries.add(PieEntry(10f))
 
         // on below line we are setting pie data set
-        val dataSet = PieDataSet(entries, "Mobile OS")
+        val dataSet = PieDataSet(entries, "Merchant")
 
         // on below line we are setting icons.
         dataSet.setDrawIcons(false)
@@ -716,42 +776,42 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     private fun showAttendance(){
         attendanceCard.add(
             AttendanceList(
-                "shubham","20/12/2022",R.drawable.online
+                "10:00 AM","7.00 PM","20/12/2022",R.drawable.online
             )
         )
         attendanceCard.add(
             AttendanceList(
-                "shubham","20/12/2022",R.drawable.online
+                "10 AM","7.00 PM","20/12/2022",R.drawable.online
             )
         )
         attendanceCard.add(
             AttendanceList(
-                "shubham","20/12/2022",R.drawable.online
+                "10 AM","7.00 PM","20/12/2022",R.drawable.online
             )
         )
         attendanceCard.add(
             AttendanceList(
-                "shubham","20/12/2022",R.drawable.online
+                "10 AM","7.00 PM","20/12/2022",R.drawable.online
             )
         )
         attendanceCard.add(
             AttendanceList(
-                "shubham","20/12/2022",R.drawable.online
+                "10 AM","7.00 PM","20/12/2022",R.drawable.red_dot
             )
         )
         attendanceCard.add(
             AttendanceList(
-                "shubham","20/12/2022",R.drawable.online
+                "10 AM","7.00 PM","20/12/2022",R.drawable.online
             )
         )
         attendanceCard.add(
             AttendanceList(
-                "shubham","20/12/2022",R.drawable.online
+                "10 AM","7.00 PM","20/12/2022",R.drawable.red_dot
             )
         )
         attendanceCard.add(
             AttendanceList(
-                "shubham","20/12/2022",R.drawable.online
+                "10 AM","7.00 PM","20/12/2022",R.drawable.online
             )
         )
         calendarRV.layoutManager = LinearLayoutManager(this)

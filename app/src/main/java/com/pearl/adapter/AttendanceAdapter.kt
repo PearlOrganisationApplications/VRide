@@ -14,7 +14,8 @@ class AttendanceAdapter(private val attendanceList: ArrayList<AttendanceList> ):
 RecyclerView.Adapter<AttendanceAdapter.MyItemViewHolder>()
 {
     class MyItemViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
-        val agentName = itemView.findViewById<TextView>(R.id.agentName)
+        val inTime = itemView.findViewById<TextView>(R.id.inTime)
+        val outTime = itemView.findViewById<TextView>(R.id.outTime)
         val calDate = itemView.findViewById<TextView>(R.id.calenderDate)
         val statusIV = itemView.findViewById<ImageView>(R.id.attendanceStatus)
     }
@@ -26,7 +27,8 @@ RecyclerView.Adapter<AttendanceAdapter.MyItemViewHolder>()
 
     override fun onBindViewHolder(holder: MyItemViewHolder, position: Int) {
         val currentItem = attendanceList[position]
-        holder.agentName.text = currentItem.agentName
+        holder.inTime.text = currentItem.inTime
+        holder.outTime.text = currentItem.outTime
         holder.calDate.text = currentItem.calDate
         holder.statusIV.setImageResource(currentItem.statusI)
     }

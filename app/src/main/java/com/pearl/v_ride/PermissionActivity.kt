@@ -95,12 +95,14 @@ class PermissionActivity : AppCompatActivity() {
         verify.setOnClickListener(View.OnClickListener {
             if (pref.getLocPer() && pref.getCallPer() && pref.getReadPer()){
                 pref.setPr(true)
+
                 /*if (pref.getLogin().equals("yes")) {
 
                 } else {
                     startActivity(Intent(this, WelcomeScreen::class.java))
 
                 }*/
+
                 startActivity(Intent(this, MainActivity::class.java))
 
             }
@@ -120,7 +122,9 @@ class PermissionActivity : AppCompatActivity() {
             storageCheck = true
             return true
         } else {
+
             // permission not granted, request it
+
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(
