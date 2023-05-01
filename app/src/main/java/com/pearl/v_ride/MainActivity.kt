@@ -79,14 +79,15 @@ class MainActivity : BaseClass() {
 //            finish()
         }
 
-//        if(validateNumber(usrID)) {
+
             otpBt.setOnClickListener {
+                if(validateNumber(usrID)) {
 
                 loginOtp.visibility = View.VISIBLE
                 login.visibility = View.VISIBLE
                 otpBt.visibility = View.GONE
             }
-//        }
+        }
 
         login.setOnClickListener {
             prefManager.setLogin(true)
@@ -147,8 +148,7 @@ class MainActivity : BaseClass() {
 
 
 
-        validateNumber(usrID)
-
+//        validateNumber(usrID)
 
         if(!isConnected){
 

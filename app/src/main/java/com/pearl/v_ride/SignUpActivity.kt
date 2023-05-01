@@ -48,8 +48,12 @@ class SignUpActivity : BaseClass() {
         signup.setOnClickListener {
 //            startActivity(Intent(this@SignUpActivity,ForgotPasswordActivity::class.java))
 //
-            dialog.setContentView(R.layout.activity_forgot_password)
-            dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            if (validateName(sName) && validateNumber(sPhone) && validateDob(dob)){
+                dialog.setContentView(R.layout.activity_forgot_password)
+            dialog.window?.setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
             dialog.setCancelable(false)
             dialog.window?.attributes?.windowAnimations = R.style.animation
 
@@ -59,7 +63,7 @@ class SignUpActivity : BaseClass() {
             verify.setOnClickListener {
                 dialog.dismiss()
                 Toast.makeText(this, "okay clicked", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this@SignUpActivity,DocumentActivity::class.java))
+                startActivity(Intent(this@SignUpActivity, DocumentActivity::class.java))
             }
 
             cancel.setOnClickListener {
@@ -68,8 +72,10 @@ class SignUpActivity : BaseClass() {
             }
 
             dialog.show()
+        }
 
         }
+
     }
 
     override fun initializeInputs() {
@@ -89,9 +95,7 @@ class SignUpActivity : BaseClass() {
         initializeInputs()
         initializeLabels()
 
-        validateName(sName)
-        validateNumber(sPhone)
-        validateDob(dob)
+
     }
 
     private fun showDatePicker() {
