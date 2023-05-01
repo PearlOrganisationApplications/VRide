@@ -46,7 +46,7 @@ class
     private  var descEdt:EditText? = null
     private var transactionDetailsTV: TextView? = null
 //    private val UPI_PAYMENT = 0
-    lateinit var dueLayout: ConstraintLayout
+    lateinit var dueLayout: ScrollView
     lateinit var duePayBT: LinearLayout
     lateinit var hideTransaction: TextView
     lateinit var cancelDue: ImageView
