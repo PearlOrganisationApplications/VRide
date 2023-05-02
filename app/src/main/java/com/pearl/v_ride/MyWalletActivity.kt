@@ -2,6 +2,7 @@ package com.pearl.v_ride
 
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.net.Uri
 import android.os.Bundle
 import android.text.Layout
@@ -39,6 +40,7 @@ class
     lateinit var seeTransaction: TextView
 
     lateinit var  dialog : BottomSheetDialog
+    lateinit var  dialogW : Dialog
     lateinit var recharge: LinearLayout
     private var amountEdt: EditText? = null
     private  var upiEdt:EditText? = null
@@ -48,6 +50,7 @@ class
 //    private val UPI_PAYMENT = 0
     lateinit var dueLayout: ScrollView
     lateinit var duePayBT: LinearLayout
+    lateinit var withdrawBT: LinearLayout
     lateinit var hideTransaction: TextView
     lateinit var cancelDue: ImageView
     var i: Int = 0
@@ -60,6 +63,7 @@ class
     }
 
     override fun initializeViews() {
+        withdrawBT = findViewById(R.id.withdrawLL)
         duePayBT = findViewById(R.id.duePayLL)
         dueLayout = findViewById(R.id.payDueLayout)
         ivback=findViewById(R.id.ivBack)
@@ -73,6 +77,7 @@ class
         recharge = findViewById(R.id.recharge)
         cancelDue = findViewById(R.id.cancelDue)
         dialog = BottomSheetDialog(this)
+        dialogW = Dialog(this)
 
         i = intent.getIntExtra("key", 0)
 
@@ -90,6 +95,10 @@ class
     override fun initializeClickListners() {
         ivback.setOnClickListener {
             onBackPressed()
+        }
+        withdrawBT.setOnClickListener {
+            dialogW.setContentView(R.layout.withdraw)
+            dialogW.show()
         }
         seeTransaction.setOnClickListener {
             transaction.visibility = View.VISIBLE

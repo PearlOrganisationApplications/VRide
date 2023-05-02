@@ -18,14 +18,12 @@
         android:id="@+id/wallet"
         android:icon="@drawable/ic_account_balance_wallet"
         android:title="Wallet"
-
         />
 
     <item
         android:id="@+id/earning"
         android:title="My Earning"
         android:icon="@drawable/ic_baseline_wallet"
-
         />
 
     <item
@@ -42,7 +40,7 @@
     <item
         android:id="@+id/issue"
         android:icon="@drawable/report"
-        android:title="Issue Request"/>
+        android:title="Service Request"/>
 
     <item
         android:id="@+id/document"
@@ -50,15 +48,8 @@
         android:icon="@drawable/file"
         />
     <item
-        android:id="@+id/form"
-        android:title="Data sheet"
-        android:icon="@drawable/file"
-
-        />
-
-    <item
         android:id="@+id/logout"
-        android:title="Logout"
+        android:title="Update"
         android:icon="@drawable/ic_ogin"/>
 
 

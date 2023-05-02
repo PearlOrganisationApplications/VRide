@@ -14,7 +14,10 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -23,6 +26,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
@@ -214,14 +218,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                     startActivity(Intent(this@HomeScreen, DocumentActivity::class.java))
                     drawerLayout.closeDrawers()
                 }
-                R.id.form -> {
-                    startActivity(Intent(this,FormActivity::class.java))
-                    drawerLayout.closeDrawers()
-                }
                 R.id.logout -> {
-
-
-
 
                     mAuth = FirebaseAuth.getInstance()
                     /* if (::mAuth.isInitialized) {
@@ -278,7 +275,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
 
 
-        val isConnected = isNetworkConnected(this.applicationContext)
+
         /*val mapFragment = supportFragmentManager
             .findFragmentById(R.id.homeScreenmap) as SupportMapFragment
         fetchLocation()*/
@@ -297,36 +294,10 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
         internetChangeBroadCast()
 
-
-
-
-
-        if(!isConnected){
-
-            val alertDialog2: AlertDialog.Builder = AlertDialog.Builder(
-                this@HomeScreen
-            )
-            alertDialog2.setTitle("No Internet Connection")
-            alertDialog2.setPositiveButton("Try Again",
-                DialogInterface.OnClickListener { dialog, which ->
-                    val intent = intent
-                    finish()
-                    startActivity(intent)
-                })
-            alertDialog2.setNegativeButton("Cancel",
-                DialogInterface.OnClickListener { dialog, which ->
-                    dialog.cancel()
-                    finishAffinity()
-                    System.exit(0)
-                })
-            alertDialog2.setCancelable(false)
-            alertDialog2.show()
-
-        }
-
-        getLocation()
         pieChart()
         showAttendance()
+
+
 
 
         /*    {       val mapFragment = supportFragmentManager
@@ -486,9 +457,74 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.M)
+    @SuppressLint("MissingPermission")
+    fun isOnline(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
+        val x = connectivityManager.activeNetworkInfo
+
+        if (x != null) {
+            if (!x.isConnected&&!x.isConnectedOrConnecting&&!x.isAvailable&&x.isFailover)
+                return false
+        }else {
+            return false
+        }
+        if (connectivityManager != null) {
+            val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+
+
+                    if (capabilities != null) {
+
+                        if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+
+                            return true
+                        } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+
+                            return true
+                        } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+
+                            return true
+                        }
+                    }
+            }
+
+        return false
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onResume() {
+
+        val isConnected = isNetworkConnected(this.applicationContext)
         super.onResume()
+        if(!isOnline(this@HomeScreen)){
+
+            val alertDialog2: AlertDialog.Builder = AlertDialog.Builder(
+                this@HomeScreen
+            )
+            alertDialog2.setTitle("No Internet Connection")
+            alertDialog2.setPositiveButton("Try Again",
+                DialogInterface.OnClickListener { dialog, which ->
+                    val intent = intent
+                    finish()
+                    startActivity(intent)
+                })
+            alertDialog2.setNegativeButton("Cancel",
+                DialogInterface.OnClickListener { dialog, which ->
+                    dialog.cancel()
+                    finishAffinity()
+                    System.exit(0)
+                })
+            alertDialog2.setCancelable(false)
+            alertDialog2.show()
+
+        }
+        if(isOnline(this@HomeScreen)) {
+            getLocation()
+
+        }
+
         if(Global.imageString != "") {
             val uri = Uri.parse(Global.imageString)
             dImage.setImageURI(uri)

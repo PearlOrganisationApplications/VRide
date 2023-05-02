@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">V-Ride</string>
+    <string name="app_name">V-Run</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="note">NOTE:\n1.Name/DOB/ID card Number/Photos/Address should be clearly visible on your ID card respectively.\n 2.ID card image should not be blur,titled, photocopied or rotated. Kindly ensure that your face is clearly visible in the id card."</string>

@@ -170,6 +170,7 @@
             app:cardBackgroundColor="#3F71EF"
             android:layout_marginBottom="20dp">
             <LinearLayout
+                android:id="@+id/withdrawLL"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"

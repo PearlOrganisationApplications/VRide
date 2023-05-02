@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/_290sdp"
+    android:padding="@dimen/_10sdp"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_height="@dimen/_150sdp">
+
+
+    <EditText
+        android:id="@+id/withdrawAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:background="@drawable/empty_edt"
+        android:hint="Enter amount"/>
+
+    <Button
+        android:layout_marginTop="@dimen/_15sdp"
+        android:id="@+id/withdrawAmountBT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Withdraw"/>
+
+</LinearLayout>

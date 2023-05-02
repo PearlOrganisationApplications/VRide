@@ -46,8 +46,9 @@ class SignUpActivity : BaseClass() {
             startActivity(Intent(this@SignUpActivity, MainActivity::class.java))
         }
         signup.setOnClickListener {
+
 //            startActivity(Intent(this@SignUpActivity,ForgotPasswordActivity::class.java))
-//
+
             if (validateName(sName) && validateNumber(sPhone) && validateDob(dob)){
                 dialog.setContentView(R.layout.activity_forgot_password)
             dialog.window?.setLayout(
