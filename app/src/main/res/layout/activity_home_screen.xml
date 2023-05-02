@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawerLayout"
+    android:background="#FAEBD7"
     tools:context="com.pearl.v_ride.HomeScreen">
 
 
@@ -36,6 +37,8 @@
                     android:layout_width="38dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="end"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
                     android:src="@drawable/bell" />
 
            <!--     <androidx.appcompat.widget.AppCompatToggleButton

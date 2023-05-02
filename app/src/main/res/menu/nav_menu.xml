@@ -47,10 +47,11 @@
         android:title="Document"
         android:icon="@drawable/file"
         />
-    <item
+
+    <!--<item
         android:id="@+id/logout"
         android:title="Update"
-        android:icon="@drawable/ic_ogin"/>
+        android:icon="@drawable/ic_ogin"/>-->
 
 
 </menu>

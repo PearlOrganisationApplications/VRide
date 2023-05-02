@@ -218,15 +218,15 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                     startActivity(Intent(this@HomeScreen, DocumentActivity::class.java))
                     drawerLayout.closeDrawers()
                 }
-                R.id.logout -> {
+            /*    R.id.logout -> {
 
                     mAuth = FirebaseAuth.getInstance()
-                    /* if (::mAuth.isInitialized) {
+                    *//* if (::mAuth.isInitialized) {
                          mAuth.signOut()
  //                        GoogleSignIn.
                          Toast.makeText(applicationContext,"Logout", Toast.LENGTH_SHORT).show()
                          finish()
-                     }*/
+                     }*//*
 
                     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                         .requestEmail()
@@ -242,7 +242,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                     Toast.makeText(applicationContext,"Logout", Toast.LENGTH_SHORT).show()
 
                     prefManager.setLogin(false)
-                }
+                }*/
             }
             true
         }
@@ -458,7 +458,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
 
     @RequiresApi(Build.VERSION_CODES.M)
-    @SuppressLint("MissingPermission")
+    @SuppressLint("MissingPermission", "SuspiciousIndentation")
     fun isOnline(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
