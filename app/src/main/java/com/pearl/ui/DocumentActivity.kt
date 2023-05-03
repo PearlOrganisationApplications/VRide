@@ -62,12 +62,23 @@ class DocumentActivity : BaseClass() {
     lateinit var noBT: Button
     lateinit var merchantWorkingLL: LinearLayout
     lateinit var checkboxLL: LinearLayout
+    lateinit var merchantAlready: LinearLayout
+    lateinit var merchantanotherWorkingLL: LinearLayout
+    lateinit var anotherYesBT: Button
+    lateinit var anotherNoBT: Button
+    lateinit var submitAlreadyBT: Button
 
     override fun setLayoutXml() {
         setContentView(R.layout.activity_document)
     }
 
     override fun initializeViews() {
+
+        submitAlreadyBT = findViewById(R.id.submitAlreadyBT)
+        merchantanotherWorkingLL = findViewById(R.id.merchantanotherWorkingLL)
+        anotherYesBT = findViewById(R.id.merchantAYes)
+        anotherNoBT = findViewById(R.id.merchantANo)
+        merchantAlready = findViewById(R.id.merchantAlready)
         checkboxLL = findViewById(R.id.checkboxLL)
         merchantWorkingLL = findViewById(R.id.merchantWorkingLL)
         yesBT = findViewById(R.id.merchantYes)
@@ -110,7 +121,20 @@ class DocumentActivity : BaseClass() {
     }
 
     override fun initializeClickListners() {
+        submitAlreadyBT.setOnClickListener {
+            merchantanotherWorkingLL.visibility = View.VISIBLE
+            merchantAlready.visibility = View.GONE
+        }
+        anotherYesBT.setOnClickListener {
+            merchantAlready.visibility = View.VISIBLE
+            merchantanotherWorkingLL.visibility = View.GONE
+        }
+        anotherNoBT.setOnClickListener {
+
+        }
         yesBT.setOnClickListener {
+            merchantAlready.visibility = View.VISIBLE
+            merchantWorkingLL.visibility = View.GONE
 
         }
         noBT.setOnClickListener {

@@ -841,6 +841,7 @@
 
                             <LinearLayout
                                 android:id="@+id/merchantWorkingLL"
+                                android:visibility="visible"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical">
@@ -871,6 +872,79 @@
                             </LinearLayout>
 
                             </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/merchantAlready"
+                                android:visibility="gone"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Enter merchant name"/>
+                                <EditText
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:imeOptions="actionNext"
+                                    android:hint="Merchant Name"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Enter merchant ID"/>
+                                <EditText
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:imeOptions="actionDone"
+                                    android:hint="Merchant Id"/>
+
+                                <Button
+                                    android:layout_marginTop="5dp"
+                                    android:visibility="visible"
+                                    android:id="@+id/submitAlreadyBT"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="submit"
+                                    android:backgroundTint="@color/color_secondary"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/merchantanotherWorkingLL"
+                                android:visibility="gone"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/merchant"/>
+                                <LinearLayout
+                                    android:layout_marginTop="@dimen/_20sdp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    >
+                                    <Button
+                                        android:id="@+id/merchantAYes"
+                                        android:layout_width="wrap_content"
+                                        android:backgroundTint="@color/color_secondary"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginEnd="@dimen/_30sdp"
+                                        android:text="@string/yes"/>
+                                    <Button
+                                        android:id="@+id/merchantANo"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:backgroundTint="@color/red"
+                                        android:text="@string/no"/>
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+
 
                         <LinearLayout
                             android:id="@+id/checkboxLL"
@@ -952,6 +1026,14 @@
                                     android:layout_height="wrap_content"
                                     android:text="Other"/>
                             </LinearLayout>
+                            <Button
+                                android:layout_marginTop="5dp"
+                                android:visibility="visible"
+                                android:id="@+id/submitMerchantBT"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="submit"
+                                android:backgroundTint="@color/color_secondary"/>
                         </LinearLayout>
 
                             <EditText
@@ -968,14 +1050,6 @@
                                 android:layout_height="wrap_content"
                                 android:hint="Enter Merchant Name"/>
 
-                            <Button
-                                android:layout_marginTop="5dp"
-                                android:visibility="gone"
-                                android:id="@+id/submitMerchantBT"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="submit"
-                                android:backgroundTint="@color/color_secondary"/>
 
 
                         </LinearLayout>
