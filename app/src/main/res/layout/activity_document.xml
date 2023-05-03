@@ -21,6 +21,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_marginTop="50dp"
+        android:background="@color/background_combo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appbarD"
@@ -29,11 +30,11 @@
 
     <LinearLayout
         android:id="@+id/linearLayout1"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:background="#fff"
+        android:background="@color/background_combo"
         android:orientation="vertical"
         >
         <LinearLayout
@@ -87,645 +88,6 @@
 
             >
 
-           <!-- <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/aadharTV"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Aadhar card"
-                    android:padding="10dp"
-                    android:gravity="center"
-                    android:layout_marginTop="10dp"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="20dp">
-
-                    <EditText
-                        android:id="@+id/adharNoET"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Enter Aadhar No"
-                        android:inputType="number"
-                        android:maxLength="12"
-                        android:imeOptions="actionDone"/>
-
-                </LinearLayout>
-
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:contentDescription="@string/app_name">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_horizontal"
-                        android:orientation="horizontal">
-
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="match_parent"
-                            android:layout_height="230dp"
-                            android:elevation="12dp"
-                            app:cardCornerRadius="15dp">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:orientation="horizontal">
-
-                                <ImageView
-
-                                    android:id="@+id/addAadharFront"
-                                    android:layout_width="50dp"
-                                    android:layout_height="50dp"
-                                    android:src="@drawable/add"
-                                    android:visibility="visible" />
-
-                                <ImageView
-                                    android:layout_width="350dp"
-                                    android:layout_height="200dp"
-                                    android:src="@drawable/dummy_aadhar"
-                                    android:visibility="gone" />
-                            </LinearLayout>
-                        </androidx.cardview.widget.CardView>
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="match_parent"
-                            android:layout_height="230dp"
-                            android:elevation="12dp"
-                            app:cardCornerRadius="15dp">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:orientation="horizontal">
-
-                                <ImageView
-
-                                    android:id="@+id/addAadharBack"
-                                    android:layout_width="50dp"
-                                    android:layout_height="50dp"
-                                    android:src="@drawable/add"
-                                    android:visibility="gone" />
-
-                                <ImageView
-                                    android:layout_width="350dp"
-                                    android:layout_height="200dp"
-                                    android:src="@drawable/dummy_aadhar"
-                                    android:visibility="visible" />
-                            </LinearLayout>
-                        </androidx.cardview.widget.CardView>
-
-
-                    </LinearLayout>
-                </HorizontalScrollView>
-
-
-
-                <TextView
-                    android:id="@+id/pancardTV"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Pan card"
-                    android:padding="10dp"
-                    android:gravity="center"
-                    android:layout_marginTop="10dp"/>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center_horizontal">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="350dp"
-                        android:layout_height="230dp"
-                        app:cardCornerRadius="15dp"
-                        android:elevation="12dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:gravity="center"
-                            >
-                            <ImageView
-                                android:id="@+id/addPancard"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:src="@drawable/add"
-                                android:visibility="gone"/>
-                            <ImageView
-                                android:layout_width="350dp"
-                                android:layout_height="200dp"
-                                android:src="@drawable/dummy_pancard"/>
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="20dp">
-
-                    <EditText
-                        android:id="@+id/PanNameET"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Enter Name as Pan"
-                        android:inputType="textPersonName"
-                        android:imeOptions="actionDone"/>
-                    <EditText
-                        android:id="@+id/PanNoET"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Enter Pan Card No"
-                        android:inputType="textCapCharacters|number"
-                        android:maxLength="8"
-                        android:imeOptions="actionDone"/>
-
-
-                </LinearLayout>
-
-
-                <TextView
-                    android:id="@+id/licenceTV"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Driving Licence"
-                    android:padding="10dp"
-                    android:layout_marginTop="10dp"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="350dp"
-                        android:layout_height="230dp"
-                        app:cardCornerRadius="15dp"
-                        android:elevation="12dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:gravity="center"
-                            >
-                            <ImageView
-                                android:id="@+id/addLicence"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:src="@drawable/add"
-                                android:visibility="visible"/>
-                            <ImageView
-                                android:visibility="gone"
-                                android:layout_width="350dp"
-                                android:layout_height="200dp"
-                                android:src="@drawable/dummy_dl"/>
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/bankPassbookTV"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Bank Passbook"
-                    android:padding="10dp"
-                    android:layout_marginTop="10dp"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="350dp"
-                        android:layout_height="230dp"
-                        app:cardCornerRadius="15dp"
-                        android:elevation="12dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:id="@+id/addPassbook"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:src="@drawable/add"
-                                android:visibility="visible" />
-
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="20dp">
-
-                    <EditText
-                        android:id="@+id/bankNameET"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Enter Bank Name"
-                        android:inputType="textPersonName"
-                        android:imeOptions="actionDone"/>
-                    <EditText
-                        android:id="@+id/accountNoET"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Enter Bank Account No"
-                        android:inputType="textCapCharacters|number"
-                        android:maxLength="8"
-                        android:imeOptions="actionDone"/>
-                    <EditText
-                        android:id="@+id/re_accountNoET"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Renter Bank Account No"
-                        android:inputType="textCapCharacters|number"
-                        android:maxLength="8"
-                        android:imeOptions="actionDone"/>
-                    <EditText
-                        android:id="@+id/ifscCodeET"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Enter IFSC code"
-                        android:layout_marginBottom="30dp"
-                        android:inputType="textCapCharacters|number"
-                        android:maxLength="8"
-                        android:imeOptions="actionDone"/>
-
-
-                </LinearLayout>
-
-
-
-            </LinearLayout>-->
-               <!-- <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:padding="10dp"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    android:layout_weight="1">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="190dp"
-                        android:padding="5dp"
-                        android:src="@drawable/one" />
-
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="830px"
-                        android:background="@color/black"/>
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:padding="5dp"
-                        android:src="@drawable/two"/>
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="1020px"
-                        android:background="@color/black"/>
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:padding="5dp"
-                        android:src="@drawable/three"/>
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="1190px"
-                        android:background="@color/black"/>
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:padding="5dp"
-                        android:src="@drawable/four"/>
-
-
-
-
-
-                </LinearLayout>-->
-         <!--       <LinearLayout
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-                           android:layout_weight="8"
-              android:orientation="vertical">
-
-              <TextView
-                  android:id="@+id/aadharTV"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:text="Aadhar card"
-                  android:padding="10dp"
-                  android:gravity="center"
-                  android:layout_marginTop="10dp"/>
-              <LinearLayout
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:padding="20dp">
-
-                                                                                                                                                 <EditText
-                      android:id="@+id/adharNoET"
-                      android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:hint="Enter Aadhar No"
-                      android:inputType="number"
-                      android:maxLength="12"
-                      android:imeOptions="actionDone"/>
-
-              </LinearLayout>
-
-              <HorizontalScrollView
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:contentDescription="@string/app_name">
-
-                  <LinearLayout
-                      android:layout_width="match_parent"
-                      android:layout_height="match_parent"
-                      android:gravity="center_horizontal"
-                      android:orientation="horizontal">
-
-
-                      <androidx.cardview.widget.CardView
-                          android:layout_width="match_parent"
-                          android:layout_height="230dp"
-                          android:elevation="12dp"
-                          app:cardCornerRadius="15dp">
-
-                          <LinearLayout
-                              android:layout_width="match_parent"
-                              android:layout_height="match_parent"
-                              android:gravity="center"
-                              android:orientation="horizontal">
-
-                              <ImageView
-
-                                  android:id="@+id/addAadharFront"
-                                  android:layout_width="50dp"
-                                  android:layout_height="50dp"
-                                  android:src="@drawable/add"
-                                  android:visibility="visible" />
-
-                              <ImageView
-                                  android:layout_width="350dp"
-                                  android:layout_height="200dp"
-                                  android:src="@drawable/dummy_aadhar"
-                                  android:visibility="gone" />
-                          </LinearLayout>
-                      </androidx.cardview.widget.CardView>
-
-                      <androidx.cardview.widget.CardView
-                          android:layout_width="match_parent"
-                          android:layout_height="230dp"
-                          android:elevation="12dp"
-                          app:cardCornerRadius="15dp">
-
-                          <LinearLayout
-                              android:layout_width="match_parent"
-                              android:layout_height="match_parent"
-                              android:gravity="center"
-                              android:orientation="horizontal">
-
-                              <ImageView
-
-                                  android:id="@+id/addAadharBack"
-                                  android:layout_width="50dp"
-                                  android:layout_height="50dp"
-                                  android:src="@drawable/add"
-                                  android:visibility="gone" />
-
-                              <ImageView
-                                  android:layout_width="350dp"
-                                  android:layout_height="200dp"
-                                  android:src="@drawable/dummy_aadhar"
-                                  android:visibility="visible" />
-                          </LinearLayout>
-                      </androidx.cardview.widget.CardView>
-
-
-                  </LinearLayout>
-              </HorizontalScrollView>
-
-
-
-              <TextView
-                  android:id="@+id/pancardTV"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:text="Pan card"
-                  android:padding="10dp"
-                  android:gravity="center"
-                  android:background="@color/color_secondary"
-                  android:textColor="@color/white"
-                  android:layout_marginTop="10dp"/>
-
-
-              <LinearLayout
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:orientation="horizontal"
-                  android:gravity="center_horizontal">
-
-                  <androidx.cardview.widget.CardView
-                      android:layout_width="350dp"
-                      android:layout_height="230dp"
-                      app:cardCornerRadius="15dp"
-                      android:elevation="12dp">
-
-                      <LinearLayout
-                          android:layout_width="match_parent"
-                          android:layout_height="match_parent"
-                          android:orientation="vertical"
-                          android:gravity="center"
-                          >
-                          <ImageView
-                              android:id="@+id/addPancard"
-                              android:layout_width="50dp"
-                              android:layout_height="50dp"
-                              android:src="@drawable/add"
-                              android:visibility="gone"/>
-                          <ImageView
-                              android:layout_width="350dp"
-                              android:layout_height="200dp"
-                              android:src="@drawable/dummy_pancard"/>
-                      </LinearLayout>
-                  </androidx.cardview.widget.CardView>
-
-              </LinearLayout>
-              <LinearLayout
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:orientation="vertical"
-                  android:padding="20dp">
-
-                  <EditText
-                      android:id="@+id/PanNameET"
-                      android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:hint="Enter Name as Pan"
-                      android:inputType="textPersonName"
-                      android:imeOptions="actionDone"/>
-                  <EditText
-                      android:id="@+id/PanNoET"
-                      android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:hint="Enter Pan Card No"
-                      android:inputType="textCapCharacters|number"
-                      android:maxLength="8"
-                      android:imeOptions="actionDone"/>
-
-
-              </LinearLayout>
-
-
-              <TextView
-                  android:id="@+id/licenceTV"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:text="Driving Licence"
-                  android:padding="10dp"
-                  android:layout_marginTop="10dp"/>
-
-              <LinearLayout
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:orientation="vertical"
-                  android:gravity="center_horizontal">
-
-                  <androidx.cardview.widget.CardView
-                      android:layout_width="350dp"
-                      android:layout_height="230dp"
-                      app:cardCornerRadius="15dp"
-                      android:elevation="12dp">
-
-                      <LinearLayout
-                          android:layout_width="match_parent"
-                          android:layout_height="match_parent"
-                          android:orientation="vertical"
-                          android:gravity="center"
-                          >
-                          <ImageView
-                              android:id="@+id/addLicence"
-                              android:layout_width="50dp"
-                              android:layout_height="50dp"
-                              android:src="@drawable/add"
-                              android:visibility="visible"/>
-                          <ImageView
-                              android:visibility="gone"
-                              android:layout_width="350dp"
-                              android:layout_height="200dp"
-                              android:src="@drawable/dummy_dl"/>
-                      </LinearLayout>
-                  </androidx.cardview.widget.CardView>
-
-              </LinearLayout>
-
-              <TextView
-                  android:id="@+id/bankPassbookTV"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:text="Bank Passbook"
-                  android:padding="10dp"
-                  android:layout_marginTop="10dp"/>
-              <LinearLayout
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:orientation="vertical"
-                  android:gravity="center_horizontal">
-
-                  <androidx.cardview.widget.CardView
-                      android:layout_width="350dp"
-                      android:layout_height="230dp"
-                      app:cardCornerRadius="15dp"
-                      android:elevation="12dp">
-
-                      <LinearLayout
-                          android:layout_width="match_parent"
-                          android:layout_height="match_parent"
-                          android:gravity="center"
-                          android:orientation="vertical">
-
-                          <ImageView
-                              android:id="@+id/addPassbook"
-                              android:layout_width="50dp"
-                              android:layout_height="50dp"
-                              android:src="@drawable/add"
-                              android:visibility="visible" />
-
-                      </LinearLayout>
-                  </androidx.cardview.widget.CardView>
-
-              </LinearLayout>
-              <LinearLayout
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:orientation="vertical"
-                  android:padding="20dp">
-
-                  <EditText
-                      android:id="@+id/bankNameET"
-                      android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:hint="Enter Name as Pan"
-                      android:inputType="textPersonName"
-                      android:imeOptions="actionDone"/>
-                  <EditText
-                      android:id="@+id/accountNoET"
-                      android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:hint="Enter Pan Card No"
-                      android:inputType="textCapCharacters|number"
-                      android:maxLength="8"
-                      android:imeOptions="actionDone"/>
-                  <EditText
-                      android:id="@+id/re_accountNoET"
-                      android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:hint="Enter Pan Card No"
-                      android:inputType="textCapCharacters|number"
-                      android:maxLength="8"
-                      android:imeOptions="actionDone"/>
-                  <EditText
-                      android:id="@+id/ifscCodeET"
-                      android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:hint="Enter IFSC code"
-                      android:layout_marginBottom="30dp"
-                      android:inputType="textCapCharacters|number"
-                      android:maxLength="8"
-                      android:imeOptions="actionDone"/>
-
-
-              </LinearLayout>
-
-
-
-          </LinearLayout>-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -1097,13 +459,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:cardElevation="8dp"
+                        app:cardBackgroundColor="@color/card_bg"
                         app:cardCornerRadius="10dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
-                            android:background="@color/card_bg"
                             android:layout_margin="5dp"
                             android:orientation="vertical">
 
@@ -1176,6 +538,7 @@
                         android:layout_height="wrap_content"
                         app:cardCornerRadius="10dp"
                         android:layout_marginBottom="5dp"
+                        app:cardBackgroundColor="@color/card_bg"
                         app:cardElevation="8dp"
                         >
 
@@ -1183,7 +546,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
-                            android:background="@color/card_bg"
                             android:layout_margin="3dp"
                             android:orientation="vertical">
 
@@ -1325,13 +687,13 @@
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
                         app:cardElevation="8dp"
+                        app:cardBackgroundColor="@color/card_bg"
                         app:cardCornerRadius="10dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
-                            android:background="@color/card_bg"
                             android:layout_margin="5dp"
                             android:orientation="vertical">
 
@@ -1406,14 +768,32 @@
 
                                 </LinearLayout>
 
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
 
+                                <ImageView
+                                    android:layout_width="90dp"
+                                    android:layout_height="50dp"
+                                    android:src="@drawable/profile"/>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginStart="@dimen/_10sdp"
+                                        android:textSize="@dimen/_15ssp"
+                                        android:textStyle="bold"
+                                        android:text="@string/address_proof"
+                                        />
+                                </LinearLayout>
 
                             </LinearLayout>
 
 
                             <Button
                                 android:layout_marginTop="5dp"
-                                android:visibility="gone"
+                                android:visibility="visible"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="submit"
@@ -1425,20 +805,19 @@
                     </androidx.cardview.widget.CardView>
 
 
-
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
                         app:cardElevation="8dp"
+                        app:cardBackgroundColor="@color/card_bg"
                         app:cardCornerRadius="10dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
-                            android:background="@color/card_bg"
                             android:layout_margin="5dp"
                             android:orientation="vertical">
 
@@ -1460,10 +839,44 @@
 
                             </LinearLayout>
 
+                            <LinearLayout
+                                android:id="@+id/merchantWorkingLL"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/merchant"/>
+                            <LinearLayout
+                                android:layout_marginTop="@dimen/_20sdp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                >
+                                <Button
+                                    android:id="@+id/merchantYes"
+                                    android:layout_width="wrap_content"
+                                    android:backgroundTint="@color/color_secondary"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="@dimen/_30sdp"
+                                    android:text="@string/yes"/>
+                                <Button
+                                    android:id="@+id/merchantNo"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:backgroundTint="@color/red"
+                                    android:text="@string/no"/>
+
+                            </LinearLayout>
+
+                            </LinearLayout>
+
                         <LinearLayout
                             android:id="@+id/checkboxLL"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:visibility="gone"
                             android:orientation="vertical"
                             android:background="@color/card_bg"
                             >
@@ -1576,6 +989,8 @@
                         app:cardCornerRadius="10dp"
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
+                        android:outlineAmbientShadowColor="@color/black"
+                        app:cardBackgroundColor="@color/card_bg"
                         app:cardElevation="8dp"
                         >
                         <LinearLayout
@@ -1727,6 +1142,8 @@
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
                         app:cardCornerRadius="10dp"
+                        android:outlineAmbientShadowColor="@color/black"
+                        app:cardBackgroundColor="@color/card_bg"
                         app:cardElevation="8dp"
                         >
                         <LinearLayout
@@ -1883,6 +1300,8 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         app:cardCornerRadius="10dp"
+                        android:outlineAmbientShadowColor="@color/black"
+                        app:cardBackgroundColor="@color/card_bg"
                         app:cardElevation="8dp"
                         >
 

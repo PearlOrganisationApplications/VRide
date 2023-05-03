@@ -42,9 +42,7 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.utils.MPPointF
-import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
@@ -58,7 +56,6 @@ import com.pearl.data.AttendanceList
 import com.pearl.data.NotificationList
 import com.pearl.test5.R
 import com.pearl.ui.DocumentActivity
-import com.pearl.ui.FormActivity
 import com.pearl.v_ride_lib.BaseClass
 import com.pearl.v_ride_lib.PrefManager
 import de.hdodenhof.circleimageview.CircleImageView

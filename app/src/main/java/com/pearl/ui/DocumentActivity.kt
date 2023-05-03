@@ -58,12 +58,20 @@ class DocumentActivity : BaseClass() {
     lateinit var personalTV: TextView
     lateinit var corporateTV: TextView
     lateinit var adharNoEdt: EditText
+    lateinit var yesBT: Button
+    lateinit var noBT: Button
+    lateinit var merchantWorkingLL: LinearLayout
+    lateinit var checkboxLL: LinearLayout
 
     override fun setLayoutXml() {
         setContentView(R.layout.activity_document)
     }
 
     override fun initializeViews() {
+        checkboxLL = findViewById(R.id.checkboxLL)
+        merchantWorkingLL = findViewById(R.id.merchantWorkingLL)
+        yesBT = findViewById(R.id.merchantYes)
+        noBT = findViewById(R.id.merchantNo)
         adhadharF = findViewById(R.id.addfront)
         adharFrontIV = findViewById(R.id.adharFrotIV)
         adhadharRear = findViewById(R.id.adharrearIV)
@@ -102,6 +110,14 @@ class DocumentActivity : BaseClass() {
     }
 
     override fun initializeClickListners() {
+        yesBT.setOnClickListener {
+
+        }
+        noBT.setOnClickListener {
+            merchantWorkingLL.visibility = View.GONE
+            checkboxLL.visibility = View.VISIBLE
+
+        }
         pan_dob.setOnClickListener {
             req_code =1
             showDatePicker()
@@ -137,7 +153,7 @@ class DocumentActivity : BaseClass() {
         adhadharF.setOnClickListener {
             ImagePicker.with(this)
                 .crop()
-                .compress(1024)			//Final image size will be less than 1 MB(Optional)
+                .compress(1024)			        //Final image size will be less than 1 MB(Optional)
                 .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
                 .start()
             image_type = 1
@@ -147,7 +163,7 @@ class DocumentActivity : BaseClass() {
         }
         adhadharR.setOnClickListener {
             ImagePicker.with(this)
-                .crop()	    			//Crop image(Optional), Check Customization for more option
+                .crop()	    			        //Crop image(Optional), Check Customization for more option
                 .compress(1024)			//Final image size will be less than 1 MB(Optional)
                 .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
                 .start()
@@ -155,7 +171,7 @@ class DocumentActivity : BaseClass() {
         }
         addPan.setOnClickListener {
             ImagePicker.with(this)
-                .crop()	    			//Crop image(Optional), Check Customization for more option
+                .crop()	    			  // Crop image(Optional), Check Customization for more option
                 .compress(1024)			//Final image size will be less than 1 MB(Optional)
                 .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
                 .start()
@@ -245,7 +261,8 @@ class DocumentActivity : BaseClass() {
         initializeClickListners()
         initializeInputs()
         initializeLabels()
-        validateAadharNo(adharNoEdt)
+
+//        validateAadharNo(adharNoEdt)
 
         val otherEdt = findViewById<EditText>(R.id.otherET)
 
