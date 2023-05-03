@@ -25,6 +25,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.pearl.test5.R
+import com.pearl.ui.DocumentActivity
 import com.pearl.v_ride_lib.BaseClass
 import com.pearl.v_ride_lib.PrefManager
 
@@ -299,7 +300,7 @@ class MainActivity : BaseClass() {
 // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
                     val user = mAuth.currentUser
-                    val i = Intent(this@MainActivity, HomeScreen::class.java)
+                    val i = Intent(this@MainActivity, DocumentActivity::class.java)
                     startActivity(i)
                     finish()
                     dialog.dismiss()

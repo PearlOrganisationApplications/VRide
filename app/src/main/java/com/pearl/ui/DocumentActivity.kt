@@ -67,6 +67,8 @@ class DocumentActivity : BaseClass() {
     lateinit var anotherYesBT: Button
     lateinit var anotherNoBT: Button
     lateinit var submitAlreadyBT: Button
+    lateinit var addressProofIV: ImageView
+    lateinit var addressProofTV: TextView
 
     override fun setLayoutXml() {
         setContentView(R.layout.activity_document)
@@ -74,6 +76,8 @@ class DocumentActivity : BaseClass() {
 
     override fun initializeViews() {
 
+        addressProofIV = findViewById(R.id.addressProofIV)
+        addressProofTV = findViewById(R.id.addressProofTV)
         submitAlreadyBT = findViewById(R.id.submitAlreadyBT)
         merchantanotherWorkingLL = findViewById(R.id.merchantanotherWorkingLL)
         anotherYesBT = findViewById(R.id.merchantAYes)
@@ -121,6 +125,7 @@ class DocumentActivity : BaseClass() {
     }
 
     override fun initializeClickListners() {
+
         submitAlreadyBT.setOnClickListener {
             merchantanotherWorkingLL.visibility = View.VISIBLE
             merchantAlready.visibility = View.GONE
@@ -260,6 +265,14 @@ class DocumentActivity : BaseClass() {
                 .start()
             image_type = 10
         }
+        addressProofTV.setOnClickListener {
+            ImagePicker.with(this)
+                .crop()
+                .compress(1024)			        //Final image size will be less than 1 MB(Optional)
+                .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+                .start()
+            image_type = 11
+        }
     }
 
     override fun initializeInputs() {
@@ -388,6 +401,8 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
             corporateAadharF.setImageURI(uri)
         }else if (image_type == 10){
             corporateAadharR.setImageURI(uri)
+        }else if (image_type == 11){
+            addressProofIV.setImageURI(uri)
         }
 
 
@@ -434,7 +449,7 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
 
     private fun getMinimumDate(): Long {
         val minDateCalendar = Calendar.getInstance()
-        minDateCalendar.add(Calendar.YEAR, -100) // Set 100 years ago from now
+        minDateCalendar.add(Calendar.YEAR, -100) //Set 100 years ago from now
         return minDateCalendar.timeInMillis
     }
 }
