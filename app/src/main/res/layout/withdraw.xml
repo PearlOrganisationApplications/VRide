@@ -1,27 +1,469 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/withdrawLayout"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/_290sdp"
-    android:padding="@dimen/_10sdp"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:layout_height="@dimen/_150sdp">
+    android:layout_height="match_parent"
+    android:visibility="visible"
+    app:layout_constraintTop_toTopOf="parent"
+    android:fillViewport="true"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
 
-
-    <EditText
-        android:id="@+id/withdrawAmount"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:gravity="center"
-        android:background="@drawable/empty_edt"
-        android:hint="Enter amount"/>
+        android:layout_height="match_parent"
+        android:background="@color/background_combo"
+        android:orientation="vertical"
+        >
 
-    <Button
-        android:layout_marginTop="@dimen/_15sdp"
-        android:id="@+id/withdrawAmountBT"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Withdraw"/>
+        <LinearLayout
+            android:id="@+id/withdrawL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/mpin_gradinet"
+            android:padding="@dimen/_15sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-</LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <ImageView
+                    android:id="@+id/closeWithdrawLL"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginTop="3dp"
+                    android:src="@drawable/ic_baseline_arrow_back_ios_24"
+                    app:tint="#6C6C6C" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Withdraw"
+                    android:textSize="@dimen/_22ssp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="Status"
+                android:textSize="@dimen/_12ssp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/alata"
+                android:text="Available balance"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_18ssp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/alata"
+                android:text="₹2000.00"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_30ssp" />
+
+        </LinearLayout>
+
+     <!--   <androidx.cardview.widget.CardView
+            android:id="@+id/withdrawDetailsCV"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:outlineAmbientShadowColor="@color/black"
+            app:cardBackgroundColor="@color/card_bg"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="8dp"
+            android:layout_marginTop="-30dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintTop_toBottomOf="@+id/withdrawLL">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp">
+
+
+
+
+
+
+
+
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>-->
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/withdrawFillDetailsCV"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:outlineAmbientShadowColor="@color/black"
+            app:cardBackgroundColor="@color/card_bg"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="8dp"
+            android:layout_marginTop="-30dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintTop_toBottomOf="@+id/withdrawL">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginStart="5dp"
+                        android:src="@drawable/profile" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/app_name"
+                        android:textSize="@dimen/_15ssp" />
+
+                    <ImageView
+                        android:id="@+id/editDetails"
+                        android:layout_weight=".1"
+                        android:visibility="gone"
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_baseline_edit"
+                        app:tint="#353434" />
+                    <ImageView
+                        android:id="@+id/confirmDetails"
+                        android:layout_weight=".1"
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_baseline_check"
+                        app:tint="#353434" />
+                </LinearLayout>
+
+                <!--  <View
+                      android:layout_width="match_parent"
+                      android:layout_height="1dp"
+                      android:background="@color/black"
+                      android:layout_marginStart="@dimen/_35sdp"/>-->
+
+                <LinearLayout
+                    android:id="@+id/detailFormLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_15sdp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="User Name" />
+
+                        <EditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:hint="Name"
+                            android:textSize="@dimen/_15ssp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_15sdp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Amount" />
+
+                        <EditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:hint="₹1500.00"
+                            android:textSize="@dimen/_15ssp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_15sdp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Bank Name" />
+
+                        <EditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:hint="SBI"
+                            android:textSize="@dimen/_15ssp" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_15sdp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Bank Account No" />
+
+                        <EditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:hint="123456789101112"
+                            android:textSize="@dimen/_15ssp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_15sdp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="IFSC code" />
+
+                        <EditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:hint="SBI0006362"
+                            android:textSize="@dimen/_15ssp" />
+                    </LinearLayout>
+                </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/showWithdrawDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_15sdp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="User Name" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:text="Name"
+                        android:textSize="@dimen/_15ssp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_15sdp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Amount" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:text="₹1500.00"
+                        android:textSize="@dimen/_15ssp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/more_detailLL"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                <LinearLayout
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_15sdp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bank Name" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:text="SBI"
+                        android:textSize="@dimen/_15ssp" />
+
+                </LinearLayout>
+                    <LinearLayout
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_15sdp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Bank Account No" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:text="123456789101112"
+                            android:textSize="@dimen/_15ssp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_15sdp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="IFSC code" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:text="SBI0006362"
+                            android:textSize="@dimen/_15ssp" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+                <TextView
+                    android:id="@+id/showMoreTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/_18ssp"
+                    android:text="Show more"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:visibility="gone"
+                    android:background="@drawable/accept_tv_background"/>
+                <TextView
+                    android:id="@+id/showLessTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/accept_tv_background"
+                    android:gravity="center"
+                    android:text=" Show Less ↑"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/_18ssp"
+                    android:textColor="@color/white"
+                    android:visibility="gone"/>
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <Button
+            android:id="@+id/button_withdraw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:layout_marginEnd="7dp"
+            android:padding="@dimen/_5sdp"
+            android:backgroundTint="@color/color_secondary"
+            android:text="Withdraw"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

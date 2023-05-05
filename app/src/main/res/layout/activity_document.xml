@@ -921,7 +921,7 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/merchant"/>
+                                    android:text="@string/another_merchant"/>
                                 <LinearLayout
                                     android:layout_marginTop="@dimen/_20sdp"
                                     android:layout_width="match_parent"

@@ -120,10 +120,6 @@ class MainActivity : BaseClass() {
 
 
         }
-//        forgotPassword.setOnClickListener {
-//            startActivity(Intent(this@MainActivity, ForgotPasswordActivity::class.java))
-//            finish()
-//        }
     }
 
     override fun initializeInputs() {
@@ -204,6 +200,7 @@ class MainActivity : BaseClass() {
             val requestCode = 1
             ActivityCompat.requestPermissions(this, permissions, requestCode)
         }*/
+
 
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))

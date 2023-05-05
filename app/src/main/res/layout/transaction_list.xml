@@ -8,9 +8,9 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="5dp"
-        app:cardElevation="8dp"
-        app:cardBackgroundColor="@color/card_bg"
+        app:cardCornerRadius="0dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardBackgroundColor="@color/background_combo"
         >
 
         <LinearLayout

@@ -16,7 +16,7 @@
 
     <style name="AppThemeTest" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimary">@color/app_background</item>
         <item name="colorPrimaryVariant">@color/app_background</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->

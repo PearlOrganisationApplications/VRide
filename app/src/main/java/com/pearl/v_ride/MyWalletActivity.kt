@@ -49,10 +49,19 @@ class
     private var transactionDetailsTV: TextView? = null
 //    private val UPI_PAYMENT = 0
     lateinit var dueLayout: ScrollView
+    lateinit var withdrawLayout: ScrollView
     lateinit var duePayBT: LinearLayout
     lateinit var withdrawBT: LinearLayout
     lateinit var hideTransaction: TextView
     lateinit var cancelDue: ImageView
+    lateinit var closeWithdrawLL: ImageView
+    lateinit var confirmDetails: ImageView
+    lateinit var editDetails: ImageView
+    lateinit var showWithdrawDetails: LinearLayout
+    lateinit var detailFormLL: LinearLayout
+    lateinit var more_detailLL: LinearLayout
+    lateinit var showMoreTV: TextView
+    lateinit var showLessTV: TextView
     var i: Int = 0
 
 //    lateinit var earningProfile: ImageView
@@ -63,11 +72,20 @@ class
     }
 
     override fun initializeViews() {
+        showMoreTV = findViewById(R.id.showMoreTV)
+        showLessTV = findViewById(R.id.showLessTV)
+        more_detailLL = findViewById(R.id.more_detailLL)
+        confirmDetails = findViewById(R.id.confirmDetails)
+        editDetails = findViewById(R.id.editDetails)
+        showWithdrawDetails = findViewById(R.id.showWithdrawDetails)
+        detailFormLL = findViewById(R.id.detailFormLL)
+        closeWithdrawLL = findViewById(R.id.closeWithdrawLL)
+        withdrawLayout = findViewById(R.id.withdrawLayout)
         withdrawBT = findViewById(R.id.withdrawLL)
         duePayBT = findViewById(R.id.duePayLL)
         dueLayout = findViewById(R.id.payDueLayout)
         ivback=findViewById(R.id.ivBack)
-        apptitle = findViewById(R.id.titleTVAppbar)
+//        apptitle = findViewById(R.id.titleTVAppbar)
         myearningLL = findViewById(R.id.earningLL)
         mywalletLL = findViewById(R.id.walletLL)
         walletProfile = findViewById(R.id.walletProfile)
@@ -82,11 +100,11 @@ class
         i = intent.getIntExtra("key", 0)
 
         if (i == 0) {
-            apptitle.text = "My Earning"
+//            apptitle.text = "My Earning"
             myearningLL.visibility = View.VISIBLE
             mywalletLL.visibility = View.GONE
         } else if(i == 1) {
-            apptitle.text = "Wallet"
+//            apptitle.text = "Wallet"
             mywalletLL.visibility = View.VISIBLE
             myearningLL.visibility = View.GONE
         }
@@ -96,16 +114,51 @@ class
         ivback.setOnClickListener {
             onBackPressed()
         }
-        withdrawBT.setOnClickListener {
-            dialogW.setContentView(R.layout.withdraw)
-            dialogW.show()
+        showMoreTV.setOnClickListener {
+            more_detailLL.visibility = View.VISIBLE
+            showLessTV.visibility = View.VISIBLE
+            showMoreTV.visibility = View.GONE
         }
+        showLessTV.setOnClickListener {
+            more_detailLL.visibility = View.GONE
+            showLessTV.visibility = View.GONE
+            showMoreTV.visibility = View.VISIBLE
+        }
+        confirmDetails.setOnClickListener {
+            showWithdrawDetails.visibility = View.VISIBLE
+            detailFormLL.visibility = View.GONE
+            confirmDetails.visibility = View.GONE
+            editDetails.visibility = View.VISIBLE
+            showMoreTV.visibility = View.VISIBLE
+        }
+        editDetails.setOnClickListener {
+            showWithdrawDetails.visibility = View.GONE
+            detailFormLL.visibility = View.VISIBLE
+            confirmDetails.visibility = View.VISIBLE
+            editDetails.visibility = View.GONE
+            showMoreTV.visibility = View.GONE
+            showLessTV.visibility = View.GONE
+        }
+        withdrawBT.setOnClickListener {
+           withdrawLayout.visibility = View.VISIBLE
+            showWithdrawDetails.visibility = View.GONE
+            detailFormLL.visibility = View.VISIBLE
+            confirmDetails.visibility = View.VISIBLE
+            editDetails.visibility = View.GONE
+            showMoreTV.visibility = View.GONE
+            showLessTV.visibility = View.GONE
+        }
+
+        closeWithdrawLL.setOnClickListener {
+            withdrawLayout.visibility = View.GONE
+        }
+
         seeTransaction.setOnClickListener {
             transaction.visibility = View.VISIBLE
             seeTransaction.visibility = View.GONE
             hideTransaction.visibility = View.VISIBLE
-
         }
+
         hideTransaction.setOnClickListener {
             transaction.visibility = View.GONE
             seeTransaction.visibility = View.VISIBLE
@@ -185,6 +238,18 @@ class
 
 
 
+        transactionListCard.add(
+            TransactionList("Transaction Title","₹ 8500","24/04/2024","11.43PM")
+        )
+        transactionListCard.add(
+            TransactionList("Transaction Title","₹ 8500","24/04/2024","11.43PM")
+        )
+        transactionListCard.add(
+            TransactionList("Transaction Title","₹ 8500","24/04/2024","11.43PM")
+        )
+        transactionListCard.add(
+            TransactionList("Transaction Title","₹ 8500","24/04/2024","11.43PM")
+        )
         transactionListCard.add(
             TransactionList("Transaction Title","₹ 8500","24/04/2024","11.43PM")
         )
