@@ -62,6 +62,16 @@ class
     lateinit var more_detailLL: LinearLayout
     lateinit var showMoreTV: TextView
     lateinit var showLessTV: TextView
+    lateinit var  w_nameET: EditText
+    lateinit var  w_amountET: EditText
+    lateinit var  w_bankNameET: EditText
+    lateinit var  w_bankACNOET: EditText
+    lateinit var  w_ifscCodeET: EditText
+    lateinit var w_nameTV: TextView
+    lateinit var w_amountTV: TextView
+    lateinit var w_bankNameTV: TextView
+    lateinit var w_bankACNOTV: TextView
+    lateinit var w_ifscCodeTV: TextView
     var i: Int = 0
 
 //    lateinit var earningProfile: ImageView
@@ -72,6 +82,16 @@ class
     }
 
     override fun initializeViews() {
+        w_nameTV = findViewById(R.id.w_nameTV)
+        w_amountTV = findViewById(R.id.w_amountTV)
+        w_bankNameTV = findViewById(R.id.w_bankNameTV)
+        w_bankACNOTV = findViewById(R.id.w_bankACNOTV)
+        w_ifscCodeTV = findViewById(R.id.w_ifscCodeTV)
+        w_amountET = findViewById(R.id.w_amountET)
+        w_nameET = findViewById(R.id.w_nameET)
+        w_bankNameET = findViewById(R.id.w_bankNameET)
+        w_bankACNOET = findViewById(R.id.w_bankACNOET)
+        w_ifscCodeET = findViewById(R.id.w_ifscCodeET)
         showMoreTV = findViewById(R.id.showMoreTV)
         showLessTV = findViewById(R.id.showLessTV)
         more_detailLL = findViewById(R.id.more_detailLL)
@@ -130,6 +150,8 @@ class
             confirmDetails.visibility = View.GONE
             editDetails.visibility = View.VISIBLE
             showMoreTV.visibility = View.VISIBLE
+            more_detailLL.visibility = View.GONE
+
         }
         editDetails.setOnClickListener {
             showWithdrawDetails.visibility = View.GONE

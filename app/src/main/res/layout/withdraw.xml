@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    android:visibility="gone"
+    android:visibility="visible"
     app:layout_constraintTop_toTopOf="parent"
     android:fillViewport="true"
     app:layout_constraintEnd_toEndOf="parent"
@@ -198,6 +198,7 @@
                             android:text="User Name" />
 
                         <EditText
+                            android:id="@+id/w_nameET"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -220,6 +221,7 @@
                             android:text="Amount" />
 
                         <EditText
+                            android:id="@+id/w_amountET"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -241,6 +243,7 @@
                             android:text="Bank Name" />
 
                         <EditText
+                            android:id="@+id/w_bankNameET"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -263,6 +266,7 @@
                             android:text="Bank Account No" />
 
                         <EditText
+                            android:id="@+id/w_bankACNOET"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -285,6 +289,7 @@
                             android:text="IFSC code" />
 
                         <EditText
+                            android:id="@+id/w_ifscCodeET"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -316,6 +321,7 @@
                         android:text="User Name" />
 
                     <TextView
+                        android:id="@+id/w_nameTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -337,7 +343,7 @@
                         android:layout_height="wrap_content"
                         android:text="Amount" />
 
-                    <TextView
+                    <TextView android:id="@+id/w_amountTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -366,6 +372,7 @@
                         android:text="Bank Name" />
 
                     <TextView
+                        android:id="@+id/w_bankNameTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -388,6 +395,7 @@
                             android:text="Bank Account No" />
 
                         <TextView
+                            android:id="@+id/w_bankACNOTV"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -410,6 +418,7 @@
                             android:text="IFSC code" />
 
                         <TextView
+                            android:id="@+id/w_ifscCodeTV"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
