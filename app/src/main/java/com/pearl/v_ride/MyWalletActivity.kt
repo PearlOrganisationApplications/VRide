@@ -88,7 +88,7 @@ class
 //        apptitle = findViewById(R.id.titleTVAppbar)
         myearningLL = findViewById(R.id.earningLL)
         mywalletLL = findViewById(R.id.walletLL)
-        walletProfile = findViewById(R.id.walletProfile)
+//        walletProfile = findViewById(R.id.walletProfile)
         seeTransaction = findViewById(R.id.seeAllTV)
         transaction = findViewById(R.id.transactionRV)
         hideTransaction = findViewById(R.id.hideAllTV)
@@ -206,7 +206,7 @@ class
                     obj.put("prefill", preFill)
                     checkout.open(this@MyWalletActivity, obj)
                 } catch (e: JSONException) {
-                    Toast.makeText(getApplicationContext(), "Error in payment: " + e.message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Error in payment: " + e.message, Toast.LENGTH_SHORT).show()
                     e.printStackTrace()
                 }
 
@@ -272,11 +272,11 @@ class
 
     override fun onResume() {
         super.onResume()
-        if(Global.imageString != "") {
+      /*  if(Global.imageString != "") {
             val uri = Uri.parse(Global.imageString)
             walletProfile.setImageURI(uri)
             Log.d("abc", Global.imageString)
-        }
+        }*/
     }
 
     override fun onPaymentSuccess(s: String?) {
