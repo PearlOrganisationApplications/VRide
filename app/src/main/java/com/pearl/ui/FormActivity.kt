@@ -10,6 +10,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import com.pearl.test5.R
 import com.pearl.v_ride_lib.BaseClass
+import com.pearl.v_ride_lib.Global
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -112,6 +113,7 @@ class FormActivity : BaseClass() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Global.language(this,resources)
         setLayoutXml()
         initializeViews()
         initializeClickListners()

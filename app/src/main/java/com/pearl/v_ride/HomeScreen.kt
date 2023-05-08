@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Typeface
 import android.location.Geocoder
@@ -22,6 +23,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import com.pearl.v_ride_lib.Global
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -52,7 +54,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.pearl.adapter.AttendanceAdapter
-import com.pearl.v_ride_lib.Global
+
 import com.pearl.adapter.NotificationAdapter
 import com.pearl.data.AttendanceList
 import com.pearl.data.NotificationList
@@ -61,6 +63,7 @@ import com.pearl.ui.DocumentActivity
 import com.pearl.ui.FormActivity
 import com.pearl.v_ride_lib.BaseClass
 import com.pearl.v_ride_lib.PrefManager
+import com.pearl.v_ride_lib.SessionManager
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
 import kotlin.collections.ArrayList
@@ -102,6 +105,10 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
     lateinit var calendarRV: RecyclerView
     lateinit var monthlyCal: TextView
+    lateinit var langEngTxt: TextView
+    lateinit var langHiTxt: TextView
+    lateinit var monthly_pay: TextView
+    lateinit var earnTxt: TextView
     lateinit var hideCal: TextView
     lateinit var headerLayout: View
     val attendanceCard = ArrayList<AttendanceList>()
@@ -111,9 +118,10 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     lateinit var off_duty: TextView
     lateinit var hideCalendar: TextView
 
-
-    override fun setLayoutXml() {
+    lateinit var resourcess :Resources
+   override fun setLayoutXml() {
         setContentView(R.layout.activity_home_screen)
+
 
     }
 
@@ -141,6 +149,8 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         swipeRefreshLayout = findViewById(R.id.container)
         calendarRV = findViewById(R.id.calenderRV)
         monthlyCal = findViewById(R.id.monthlyCalender)
+        earnTxt = findViewById(R.id.txt_earn)
+        monthly_pay = findViewById(R.id.monthly_pay)
         hideCal = findViewById(R.id.hideCalendar)
         hideCalendar = findViewById(R.id.hideCalendar)
 
@@ -148,9 +158,14 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         toggle_on = findViewById(R.id.toggle_on)
         on_duty = findViewById(R.id.dutyON)
         off_duty = findViewById(R.id.dutyOFF)
+
     }
 
     override fun initializeClickListners() {
+
+
+
+
 
         toggle_on.setOnClickListener {
             on_duty.visibility = View.GONE
@@ -218,6 +233,13 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                     startActivity(Intent(this@HomeScreen, DocumentActivity::class.java))
                     drawerLayout.closeDrawers()
                 }
+                R.id.language-> {
+
+                    startActivity(Intent(this@HomeScreen, LanguageActivity::class.java))
+                    drawerLayout.closeDrawers()
+                }
+
+
                 R.id.logout -> {
 
                     mAuth = FirebaseAuth.getInstance()
@@ -276,6 +298,9 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
 
 
+
+
+       // langHiBtn.setText(resourcess.getString(R.string.lang_hindi))
         /*val mapFragment = supportFragmentManager
             .findFragmentById(R.id.homeScreenmap) as SupportMapFragment
         fetchLocation()*/
@@ -284,6 +309,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         prefManager = PrefManager(this)
 
         prefManager.setLogin(true)
+
 
         setLayoutXml()
         initializeViews()
@@ -495,6 +521,9 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onResume() {
+        resourcess = Global.language(this,resources)
+        earnTxt.text = resourcess.getString(R.string.net_earn)
+        monthly_pay.text = resourcess.getString(R.string.monthly_pay)
 
         val isConnected = isNetworkConnected(this.applicationContext)
         super.onResume()

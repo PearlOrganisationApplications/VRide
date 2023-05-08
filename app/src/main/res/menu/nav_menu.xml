@@ -47,6 +47,12 @@
         android:title="Document"
         android:icon="@drawable/file"
         />
+
+    <item
+        android:id="@+id/language"
+        android:title="Language"
+        android:icon="@drawable/file"
+        />
     <item
         android:id="@+id/logout"
         android:title="Update"

@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import com.pearl.v_ride_lib.Global
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
@@ -19,7 +20,7 @@ import androidx.core.content.ContextCompat
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.pearl.v_ride_lib.Global
+
 import com.pearl.test5.R
 import com.pearl.v_ride_lib.BaseClass
 import de.hdodenhof.circleimageview.CircleImageView
@@ -127,6 +128,7 @@ class ProfileActivity : BaseClass() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Global.language(this,resources)
 
         setLayoutXml()
         initializeViews()

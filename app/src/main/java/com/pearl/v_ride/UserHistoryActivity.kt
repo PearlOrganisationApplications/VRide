@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pearl.adapter.HistoryAdapter
 import com.pearl.data.HistoryList
 import com.pearl.test5.R
+import com.pearl.v_ride_lib.Global
 
 class UserHistoryActivity : AppCompatActivity() {
 
@@ -20,6 +21,7 @@ class UserHistoryActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Global.language(this,resources)
         setContentView(R.layout.activity_user_history)
         historyRV = findViewById(R.id.historyRV)
 

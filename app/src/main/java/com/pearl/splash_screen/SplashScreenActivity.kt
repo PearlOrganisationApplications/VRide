@@ -14,10 +14,12 @@ import com.google.android.gms.location.LocationRequest
 import com.pearl.test5.R
 import com.pearl.v_ride.HomeScreen
 import com.pearl.v_ride.MainActivity
+import com.pearl.v_ride.PermissionActivity
 
 import com.pearl.v_ride_lib.PrefManager
-import com.pearl.vride.PermissionActivity
+
 import com.pearl.v_ride.WelcomeScreen
+import com.pearl.v_ride_lib.Global
 
 class SplashScreenActivity : AppCompatActivity() {
 
@@ -45,6 +47,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Global.language(this,resources)
         setContentView(R.layout.activity_splash_screen)
         prefManager = PrefManager(this)
 
@@ -85,7 +88,7 @@ class SplashScreenActivity : AppCompatActivity() {
                     finish()
 
                 }else{
-                    startActivity(Intent(this@SplashScreenActivity,PermissionActivity::class.java))
+                    startActivity(Intent(this@SplashScreenActivity, PermissionActivity::class.java))
                     finish()
                 }
 

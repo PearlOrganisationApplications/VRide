@@ -19,11 +19,10 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
-    <string name="net_earn">"This Month Net Earning"</string>
-    <string name="state">"Uttarakhand"</string>
-    <string name="lang_hindi">"Hindi"</string>
-    <string name="lang_eng">"English"</string>
-    <string name="monthly_pay">"Monthly Payout"</string>
-    <string name="monthly_cal">"Monthly Calender"</string>
-
+    <string name="net_earn">"इस महीने की शुद्ध कमाई"</string>
+    <string name="state">"उत्तराखंड"</string>
+    <string name="lang_hindi">"हिंदी"</string>
+    <string name="lang_eng">"अंग्रेज़ी"</string>
+    <string name="monthly_pay">"मासिक भुगतान"</string>
+    <string name="monthly_cal">"मासिक कैलेंडर"</string>
 </resources>

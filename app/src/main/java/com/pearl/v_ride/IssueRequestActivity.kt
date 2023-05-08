@@ -7,6 +7,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.DataBindingUtil
 import com.pearl.test5.R
 import com.pearl.test5.databinding.ActivityIssueRequestBinding
+import com.pearl.v_ride_lib.Global
 
 class IssueRequestActivity : AppCompatActivity() {
     private lateinit var binding: ActivityIssueRequestBinding
@@ -17,7 +18,7 @@ class IssueRequestActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_issue_request)
-
+        Global.language(this,resources)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_issue_request)
 
 //        customToolbar = findViewById(R.id.customToolbar)

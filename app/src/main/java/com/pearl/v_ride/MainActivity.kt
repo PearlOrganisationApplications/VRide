@@ -9,7 +9,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.View
+
 import android.view.Window
 import android.widget.Button
 import android.widget.EditText
@@ -26,6 +26,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.pearl.test5.R
 import com.pearl.v_ride_lib.BaseClass
+import android.view.View
+import com.pearl.v_ride_lib.Global
+
 import com.pearl.v_ride_lib.PrefManager
 
 class MainActivity : BaseClass() {
@@ -134,7 +137,8 @@ class MainActivity : BaseClass() {
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+        super.onCreate(savedInstanceState) 
+        Global.language(this,resources)
         val isConnected = isNetworkConnected(this.applicationContext)
 
         prefManager = PrefManager(this)

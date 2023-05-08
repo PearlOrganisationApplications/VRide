@@ -2,6 +2,7 @@ package com.pearl.adapter
 
 import android.view.LayoutInflater
 import android.view.View
+import com.pearl.v_ride_lib.Global
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView

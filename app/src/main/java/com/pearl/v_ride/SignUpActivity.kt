@@ -10,6 +10,7 @@ import android.widget.*
 import com.pearl.test5.R
 import com.pearl.ui.DocumentActivity
 import com.pearl.v_ride_lib.BaseClass
+import com.pearl.v_ride_lib.Global
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -90,6 +91,7 @@ class SignUpActivity : BaseClass() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Global.language(this,resources)
         setLayoutXml()
         initializeViews()
         initializeClickListners()

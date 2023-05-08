@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.text.Layout
 import android.util.Log
 import android.view.View
+import com.pearl.v_ride_lib.Global
 import android.widget.*
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
@@ -19,7 +20,7 @@ import com.pearl.adapter.TransactionsAdapter
 import com.pearl.data.TransactionList
 import com.pearl.test5.R
 import com.pearl.v_ride_lib.BaseClass
-import com.pearl.v_ride_lib.Global
+
 import com.razorpay.Checkout
 import com.razorpay.PaymentResultListener
 import org.json.JSONException
@@ -174,6 +175,7 @@ class
     @SuppressLint("SuspiciousIndentation", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Global.language(this,resources)
 
 
         setLayoutXml()

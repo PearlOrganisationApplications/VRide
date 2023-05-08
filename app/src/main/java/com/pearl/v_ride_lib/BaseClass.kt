@@ -15,6 +15,7 @@ import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
 import android.view.View
+import com.pearl.v_ride_lib.Global
 import android.view.Window
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
