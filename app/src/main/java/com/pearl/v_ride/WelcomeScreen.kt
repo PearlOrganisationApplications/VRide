@@ -13,7 +13,7 @@ import com.pearl.adapter.OnboardingItemAdapter
 import com.pearl.data.OnboardingItem
 import com.pearl.test5.R
 import com.pearl.v_ride_lib.BaseClass
-import com.pearl.vride.PermissionActivity
+import com.pearl.v_ride_lib.Global
 
 class WelcomeScreen : BaseClass() {
     private  lateinit var onboardingItemAdapter: OnboardingItemAdapter
@@ -39,6 +39,7 @@ class WelcomeScreen : BaseClass() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Global.language(this,resources)
 
 
         setLayoutXml()

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pearl.adapter.NearestListAapter
 import com.pearl.data.NearestList
 import com.pearl.test5.R
+import com.pearl.v_ride_lib.Global
 
 class NearestServiceActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
@@ -19,6 +20,7 @@ class NearestServiceActivity : AppCompatActivity() {
     lateinit var placeAddress: Array<String*/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+    Global.language(this,resources)
         setContentView(R.layout.activity_nearest_service)
 
     ivback=findViewById(R.id.ivBack)

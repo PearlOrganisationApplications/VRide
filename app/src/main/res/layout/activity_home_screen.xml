@@ -224,11 +224,21 @@
                    android:layout_height="wrap_content"
                    android:orientation="vertical">
 
+
+
+                   <RelativeLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:orientation="horizontal">
+
                    <TextView
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
-                       android:text="This Month Net Earning"
+                       android:text="@string/net_earn"
+                       android:id="@+id/txt_earn"
                        android:textSize="@dimen/_13ssp"/>
+
+                   </RelativeLayout>
                    <LinearLayout
                        android:layout_width="match_parent"
                        android:layout_height="wrap_content"
@@ -259,7 +269,7 @@
                            android:textSize="@dimen/_13ssp"
                            android:textStyle="bold"
                            android:padding="@dimen/_2ssp"
-                           android:text="Uttarakhand"/>
+                           android:text="@string/state"/>
                    </LinearLayout>
 
             <androidx.cardview.widget.CardView
@@ -371,7 +381,8 @@
                            android:background="@drawable/custom_text_backgraung"
                            android:textColor="@color/white"
                            android:padding="@dimen/_2ssp"
-                           android:text="Monthly Payout"/>
+                           android:id="@+id/monthly_pay"
+                           android:text="@string/monthly_pay"/>
                        <TextView
                            android:id="@+id/monthlyCalender"
                            android:layout_weight="1.3"

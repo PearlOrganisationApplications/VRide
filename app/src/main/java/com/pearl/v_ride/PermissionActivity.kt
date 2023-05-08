@@ -1,5 +1,4 @@
-package com.pearl.vride
-
+package com.pearl.v_ride
 import android.Manifest
 import android.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +8,7 @@ import android.os.Bundle
 import android.content.Intent
 import android.net.Uri
 import android.view.View
+import com.pearl.v_ride_lib.Global
 import androidx.core.content.ContextCompat
 import android.content.pm.PackageManager
 import android.provider.Settings
@@ -48,6 +48,7 @@ class PermissionActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Global.language(this,resources)
         setContentView(R.layout.activity_permission)
         gonetoSettings = false
         pref = PrefManager(this@PermissionActivity)

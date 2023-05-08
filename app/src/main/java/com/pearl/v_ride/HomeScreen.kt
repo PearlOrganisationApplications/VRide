@@ -42,7 +42,9 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.utils.MPPointF
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
@@ -55,6 +57,8 @@ import com.pearl.adapter.NotificationAdapter
 import com.pearl.data.AttendanceList
 import com.pearl.data.NotificationList
 import com.pearl.test5.R
+import com.pearl.ui.DocumentActivity
+import com.pearl.ui.FormActivity
 import com.pearl.v_ride_lib.BaseClass
 import com.pearl.v_ride_lib.PrefManager
 import de.hdodenhof.circleimageview.CircleImageView
@@ -214,15 +218,15 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                     startActivity(Intent(this@HomeScreen, DocumentActivity::class.java))
                     drawerLayout.closeDrawers()
                 }
-            /*    R.id.logout -> {
+                R.id.logout -> {
 
                     mAuth = FirebaseAuth.getInstance()
-                    *//* if (::mAuth.isInitialized) {
+                    /* if (::mAuth.isInitialized) {
                          mAuth.signOut()
  //                        GoogleSignIn.
                          Toast.makeText(applicationContext,"Logout", Toast.LENGTH_SHORT).show()
                          finish()
-                     }*//*
+                     }*/
 
                     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                         .requestEmail()
@@ -238,7 +242,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                     Toast.makeText(applicationContext,"Logout", Toast.LENGTH_SHORT).show()
 
                     prefManager.setLogin(false)
-                }*/
+                }
             }
             true
         }
@@ -454,7 +458,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
 
     @RequiresApi(Build.VERSION_CODES.M)
-    @SuppressLint("MissingPermission", "SuspiciousIndentation")
+    @SuppressLint("MissingPermission")
     fun isOnline(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
