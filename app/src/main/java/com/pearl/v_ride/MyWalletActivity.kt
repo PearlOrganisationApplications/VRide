@@ -82,6 +82,7 @@ class
     }
 
     override fun initializeViews() {
+
         w_nameTV = findViewById(R.id.w_nameTV)
         w_amountTV = findViewById(R.id.w_amountTV)
         w_bankNameTV = findViewById(R.id.w_bankNameTV)
@@ -134,6 +135,7 @@ class
         ivback.setOnClickListener {
             onBackPressed()
         }
+
         showMoreTV.setOnClickListener {
             more_detailLL.visibility = View.VISIBLE
             showLessTV.visibility = View.VISIBLE
@@ -151,6 +153,17 @@ class
             editDetails.visibility = View.VISIBLE
             showMoreTV.visibility = View.VISIBLE
             more_detailLL.visibility = View.GONE
+
+            val name = w_nameET.text.toString()
+            w_nameTV.text = name
+            val amount = w_amountET.text.toString()
+            w_amountTV.text = amount
+            val bank_name = w_bankNameET.text.toString()
+            w_bankNameTV.text = bank_name
+            val bankAC = w_bankACNOET.text.toString()
+            w_bankACNOTV.text = bankAC
+            val  ifsc = w_ifscCodeET.text.toString()
+            w_ifscCodeTV.text = ifsc
 
         }
         editDetails.setOnClickListener {
@@ -209,7 +222,7 @@ class
             makePaymentBtn?.setOnClickListener {
 
                 val amt = amountEdt?.text.toString()
-                val amount = Math.round(amt.toFloat() * 100).toInt()
+                val amount = Math.round(amt.toFloat() * 100)
                 val checkout = Checkout()
                 checkout.setKeyID("rzp_test_capDM1KlnUhj5f")
                 checkout.setImage(R.drawable.logo_round)
@@ -270,7 +283,7 @@ class
             TransactionList("Transaction Title","₹ 8500","24/04/2024","11.43PM")
         )
         transactionListCard.add(
-            TransactionList("Transaction Title","₹ 8500","24/04/2024","11.43PM")
+            TransactionList("Transaction Title", "₹ 8500","24/04/2024","11.43PM")
         )
         transactionListCard.add(
             TransactionList("Transaction Title","₹ 8500","24/04/2024","11.43PM")
