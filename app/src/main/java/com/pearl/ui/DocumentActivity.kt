@@ -12,7 +12,9 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.pearl.test5.R
 import com.pearl.v_ride.HomeScreen
 import com.pearl.v_ride_lib.BaseClass
@@ -69,6 +71,10 @@ class DocumentActivity : BaseClass() {
     lateinit var submitAlreadyBT: Button
     lateinit var addressProofIV: ImageView
     lateinit var addressProofTV: TextView
+    lateinit var listLayout: ConstraintLayout
+    lateinit var merchantList: ListView
+    lateinit var addFAB: FloatingActionButton
+    private lateinit var adapter: ArrayAdapter<String>
 
     override fun setLayoutXml() {
         setContentView(R.layout.activity_document)
@@ -76,12 +82,18 @@ class DocumentActivity : BaseClass() {
 
     override fun initializeViews() {
 
+        addFAB = findViewById(R.id.addFAB)
+        merchantList = findViewById(R.id.merchantList)
+        listLayout = findViewById(R.id.listLayout)
+
         addressProofIV = findViewById(R.id.addressProofIV)
         addressProofTV = findViewById(R.id.addressProofTV)
         submitAlreadyBT = findViewById(R.id.submitAlreadyBT)
-        merchantanotherWorkingLL = findViewById(R.id.merchantanotherWorkingLL)
-        anotherYesBT = findViewById(R.id.merchantAYes)
-        anotherNoBT = findViewById(R.id.merchantANo)
+
+       /* merchantanotherWorkingLL = findViewById(R.id.merchantanotherWorkingLL)
+          anotherYesBT = findViewById(R.id.merchantAYes)
+          anotherNoBT = findViewById(R.id.merchantANo) */
+
         merchantAlready = findViewById(R.id.merchantAlready)
         checkboxLL = findViewById(R.id.checkboxLL)
         merchantWorkingLL = findViewById(R.id.merchantWorkingLL)
@@ -127,15 +139,20 @@ class DocumentActivity : BaseClass() {
     override fun initializeClickListners() {
 
         submitAlreadyBT.setOnClickListener {
-            merchantanotherWorkingLL.visibility = View.VISIBLE
+            listLayout.visibility = View.VISIBLE
             merchantAlready.visibility = View.GONE
         }
-        anotherYesBT.setOnClickListener {
+        /*anotherYesBT.setOnClickListener {
             merchantAlready.visibility = View.VISIBLE
             merchantanotherWorkingLL.visibility = View.GONE
         }
         anotherNoBT.setOnClickListener {
 
+
+        }*/
+        addFAB.setOnClickListener {
+            listLayout.visibility = View.GONE
+            merchantAlready.visibility = View.VISIBLE
         }
         yesBT.setOnClickListener {
             merchantAlready.visibility = View.VISIBLE

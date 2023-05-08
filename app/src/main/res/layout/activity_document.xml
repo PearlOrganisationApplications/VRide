@@ -841,6 +841,8 @@
 
                             </LinearLayout>
 
+                            <!--first ll-->
+
                             <LinearLayout
                                 android:id="@+id/merchantWorkingLL"
                                 android:visibility="visible"
@@ -875,12 +877,50 @@
 
                             </LinearLayout>
 
+                           <!-- merchand detail-->
+
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/listLayout"
+                                android:layout_width="match_parent"
+                                android:visibility="gone"
+                                android:layout_height="wrap_content"
+                                android:minHeight="@dimen/_130sdp"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Enter All merchant name you are working with"
+                                    android:layout_marginBottom="@dimen/_10sdp"/>
+
+                                <ListView
+                                    android:id="@+id/merchantList"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                    android:id="@+id/addFAB"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="54dp"
+                                    android:src="@drawable/ic_baseline_add"
+                                    app:fabSize="normal"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                            <!-- 2merchand detail-->
                             <LinearLayout
                                 android:id="@+id/merchantAlready"
                                 android:visibility="gone"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical">
+
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -907,12 +947,15 @@
                                     android:id="@+id/submitAlreadyBT"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="submit"
+                                    android:text="save"
                                     android:backgroundTint="@color/color_secondary"/>
+
+
+
 
                             </LinearLayout>
 
-                            <LinearLayout
+                        <!--    <LinearLayout
                                 android:id="@+id/merchantanotherWorkingLL"
                                 android:visibility="gone"
                                 android:layout_width="match_parent"
@@ -944,7 +987,7 @@
 
                                 </LinearLayout>
 
-                            </LinearLayout>
+                            </LinearLayout>-->
 
 
 

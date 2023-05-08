@@ -3,15 +3,14 @@ package com.pearl.v_ride
 
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.net.Uri
+import android.content.Context
 import android.os.Bundle
-import android.text.Layout
-import android.util.Log
+import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -19,7 +18,6 @@ import com.pearl.adapter.TransactionsAdapter
 import com.pearl.data.TransactionList
 import com.pearl.test5.R
 import com.pearl.v_ride_lib.BaseClass
-import com.pearl.v_ride_lib.Global
 import com.razorpay.Checkout
 import com.razorpay.PaymentResultListener
 import org.json.JSONException
@@ -72,6 +70,7 @@ class
     lateinit var w_bankNameTV: TextView
     lateinit var w_bankACNOTV: TextView
     lateinit var w_ifscCodeTV: TextView
+    lateinit var rootView: LinearLayout
     var i: Int = 0
 
 //    lateinit var earningProfile: ImageView
@@ -115,6 +114,7 @@ class
         hideTransaction = findViewById(R.id.hideAllTV)
         recharge = findViewById(R.id.recharge)
         cancelDue = findViewById(R.id.cancelDue)
+        rootView = findViewById(R.id.rootView)
         dialog = BottomSheetDialog(this)
         dialogW = Dialog(this)
 
@@ -130,11 +130,33 @@ class
             myearningLL.visibility = View.GONE
         }
     }
+    private fun closeKeyboard() {
+       // onBackPressed()
+//        val view: View? = currentFocus
+        val inputMethodManager =
+            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(w_nameET.windowToken, 0)
 
+    }
+
+
+    @SuppressLint("ClickableViewAccessibility")
     override fun initializeClickListners() {
         ivback.setOnClickListener {
             onBackPressed()
         }
+
+        /*rootView.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                // Hide the keyboard
+                val imm: InputMethodManager =
+                    getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(w_amountET.windowToken, 0)
+                // Clear the focus from the EditText
+                w_nameET.clearFocus()
+            }
+            false
+        }*/
 
         showMoreTV.setOnClickListener {
             more_detailLL.visibility = View.VISIBLE
@@ -164,6 +186,9 @@ class
             w_bankACNOTV.text = bankAC
             val  ifsc = w_ifscCodeET.text.toString()
             w_ifscCodeTV.text = ifsc
+
+            closeKeyboard()
+
 
         }
         editDetails.setOnClickListener {
@@ -241,7 +266,7 @@ class
                     obj.put("prefill", preFill)
                     checkout.open(this@MyWalletActivity, obj)
                 } catch (e: JSONException) {
-                    Toast.makeText(getApplicationContext(), "Error in payment: " + e.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "Error in payment: " + e.message, Toast.LENGTH_SHORT).show()
                     e.printStackTrace()
                 }
 
@@ -269,10 +294,8 @@ class
         initializeClickListners()
         initializeInputs()
         initializeLabels()
-
-
-
-
+//        closeKeyboard()
+        
         transactionListCard.add(
             TransactionList("Transaction Title","₹ 8500","24/04/2024","11.43PM")
         )
