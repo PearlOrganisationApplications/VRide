@@ -4,17 +4,17 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.content.res.Resources
 import android.graphics.Color
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import com.pearl.v_ride_lib.Global
 import android.widget.*
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.github.dhaval2404.imagepicker.ImagePicker
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.pearl.test5.R
 import com.pearl.v_ride.HomeScreen
 import com.pearl.v_ride_lib.BaseClass
@@ -60,45 +60,12 @@ class DocumentActivity : BaseClass() {
     lateinit var personalTV: TextView
     lateinit var corporateTV: TextView
     lateinit var adharNoEdt: EditText
-    lateinit var yesBT: Button
-    lateinit var noBT: Button
-    lateinit var merchantWorkingLL: LinearLayout
-    lateinit var checkboxLL: LinearLayout
-    lateinit var merchantAlready: LinearLayout
-    lateinit var merchantanotherWorkingLL: LinearLayout
-    lateinit var anotherYesBT: Button
-    lateinit var anotherNoBT: Button
-    lateinit var submitAlreadyBT: Button
-    lateinit var addressProofIV: ImageView
-    lateinit var addressProofTV: TextView
-    lateinit var listLayout: ConstraintLayout
-    lateinit var merchantList: ListView
-    lateinit var addFAB: FloatingActionButton
-    private lateinit var adapter: ArrayAdapter<String>
 
     override fun setLayoutXml() {
         setContentView(R.layout.activity_document)
     }
 
     override fun initializeViews() {
-
-        addFAB = findViewById(R.id.addFAB)
-        merchantList = findViewById(R.id.merchantList)
-        listLayout = findViewById(R.id.listLayout)
-
-        addressProofIV = findViewById(R.id.addressProofIV)
-        addressProofTV = findViewById(R.id.addressProofTV)
-        submitAlreadyBT = findViewById(R.id.submitAlreadyBT)
-
-       /* merchantanotherWorkingLL = findViewById(R.id.merchantanotherWorkingLL)
-          anotherYesBT = findViewById(R.id.merchantAYes)
-          anotherNoBT = findViewById(R.id.merchantANo) */
-
-        merchantAlready = findViewById(R.id.merchantAlready)
-        checkboxLL = findViewById(R.id.checkboxLL)
-        merchantWorkingLL = findViewById(R.id.merchantWorkingLL)
-        yesBT = findViewById(R.id.merchantYes)
-        noBT = findViewById(R.id.merchantNo)
         adhadharF = findViewById(R.id.addfront)
         adharFrontIV = findViewById(R.id.adharFrotIV)
         adhadharRear = findViewById(R.id.adharrearIV)
@@ -137,33 +104,6 @@ class DocumentActivity : BaseClass() {
     }
 
     override fun initializeClickListners() {
-
-        submitAlreadyBT.setOnClickListener {
-            listLayout.visibility = View.VISIBLE
-            merchantAlready.visibility = View.GONE
-        }
-        /*anotherYesBT.setOnClickListener {
-            merchantAlready.visibility = View.VISIBLE
-            merchantanotherWorkingLL.visibility = View.GONE
-        }
-        anotherNoBT.setOnClickListener {
-
-
-        }*/
-        addFAB.setOnClickListener {
-            listLayout.visibility = View.GONE
-            merchantAlready.visibility = View.VISIBLE
-        }
-        yesBT.setOnClickListener {
-            merchantAlready.visibility = View.VISIBLE
-            merchantWorkingLL.visibility = View.GONE
-
-        }
-        noBT.setOnClickListener {
-            merchantWorkingLL.visibility = View.GONE
-            checkboxLL.visibility = View.VISIBLE
-
-        }
         pan_dob.setOnClickListener {
             req_code =1
             showDatePicker()
@@ -199,7 +139,7 @@ class DocumentActivity : BaseClass() {
         adhadharF.setOnClickListener {
             ImagePicker.with(this)
                 .crop()
-                .compress(1024)			        //Final image size will be less than 1 MB(Optional)
+                .compress(1024)			//Final image size will be less than 1 MB(Optional)
                 .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
                 .start()
             image_type = 1
@@ -209,7 +149,7 @@ class DocumentActivity : BaseClass() {
         }
         adhadharR.setOnClickListener {
             ImagePicker.with(this)
-                .crop()	    			        //Crop image(Optional), Check Customization for more option
+                .crop()	    			//Crop image(Optional), Check Customization for more option
                 .compress(1024)			//Final image size will be less than 1 MB(Optional)
                 .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
                 .start()
@@ -217,7 +157,7 @@ class DocumentActivity : BaseClass() {
         }
         addPan.setOnClickListener {
             ImagePicker.with(this)
-                .crop()	    			  // Crop image(Optional), Check Customization for more option
+                .crop()	    			//Crop image(Optional), Check Customization for more option
                 .compress(1024)			//Final image size will be less than 1 MB(Optional)
                 .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
                 .start()
@@ -282,14 +222,6 @@ class DocumentActivity : BaseClass() {
                 .start()
             image_type = 10
         }
-        addressProofTV.setOnClickListener {
-            ImagePicker.with(this)
-                .crop()
-                .compress(1024)			        //Final image size will be less than 1 MB(Optional)
-                .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
-                .start()
-            image_type = 11
-        }
     }
 
     override fun initializeInputs() {
@@ -309,14 +241,14 @@ class DocumentActivity : BaseClass() {
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+       var Resources = Global.language(this,resources)
 
         setLayoutXml()
         initializeViews()
         initializeClickListners()
         initializeInputs()
         initializeLabels()
-
-//        validateAadharNo(adharNoEdt)
+        validateAadharNo(adharNoEdt)
 
         val otherEdt = findViewById<EditText>(R.id.otherET)
 
@@ -418,8 +350,6 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
             corporateAadharF.setImageURI(uri)
         }else if (image_type == 10){
             corporateAadharR.setImageURI(uri)
-        }else if (image_type == 11){
-            addressProofIV.setImageURI(uri)
         }
 
 
@@ -466,7 +396,7 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
 
     private fun getMinimumDate(): Long {
         val minDateCalendar = Calendar.getInstance()
-        minDateCalendar.add(Calendar.YEAR, -100) //Set 100 years ago from now
+        minDateCalendar.add(Calendar.YEAR, -100) // Set 100 years ago from now
         return minDateCalendar.timeInMillis
     }
 }
