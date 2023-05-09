@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Typeface
 import android.location.Geocoder
@@ -58,7 +59,6 @@ import com.pearl.data.AttendanceList
 import com.pearl.data.NotificationList
 import com.pearl.test5.R
 import com.pearl.ui.DocumentActivity
-import com.pearl.ui.FormActivity
 import com.pearl.v_ride_lib.BaseClass
 import com.pearl.v_ride_lib.PrefManager
 import de.hdodenhof.circleimageview.CircleImageView
@@ -108,8 +108,11 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     lateinit var toggle_off: LinearLayout
     lateinit var toggle_on: LinearLayout
     lateinit var on_duty: TextView
+    lateinit var earnTxt: TextView
     lateinit var off_duty: TextView
     lateinit var hideCalendar: TextView
+    lateinit var rate_list: TextView
+    lateinit var resourcess : Resources
 
 
     override fun setLayoutXml() {
@@ -127,6 +130,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         notificationRV = findViewById(R.id.notificationRV)
         nBell = findViewById(R.id.nBell)
         mapLL = findViewById(R.id.mapLL)
+        rate_list = findViewById(R.id.rate_list)
 
         headerLayout = navView.inflateHeaderView(R.layout.nav_header)
         dImage = headerLayout.findViewById(R.id.drawerImage)
@@ -147,6 +151,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         toggle_off = findViewById(R.id.toggle_off)
         toggle_on = findViewById(R.id.toggle_on)
         on_duty = findViewById(R.id.dutyON)
+        earnTxt = findViewById(R.id.txt_earn)
         off_duty = findViewById(R.id.dutyOFF)
     }
 
@@ -216,6 +221,10 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                 R.id.document-> {
 
                     startActivity(Intent(this@HomeScreen, DocumentActivity::class.java))
+                    drawerLayout.closeDrawers()
+                }
+                R.id.language -> {
+                    startActivity(Intent(this@HomeScreen, LanguageActivity::class.java))
                     drawerLayout.closeDrawers()
                 }
                 R.id.logout -> {
@@ -458,7 +467,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
 
     @RequiresApi(Build.VERSION_CODES.M)
-    @SuppressLint("MissingPermission")
+    @SuppressLint("MissingPermission", "SuspiciousIndentation")
     fun isOnline(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -495,6 +504,19 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onResume() {
+
+        resourcess = Global.language(this,resources)
+        earnTxt.text = resourcess.getString(R.string.net_earn)
+        city.text = resourcess.getString(R.string.monthly_pay)
+//        R.id.earning = resourcess.getString(R.string.my_earning)
+        on_duty.text = resourcess.getString(R.string.on_duty)
+        off_duty.text = resourcess.getString(R.string.off_duty)
+        rate_list.text = resourcess.getString(R.string.rate_list)
+        monthlyCal.text = resourcess.getString(R.string.monthly_calender)
+        hideCalendar.text = resourcess.getString(R.string.hide_calender)
+        rate_list.text = resourcess.getString(R.string.rate_list)
+
+
 
         val isConnected = isNetworkConnected(this.applicationContext)
         super.onResume()

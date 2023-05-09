@@ -27,6 +27,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.pearl.test5.R
 import com.pearl.v_ride_lib.BaseClass
 import android.view.View
+import com.pearl.ui.DocumentActivity
 import com.pearl.v_ride_lib.Global
 
 import com.pearl.v_ride_lib.PrefManager
@@ -134,7 +135,7 @@ class MainActivity : BaseClass() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState) 
-        Global.language(this,resources)
+
         val isConnected = isNetworkConnected(this.applicationContext)
 
         prefManager = PrefManager(this)

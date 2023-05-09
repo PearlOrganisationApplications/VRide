@@ -24,6 +24,27 @@
     <string name="lang_hindi">"Hindi"</string>
     <string name="lang_eng">"English"</string>
     <string name="monthly_pay">"Monthly Payout"</string>
-    <string name="monthly_cal">"Monthly Calender"</string>
+    <string name="address_proof">Upload address proof</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="merchant">Are you currently working with any merchant?</string>
+    <string name="another_merchant">Do you work with any other merchant ?</string>
+
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="wallet">Wallet</string>
+    <string name="my_earning">My Earning</string>
+    <string name="document">Document</string>
+    <string name="history">History</string>
+    <string name="my_nearest_service">My Nearest Service</string>
+    <string name="service_request">Service Request</string>
+    <string name="language">Language</string>
+    <string name="monthly_calender">Monthly Calender</string>
+    <string name="rate_list">Rate List</string>
+    <string name="on_duty">On Duty</string>
+    <string name="off_duty">OFF Duty</string>
+    <string name="hide_calender">Hide` Calender</string>
+    <string name="select_language">Select Language</string>
+
 
 </resources>

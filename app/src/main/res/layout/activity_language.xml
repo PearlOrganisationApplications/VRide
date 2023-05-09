@@ -23,10 +23,11 @@
                 android:padding="20dp">
 
                 <TextView
+                    android:id="@+id/selectLanguage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="Select Language"
+                    android:text="@string/select_language"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="40sp"

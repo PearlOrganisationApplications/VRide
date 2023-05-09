@@ -887,11 +887,13 @@
                                 android:layout_height="wrap_content"
                                 android:minHeight="@dimen/_130sdp"
                                 android:orientation="vertical">
+
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Enter All merchant name you are working with"
-                                    android:layout_marginBottom="@dimen/_10sdp"/>
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
 
                                 <ListView
                                     android:id="@+id/merchantList"
@@ -927,6 +929,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="Enter merchant name"/>
                                 <EditText
+                                    android:id="@+id/editText1"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:imeOptions="actionNext"
@@ -936,6 +939,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="Enter merchant ID"/>
                                 <EditText
+                                    android:id="@+id/editText2"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:imeOptions="actionDone"
