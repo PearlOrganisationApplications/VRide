@@ -46,10 +46,10 @@
                                     android:layout_marginLeft="10dp"
                                     android:layout_marginTop="5dp"
                                     android:padding="8dp"
-                                    android:textStyle="bold"
-                                    android:text="Update Profile"
+                                    android:text="@string/update_profile"
                                     android:textColor="@color/black"
-                                    android:textSize="20sp" />
+                                    android:textSize="20sp"
+                                    android:textStyle="bold" />
 
                                 <de.hdodenhof.circleimageview.CircleImageView
                                     android:id="@+id/show_selfiee"
@@ -66,7 +66,7 @@
                                 android:layout_marginTop="20dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Full Name"
+                                android:hint="@string/full_name"
                                 app:startIconDrawable="@drawable/ic_person"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 >
@@ -88,7 +88,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:enabled="false"
-                                android:hint="Email-id"
+                                android:hint="@string/email_id"
                                 app:startIconDrawable="@drawable/ic_email"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 >
@@ -112,7 +112,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:enabled="false"
-                                android:hint="Mobile No"
+                                android:hint="@string/mobile_no"
                                 app:startIconDrawable="@drawable/ic_baseline_phone_"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 >
@@ -135,7 +135,7 @@
                                 android:layout_marginTop="20dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="DOB"
+                                android:hint="@string/dob"
                                 app:startIconDrawable="@drawable/ic_baseline_calendar_month_24"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 >
@@ -159,7 +159,7 @@
                                 android:layout_marginTop="20dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Pan Card No"
+                                android:hint="@string/pan_card_no"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 >
 
@@ -205,7 +205,7 @@
                                 android:layout_marginTop="20dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Aadhar Card No"
+                                android:hint="@string/aadhar_card_no"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 >
 
@@ -337,7 +337,7 @@
                                 android:layout_marginHorizontal="12dp"
                                 android:layout_marginVertical="12dp"
                                 android:backgroundTint="@color/color_secondary"
-                                android:text="Update Profile"
+                                android:text="@string/update_profile"
                                 android:textColor="@color/white"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -350,7 +350,7 @@
                                 android:layout_marginHorizontal="12dp"
                                 android:layout_marginVertical="12dp"
                                 android:backgroundTint="@color/color_secondary"
-                                android:text="Edit Profile"
+                                android:text="@string/edit_profile"
                                 android:textColor="@color/white"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"

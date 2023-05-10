@@ -50,7 +50,7 @@
                 android:id="@+id/i1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="My Wallet"
+                android:text="@string/my_wallet"
                 android:textColor="#fff"
                 android:textSize="@dimen/_22ssp"
                 android:textStyle="bold" />
@@ -159,7 +159,7 @@
                             android:layout_height="wrap_content"
                             android:textSize="16sp"
                             android:gravity="center"
-                            android:text="Total Balance"/>
+                            android:text="@string/total_balance"/>
 
                         <TextView
                             android:id="@+id/balance"
@@ -179,7 +179,7 @@
                                 android:layout_weight="1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Security Amount"
+                                android:text="@string/security_amount"
                                 android:textSize="@dimen/_12ssp"/>
                             <TextView
                                 android:layout_weight="1"
@@ -198,7 +198,7 @@
                                 android:layout_weight="1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Withdrawable Balance "
+                                android:text="@string/withdrawable_balance"
                                 android:textSize="@dimen/_12ssp"/>
                             <TextView
                                 android:id="@+id/WithdrawableBalance"
@@ -337,7 +337,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-black"
                         android:letterSpacing="0.02"
-                        android:text="Transaction"
+                        android:text="@string/transaction"
                         android:textSize="25sp"
                         android:textStyle="bold" />
 
@@ -347,7 +347,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
                         android:gravity="end"
-                        android:text="See All"
+                        android:text="@string/see_all"
                         android:textColor="#d06d88bd"
                         android:textSize="23sp" />
 
@@ -357,7 +357,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
                         android:gravity="end"
-                        android:text="Hide All"
+                        android:text="@string/hide_all"
                         android:textColor="#d06d88bd"
                         android:textSize="23sp"
                         android:visibility="gone" />

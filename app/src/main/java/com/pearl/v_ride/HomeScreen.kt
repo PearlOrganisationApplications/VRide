@@ -4,6 +4,7 @@ package com.pearl.v_ride
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.ClipData.Item
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -21,6 +22,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
@@ -29,6 +31,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.view.menu.MenuView.ItemView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.drawerlayout.widget.DrawerLayout
@@ -112,7 +115,18 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     lateinit var off_duty: TextView
     lateinit var hideCalendar: TextView
     lateinit var rate_list: TextView
+    lateinit var monthly_pay: TextView
     lateinit var resourcess : Resources
+    private lateinit var homeMenuItem: MenuItem
+    private lateinit var profileMenuItem: MenuItem
+    private lateinit var walletMenuItem: MenuItem
+    private lateinit var earning: MenuItem
+    private lateinit var history: MenuItem
+    private lateinit var nearest_service: MenuItem
+    private lateinit var issue: MenuItem
+    private lateinit var document: MenuItem
+    private lateinit var language: MenuItem
+//    lateinit var menuItem: View
 
 
     override fun setLayoutXml() {
@@ -125,7 +139,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
         drawerLayout = findViewById(R.id.drawerLayout)
         navView = findViewById(R.id.nav_view)
-//        notificationI = findViewById(R.id.notificationI)
+        //        notificationI = findViewById(R.id.notificationI)
         notificationLL = findViewById(R.id.notificationLL)
         notificationRV = findViewById(R.id.notificationRV)
         nBell = findViewById(R.id.nBell)
@@ -133,7 +147,9 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         rate_list = findViewById(R.id.rate_list)
 
         headerLayout = navView.inflateHeaderView(R.layout.nav_header)
+        navView.inflateMenu(R.menu.nav_menu)
         dImage = headerLayout.findViewById(R.id.drawerImage)
+        val dName = headerLayout.findViewById<TextView>(R.id.drawerName)
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         hasGps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
         hasNetwork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
@@ -153,6 +169,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         on_duty = findViewById(R.id.dutyON)
         earnTxt = findViewById(R.id.txt_earn)
         off_duty = findViewById(R.id.dutyOFF)
+        monthly_pay = findViewById(R.id.monthly_pay)
     }
 
     override fun initializeClickListners() {
@@ -301,6 +318,16 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         initializeLabels()
 
 
+        val menu = navView.menu
+        homeMenuItem = menu.findItem(R.id.homemenu)
+         profileMenuItem = menu.findItem(R.id.profile)
+        walletMenuItem = menu.findItem(R.id.wallet)
+        earning = menu.findItem(R.id.earning)
+        history = menu.findItem(R.id.history)
+        nearest_service = menu.findItem(R.id.nearest_service)
+       document = menu.findItem(R.id.document)
+       issue = menu.findItem(R.id.issue)
+       language = menu.findItem(R.id.language)
         internetChangeBroadCast()
 
         pieChart()
@@ -515,7 +542,18 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         monthlyCal.text = resourcess.getString(R.string.monthly_calender)
         hideCalendar.text = resourcess.getString(R.string.hide_calender)
         rate_list.text = resourcess.getString(R.string.rate_list)
+        monthly_pay.text = resourcess.getString(R.string.monthly_pay)
+        appbar.title = resourcess.getString(R.string.app_name)
 
+        homeMenuItem.title = resourcess.getString(R.string.home)
+        profileMenuItem.title = resourcess.getString(R.string.profile)
+        walletMenuItem.title = resourcess.getString(R.string.wallet)
+        earning.title = resourcess.getString(R.string.my_earning)
+        history.title = resourcess.getString(R.string.history)
+        nearest_service.title = resourcess.getString(R.string.my_nearest_service)
+        issue.title = resourcess.getString(R.string.service_request)
+        document.title = resourcess.getString(R.string.document)
+        language.title = resourcess.getString(R.string.language)
 
 
         val isConnected = isNetworkConnected(this.applicationContext)
@@ -544,7 +582,6 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         }
         if(isOnline(this@HomeScreen)) {
             getLocation()
-
         }
 
         if(Global.imageString != "") {

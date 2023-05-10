@@ -24,13 +24,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:text="Welcome"
+            android:text="@string/welcome"
             android:textSize="25sp"
             android:fontFamily="sans-serif-black"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Please Login to continue "
+            android:text="@string/please_login"
             android:layout_marginStart="10dp"
             android:textSize="25sp"
            />
@@ -67,7 +67,7 @@
                     android:id="@+id/loginTV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Login"
+                    android:text="@string/login"
                     android:textAlignment="center"
                     android:textColor="@color/color_secondary"
                     android:textSize="30sp"
@@ -94,7 +94,7 @@
                         android:background="@drawable/empty_edt"
                         android:drawableEnd="@drawable/ic_person"
                         android:drawablePadding="8dp"
-                        android:hint="Mobile No"
+                        android:hint="@string/mobile_no"
                         android:maxLength="10"
                         android:textSize="@dimen/_15ssp"
                         android:inputType="phone"
@@ -240,7 +240,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
                     android:backgroundTint="@color/color_secondary"
-                    android:text="Send Otp"
+                    android:text="@string/send_otp"
                     android:textAllCaps="true"
                     android:textSize="18sp"
                     app:cornerRadius="20dp" />
@@ -252,7 +252,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="I'm a new user?\n SignUp"
+                    android:text="@string/i_m_a_new_user_n_signup"
                     android:textAlignment="center"
                     android:textColor="@color/black" />
 

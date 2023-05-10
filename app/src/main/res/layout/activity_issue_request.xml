@@ -25,7 +25,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Request Form"
+        android:text="@string/request_form"
         android:layout_marginTop="20dp"
         android:textColor="@color/black"
         android:textSize="40sp"
@@ -60,7 +60,7 @@
         android:layout_marginTop="100dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Subject"
+        android:hint="@string/subject"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
        >
 
@@ -111,7 +111,7 @@
             android:layout_height="@dimen/_100sdp"
             android:layout_marginTop="@dimen/_12sdp"
             android:background="@drawable/btn_backgraund"
-            android:hint="Issue Description"
+            android:hint="@string/issue_description"
             android:imeOptions="actionDone"
             android:lines="8"
             android:minLines="6"

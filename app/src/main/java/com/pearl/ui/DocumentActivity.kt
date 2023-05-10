@@ -60,15 +60,18 @@ class DocumentActivity : BaseClass() {
     lateinit var corporateIV: ImageView
     lateinit var personalTV: TextView
     lateinit var corporateTV: TextView
+    lateinit var merchantanotherWorkingLL: LinearLayout
+    lateinit var anotherYesBT: Button
+    lateinit var anotherNoBT: Button
     lateinit var adharNoEdt: EditText
+    lateinit var updateBT2: Button
     lateinit var yesBT: Button
     lateinit var noBT: Button
     lateinit var merchantWorkingLL: LinearLayout
     lateinit var checkboxLL: LinearLayout
     lateinit var merchantAlready: LinearLayout
-    lateinit var merchantanotherWorkingLL: LinearLayout
-    lateinit var anotherYesBT: Button
-    lateinit var anotherNoBT: Button
+    lateinit var layout1LL: LinearLayout
+    lateinit var layout2LL: LinearLayout
     lateinit var submitAlreadyBT: Button
     lateinit var addressProofIV: ImageView
     lateinit var addressProofTV: TextView
@@ -86,6 +89,10 @@ class DocumentActivity : BaseClass() {
 
     override fun initializeViews() {
 
+
+        layout1LL = findViewById(R.id.layout1LL)
+        layout2LL = findViewById(R.id.layout2LL)
+        updateBT2 = findViewById(R.id.updateBT2)
         addFAB = findViewById(R.id.addFAB)
         merchantList = findViewById(R.id.merchantList)
         listLayout = findViewById(R.id.listLayout)
@@ -120,7 +127,7 @@ class DocumentActivity : BaseClass() {
         doc_profile = findViewById(R.id.doc_selfie)
         add_selfie = findViewById(R.id.add_selfie)
         select_state = findViewById(R.id.statelistSP)
-        selfieCor = findViewById(R.id.corporate_doc_selfie)
+       /* selfieCor = findViewById(R.id.corporate_doc_selfie)
         addCorporateSelfie = findViewById(R.id.add_corporate_selfie)
         companyID = findViewById(R.id.corporate_docID)
         corporateAadharF = findViewById(R.id.corporate_adharFrotIV)
@@ -129,13 +136,13 @@ class DocumentActivity : BaseClass() {
         addCorporateAadharR = findViewById(R.id.corporate_addrear)
         docLL = findViewById(R.id.docLL)
         corporateLL = findViewById(R.id.corporateLL)
-
+        doc_dob = findViewById(R.id.doc_dob)
         persnalIV = findViewById(R.id.personalIV)
         corporateIV = findViewById(R.id.corporateIV)
         personalTV = findViewById(R.id.personalTV)
-        corporateTV = findViewById(R.id.corporateTV)
+        corporateTV = findViewById(R.id.corporateTV)*/
         pan_dob = findViewById(R.id.pan_dobET)
-        doc_dob = findViewById(R.id.doc_dob)
+
         updateBT = findViewById<Button>(R.id.updateBT)
         ivback = findViewById(R.id.ivBack)
         apptitle = findViewById(R.id.titleTVAppbar)
@@ -190,29 +197,35 @@ class DocumentActivity : BaseClass() {
             req_code =1
             showDatePicker()
         }
-        doc_dob.setOnClickListener {
+       /* doc_dob.setOnClickListener {
             req_code = 2
             showDatePicker()
-        }
+        }*/
 
-        updateBT.setOnClickListener {
+        updateBT2.setOnClickListener {
             startActivity(Intent(this@DocumentActivity,HomeScreen::class.java))
             finish()
         }
-        persnalIV.setOnClickListener {
+        updateBT.setOnClickListener {
+            layout1LL.visibility = View.GONE
+            layout2LL.visibility = View.VISIBLE
+            updateBT.visibility = View.GONE
+            updateBT2.visibility = View.VISIBLE
+        }
+       /* persnalIV.setOnClickListener {
             docLL.visibility =View.VISIBLE
             corporateLL.visibility = View.GONE
 //            req_code =3
 
-        }
-        corporateIV.setOnClickListener {
+        }*/
+        /*corporateIV.setOnClickListener {
             docLL.visibility = View.GONE
             corporateLL.visibility = View.VISIBLE
 //            req_code = 4
-            /*   if ( docLL.visibility == View.GONE){
+            *//*   if ( docLL.visibility == View.GONE){
                    corporateTV.setTextColor(Color.parseColor("#096E0A"))
-               }*/
-        }
+               }*//*
+        }*/
         ivback.setOnClickListener {
             onBackPressed()
         }
@@ -271,7 +284,7 @@ class DocumentActivity : BaseClass() {
                 .start()
             image_type = 6
         }
-        addCorporateSelfie.setOnClickListener {
+        /*addCorporateSelfie.setOnClickListener {
             ImagePicker.with(this)
                 .crop()
                 .cameraOnly()
@@ -279,31 +292,31 @@ class DocumentActivity : BaseClass() {
                 .maxResultSize(1080, 1080)
                 .start()
             image_type = 7
-        }
-        companyID.setOnClickListener {
+        }*/
+        /*companyID.setOnClickListener {
             ImagePicker.with(this)
                 .crop()
                 .compress(1024)
                 .maxResultSize(1080, 1080)
                 .start()
             image_type = 8
-        }
-        addCorporateAadharF.setOnClickListener {
+        }*/
+       /* addCorporateAadharF.setOnClickListener {
             ImagePicker.with(this)
                 .crop()
                 .compress(1024)
                 .maxResultSize(1080, 1080)
                 .start()
             image_type = 9
-        }
-        addCorporateAadharR.setOnClickListener {
+        }*/
+      /*  addCorporateAadharR.setOnClickListener {
             ImagePicker.with(this)
                 .crop()
                 .compress(1024)
                 .maxResultSize(1080, 1080)
                 .start()
             image_type = 10
-        }
+        }*/
         addressProofTV.setOnClickListener {
             ImagePicker.with(this)
                 .crop()
@@ -390,13 +403,13 @@ class DocumentActivity : BaseClass() {
                   corporateTV.setTextColor(Color.parseColor("#096E0A"))
               }*/
 
-        if ( docLL.visibility == View.VISIBLE){
+    /*    if ( docLL.visibility == View.VISIBLE){
             personalTV.setTextColor(Color.parseColor("#096E0A"))
             corporateTV.setTextColor(Color.parseColor("#000000"))
         }else if (corporateLL.visibility == View.VISIBLE){
             corporateTV.setTextColor(Color.parseColor("#096E0A"))
             personalTV.setTextColor(Color.parseColor("#000000"))
-        }
+        }*/
 
     }
 
@@ -432,7 +445,7 @@ class DocumentActivity : BaseClass() {
                 licenceIV.setImageURI(uri)
             }else if (image_type == 6){
                 doc_profile.setImageURI(uri)
-            }else if (image_type == 7){
+            }/*else if (image_type == 7){
                 selfieCor.setImageURI(uri)
             }else if (image_type == 8){
                 companyID.setImageURI(uri)
@@ -441,7 +454,7 @@ class DocumentActivity : BaseClass() {
                 corporateAadharF.setImageURI(uri)
             }else if (image_type == 10){
                 corporateAadharR.setImageURI(uri)
-            }else if (image_type == 11){
+            }*/else if (image_type == 11){
                 addressProofIV.setImageURI(uri)
             }
 
@@ -481,10 +494,10 @@ class DocumentActivity : BaseClass() {
         val dateFormat = SimpleDateFormat(myFormat, Locale.US)
         if (req_code == 1) {
             pan_dob.setText(dateFormat.format(myCalendar.time))
-        }else if (req_code == 2){
+        }/*else if (req_code == 2){
             doc_dob.setText(dateFormat.format(myCalendar.time))
 
-        }
+        }*/
     }
 
     private fun getMinimumDate(): Long {

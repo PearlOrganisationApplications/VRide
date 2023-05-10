@@ -29,7 +29,7 @@ class UserHistoryActivity : AppCompatActivity() {
         ivback=findViewById(R.id.ivBack)
         apptitle = findViewById(R.id.titleTVAppbar)
 
-        apptitle.text ="History"
+        apptitle.setText(R.string.history)
         ivback.setOnClickListener {
             onBackPressed()
         }

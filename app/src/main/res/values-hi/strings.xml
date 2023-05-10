@@ -17,7 +17,7 @@
 
     <string name="action_sign_in">साइन इन या रजिस्टर करें</string>
     <string name="action_sign_in_short">साइन इन</string>
-    <string name="welcome">"स्वागत हे!"</string>
+    <string name="welcome">"्वागत हे</string>
     <string name="invalid_username">अमान्य उपयोगकर्ता नाम</string>
     <string name="invalid_password">पासवर्ड 5 अक्षरों से अधिक होना चाहिए</string>
     <string name="login_failed">"लॉगिन विफल"</string>
@@ -46,4 +46,67 @@
     <string name="off_duty">ऑफ ड्यूटी</string>
     <string name="hide_calender">कैलेंडर छिपाएं</string>
     <string name="select_language">भाषा चुनें</string>
+
+    <string name="request_form">अनुरोध प्रपत्र</string>
+    <string name="subject">विषय</string>
+    <string name="issue_description">मुद्दे का विवरण</string>
+    <string name="please_login">कृपया जारी रखने के लिए लॉगिन करें</string>
+    <string name="login">लॉगिन</string>
+    <string name="mobile_no">मोबाइल नंबर</string>
+    <string name="send_otp">ओटीपी भेजें</string>
+    <string name="i_m_a_new_user_n_signup">मैं एक नया उपयोगकर्ता हूँ?\n साइन अप करें</string>
+    <string name="my_wallet">मेरा वॉलेट</string>
+    <string name="total_balance">कुल शेष</string>
+    <string name="security_amount">सुरक्षा राशि</string>
+    <string name="withdrawable_balance">निकासीय शेष</string>
+    <string name="transaction">लेन-देन</string>
+    <string name="see_all">सभी देखें</string>
+    <string name="hide_all">सभी छिपाएं</string>
+    <string name="to_display_fun_fact_about_the_user_s_location">उपयोगकर्ता के स्थान के बारे में मनोरंजक तथ्य प्रदर्शित करने के लिए</string>
+    <string name="location">स्थान</string>
+    <string name="don_t_worry_your_data_is_private">चिंता न करें, आपका डेटा निजी है</string>
+    <string name="storage_amp_media"><![CDATA[संग्रहण और मीडिया]]></string>
+    <string name="because_why_not">क्यों नहीं</string>
+    <string name="call">कॉल</string>
+    <string name="continue_bt">जारी रखें</string>
+    <string name="update_profile">प्रोफ़ाइल अपडेट करें</string>
+    <string name="full_name">पूरा नाम</string>
+    <string name="email_id">ईमेल आईडी</string>
+    <string name="dob">जन्मतिथि</string>
+    <string name="pan_card_no">पैन कार्ड नंबर</string>
+    <string name="aadhar_card_no">आधार कार्ड नंबर</string>
+    <string name="edit_profile">प्रोफ़ाइल संपादित करें</string>
+    <string name="create_new_account">नया खाता बनाएं</string>
+    <string name="phone">फ़ोन</string>
+    <string name="sign_up">साइन अप</string>
+    <string name="already_register_sign_in">पहले से पंजीकृत हैं? \nसाइन इन करें</string>
+    <string name="update_1_2">अपडेट 1/2</string>
+    <string name="update_2_2">अपडेट 2/2</string>
+    <string name="driving_licence">ड्राइविंग लाइसेंस</string>
+    <string name="status">स्थिति</string>
+    <string name="driving_nlicence">ड्राइविंग \nलाइसेंस</string>
+    <string name="dl_no">डीएल नंबर</string>
+    <string name="bank_name">बैंक का नाम</string>
+    <string name="please_enter_your_account_no">कृपया अपना खाता नंबर दर्ज करें</string>
+    <string name="bank_details">बैंक का विवरण</string>
+    <string name="pan_card">पैन कार्ड</string>
+    <string name="pan_no">पैन नंबर</string>
+    <string name="name_as_pan">पैन के रूप में नाम</string>
+    <string name="dd_mm_yy">दिन/माह/वर्ष</string>
+    <string name="enter_all_merchant_name_you_are_working_with">आपके साथ काम कर रहे सभी व्यापारी का नाम दर्ज करें</string>
+    <string name="enter_merchant_name">व्यापारी का नाम दर्ज करें</string>
+    <string name="merchant_name">व्यापारी का नाम</string>
+    <string name="enter_merchant_id">व्यापारी आईडी दर्ज करें</string>
+    <string name="merchant_id">व्यापारी आईडी</string>
+
+    <string name="save">सहेजें</string>
+    <string name="your_selfie">आपकी सेल्फी</string>
+    <string name="aadhar_card">आधार कार्ड</string>
+    <string name="aadhar_n_front">आधार\nफ्रंट</string>
+    <string name="aadhar_n_rear">आधार\nरियर</string>
+    <string name="current_address">वर्तमान पता</string>
+    <string name="address">पता</string>
+    <string name="city">शहर</string>
+    <string name="pin_code">पिन कोड</string>
+
 </resources>

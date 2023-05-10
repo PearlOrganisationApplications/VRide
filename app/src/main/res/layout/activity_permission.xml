@@ -41,14 +41,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Location"
+                android:text="@string/location"
                 android:textStyle="bold"
                 android:layout_marginStart="10dp"
                 android:textSize="20sp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="To display fun fact about the user's location"
+                android:text="@string/to_display_fun_fact_about_the_user_s_location"
                 android:layout_marginStart="10dp"
                 android:textSize="15sp"/>
             <View
@@ -103,14 +103,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Storage &amp; Media"
+                android:text="@string/storage_amp_media"
                 android:textStyle="bold"
                 android:layout_marginStart="10dp"
                 android:textSize="20sp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Don't worry your data is private"
+                android:text="@string/don_t_worry_your_data_is_private"
                 android:layout_marginStart="10dp"
                 android:textSize="15sp"/>
             <View
@@ -168,14 +168,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Call"
+                android:text="@string/call"
                 android:textStyle="bold"
                 android:layout_marginStart="10dp"
                 android:textSize="20sp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Because why not "
+                android:text="@string/because_why_not"
                 android:layout_marginStart="10dp"
                 android:textSize="15sp"/>
             <View
@@ -213,7 +213,7 @@
         android:id="@+id/verify"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Continue"
+        android:text="@string/continue_bt"
         android:textAllCaps="true"
         android:textSize="18sp"
         android:layout_marginTop="80dp"

@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:drawablePadding="8dp"
             android:layout_marginBottom="@dimen/_20ssp"
-            android:text="Create new Account"
+            android:text="@string/create_new_account"
             android:textAlignment="center"
             android:textSize="36sp" />
 
@@ -64,7 +64,7 @@
                     android:background="@drawable/signup_edittext"
                     android:drawableLeft="@drawable/ic_person"
                     android:drawablePadding="8dp"
-                    android:hint="Name"
+                    android:hint="@string/full_name"
                     android:inputType="textPersonName"
                     android:minHeight="48dp"
                     android:padding="8dp" />
@@ -88,7 +88,7 @@
                     android:background="@drawable/signup_edittext"
                     android:drawableLeft="@drawable/ic_baseline_phone_"
                     android:drawablePadding="8dp"
-                    android:hint="Phone"
+                    android:hint="@string/phone"
                     android:inputType="phone"
                     android:minHeight="48dp"
                     android:padding="8dp" />
@@ -187,7 +187,7 @@
                     android:id="@+id/signupBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Sign up"
+                    android:text="@string/sign_up"
                     android:textAllCaps="true"
                     android:textSize="18sp"
                     android:layout_marginTop="30dp"
@@ -198,7 +198,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Already Register? \n sign in"
+                    android:text="@string/already_register_sign_in"
                     android:textColor="@color/black"
                     android:textAlignment="center"
                     />

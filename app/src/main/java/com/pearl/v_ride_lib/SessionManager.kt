@@ -53,7 +53,7 @@ object SessionManager {
             conf?.setLayoutDirection(locale)
         }
         resource?.updateConfiguration(conf,resource.displayMetrics)
-        return context!!;
+        return context!!
     }
 
     private fun persist(context: Context?, lang: String) {

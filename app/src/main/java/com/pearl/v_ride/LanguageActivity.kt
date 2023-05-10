@@ -33,7 +33,7 @@ class LanguageActivity :AppCompatActivity() {
         langHiBtn.setText(resourcess.getString(R.string.lang_hindi))
         ivback = findViewById(R.id.ivBack)
         apptitle = findViewById(R.id.titleTVAppbar)
-        apptitle.text = R.string.document.toString()
+        apptitle.setText(R.string.document)
 
         langEngBtn.setOnClickListener {
             context = SessionManager.setLocale(this@LanguageActivity,"en")
@@ -55,6 +55,7 @@ class LanguageActivity :AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         selectLanguage.text = resourcess.getString(R.string.select_language)
+        apptitle.text = resourcess.getString(R.string.document)
     }
 
 }
