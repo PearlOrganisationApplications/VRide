@@ -4,7 +4,6 @@ package com.pearl.v_ride
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.ClipData.Item
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -27,11 +26,11 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.view.menu.MenuView.ItemView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.drawerlayout.widget.DrawerLayout
@@ -53,6 +52,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.pearl.adapter.AttendanceAdapter
@@ -60,11 +60,16 @@ import com.pearl.v_ride_lib.Global
 import com.pearl.adapter.NotificationAdapter
 import com.pearl.data.AttendanceList
 import com.pearl.data.NotificationList
+import com.pearl.splash_screen.SplashScreenActivity
 import com.pearl.test5.R
 import com.pearl.ui.DocumentActivity
 import com.pearl.v_ride_lib.BaseClass
 import com.pearl.v_ride_lib.PrefManager
+import com.pearl.v_ride_lib.SessionManager
 import de.hdodenhof.circleimageview.CircleImageView
+import okhttp3.*
+import org.json.JSONObject
+import java.io.IOException
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -99,7 +104,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     private val REQUEST_CODE = 101
     lateinit var mAuth: FirebaseAuth
     lateinit var mGoogleSignInClient: GoogleSignInClient
-    lateinit var city: TextView
+    lateinit var cityTextView: TextView
     lateinit var pieChart: PieChart
     lateinit var prefManager: PrefManager
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
@@ -116,7 +121,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     lateinit var hideCalendar: TextView
     lateinit var rate_list: TextView
     lateinit var monthly_pay: TextView
-    lateinit var resourcess : Resources
+    private lateinit var resourcess : Resources
     private lateinit var homeMenuItem: MenuItem
     private lateinit var profileMenuItem: MenuItem
     private lateinit var walletMenuItem: MenuItem
@@ -125,8 +130,14 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     private lateinit var nearest_service: MenuItem
     private lateinit var issue: MenuItem
     private lateinit var document: MenuItem
-    private lateinit var language: MenuItem
-//    lateinit var menuItem: View
+    private lateinit var language1: MenuItem
+    private lateinit var engLang: RadioButton
+    private lateinit var hindiLang: RadioButton
+    private lateinit var cancelLang: ImageView
+    lateinit var menu: Menu
+    lateinit var context : Context
+    lateinit var  dialog : BottomSheetDialog
+
 
 
     override fun setLayoutXml() {
@@ -135,6 +146,9 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     }
 
     override fun initializeViews() {
+
+
+        context = SessionManager.setLocale(this@HomeScreen,prefManager.getLanID().toString())
         appbar = findViewById<MaterialToolbar>(R.id.appBar)
 
         drawerLayout = findViewById(R.id.drawerLayout)
@@ -147,7 +161,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         rate_list = findViewById(R.id.rate_list)
 
         headerLayout = navView.inflateHeaderView(R.layout.nav_header)
-        navView.inflateMenu(R.menu.nav_menu)
+//        navView.inflateMenu(R.menu.nav_menu)
         dImage = headerLayout.findViewById(R.id.drawerImage)
         val dName = headerLayout.findViewById<TextView>(R.id.drawerName)
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -156,7 +170,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         ivback=findViewById(R.id.ivBack)
         apptitle = findViewById(R.id.titleTVAppbar)
 
-        city = findViewById(R.id.stateTV)
+        cityTextView = findViewById(R.id.stateTV)
         pieChart = findViewById(R.id.pieChart)
         swipeRefreshLayout = findViewById(R.id.container)
         calendarRV = findViewById(R.id.calenderRV)
@@ -170,11 +184,35 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         earnTxt = findViewById(R.id.txt_earn)
         off_duty = findViewById(R.id.dutyOFF)
         monthly_pay = findViewById(R.id.monthly_pay)
+        menu = navView.menu
+        homeMenuItem = menu.findItem(R.id.homemenu)
+        profileMenuItem = menu.findItem(R.id.profile)
+        walletMenuItem = menu.findItem(R.id.wallet)
+        earning = menu.findItem(R.id.earning)
+        history = menu.findItem(R.id.history)
+        nearest_service = menu.findItem(R.id.nearest_service)
+        document = menu.findItem(R.id.document)
+        issue = menu.findItem(R.id.issue)
+        language1 = menu.findItem(R.id.language)
+//        hindiLang = menu.findItem(R.id.btnHindiLang)
+//        engLang = menu.findItem(R.id.btnEngLang)
+
+//        hindiLang.isVisible=false
+//        engLang.isVisible=false
+
+        resourcess = context.resources
+//        groupLang = menu.findItem(R.id.group_language)
+        dialog = BottomSheetDialog(this)
+
+
+
+
     }
 
     override fun initializeClickListners() {
 
-        toggle_on.setOnClickListener {
+
+            toggle_on.setOnClickListener {
             on_duty.visibility = View.GONE
             off_duty.visibility = View.VISIBLE
             toggle_off.visibility = View.VISIBLE
@@ -241,8 +279,37 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                     drawerLayout.closeDrawers()
                 }
                 R.id.language -> {
-                    startActivity(Intent(this@HomeScreen, LanguageActivity::class.java))
+                  /*  startActivity(Intent(this@HomeScreen, LanguageActivity::class.java))
+                    drawerLayout.closeDrawers()*/
+
+
+
                     drawerLayout.closeDrawers()
+                    dialog.setContentView(R.layout.language_dialog)
+                    hindiLang = dialog.findViewById(R.id.btnHindiLang)!!
+                    engLang = dialog.findViewById(R.id.btnEngLang)!!
+                    cancelLang = dialog.findViewById(R.id.cancelLang)!!
+
+                    dialog.show()
+                    cancelLang.setOnClickListener {
+                        dialog.dismiss()
+                    }
+                    engLang.setOnClickListener {
+                        prefManager.setLangauge("en")
+                        finish()
+                        startActivity(intent)
+                    }
+                    hindiLang.setOnClickListener {
+                        prefManager.setLangauge("hi")
+                        finish()
+                        startActivity(intent)
+                    }
+//                    hindiLang.isVisible = !hindiLang.isVisible
+                   //navView.menu.clear()
+
+
+                    // Inflate the new menu
+                    //navView.inflateMenu(R.menu.nav_menu)
                 }
                 R.id.logout -> {
 
@@ -317,17 +384,17 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         initializeInputs()
         initializeLabels()
 
+        resourcess = Global.language(this,resources)
+        homeMenuItem.title = resourcess.getString(R.string.home)
+        profileMenuItem.title = resourcess.getString(R.string.profile)
+        walletMenuItem.title = resourcess.getString(R.string.wallet)
+        earning.title = resourcess.getString(R.string.my_earning)
+        history.title = resourcess.getString(R.string.history)
+        nearest_service.title = resourcess.getString(R.string.my_nearest_service)
+        issue.title = resourcess.getString(R.string.service_request)
+        document.title = resourcess.getString(R.string.document)
+        language1.title = resourcess.getString(R.string.language)
 
-        val menu = navView.menu
-        homeMenuItem = menu.findItem(R.id.homemenu)
-         profileMenuItem = menu.findItem(R.id.profile)
-        walletMenuItem = menu.findItem(R.id.wallet)
-        earning = menu.findItem(R.id.earning)
-        history = menu.findItem(R.id.history)
-        nearest_service = menu.findItem(R.id.nearest_service)
-       document = menu.findItem(R.id.document)
-       issue = menu.findItem(R.id.issue)
-       language = menu.findItem(R.id.language)
         internetChangeBroadCast()
 
         pieChart()
@@ -532,9 +599,11 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onResume() {
 
+        context = SessionManager.setLocale(this@HomeScreen,prefManager.getLanID().toString())
+
         resourcess = Global.language(this,resources)
         earnTxt.text = resourcess.getString(R.string.net_earn)
-        city.text = resourcess.getString(R.string.monthly_pay)
+        cityTextView.text = resourcess.getString(R.string.state)
 //        R.id.earning = resourcess.getString(R.string.my_earning)
         on_duty.text = resourcess.getString(R.string.on_duty)
         off_duty.text = resourcess.getString(R.string.off_duty)
@@ -553,7 +622,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         nearest_service.title = resourcess.getString(R.string.my_nearest_service)
         issue.title = resourcess.getString(R.string.service_request)
         document.title = resourcess.getString(R.string.document)
-        language.title = resourcess.getString(R.string.language)
+        language1.title = resourcess.getString(R.string.language)
 
 
         val isConnected = isNetworkConnected(this.applicationContext)
@@ -810,6 +879,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
 
         }
+
         var geocoder: Geocoder
         //  val addresses: List<Address>
         geocoder = Geocoder(this, Locale.getDefault())
@@ -834,7 +904,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
             //Log.w(" Current loction address",  e.printStackTrace().toString())
         }
 
-       city.text = strAdd.toString()
+       cityTextView.text = strAdd.toString()
 /*
 
         location = LatLng(to_lat.toString().toDouble(), to_lng.toString().toDouble())
@@ -1006,6 +1076,55 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         calendarRV.layoutManager = LinearLayoutManager(this)
         val calAdapter = AttendanceAdapter(attendanceCard)
         calendarRV.adapter = calAdapter
+    }
+
+
+
+    private fun requestCityName(latitude: Double, longitude: Double) {
+        val apiKey = R.string.google_api_key
+        val language = "hi" // Specify the desired language code, e.g., "fr" for French
+
+        val client = OkHttpClient()
+        val url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=$to_lat,$to_lng&key=$apiKey&language=$language"
+        val request = Request.Builder()
+            .url(url)
+            .build()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val responseData = response.body?.string()
+                if (response.isSuccessful && responseData != null) {
+                    try {
+                        val jsonObject = JSONObject(responseData)
+                        val results = jsonObject.getJSONArray("results")
+                        if (results.length() > 0) {
+                            val addressComponents =
+                                results.getJSONObject(0).getJSONArray("address_components")
+                            for (i in 0 until addressComponents.length()) {
+                                val component = addressComponents.getJSONObject(i)
+                                val types = component.getJSONArray("types")
+                                if (types.toString().contains("locality")) {
+                                    val city = component.getString("long_name")
+                                    runOnUiThread {
+                                        cityTextView.text = city
+                                    }
+                                    break
+                                }
+                            }
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+        })
+    }
+
+    companion object {
+        private const val PERMISSION_REQUEST_LOCATION = 100
     }
 
 }

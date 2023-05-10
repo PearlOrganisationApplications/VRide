@@ -25,11 +25,15 @@ class IssueRequestActivity : AppCompatActivity() {
         ivback=findViewById(R.id.ivBack)
         apptitle = findViewById(R.id.titleTVAppbar)
 
-        apptitle.text ="Service Request"
+        apptitle.setText(R.string.service_request)
         ivback.setOnClickListener {
             onBackPressed()
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 
 }

@@ -1,6 +1,5 @@
 package com.pearl.v_ride
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
 import android.os.Bundle
@@ -41,6 +40,12 @@ class LanguageActivity :AppCompatActivity() {
 
             finish()
             startActivity(intent)
+
+        /*    // this basically provides animation
+
+            // this basically provides animation
+            overridePendingTransition(0, 0)
+            val time = System.currentTimeMillis().toString() + ""*/
         }
         langHiBtn.setOnClickListener {
             context = SessionManager.setLocale(this@LanguageActivity,"hi")

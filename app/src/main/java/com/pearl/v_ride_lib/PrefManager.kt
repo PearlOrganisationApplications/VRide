@@ -85,7 +85,6 @@ import android.content.SharedPreferences
          return pref?.getString("cou","null").toString()
      }
 
-
      fun setWelcomeScreen(welcome: Boolean) {
          editor!!.putBoolean("welcome", welcome)
          editor!!.commit()
@@ -134,6 +133,13 @@ import android.content.SharedPreferences
      fun setCall(welcome: Boolean) {
          editor!!.putBoolean("call", welcome)
          editor!!.commit()
+     }
+     fun setLangauge(id:String){
+         editor!!.putString("lanID", id)
+         editor!!.commit()
+     }
+     fun getLanID():String{
+         return pref?.getString("lanID", "en").toString()
      }
  }
 

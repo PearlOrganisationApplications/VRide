@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<androidx.cardview.widget.CardView
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    app:cardCornerRadius="15dp"
+    android:backgroundTint="@color/card_bg"
+    app:cardElevation="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_10sdp">
+        <ImageView
+            android:id="@+id/cancelLang"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_21sdp"
+            android:src="@drawable/close"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            app:tint="#B1AFAF"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="App Language"
+                android:textStyle="bold"
+                android:textSize="@dimen/_20ssp"
+                android:fontFamily="@font/alata"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <RadioButton
+            android:id="@+id/btnEngLang"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/lang_eng"
+            android:checked="false"
+            android:paddingStart="@dimen/_25sdp"/>
+
+        <RadioButton
+            android:id="@+id/btnHindiLang"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/lang_hindi"
+            android:checked="false"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:paddingStart="@dimen/_25sdp"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

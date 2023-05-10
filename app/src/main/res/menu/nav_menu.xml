@@ -53,10 +53,21 @@
         android:title="@string/language"
         android:icon="@drawable/file"
         />
+<!--
+    <item
+        android:id="@+id/btnHindiLang"
+        android:title="@string/lang_hindi"
+
+        />
+    <item
+        android:id="@+id/btnEngLang"
+        android:title="@string/lang_eng"
+        />
+-->
+
     <item
         android:id="@+id/logout"
         android:title="Update"
         android:icon="@drawable/ic_ogin"/>
-
 
 </menu>
