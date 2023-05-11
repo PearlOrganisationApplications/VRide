@@ -108,5 +108,20 @@
     <string name="address">पता</string>
     <string name="city">शहर</string>
     <string name="pin_code">पिन कोड</string>
+    <string name="pay_due">बकाया भुगतान</string>
+    <string name="recharge">रिचार्ज करें</string>
+    <string name="withdraw">निकासी करें</string>
+    <string name="unpaid">अवैतनिक</string>
+    <string name="due_date">नियत तिथि</string>
+    <string name="user_name">उपयोगकर्ता नाम</string>
+    <string name="user_id">उपयोगकर्ता आईडी</string>
+    <string name="bill_amount">बिल राशि</string>
+    <string name="available_balance">उपलब्ध शेष राशि</string>
+    <string name="amount">राशि</string>
+    <string name="bank_account_number">बैंक खाता संख्या</string>
+    <string name="ifsc_code">IFSC कोड</string>
+    <string name="show_less">कम दिखाएं ↑</string>
+    <string name="show_more">और दिखाएं</string>
+
 
 </resources>

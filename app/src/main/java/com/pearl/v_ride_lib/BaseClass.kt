@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.Application
 import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -48,6 +49,8 @@ abstract  class BaseClass: AppCompatActivity() {
     var STORAGE_PERMISSION_CODE = 1
     var session: Session? = null
     var classname = "Login"
+
+
     fun setBaseApcContextParent(
         cnt: Context?,
         ain: AppCompatActivity?,

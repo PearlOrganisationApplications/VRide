@@ -44,28 +44,31 @@
                     app:tint="#6C6C6C" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/withdraw"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Withdraw"
+                    android:text="@string/withdraw"
                     android:textSize="@dimen/_22ssp"
                     android:textStyle="bold" />
 
             </LinearLayout>
 
             <TextView
+                android:id="@+id/statusWTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text="Status"
+                android:text="@string/status"
                 android:textSize="@dimen/_12ssp" />
 
             <TextView
+                android:id="@+id/available_balance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/alata"
-                android:text="Available balance"
+                android:text="@string/available_balance"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_18ssp" />
             <TextView
@@ -186,9 +189,10 @@
                         android:paddingEnd="@dimen/_15sdp">
 
                         <TextView
+                            android:id="@+id/usr_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="User Name" />
+                            android:text="@string/user_name" />
 
                         <EditText
                             android:id="@+id/w_nameET"
@@ -211,9 +215,10 @@
                         android:paddingEnd="@dimen/_15sdp">
 
                         <TextView
+                            android:id="@+id/amount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Amount" />
+                            android:text="@string/amount" />
 
                         <EditText
                             android:id="@+id/w_amountET"
@@ -235,13 +240,14 @@
                         android:paddingEnd="@dimen/_15sdp">
 
                         <TextView
+                            android:id="@+id/bank_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Bank Name" />
+                            android:text="@string/bank_name" />
 
                         <EditText
                             android:id="@+id/w_bankNameET"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="end"
@@ -261,13 +267,14 @@
                         android:paddingEnd="@dimen/_15sdp">
 
                         <TextView
+                            android:id="@+id/bank_account_number"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Bank Account No" />
+                            android:text="@string/bank_account_number" />
 
                         <EditText
                             android:id="@+id/w_bankACNOET"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="end"
@@ -286,13 +293,14 @@
                         android:paddingEnd="@dimen/_15sdp">
 
                         <TextView
+                            android:id="@+id/ifsc_code"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="IFSC code" />
+                            android:text="@string/ifsc_code" />
 
                         <EditText
                             android:id="@+id/w_ifscCodeET"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="end"
@@ -320,13 +328,14 @@
                     android:paddingEnd="@dimen/_15sdp">
 
                     <TextView
+                        android:id="@+id/usr_nameTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="User Name" />
+                        android:text="@string/user_name" />
 
                     <TextView
                         android:id="@+id/w_nameTV"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="end"
@@ -343,12 +352,13 @@
                     android:paddingEnd="@dimen/_15sdp">
 
                     <TextView
+                        android:id="@+id/amountTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Amount" />
+                        android:text="@string/amount" />
 
                     <TextView android:id="@+id/w_amountTV"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="end"
@@ -371,13 +381,14 @@
                     android:paddingEnd="@dimen/_15sdp">
 
                     <TextView
+                        android:id="@+id/bank_nameTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Bank Name" />
+                        android:text="@string/bank_name" />
 
                     <TextView
                         android:id="@+id/w_bankNameTV"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="end"
@@ -394,13 +405,14 @@
                         android:paddingEnd="@dimen/_15sdp">
 
                         <TextView
+                            android:id="@+id/bank_account_numberTV"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Bank Account No" />
+                            android:text="@string/bank_account_number" />
 
                         <TextView
                             android:id="@+id/w_bankACNOTV"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="end"
@@ -417,13 +429,14 @@
                         android:paddingEnd="@dimen/_15sdp">
 
                         <TextView
+                            android:id="@+id/ifsc_codeTV"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="IFSC code" />
+                            android:text="@string/ifsc_code" />
 
                         <TextView
                             android:id="@+id/w_ifscCodeTV"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="end"
@@ -443,7 +456,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/_18ssp"
-                    android:text="Show more"
+                    android:text="@string/show_more"
                     android:textAlignment="center"
                     android:gravity="center"
                     android:textColor="@color/white"
@@ -455,7 +468,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/accept_tv_background"
                     android:gravity="center"
-                    android:text=" Show Less ↑"
+                    android:text="@string/show_less"
                     android:textAllCaps="false"
                     android:textSize="@dimen/_18ssp"
                     android:textColor="@color/white"
@@ -471,12 +484,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:padding="@dimen/_5sdp"
+            android:layout_marginBottom="16dp"
             android:backgroundTint="@color/color_secondary"
-            android:text="Withdraw"
+            android:padding="@dimen/_5sdp"
+            android:text="@string/withdraw"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

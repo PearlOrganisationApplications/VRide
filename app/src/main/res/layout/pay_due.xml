@@ -44,28 +44,31 @@
                         app:tint="#6C6C6C" />
 
                     <TextView
+                        android:id="@+id/payDue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Pay Due"
+                        android:text="@string/pay_due"
                         android:textSize="@dimen/_22ssp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
-                    android:text="Status"
+                    android:text="@string/status"
                     android:textSize="@dimen/_12ssp" />
 
                 <TextView
+                    android:id="@+id/unpaid"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/alata"
-                    android:text="UnPaid"
+                    android:text="@string/unpaid"
                     android:textColor="@color/red"
                     android:textSize="@dimen/_30ssp" />
 
@@ -81,11 +84,12 @@
                         android:src="@drawable/deadline" />
 
                     <TextView
+                        android:id="@+id/due_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginHorizontal="@dimen/_5sdp"
-                        android:text="Due Date"
+                        android:text="@string/due_date"
                         android:textSize="@dimen/_13ssp"
                         android:textStyle="bold" />
 
@@ -156,11 +160,13 @@
                         android:paddingEnd="@dimen/_15sdp">
 
                         <TextView
+                            android:id="@+id/user_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="User Name" />
+                            android:text="@string/user_name" />
 
                         <TextView
+                            android:id="@+id/nameTV"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -178,12 +184,14 @@
                         android:paddingEnd="@dimen/_15sdp">
 
                         <TextView
+                            android:id="@+id/user_id"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="User ID" />
+                            android:text="@string/user_id" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:id="@+id/user_idTV"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="end"
@@ -200,12 +208,14 @@
                         android:paddingEnd="@dimen/_15sdp">
 
                         <TextView
+                            android:id="@+id/bill_amount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Bill Amount" />
+                            android:text="@string/bill_amount" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:id="@+id/bill_amountTV"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="end"
@@ -217,13 +227,13 @@
             </androidx.cardview.widget.CardView>
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/button_payDue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="7dp"
                 android:layout_marginEnd="7dp"
                 android:backgroundTint="@color/color_secondary"
-                android:text="Pay Due"
+                android:text="@string/pay_due"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Intent
+import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -13,10 +14,10 @@ import com.pearl.v_ride_lib.Global
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.content.ContextCompat
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -35,27 +36,39 @@ class ProfileActivity : BaseClass() {
     private val myCalendar = Calendar.getInstance()
     lateinit var selfiee: CircleImageView
     lateinit var edtProfile: Button
-    lateinit var update_profile: Button
+    lateinit var update_profileBT: Button
     private lateinit var dialog: Dialog
     lateinit var moblie_no: TextInputLayout
     lateinit var email_id: TextInputLayout
+    lateinit var aadharCardTL: TextInputLayout
+    lateinit var pancardTL: TextInputLayout
+    lateinit var dobTIL: TextInputLayout
+    lateinit var nameTL: TextInputLayout
+    lateinit var update_profile: TextView
     lateinit var verify: Button
     lateinit var cancel: ImageView
+    private lateinit var resourcess : Resources
 //    lateinit var emaiTIL:TextInputLayout
     override fun setLayoutXml() {
         setContentView(R.layout.activity_profile)
     }
 
     override fun initializeViews() {
+        resourcess = Global.language(this,resources)
         ivback=findViewById(R.id.ivBack)
         apptitle = findViewById(R.id.titleTVAppbar)
         selfiee = findViewById(R.id.show_selfiee)
         dob= findViewById(R.id.dobTL)
-        apptitle.text ="Profile"
+        apptitle.setText(R.string.profile)
         edtProfile = findViewById(R.id.editprofile)
-        update_profile = findViewById(R.id.updateButton)
+        update_profileBT = findViewById(R.id.updateButton)
         moblie_no = findViewById(R.id.mobileTL)
         email_id = findViewById(R.id.emailTL)
+        aadharCardTL = findViewById(R.id.aadharCardTL)
+        pancardTL = findViewById(R.id.pancardTL)
+        dobTIL = findViewById(R.id.dobTIL)
+        nameTL = findViewById(R.id.nameTL)
+        update_profile = findViewById(R.id.update_profile)
 //        emaiTIL = findViewById(R.id.emailTIL)
          dialog = Dialog(this)
     }
@@ -69,7 +82,7 @@ class ProfileActivity : BaseClass() {
         }*/
 
         edtProfile.setOnClickListener {
-            update_profile.visibility = View.VISIBLE
+            update_profileBT.visibility = View.VISIBLE
             edtProfile.visibility = View.GONE
             moblie_no.isEnabled = true
 //            moblie_no.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,getDrawable(R.drawable.ic_baseline_lock)), null)
@@ -87,7 +100,7 @@ class ProfileActivity : BaseClass() {
 
         }
 
-        update_profile.setOnClickListener {
+        update_profileBT.setOnClickListener {
             moblie_no.isEnabled = false
             email_id.isEnabled = false
 
@@ -112,7 +125,7 @@ class ProfileActivity : BaseClass() {
             dialog.show()
 
             edtProfile.visibility = View.VISIBLE
-            update_profile.visibility = View.GONE
+            update_profileBT.visibility = View.GONE
 
 
         }
@@ -138,6 +151,18 @@ class ProfileActivity : BaseClass() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        apptitle.text = resourcess.getString(R.string.profile)
+        edtProfile.text = resourcess.getString(R.string.edit_profile)
+        update_profileBT.text = resourcess.getString(R.string.update_profile)
+        update_profile.text = resourcess.getString(R.string.update_profile)
+        nameTL.hint = resourcess.getString(R.string.full_name)
+        dobTIL.hint = resourcess.getString(R.string.dob)
+        pancardTL.hint = resourcess.getString(R.string.pan_card)
+        aadharCardTL.hint = resourcess.getString(R.string.aadhar_card)
+
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

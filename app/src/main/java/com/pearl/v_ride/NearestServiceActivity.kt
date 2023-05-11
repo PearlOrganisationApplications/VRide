@@ -1,5 +1,6 @@
 package com.pearl.v_ride
 
+import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.widget.AppCompatImageView
@@ -15,6 +16,7 @@ class NearestServiceActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     lateinit var ivback: AppCompatImageView
     lateinit var apptitle: AppCompatTextView
+    private lateinit var resourcess : Resources
 //    private lateinit var newArrayList: ArrayList<NearestList>
 /*    lateinit var placeName: Array<String>
     lateinit var placeAddress: Array<String*/
@@ -22,11 +24,12 @@ class NearestServiceActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
     Global.language(this,resources)
         setContentView(R.layout.activity_nearest_service)
+    resourcess = Global.language(this,resources)
 
     ivback=findViewById(R.id.ivBack)
     apptitle = findViewById(R.id.titleTVAppbar)
 
-    apptitle.text =title
+    apptitle.setText(R.string.my_nearest_service)
     ivback.setOnClickListener {
         onBackPressed()
     }
@@ -54,6 +57,12 @@ class NearestServiceActivity : AppCompatActivity() {
         val recyclerViewAapter = NearestListAapter(listCard)
     recyclerView.adapter =recyclerViewAapter
 
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        apptitle.text = resourcess.getString(R.string.my_nearest_service)
 
     }
 }

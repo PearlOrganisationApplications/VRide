@@ -4,6 +4,7 @@ package com.pearl.v_ride
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -18,6 +19,7 @@ import com.pearl.adapter.TransactionsAdapter
 import com.pearl.data.TransactionList
 import com.pearl.test5.R
 import com.pearl.v_ride_lib.BaseClass
+import com.pearl.v_ride_lib.Global
 import com.razorpay.Checkout
 import com.razorpay.PaymentResultListener
 import org.json.JSONException
@@ -73,6 +75,45 @@ class
     lateinit var rootView: LinearLayout
     var i: Int = 0
 
+    private lateinit var resourcess : Resources
+    lateinit var titleTV: TextView
+    lateinit var totalBalanceTV: TextView
+    lateinit var securityAmtTV: TextView
+    lateinit var withdrawable_balanceTV: TextView
+    lateinit var payDueTV: TextView
+    lateinit var rechargeTV: TextView
+    lateinit var withdrawTV: TextView
+    lateinit var transactionTV: TextView
+
+    // pay due
+    lateinit var payDue: TextView
+    lateinit var status: TextView
+    lateinit var unpaid: TextView
+    lateinit var due_date: TextView
+    lateinit var user_name: TextView
+    lateinit var nameTV: TextView
+    lateinit var user_id: TextView
+    lateinit var bill_amount: TextView
+    lateinit var user_idTV: TextView
+    lateinit var bill_amountTV: TextView
+    lateinit var button_payDue: Button
+
+    // Withdraw
+    lateinit var withdraw: TextView
+    lateinit var statusWTV: TextView
+    lateinit var available_balance: TextView
+    lateinit var usr_name: TextView
+    lateinit var amount: TextView
+    lateinit var bank_name: TextView
+    lateinit var bank_account_number: TextView
+    lateinit var ifsc_code: TextView
+    lateinit var usr_nameTV: TextView
+    lateinit var amountTV: TextView
+    lateinit var bank_nameTV: TextView
+    lateinit var bank_account_numberTV: TextView
+    lateinit var ifsc_codeTV: TextView
+    lateinit var button_withdraw: Button
+
 //    lateinit var earningProfile: ImageView
    val transactionListCard = ArrayList<TransactionList>()
 
@@ -82,6 +123,43 @@ class
 
     override fun initializeViews() {
 
+        titleTV = findViewById(R.id.titleTV)
+        totalBalanceTV = findViewById(R.id.totalBalanceTV)
+        securityAmtTV = findViewById(R.id.securityAmtTV)
+        withdrawable_balanceTV = findViewById(R.id.withdrawable_balanceTV)
+        payDueTV = findViewById(R.id.payDueTV)
+        rechargeTV = findViewById(R.id.rechargeTV)
+        withdrawTV = findViewById(R.id.withdrawTV)
+        transactionTV = findViewById(R.id.transaction)
+
+        //pay due
+        status = findViewById(R.id.status)
+        payDue = findViewById(R.id.payDue)
+        unpaid = findViewById(R.id.unpaid)
+        due_date = findViewById(R.id.due_date)
+        user_name = findViewById(R.id.user_name)
+        nameTV = findViewById(R.id.nameTV)
+        user_id = findViewById(R.id.user_id)
+        bill_amount = findViewById(R.id.bill_amount)
+        button_payDue = findViewById(R.id.button_payDue)
+
+        //Withdraw
+        withdraw = findViewById(R.id.withdraw)
+        statusWTV = findViewById(R.id.statusWTV)
+        available_balance = findViewById(R.id.available_balance)
+        usr_name = findViewById(R.id.usr_name)
+        amount = findViewById(R.id.amount)
+        bank_name = findViewById(R.id.bank_name)
+        bank_account_number = findViewById(R.id.bank_account_number)
+        ifsc_code = findViewById(R.id.ifsc_code)
+        usr_nameTV = findViewById(R.id.usr_nameTV)
+        amountTV = findViewById(R.id.amountTV)
+        bank_nameTV = findViewById(R.id.bank_nameTV)
+        bank_account_numberTV = findViewById(R.id.bank_account_numberTV)
+        ifsc_codeTV = findViewById(R.id.ifsc_codeTV)
+        button_withdraw = findViewById(R.id.button_withdraw)
+
+        resourcess = Global.language(this,resources)
         w_nameTV = findViewById(R.id.w_nameTV)
         w_amountTV = findViewById(R.id.w_amountTV)
         w_bankNameTV = findViewById(R.id.w_bankNameTV)
@@ -335,6 +413,44 @@ class
             walletProfile.setImageURI(uri)
             Log.d("abc", Global.imageString)
         }*/
+        withdrawTV.text = resourcess.getString(R.string.withdraw)
+        rechargeTV.text = resourcess.getString(R.string.recharge)
+        payDueTV.text = resourcess.getString(R.string.pay_due)
+        transactionTV.text = resourcess.getString(R.string.transaction)
+        seeTransaction.text = resourcess.getString(R.string.see_all)
+        hideTransaction.text = resourcess.getString(R.string.hide_all)
+        titleTV.text = resourcess.getString(R.string.my_wallet)
+        totalBalanceTV.text = resourcess.getString(R.string.total_balance)
+        securityAmtTV.text = resourcess.getString(R.string.security_amount)
+        withdrawable_balanceTV.text = resourcess.getString(R.string.withdrawable_balance)
+
+        payDue.text = resourcess.getString(R.string.pay_due)
+        unpaid.text = resourcess.getString(R.string.unpaid)
+        status.text = resourcess.getString(R.string.status)
+        due_date.text = resourcess.getString(R.string.due_date)
+        user_name.text = resourcess.getString(R.string.user_name)
+        bill_amount.text = resourcess.getString(R.string.bill_amount)
+        button_payDue.text = resourcess.getString(R.string.pay_due)
+        user_id.text = resourcess.getString(R.string.user_id)
+
+
+        withdraw.text = resourcess.getString(R.string.withdraw)
+        statusWTV.text = resourcess.getString(R.string.status)
+        available_balance.text = resourcess.getString(R.string.available_balance)
+        usr_name.text = resourcess.getString(R.string.user_name)
+        amount.text = resourcess.getString(R.string.amount)
+        bank_name.text = resourcess.getString(R.string.bank_name)
+        bank_account_number.text = resourcess.getString(R.string.bank_account_number)
+        ifsc_code.text = resourcess.getString(R.string.ifsc_code)
+        showMoreTV.text = resourcess.getString(R.string.show_more)
+        showLessTV.text = resourcess.getString(R.string.show_less)
+        usr_nameTV.text = resourcess.getString(R.string.user_name)
+        amountTV.text = resourcess.getString(R.string.amount)
+        bank_nameTV.text = resourcess.getString(R.string.bank_name)
+        bank_account_numberTV.text = resourcess.getString(R.string.bank_account_number)
+        ifsc_codeTV.text = resourcess.getString(R.string.ifsc_code)
+        button_withdraw.text = resourcess.getString(R.string.withdraw)
+
     }
 
     override fun onPaymentSuccess(s: String?) {

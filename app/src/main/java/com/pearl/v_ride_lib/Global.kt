@@ -8,7 +8,6 @@ object Global {
        var CODE = 1
        var curr_lat: Double = 0.0
        var curr_long: Double = 0.0
-
        fun language(context2:Context,resourcess2:Resources):Resources{
               var contexts=context2
               var resourcess=resourcess2

@@ -106,6 +106,21 @@
     <string name="address">address</string>
     <string name="city">City</string>
     <string name="pin_code">Pin code</string>
+    <string name="pay_due">Pay Due</string>
+    <string name="recharge">recharge</string>
+    <string name="withdraw">Withdraw</string>
+    <string name="unpaid">UnPaid</string>
+    <string name="due_date">Due Date</string>
+    <string name="user_name">User Name</string>
+    <string name="user_id">User ID</string>
+    <string name="bill_amount">Bill Amount</string>
+    <string name="available_balance">Available balance</string>
+    <string name="amount">Amount</string>
+    <string name="bank_account_number">Bank Account Number</string>
+    <string name="ifsc_code">IFSC code</string>
+    <string name="show_less">Show Less ↑</string>
+    <string name="show_more">Show more</string>
+
 
 
 </resources>

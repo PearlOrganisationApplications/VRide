@@ -1,9 +1,9 @@
 package com.pearl.v_ride
 
-
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -136,8 +136,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     private lateinit var cancelLang: ImageView
     lateinit var menu: Menu
     lateinit var context : Context
-    lateinit var  dialog : BottomSheetDialog
-
+    private lateinit var  dialog : BottomSheetDialog
 
 
     override fun setLayoutXml() {
@@ -558,6 +557,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         unregisterBroadcast()
 
     }
+
 
 
     @RequiresApi(Build.VERSION_CODES.M)
