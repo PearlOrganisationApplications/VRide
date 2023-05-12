@@ -478,6 +478,7 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/your_selfie"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@color/app_background"
@@ -502,6 +503,7 @@
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent">
                                     <TextView
+                                        android:id="@+id/selfie"
                                         android:layout_weight="1"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
@@ -531,6 +533,7 @@
 
                     </androidx.cardview.widget.CardView>
                     <TextView
+                        android:id="@+id/note"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/note"
@@ -539,7 +542,8 @@
                         android:textSize="10sp"
                         android:letterSpacing=".03"
                         android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"/>
+                        android:layout_marginTop="10dp"
+                        tools:ignore="SmallSp" />
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
@@ -558,6 +562,7 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/aadhar_card"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@color/app_background"
@@ -572,6 +577,7 @@
                                 android:padding="12dp"
                                 android:orientation="vertical">
                                 <TextView
+                                    android:id="@+id/status"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="@string/status"
@@ -600,11 +606,11 @@
                                         android:layout_height="50dp"
                                         android:layout_marginStart="18dp"
                                         android:src="@drawable/dummy_aadhar"
-                                        app:layout_constraintStart_toEndOf="@+id/panfrontTV"
+                                        app:layout_constraintStart_toEndOf="@+id/aadhar_n_front"
                                         app:layout_constraintTop_toTopOf="parent" />
 
                                     <TextView
-                                        android:id="@+id/panfrontTV"
+                                        android:id="@+id/aadhar_n_front"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="31dp"
@@ -615,7 +621,7 @@
                                         app:layout_constraintTop_toTopOf="parent" />
 
                                     <TextView
-                                        android:id="@+id/textView3"
+                                        android:id="@+id/aadhar_n_rear"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="31dp"
@@ -711,6 +717,7 @@
                                 android:orientation="vertical">
 
                                 <TextView
+                                    android:id="@+id/current_address"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:background="@color/app_background"
@@ -735,6 +742,7 @@
 -->
 
                                 <EditText
+                                    android:id="@+id/address"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/_10ssp"
@@ -744,6 +752,7 @@
                                     android:hint="@string/address" />
 
                                 <EditText
+                                    android:id="@+id/city"
                                     android:layout_marginTop="@dimen/_10ssp"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -765,6 +774,7 @@
                                         android:layout_gravity="center"
                                         />
                                     <EditText
+                                        android:id="@+id/pin_code"
                                         android:layout_weight="1"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
@@ -806,7 +816,7 @@
                                 android:visibility="visible"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="submit"
+                                android:text="@string/submit"
                                 android:backgroundTint="@color/color_secondary"/>
 
 
@@ -844,11 +854,12 @@
                                 android:orientation="vertical">
 
                                 <TextView
+                                    android:id="@+id/merchant_mapping"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:background="@color/app_background"
                                     android:gravity="center_horizontal"
-                                    android:text="Merchant Mapping"
+                                    android:text="@string/merchant_mapping"
                                     android:textSize="18sp"
                                     android:textColor="@color/white"
                                     tools:ignore="TextContrastCheck" />
@@ -865,6 +876,7 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical">
                             <TextView
+                                android:id="@+id/merchant"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/merchant"/>
@@ -904,6 +916,7 @@
                                 android:orientation="vertical">
 
                                 <TextView
+                                    android:id="@+id/enter_all_merchant_name_you_are_working_with"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/enter_all_merchant_name_you_are_working_with"
@@ -940,6 +953,7 @@
 
 
                                 <TextView
+                                    android:id="@+id/enter_merchant_name"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/enter_merchant_name"/>
@@ -950,6 +964,7 @@
                                     android:imeOptions="actionNext"
                                     android:hint="@string/merchant_name"/>
                                 <TextView
+                                    android:id="@+id/enter_merchant_id"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/enter_merchant_id"/>
@@ -1140,6 +1155,7 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/pan_card"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@color/app_background"
@@ -1154,6 +1170,7 @@
                                 android:padding="12dp"
                                 android:orientation="vertical">
                                 <TextView
+                                    android:id="@+id/statusP"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="@string/status"
@@ -1255,7 +1272,7 @@
                                             android:id="@+id/submitPanBT"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="submit"
+                                            android:text="@string/submit"
                                             android:backgroundTint="@color/color_secondary"/>
 
 
@@ -1293,6 +1310,7 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/bank_details"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@color/app_background"
@@ -1307,6 +1325,7 @@
                                 android:padding="12dp"
                                 android:orientation="vertical">
                                 <TextView
+                                    android:id="@+id/statusB"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="@string/status"
@@ -1338,7 +1357,7 @@
                                         android:layout_marginEnd="65dp"
                                         android:layout_marginStart="2dp"
                                         android:textSize="12sp"
-                                        android:text="Bank \nDetails"
+                                        android:text="@string/bank_n_details"
                                         app:layout_constraintStart_toEndOf="@+id/bankPassbookIV"
                                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -1365,7 +1384,7 @@
                                             app:layout_constraintTop_toBottomOf="@+id/bankPassbookIV" />
 
                                         <EditText
-                                            android:id="@+id/pNameET"
+                                            android:id="@+id/bNameET"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:hint="@string/bank_name"
@@ -1390,7 +1409,7 @@
                                             android:id="@+id/raccountNOET"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:hint="Renter your account No"
+                                            android:hint="@string/renter_your_account_no"
                                             android:minHeight="48dp"
                                             android:imeOptions="actionNext"
                                             android:inputType="text"
@@ -1402,7 +1421,7 @@
                                             android:id="@+id/ifscCode"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:hint="IFSC code"
+                                            android:hint="@string/ifsc_code"
                                             android:minHeight="48dp"
                                             android:imeOptions="actionDone"
                                             android:inputType="text"
@@ -1451,6 +1470,7 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/driving_licence"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@color/app_background"
@@ -1465,6 +1485,7 @@
                                 android:padding="12dp"
                                 android:orientation="vertical">
                                 <TextView
+                                    android:id="@+id/statusD"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="@string/status"
@@ -1494,7 +1515,7 @@
                                         android:layout_marginTop="25dp"
                                         android:layout_marginEnd="65dp"
                                         android:textSize="12sp"
-                                        android:text="@string/driving_nlicence"
+                                        android:text="@string/driving_n_licence"
                                         app:layout_constraintStart_toEndOf="@+id/licenceIV"
                                         app:layout_constraintTop_toTopOf="parent" />
 

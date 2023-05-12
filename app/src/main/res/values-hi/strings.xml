@@ -84,7 +84,7 @@
     <string name="update_2_2">अपडेट 2/2</string>
     <string name="driving_licence">ड्राइविंग लाइसेंस</string>
     <string name="status">स्थिति</string>
-    <string name="driving_nlicence">ड्राइविंग \nलाइसेंस</string>
+    <string name="driving_n_licence">ड्राइविंग \nलाइसेंस</string>
     <string name="dl_no">डीएल नंबर</string>
     <string name="bank_name">बैंक का नाम</string>
     <string name="please_enter_your_account_no">कृपया अपना खाता नंबर दर्ज करें</string>
@@ -122,6 +122,11 @@
     <string name="ifsc_code">IFSC कोड</string>
     <string name="show_less">कम दिखाएं ↑</string>
     <string name="show_more">और दिखाएं</string>
+    <string name="submit">प्रस्तुत</string>
+    <string name="merchant_mapping">व्यापारी मैपिंग</string>
+    <string name="bank_n_details">बैंक\nविवरण</string>
+    <string name="renter_your_account_no">अपना खाता नंबर दर्ज करें</string>
+
 
 
 </resources>

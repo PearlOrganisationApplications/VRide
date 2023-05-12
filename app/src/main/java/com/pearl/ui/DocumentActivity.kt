@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.content.res.Resources
 import android.graphics.Color
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -19,9 +20,11 @@ import com.pearl.test5.R
 import com.pearl.v_ride.HomeScreen
 import com.pearl.v_ride_lib.BaseClass
 import com.pearl.v_ride_lib.Global
+import com.pearl.v_ride_lib.PrefManager
 import de.hdodenhof.circleimageview.CircleImageView
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.properties.Delegates
 
 class DocumentActivity : BaseClass() {
@@ -82,6 +85,39 @@ class DocumentActivity : BaseClass() {
     private lateinit var dataList: MutableList<String>
     private lateinit var editText1: EditText
     private lateinit var editText2: EditText
+    private lateinit var resourcess: Resources
+    private lateinit var your_selfie: TextView
+    private lateinit var selfie: TextView
+    private lateinit var note: TextView
+    private lateinit var aadhar_card: TextView
+    private lateinit var aadhar_n_front: TextView
+    private lateinit var aadhar_n_rear: TextView
+    private lateinit var current_address: TextView
+    private lateinit var address: TextView
+    private lateinit var city: TextView
+    private lateinit var pin_code: TextView
+    private lateinit var merchant_mapping: TextView
+    private lateinit var merchant: TextView
+    private lateinit var enter_all_merchant_name_you_are_working_with: TextView
+    private lateinit var enter_merchant_id: TextView
+    private lateinit var enter_merchant_name: TextView
+    private lateinit var pan_card: TextView
+    private lateinit var statusP: TextView
+    private lateinit var pancardTV: TextView
+    private lateinit var bank_details: TextView
+    private lateinit var statusB: TextView
+    private lateinit var passbookTV: TextView
+    private lateinit var driving_licence: TextView
+    private lateinit var statusD: TextView
+    private lateinit var licenceTV: TextView
+    private lateinit var panNoET: EditText
+    private lateinit var panNameET: EditText
+    private lateinit var bNameET: EditText
+    private lateinit var accountNOET: EditText
+    private lateinit var raccountNOET: EditText
+    private lateinit var ifscCode: EditText
+    private lateinit var licenceNoET: EditText
+    private lateinit var items: Array<String>
 
     override fun setLayoutXml() {
         setContentView(R.layout.activity_document)
@@ -99,10 +135,48 @@ class DocumentActivity : BaseClass() {
         editText1 = findViewById(R.id.editText1)
         editText2 = findViewById(R.id.editText2)
 
+        your_selfie = findViewById(R.id.your_selfie)
+        selfie = findViewById(R.id.selfie)
+        note = findViewById(R.id.note)
+        aadhar_card = findViewById(R.id.aadhar_card)
+        aadhar_n_front = findViewById(R.id.aadhar_n_front)
+        aadhar_n_rear = findViewById(R.id.aadhar_n_rear)
+        current_address = findViewById(R.id.current_address)
+        address = findViewById(R.id.address)
+        city = findViewById(R.id.city)
+        pin_code = findViewById(R.id.pin_code)
+
+        pan_card = findViewById(R.id.pan_card)
+        statusP = findViewById(R.id.statusP)
+        pancardTV = findViewById(R.id.pancardTV)
+        panNoET = findViewById(R.id.panNoET)
+        panNameET = findViewById(R.id.panNameET)
+        bank_details = findViewById(R.id.bank_details)
+
+        statusB = findViewById(R.id.statusB)
+
+        passbookTV = findViewById(R.id.passbookTV)
+        bNameET = findViewById(R.id.bNameET)
+        accountNOET = findViewById(R.id.accountNOET)
+        raccountNOET = findViewById(R.id.raccountNOET)
+        ifscCode = findViewById(R.id.ifscCode)
+        driving_licence = findViewById(R.id.driving_licence)
+        statusD = findViewById(R.id.statusD)
+        licenceTV = findViewById(R.id.licenceTV)
+        licenceNoET = findViewById(R.id.licenceNoET)
+
+        merchant_mapping = findViewById(R.id.merchant_mapping)
+        merchant = findViewById(R.id.merchant)
+        enter_all_merchant_name_you_are_working_with =
+            findViewById(R.id.enter_all_merchant_name_you_are_working_with)
+        enter_merchant_id = findViewById(R.id.enter_merchant_id)
+        enter_merchant_name = findViewById(R.id.enter_merchant_name)
+
         addressProofIV = findViewById(R.id.addressProofIV)
         addressProofTV = findViewById(R.id.addressProofTV)
         submitAlreadyBT = findViewById(R.id.submitAlreadyBT)
 
+        resourcess = Global.language(this, resources)
         /* merchantanotherWorkingLL = findViewById(R.id.merchantanotherWorkingLL)
            anotherYesBT = findViewById(R.id.merchantAYes)
            anotherNoBT = findViewById(R.id.merchantANo) */
@@ -127,26 +201,26 @@ class DocumentActivity : BaseClass() {
         doc_profile = findViewById(R.id.doc_selfie)
         add_selfie = findViewById(R.id.add_selfie)
         select_state = findViewById(R.id.statelistSP)
-       /* selfieCor = findViewById(R.id.corporate_doc_selfie)
-        addCorporateSelfie = findViewById(R.id.add_corporate_selfie)
-        companyID = findViewById(R.id.corporate_docID)
-        corporateAadharF = findViewById(R.id.corporate_adharFrotIV)
-        corporateAadharR = findViewById(R.id.corporate_adharrearIV)
-        addCorporateAadharF = findViewById(R.id.corporate_addfront)
-        addCorporateAadharR = findViewById(R.id.corporate_addrear)
-        docLL = findViewById(R.id.docLL)
-        corporateLL = findViewById(R.id.corporateLL)
-        doc_dob = findViewById(R.id.doc_dob)
-        persnalIV = findViewById(R.id.personalIV)
-        corporateIV = findViewById(R.id.corporateIV)
-        personalTV = findViewById(R.id.personalTV)
-        corporateTV = findViewById(R.id.corporateTV)*/
+        /* selfieCor = findViewById(R.id.corporate_doc_selfie)
+         addCorporateSelfie = findViewById(R.id.add_corporate_selfie)
+         companyID = findViewById(R.id.corporate_docID)
+         corporateAadharF = findViewById(R.id.corporate_adharFrotIV)
+         corporateAadharR = findViewById(R.id.corporate_adharrearIV)
+         addCorporateAadharF = findViewById(R.id.corporate_addfront)
+         addCorporateAadharR = findViewById(R.id.corporate_addrear)
+         docLL = findViewById(R.id.docLL)
+         corporateLL = findViewById(R.id.corporateLL)
+         doc_dob = findViewById(R.id.doc_dob)
+         persnalIV = findViewById(R.id.personalIV)
+         corporateIV = findViewById(R.id.corporateIV)
+         personalTV = findViewById(R.id.personalTV)
+         corporateTV = findViewById(R.id.corporateTV)*/
         pan_dob = findViewById(R.id.pan_dobET)
 
         updateBT = findViewById<Button>(R.id.updateBT)
         ivback = findViewById(R.id.ivBack)
         apptitle = findViewById(R.id.titleTVAppbar)
-        apptitle.text = "Document"
+        apptitle.setText(R.string.document)
 
         dataList = mutableListOf()
         adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, dataList)
@@ -194,16 +268,16 @@ class DocumentActivity : BaseClass() {
 
         }
         pan_dob.setOnClickListener {
-            req_code =1
+            req_code = 1
             showDatePicker()
         }
-       /* doc_dob.setOnClickListener {
-            req_code = 2
-            showDatePicker()
-        }*/
+        /* doc_dob.setOnClickListener {
+             req_code = 2
+             showDatePicker()
+         }*/
 
         updateBT2.setOnClickListener {
-            startActivity(Intent(this@DocumentActivity,HomeScreen::class.java))
+            startActivity(Intent(this@DocumentActivity, HomeScreen::class.java))
             finish()
         }
         updateBT.setOnClickListener {
@@ -212,12 +286,12 @@ class DocumentActivity : BaseClass() {
             updateBT.visibility = View.GONE
             updateBT2.visibility = View.VISIBLE
         }
-       /* persnalIV.setOnClickListener {
-            docLL.visibility =View.VISIBLE
-            corporateLL.visibility = View.GONE
-//            req_code =3
+        /* persnalIV.setOnClickListener {
+             docLL.visibility =View.VISIBLE
+             corporateLL.visibility = View.GONE
+ //            req_code =3
 
-        }*/
+         }*/
         /*corporateIV.setOnClickListener {
             docLL.visibility = View.GONE
             corporateLL.visibility = View.VISIBLE
@@ -234,8 +308,11 @@ class DocumentActivity : BaseClass() {
         adhadharF.setOnClickListener {
             ImagePicker.with(this)
                 .crop()
-                .compress(1024)			        //Final image size will be less than 1 MB(Optional)
-                .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+                .compress(1024)                    //Final image size will be less than 1 MB(Optional)
+                .maxResultSize(
+                    1080,
+                    1080
+                )    //Final image resolution will be less than 1080 x 1080(Optional)
                 .start()
             image_type = 1
 
@@ -244,17 +321,23 @@ class DocumentActivity : BaseClass() {
         }
         adhadharR.setOnClickListener {
             ImagePicker.with(this)
-                .crop()	    			        //Crop image(Optional), Check Customization for more option
-                .compress(1024)			//Final image size will be less than 1 MB(Optional)
-                .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+                .crop()                            //Crop image(Optional), Check Customization for more option
+                .compress(1024)            //Final image size will be less than 1 MB(Optional)
+                .maxResultSize(
+                    1080,
+                    1080
+                )    //Final image resolution will be less than 1080 x 1080(Optional)
                 .start()
             image_type = 2
         }
         addPan.setOnClickListener {
             ImagePicker.with(this)
-                .crop()	    			  // Crop image(Optional), Check Customization for more option
-                .compress(1024)			//Final image size will be less than 1 MB(Optional)
-                .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+                .crop()                      // Crop image(Optional), Check Customization for more option
+                .compress(1024)            //Final image size will be less than 1 MB(Optional)
+                .maxResultSize(
+                    1080,
+                    1080
+                )    //Final image resolution will be less than 1080 x 1080(Optional)
                 .start()
             image_type = 3
         }
@@ -301,27 +384,30 @@ class DocumentActivity : BaseClass() {
                 .start()
             image_type = 8
         }*/
-       /* addCorporateAadharF.setOnClickListener {
-            ImagePicker.with(this)
-                .crop()
-                .compress(1024)
-                .maxResultSize(1080, 1080)
-                .start()
-            image_type = 9
-        }*/
-      /*  addCorporateAadharR.setOnClickListener {
-            ImagePicker.with(this)
-                .crop()
-                .compress(1024)
-                .maxResultSize(1080, 1080)
-                .start()
-            image_type = 10
-        }*/
+        /* addCorporateAadharF.setOnClickListener {
+             ImagePicker.with(this)
+                 .crop()
+                 .compress(1024)
+                 .maxResultSize(1080, 1080)
+                 .start()
+             image_type = 9
+         }*/
+        /*  addCorporateAadharR.setOnClickListener {
+              ImagePicker.with(this)
+                  .crop()
+                  .compress(1024)
+                  .maxResultSize(1080, 1080)
+                  .start()
+              image_type = 10
+          }*/
         addressProofTV.setOnClickListener {
             ImagePicker.with(this)
                 .crop()
-                .compress(1024)			        //Final image size will be less than 1 MB(Optional)
-                .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+                .compress(1024)                    //Final image size will be less than 1 MB(Optional)
+                .maxResultSize(
+                    1080,
+                    1080
+                )    //Final image resolution will be less than 1080 x 1080(Optional)
                 .start()
             image_type = 11
         }
@@ -344,7 +430,7 @@ class DocumentActivity : BaseClass() {
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var Resources = Global.language(this,resources)
+        var Resources = Global.language(this, resources)
 
         setLayoutXml()
         initializeViews()
@@ -357,9 +443,74 @@ class DocumentActivity : BaseClass() {
         val otherEdt = findViewById<EditText>(R.id.otherET)
 
         val submitMerchantBtn = findViewById<Button>(R.id.submitMerchantBT)
+        var prefManager = PrefManager(this)
+         items = arrayOf("S")
 
-        val items = arrayOf("Select State","Andhra Pradesh", "Arunachal Pradesh","Assam", "Bihar","Chhattisgarh","Goa","Gujarat","Haryana","Himachal Pradesh","Jammu and Kashmir","Jharkhand",
-            "Karnataka","Kerala","Madhya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Odisha","Punjab","Sikkim","Tamil Nadu","Telangana","Tripura","Uttar Pradesh","Uttarakhand","West Bengal")
+        if (prefManager.getLanID().equals("en"))
+            items = arrayOf(
+                "Select State",
+                "Andhra Pradesh",
+                "Arunachal Pradesh",
+                "Assam",
+                "Bihar",
+                "Chhattisgarh",
+                "Goa",
+                "Gujarat",
+                "Haryana",
+                "Himachal Pradesh",
+                "Jammu and Kashmir",
+                "Jharkhand",
+                "Karnataka",
+                "Kerala",
+                "Madhya Pradesh",
+                "Maharashtra",
+                "Manipur",
+                "Meghalaya",
+                "Mizoram",
+                "Nagaland",
+                "Odisha",
+                "Punjab",
+                "Sikkim",
+                "Tamil Nadu",
+                "Telangana",
+                "Tripura",
+                "Uttar Pradesh",
+                "Uttarakhand",
+                "West Bengal"
+            )
+        else
+            items = arrayOf(
+                "राज्य चुनें",
+                "आंध्र प्रदेश",
+                "अरुणाचल प्रदेश",
+                "असम",
+                "बिहार",
+                "छत्तीसगढ़",
+                "गोवा",
+                "गुजरात",
+                "हरियाणा",
+                "हिमाचल प्रदेश",
+                "जम्मू और कश्मीर",
+                "झारखंड",
+                "कर्नाटक",
+                "केरल",
+                "मध्य प्रदेश",
+                "महाराष्ट्र",
+                "मणिपुर",
+                "मेघालय",
+                "मिजोरम",
+                "नागालैंड",
+                "ओडिशा",
+                "पंजाब",
+                "सिक्किम",
+                "तमिलनाडु",
+                "तेलंगाना",
+                "त्रिपुरा",
+                "उत्तर प्रदेश",
+                "उत्तराखंड",
+                "पश्चिम बंगाल"
+            )
+
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
         select_state.adapter = adapter
 
@@ -389,7 +540,6 @@ class DocumentActivity : BaseClass() {
         }*/
 
 
-
         /*updateBT.setOnClickListener {
             docLL.visibility = View.GONE
             corporateLL.visibility = View.VISIBLE
@@ -403,13 +553,13 @@ class DocumentActivity : BaseClass() {
                   corporateTV.setTextColor(Color.parseColor("#096E0A"))
               }*/
 
-    /*    if ( docLL.visibility == View.VISIBLE){
-            personalTV.setTextColor(Color.parseColor("#096E0A"))
-            corporateTV.setTextColor(Color.parseColor("#000000"))
-        }else if (corporateLL.visibility == View.VISIBLE){
-            corporateTV.setTextColor(Color.parseColor("#096E0A"))
-            personalTV.setTextColor(Color.parseColor("#000000"))
-        }*/
+        /*    if ( docLL.visibility == View.VISIBLE){
+                personalTV.setTextColor(Color.parseColor("#096E0A"))
+                corporateTV.setTextColor(Color.parseColor("#000000"))
+            }else if (corporateLL.visibility == View.VISIBLE){
+                corporateTV.setTextColor(Color.parseColor("#096E0A"))
+                personalTV.setTextColor(Color.parseColor("#000000"))
+            }*/
 
     }
 
@@ -435,15 +585,15 @@ class DocumentActivity : BaseClass() {
 
             if (image_type == 1) {
                 adharFrontIV.setImageURI(uri)
-            } else if (image_type == 2){
+            } else if (image_type == 2) {
                 adhadharRear.setImageURI(uri)
-            }else if (image_type == 3){
+            } else if (image_type == 3) {
                 panFront.setImageURI(uri)
-            }else if (image_type == 4){
+            } else if (image_type == 4) {
                 passbookIV.setImageURI(uri)
-            } else if (image_type == 5){
+            } else if (image_type == 5) {
                 licenceIV.setImageURI(uri)
-            }else if (image_type == 6){
+            } else if (image_type == 6) {
                 doc_profile.setImageURI(uri)
             }/*else if (image_type == 7){
                 selfieCor.setImageURI(uri)
@@ -454,7 +604,8 @@ class DocumentActivity : BaseClass() {
                 corporateAadharF.setImageURI(uri)
             }else if (image_type == 10){
                 corporateAadharR.setImageURI(uri)
-            }*/else if (image_type == 11){
+            }*/
+            else if (image_type == 11) {
                 addressProofIV.setImageURI(uri)
             }
 
@@ -494,15 +645,63 @@ class DocumentActivity : BaseClass() {
         val dateFormat = SimpleDateFormat(myFormat, Locale.US)
         if (req_code == 1) {
             pan_dob.setText(dateFormat.format(myCalendar.time))
-        }/*else if (req_code == 2){
-            doc_dob.setText(dateFormat.format(myCalendar.time))
-
-        }*/
+        }
+        /*else if (req_code == 2){
+                        doc_dob.setText(dateFormat.format(myCalendar.time))
+            }*/
     }
 
     private fun getMinimumDate(): Long {
         val minDateCalendar = Calendar.getInstance()
         minDateCalendar.add(Calendar.YEAR, -100) //Set 100 years ago from now
         return minDateCalendar.timeInMillis
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        adharNoEdt.hint = resourcess.getString(R.string.aadhar_card_no)
+        address.hint = resourcess.getString(R.string.address)
+        city.hint = resourcess.getString(R.string.city)
+        pin_code.hint = resourcess.getString(R.string.pin_code)
+        your_selfie.text = resourcess.getString(R.string.your_selfie)
+        selfie.text = resourcess.getString(R.string.selfie)
+        note.text = resourcess.getString(R.string.note)
+        aadhar_card.text = resourcess.getString(R.string.aadhar_card)
+        aadhar_n_front.text = resourcess.getString(R.string.aadhar_n_front)
+        aadhar_n_rear.text = resourcess.getString(R.string.aadhar_n_rear)
+        current_address.text = resourcess.getString(R.string.current_address)
+        addressProofTV.text = resourcess.getString(R.string.address_proof)
+        apptitle.text = resourcess.getString(R.string.document)
+
+        merchant_mapping.text = resourcess.getString(R.string.merchant_mapping)
+        merchant.text = resourcess.getString(R.string.merchant)
+        enter_all_merchant_name_you_are_working_with.text =
+            resourcess.getString(R.string.enter_all_merchant_name_you_are_working_with)
+        enter_merchant_id.text = resourcess.getString(R.string.enter_merchant_id)
+        enter_merchant_name.text = resourcess.getString(R.string.enter_merchant_name)
+        submitAlreadyBT.text = resourcess.getString(R.string.save)
+        yesBT.text = resourcess.getString(R.string.yes)
+        noBT.text = resourcess.getString(R.string.no)
+        editText1.hint = resourcess.getString(R.string.merchant_name)
+        editText2.hint = resourcess.getString(R.string.merchant_id)
+        pan_dob.hint = resourcess.getString(R.string.dd_mm_yy)
+        panNoET.hint = resourcess.getString(R.string.pan_no)
+        panNameET.hint = resourcess.getString(R.string.name_as_pan)
+        bNameET.hint = resourcess.getString(R.string.bank_name)
+        accountNOET.hint = resourcess.getString(R.string.please_enter_your_account_no)
+        raccountNOET.hint = resourcess.getString(R.string.renter_your_account_no)
+        ifscCode.hint = resourcess.getString(R.string.ifsc_code)
+        licenceNoET.hint = resourcess.getString(R.string.dl_no)
+        pan_card.text = resourcess.getString(R.string.pan_card)
+        statusP.text = resourcess.getString(R.string.status)
+        pancardTV.text = resourcess.getString(R.string.pan_card)
+        bank_details.text = resourcess.getString(R.string.bank_details)
+        statusB.text = resourcess.getString(R.string.status)
+        passbookTV.text = resourcess.getString(R.string.bank_n_details)
+        driving_licence.text = resourcess.getString(R.string.driving_licence)
+        licenceTV.text = resourcess.getString(R.string.driving_n_licence)
+
+
     }
 }
