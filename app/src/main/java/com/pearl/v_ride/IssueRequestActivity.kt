@@ -10,8 +10,9 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.textfield.TextInputLayout
-import com.pearl.test5.R
-import com.pearl.test5.databinding.ActivityIssueRequestBinding
+import com.pearl.v_ride.databinding.ActivityIssueRequestBinding
+
+
 import com.pearl.v_ride_lib.Global
 
 class IssueRequestActivity : AppCompatActivity() {

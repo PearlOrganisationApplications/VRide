@@ -22,7 +22,6 @@ import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
-import com.pearl.test5.R
 import com.pearl.v_ride_lib.BaseClass
 import de.hdodenhof.circleimageview.CircleImageView
 import java.text.SimpleDateFormat

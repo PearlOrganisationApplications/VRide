@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.pearl.data.AttendanceList
-import com.pearl.test5.R
+import com.pearl.v_ride.R
 
 
 class AttendanceAdapter(private val attendanceList: ArrayList<AttendanceList> ):

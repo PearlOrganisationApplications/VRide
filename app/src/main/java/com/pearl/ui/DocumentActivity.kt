@@ -16,8 +16,8 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.pearl.test5.R
 import com.pearl.v_ride.HomeScreen
+import com.pearl.v_ride.R
 import com.pearl.v_ride_lib.BaseClass
 import com.pearl.v_ride_lib.Global
 import com.pearl.v_ride_lib.PrefManager

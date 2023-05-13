@@ -11,14 +11,10 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.location.LocationRequest
-import com.pearl.test5.R
-import com.pearl.v_ride.HomeScreen
-import com.pearl.v_ride.MainActivity
-import com.pearl.v_ride.PermissionActivity
+import com.pearl.v_ride.*
 
 import com.pearl.v_ride_lib.PrefManager
 
-import com.pearl.v_ride.WelcomeScreen
 import com.pearl.v_ride_lib.Global
 
 class SplashScreenActivity : AppCompatActivity() {

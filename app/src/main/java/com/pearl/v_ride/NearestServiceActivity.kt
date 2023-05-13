@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pearl.adapter.NearestListAapter
 import com.pearl.data.NearestList
-import com.pearl.test5.R
+
 import com.pearl.v_ride_lib.Global
 
 class NearestServiceActivity : AppCompatActivity() {

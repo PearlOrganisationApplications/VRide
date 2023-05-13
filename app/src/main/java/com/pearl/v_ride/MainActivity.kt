@@ -9,12 +9,15 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.View
 
 import android.view.Window
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.postDelayed
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -22,15 +25,15 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
-import com.pearl.test5.R
 import com.pearl.v_ride_lib.BaseClass
-import android.view.View
+import com.google.firebase.FirebaseException
+import com.google.firebase.FirebaseTooManyRequestsException
+import com.google.firebase.auth.*
 import com.pearl.ui.DocumentActivity
-import com.pearl.v_ride_lib.Global
 
 import com.pearl.v_ride_lib.PrefManager
+import com.razorpay.OTP
+import java.util.concurrent.TimeUnit
 
 class MainActivity : BaseClass() {
 
@@ -47,15 +50,25 @@ class MainActivity : BaseClass() {
     lateinit var login: Button
     private val REQUEST_CODE = 101
     private lateinit var usrID:EditText
+    private lateinit var progressBar:ProgressBar
+    var storedVerificationId=""
 
    /* lateinit var verify: Button
     lateinit var cancel: ImageView*/
     lateinit var loginOtp: EditText
     lateinit var otpBt: Button
     lateinit var prefManager: PrefManager
+//    private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
+    private lateinit var phoneNumber: String
+    var verifyOTP = ""
+    var otpCode = ""
+    lateinit var credential:PhoneAuthCredential
+    lateinit var resentToken: PhoneAuthProvider.ForceResendingToken
+    lateinit var resend_otp: TextView
 
     override fun setLayoutXml() {
         setContentView(R.layout.activity_main)
+
 
     }
 
@@ -68,11 +81,15 @@ class MainActivity : BaseClass() {
         loginOtp = findViewById(R.id.loginOtp)
         otpBt = findViewById(R.id.otpBT)
         usrID = findViewById(R.id.userID)
+        phoneNumber = usrID.text.toString()
+        progressBar = findViewById(R.id.progressBar)
+        resend_otp = findViewById(R.id.resend_otp)
 
     }
 
 
 
+    @SuppressLint("SuspiciousIndentation")
     override fun initializeClickListners() {
 
            gooleSignIn.setOnClickListener {
@@ -85,40 +102,55 @@ class MainActivity : BaseClass() {
 
 
             otpBt.setOnClickListener {
-                if(validateNumber(usrID)) {
+                phoneNumber = usrID.text.toString().trim()
+//                if(validateNumber(usrID)) {
 
-                loginOtp.visibility = View.VISIBLE
-                login.visibility = View.VISIBLE
-                otpBt.visibility = View.GONE
-            }
+                    if (validateNumber(usrID)) {
+//                        startPhoneNumberVerification("+918979441470")
+                     /*   loginOtp.visibility = View.VISIBLE
+                        login.visibility = View.VISIBLE
+                        otpBt.visibility = View.GONE*/
+                        if (phoneNumber.length == 10){
+
+                            phoneNumber = "+91$phoneNumber"
+                            progressBar.visibility = View.VISIBLE
+                           val options = PhoneAuthOptions.newBuilder(mAuth)
+                                .setPhoneNumber(phoneNumber) // Phone number to verify
+                                .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                                .setActivity(this) // Activity (for callback binding)
+                                .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
+                                .build()
+                            PhoneAuthProvider.verifyPhoneNumber(options)
+                        }else{
+                            Toast.makeText(this,"please Enter correct no",Toast.LENGTH_SHORT).show()
+                        }
+
+                    }
+//            }
+        }
+
+        resend_otp.setOnClickListener {
+            resentOtp()
+            resentTVVisibility()
         }
 
         login.setOnClickListener {
             prefManager.setLogin(true)
-/*           dialog.setContentView(R.layout.activity_forgot_password)
-            dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            dialog.setCancelable(false)
-            dialog.window?.attributes?.windowAnimations = R.style.animation
 
-            verify = dialog.findViewById(R.id.otp_Verify_button)
-            cancel = dialog.findViewById(R.id.view_cancel_dialog)
-
-            verify.setOnClickListener {
-                dialog.dismiss()
-                Toast.makeText(this@MainActivity, "okay clicked", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this@MainActivity,HomeScreen::class.java))
+            otpCode = loginOtp.text.toString()
+            if (otpCode.isNotEmpty()) {
+                if (otpCode.length == 6){
+                    credential = PhoneAuthProvider.getCredential(verifyOTP, otpCode)
+                    progressBar.visibility = View.VISIBLE
+                signInWithPhoneAuthCredential(credential)
+                }else{
+                    Toast.makeText(this@MainActivity, "Please enter correct OTP", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(this@MainActivity, "Please enter the OTP", Toast.LENGTH_SHORT).show()
             }
 
-            cancel.setOnClickListener {
-                dialog.dismiss()
-                Toast.makeText(this@MainActivity, "Cancel clicked", Toast.LENGTH_SHORT).show()
-            }
-
-            dialog.show()*/
-
-
-
-             startActivity(Intent(this,HomeScreen::class.java))
+//             startActivity(Intent(this,HomeScreen::class.java))
 
 
 
@@ -134,9 +166,10 @@ class MainActivity : BaseClass() {
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState) 
+        super.onCreate(savedInstanceState)
 
         val isConnected = isNetworkConnected(this.applicationContext)
+
 
         prefManager = PrefManager(this)
 
@@ -147,6 +180,7 @@ class MainActivity : BaseClass() {
         initializeLabels()
         internetChangeBroadCast()
 
+        resentTVVisibility()
 
 
 //        validateNumber+
@@ -176,36 +210,6 @@ class MainActivity : BaseClass() {
 
 
 
-       /* if (ActivityCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                REQUEST_CODE
-            )
-        }*/
-/*        if (ActivityCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            val permissions = arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
-            val requestCode = 1
-            ActivityCompat.requestPermissions(this, permissions, requestCode)
-        }*/
-
-
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -218,55 +222,10 @@ class MainActivity : BaseClass() {
             dialog.setCanceledOnTouchOutside(false)
         }
 
-    // Getting the Button Click
 
 
-
-/*    private fun googleBtnUi() {
-        // Get a reference to the sign-in button
-//        gooleSignIn = findViewById<SignInButton>(R.id.google_signIn)
-
-        // Set an onClick listener for the sign-in button
-        gooleSignIn.setOnClickListener {
-            signIn()
-        }
-
-        // Loop through the child views of the sign-in button
-        for (i in 0 until gooleSignIn.childCount) {
-            val v = gooleSignIn.getChildAt(i)
-
-            // Check if the child view is a TextView
-            if (v is TextView) {
-                // If it is, cast it to a TextView and set its properties
-                val tv = v
-                tv.textSize = 14f
-                tv.setTypeface(null, Typeface.NORMAL)
-                tv.text = "My Text"
-                tv.setTextColor(Color.parseColor("#FFFFFF"))
-//                tv.background = resources.getDrawable(R.drawable.ic_launcher)
-                tv.isSingleLine = true
-                tv.setPadding(15, 15, 15, 15)
-
-                return // Exit the loop
-            }
-        }
-    }*/
 
     private fun validateForm(){
-
- /*
-      baseclass.validateName(binding.drivername)
-        baseclass.validateNumber(binding.drivermobileno)
-        baseclass.validateAadharNo(binding.driverAdharNo)
-        baseclass.validatePanNo(binding.driverPanNo)
-        baseclass.validateDLNo(binding.driverdlno)
-
-        if (baseclass.validateName(binding.drivername)&&baseclass.validateNumber(binding.drivermobileno)&&baseclass.validateDLNo(binding.driverdlno)&&baseclass.validatePanNo(binding.driverPanNo)&&baseclass.validateAadharNo(binding.driverAdharNo)){
-
-          Navigation.findNavController(requireView()).navigate(R.id.action_figgo_Capton_to_driverCabDetailsFragment,args)
-
-        }*/
-
     }
     private fun signIn() {
         val signInIntent = mGoogleSignInClient.signInIntent
@@ -305,16 +264,10 @@ class MainActivity : BaseClass() {
                     startActivity(i)
                     finish()
                     dialog.dismiss()
-// updateUI(user);
-                } else {
-// If sign in fails, display a message to the user.
-// Log.w(TAG, "signInWithCredential:failure", task.getException());
-// Snackbar.make(mBinding.mainLayout, "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
-// updateUI(null);
                     dialog.dismiss()
                     Toast.makeText(this@MainActivity, "Login failed", Toast.LENGTH_SHORT).show()
                 }
-// ...
+
             }
     }
     private var doubleBackToExitPressedOnce = false
@@ -330,19 +283,136 @@ class MainActivity : BaseClass() {
         Handler(Looper.getMainLooper()).postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
     }
 
-   /* override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            REQUEST_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                }
-            }
+   private val callbacks = object: PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+
+        override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+            // This callback will be invoked in two situations:
+            // 1 - Instant verification. In some cases the phone number can be instantly
+            //     verified without needing to send or enter a verification code.
+            // 2 - Auto-retrieval. On some devices Google Play services can automatically
+            //     detect the incoming verification SMS and perform verification without
+            //     user action.
+            signInWithPhoneAuthCredential(credential)
         }
-    }*/
+
+        override fun onVerificationFailed(e: FirebaseException) {
+            // This callback is invoked in an invalid request for verification is made,
+            // for instance if the the phone number format is not valid.
+
+            if (e is FirebaseAuthInvalidCredentialsException) {
+                // Invalid request
+                Log.d("TAG","verificationFailed ${e.toString()}")
+            } else if (e is FirebaseTooManyRequestsException) {
+                // The SMS quota for the project has been exceeded
+                Log.d("TAG","FirebaseTooManyRequestsException ${e.toString()}")
+            } else if (e is FirebaseAuthMissingActivityForRecaptchaException) {
+                // reCAPTCHA verification attempted with null Activity
+            }
+
+            // Show a message and update the UI
+        }
+
+        override fun onCodeSent(
+            verificationId: String,
+            token: PhoneAuthProvider.ForceResendingToken,
+        ) {
+            // The SMS verification code has been sent to the provided phone number, we
+            // now need to ask the user to enter the code and then construct a credential
+            // by combining the code with a verification ID.
+            Log.d(TAG, "onCodeSent:$verificationId")
+            loginOtp.visibility = View.VISIBLE
+            login.visibility = View.VISIBLE
+            otpBt.visibility = View.GONE
+            resend_otp.visibility = View.VISIBLE
+            progressBar.visibility = View.GONE
+            verifyOTP =  verificationId
+            resentToken = token
+
+
+            // Save verification ID and resending token so we can use them later
+     /*       storedVerificationId = verificationId
+            resendToken = token*/
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (mAuth.currentUser != null){
+            startActivity(Intent(this@MainActivity,HomeScreen::class.java))
+        }
+    }
+    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
+        mAuth.signInWithCredential(credential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+
+                    startActivity(Intent(this@MainActivity, HomeScreen::class.java))
+                    finish()
+                    val user = task.result?.user
+                } else {
+                    // Sign in failed, display a message and update the UI
+                    if (task.exception is FirebaseAuthInvalidCredentialsException) {
+                        // The verification code entered was invalid
+                    }
+                    // Update UI
+                }
+                progressBar.visibility = View.VISIBLE
+            }
+    }
+
+    private fun resentOtp(){
+        val options = PhoneAuthOptions.newBuilder(mAuth)
+            .setPhoneNumber(phoneNumber) // Phone number to verify
+            .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+            .setActivity(this) // Activity (for callback binding)
+            .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
+            .setForceResendingToken(resentToken)
+            .build()
+        PhoneAuthProvider.verifyPhoneNumber(options)
+    }
+
+    private fun resentTVVisibility(){
+        loginOtp.setText("")
+        resend_otp.visibility =View.GONE
+        resend_otp.isEnabled = false
+
+        Handler(Looper.myLooper()!!).postDelayed(
+            Runnable {
+                resend_otp.visibility = View.VISIBLE
+                resend_otp.isEnabled = true
+        },60000)
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* override fun onRequestPermissionsResult(
+     requestCode: Int,
+     permissions: Array<String>,
+     grantResults: IntArray
+ ) {
+     super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+     when (requestCode) {
+         REQUEST_CODE -> {
+             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+             }
+         }
+     }
+ }*/
 /*   override fun onRequestPermissionsResult(
        requestCode: Int,
        permissions: Array<String>,
@@ -428,6 +498,3 @@ class MainActivity : BaseClass() {
     }
 
 */
-
-
-}

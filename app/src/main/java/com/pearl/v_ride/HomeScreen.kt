@@ -61,7 +61,6 @@ import com.pearl.adapter.NotificationAdapter
 import com.pearl.data.AttendanceList
 import com.pearl.data.NotificationList
 import com.pearl.splash_screen.SplashScreenActivity
-import com.pearl.test5.R
 import com.pearl.ui.DocumentActivity
 import com.pearl.v_ride_lib.BaseClass
 import com.pearl.v_ride_lib.PrefManager
@@ -311,6 +310,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                     //navView.inflateMenu(R.menu.nav_menu)
                 }
                 R.id.logout -> {
+
 
                     mAuth = FirebaseAuth.getInstance()
                     /* if (::mAuth.isInitialized) {

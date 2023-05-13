@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import com.pearl.test5.R
+
 import com.pearl.v_ride_lib.Global
 import com.pearl.v_ride_lib.SessionManager
 

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.pearl.data.NearestList
-import com.pearl.test5.R
+import com.pearl.v_ride.R
 
 class NearestListAapter(private  val nearestList: ArrayList<NearestList>):
     RecyclerView.Adapter<NearestListAapter.MyViewHolder>() {

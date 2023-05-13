@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.pearl.adapter.OnboardingItemAdapter
 import com.pearl.data.OnboardingItem
-import com.pearl.test5.R
 import com.pearl.v_ride_lib.BaseClass
 import com.pearl.v_ride_lib.Global
 

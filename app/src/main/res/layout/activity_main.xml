@@ -63,6 +63,7 @@
                 android:background="@color/card_bg"
                 android:padding="10dp">
 
+
                 <TextView
                     android:id="@+id/loginTV"
                     android:layout_width="match_parent"
@@ -103,6 +104,7 @@
 
                 </LinearLayout>
 
+
                 <EditText
                     android:id="@+id/loginOtp"
                     android:visibility="gone"
@@ -120,6 +122,24 @@
                     android:importantForAutofill="yes"
                     android:minHeight="48dp"
                     android:padding="8dp" />
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_gravity="center"/>
+
+                <TextView
+                    android:id="@+id/resend_otp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/resend_otp"
+                    android:visibility="gone"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:textSize="@dimen/_15ssp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="@dimen/_5sdp"/>
 
 
                 <!--

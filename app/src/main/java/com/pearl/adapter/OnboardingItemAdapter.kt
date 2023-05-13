@@ -7,8 +7,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.pearl.test5.R
+
 import com.pearl.data.OnboardingItem
+import com.pearl.v_ride.R
 import pl.droidsonroids.gif.GifImageView
 
 class OnboardingItemAdapter(private  val  onboardingItem: List<OnboardingItem>):

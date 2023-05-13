@@ -8,7 +8,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.pearl.data.HistoryList
-import com.pearl.test5.R
+import com.pearl.v_ride.R
+
 
 class HistoryAdapter(private val historyList: ArrayList<HistoryList>):
     RecyclerView.Adapter<HistoryAdapter.MyItemViewHolder>() {

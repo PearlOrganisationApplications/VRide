@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.pearl.data.NotificationList
-import com.pearl.test5.R
+import com.pearl.v_ride.R
 
 class NotificationAdapter(private val notificationList: ArrayList<NotificationList>):
 RecyclerView.Adapter<NotificationAdapter.MyItemViewHolder>(){

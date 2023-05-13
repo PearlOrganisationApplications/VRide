@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.pearl.data.TransactionList
-import com.pearl.test5.R
+import com.pearl.v_ride.R
 
 class TransactionsAdapter(private val transactionList: ArrayList<TransactionList>):
 RecyclerView.Adapter<TransactionsAdapter.ItemViewHolder>(){

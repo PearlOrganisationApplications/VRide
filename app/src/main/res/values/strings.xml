@@ -123,5 +123,6 @@
     <string name="merchant_mapping">Merchant Mapping</string>
     <string name="bank_n_details">Bank \nDetails</string>
     <string name="renter_your_account_no">Renter your account No</string>
+    <string name="resend_otp">Resend otp</string>
 
 </resources>
