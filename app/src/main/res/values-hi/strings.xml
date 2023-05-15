@@ -126,7 +126,14 @@
     <string name="merchant_mapping">व्यापारी मैपिंग</string>
     <string name="bank_n_details">बैंक\nविवरण</string>
     <string name="renter_your_account_no">अपना खाता नंबर दर्ज करें</string>
-
+    <string name="resend_otp">ओटीपी पुनः भेजें</string>
+    <string name="enter_payment_description">भुगतान विवरण दर्ज करें</string>
+    <string name="enter_your_name">अपना नाम दर्ज करें</string>
+    <string name="enter_amount_to_be_paid">भुगतान के लिए राशि दर्ज करें</string>
+    <string name="transaction_details">लेन-देन विवरण</string>
+    <string name="make_payment">भुगतान करें</string>
+    <string name="enter_your_upi_id">अपना UPI आईडी दर्ज करें</string>
+    <string name="cancel">रद्द करें</string>
 
 
 </resources>

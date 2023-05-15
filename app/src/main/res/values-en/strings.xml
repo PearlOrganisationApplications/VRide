@@ -124,6 +124,15 @@
     <string name="merchant_mapping">Merchant Mapping</string>
     <string name="bank_n_details">Bank \nDetails</string>
     <string name="renter_your_account_no">Renter your account No</string>
+    <string name="resend_otp">Resend otp</string>
+    <string name="enter_payment_description">Enter Payment Description</string>
+    <string name="enter_your_name">Enter your Name</string>
+    <string name="enter_amount_to_be_paid">Enter Amount to be paid</string>
+    <string name="transaction_details">Transaction Details</string>
+    <string name="make_payment">Make Payment</string>
+    <string name="enter_your_upi_id">Enter your UPI Id</string>
+    <string name="cancel">Cancel</string>
+
 
 
 

@@ -72,6 +72,7 @@ class
     lateinit var w_bankACNOTV: TextView
     lateinit var w_ifscCodeTV: TextView
     lateinit var rootView: LinearLayout
+    lateinit var makePaymentBtn: Button
     var i: Int = 0
 
     private lateinit var resourcess : Resources
@@ -121,6 +122,8 @@ class
     }
 
     override fun initializeViews() {
+
+
 
         titleTV = findViewById(R.id.titleTV)
         totalBalanceTV = findViewById(R.id.totalBalanceTV)
@@ -311,12 +314,14 @@ class
         recharge.setOnClickListener {
 
 //            dialog.setCancelable(false)
+//            dialog.setContentView(R.layout.upi_layout)
             dialog.setContentView(R.layout.upi_layout)
             amountEdt = dialog.findViewById<EditText>(R.id.idEdtAmount)
             upiEdt = dialog.findViewById<EditText>(R.id.idEdtUpi)
             nameEdt = dialog.findViewById<EditText>(R.id.idEdtName)
             descEdt = dialog.findViewById<EditText>(R.id.idEdtDescription)
-            val makePaymentBtn: Button? = dialog.findViewById(R.id.idBtnMakePayment)
+            makePaymentBtn = dialog.findViewById(R.id.idBtnMakePayment)!!
+
             transactionDetailsTV = dialog.findViewById<TextView>(R.id.idTVTransactionDetails)
             dialog.show()
 
@@ -449,6 +454,11 @@ class
         bank_account_numberTV.text = resourcess.getString(R.string.bank_account_number)
         ifsc_codeTV.text = resourcess.getString(R.string.ifsc_code)
         button_withdraw.text = resourcess.getString(R.string.withdraw)
+     /*   makePaymentBtn.text = resourcess.getString(R.string.make_payment)
+        amountEdt!!.hint = resourcess.getString(R.string.enter_amount_to_be_paid)
+        upiEdt!!.hint = resourcess.getString(R.string.enter_your_upi_id)
+        nameEdt!!.hint = resourcess.getString(R.string.enter_your_name)
+        descEdt!!.hint = resourcess.getString(R.string.enter_payment_description)*/
 
     }
 

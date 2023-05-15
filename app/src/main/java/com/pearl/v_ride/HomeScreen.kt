@@ -24,9 +24,9 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -45,14 +45,11 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.utils.MPPointF
-import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.pearl.adapter.AttendanceAdapter
@@ -60,7 +57,6 @@ import com.pearl.v_ride_lib.Global
 import com.pearl.adapter.NotificationAdapter
 import com.pearl.data.AttendanceList
 import com.pearl.data.NotificationList
-import com.pearl.splash_screen.SplashScreenActivity
 import com.pearl.ui.DocumentActivity
 import com.pearl.v_ride_lib.BaseClass
 import com.pearl.v_ride_lib.PrefManager
@@ -92,6 +88,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     var to_lat :String ?= ""
     var from_lat :String ?= ""
     var to_lng :String ?= ""
+    val apiKey = R.string.google_api_key
     var from_lng :String ?= ""
     private var locationByGps: Location? = null
     private var locationByNetwork: Location? = null
@@ -130,12 +127,12 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     private lateinit var issue: MenuItem
     private lateinit var document: MenuItem
     private lateinit var language1: MenuItem
-    private lateinit var engLang: RadioButton
-    private lateinit var hindiLang: RadioButton
-    private lateinit var cancelLang: ImageView
+    private lateinit var englishLL: LinearLayout
+    private lateinit var hindiLL: LinearLayout
+    private lateinit var cancelLang: TextView
     lateinit var menu: Menu
     lateinit var context : Context
-    private lateinit var  dialog : BottomSheetDialog
+    private lateinit var  dialog : Dialog
 
 
     override fun setLayoutXml() {
@@ -143,6 +140,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
     }
 
+    @SuppressLint("CutPasteId")
     override fun initializeViews() {
 
 
@@ -200,7 +198,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
         resourcess = context.resources
 //        groupLang = menu.findItem(R.id.group_language)
-        dialog = BottomSheetDialog(this)
+        dialog = Dialog(this)
 
 
 
@@ -284,20 +282,24 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
                     drawerLayout.closeDrawers()
                     dialog.setContentView(R.layout.language_dialog)
-                    hindiLang = dialog.findViewById(R.id.btnHindiLang)!!
-                    engLang = dialog.findViewById(R.id.btnEngLang)!!
+                    dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                    dialog.setCancelable(false)
+                    hindiLL = dialog.findViewById(R.id.hindiLL)!!
+                    englishLL = dialog.findViewById(R.id.englishLL)!!
                     cancelLang = dialog.findViewById(R.id.cancelLang)!!
+                    dialog.window?.attributes?.windowAnimations = R.style.animation
 
                     dialog.show()
                     cancelLang.setOnClickListener {
                         dialog.dismiss()
                     }
-                    engLang.setOnClickListener {
+                    englishLL.setOnClickListener {
                         prefManager.setLangauge("en")
                         finish()
                         startActivity(intent)
+                        dialog.dismiss()
                     }
-                    hindiLang.setOnClickListener {
+                    hindiLL.setOnClickListener {
                         prefManager.setLangauge("hi")
                         finish()
                         startActivity(intent)
@@ -309,16 +311,19 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                     // Inflate the new menu
                     //navView.inflateMenu(R.menu.nav_menu)
                 }
+/*
                 R.id.logout -> {
 
 
                     mAuth = FirebaseAuth.getInstance()
-                    /* if (::mAuth.isInitialized) {
+                    */
+/* if (::mAuth.isInitialized) {
                          mAuth.signOut()
  //                        GoogleSignIn.
                          Toast.makeText(applicationContext,"Logout", Toast.LENGTH_SHORT).show()
                          finish()
-                     }*/
+                     }*//*
+
 
                     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                         .requestEmail()
@@ -335,6 +340,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
                     prefManager.setLogin(false)
                 }
+*/
             }
             true
         }
@@ -598,7 +604,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onResume() {
-
+        super.onResume()
         context = SessionManager.setLocale(this@HomeScreen,prefManager.getLanID().toString())
 
         resourcess = Global.language(this,resources)
@@ -612,6 +618,9 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         hideCalendar.text = resourcess.getString(R.string.hide_calender)
         rate_list.text = resourcess.getString(R.string.rate_list)
         monthly_pay.text = resourcess.getString(R.string.monthly_pay)
+        if (::cancelLang.isInitialized) {
+            cancelLang.text = resourcess.getString(R.string.cancel)
+        }
         appbar.title = resourcess.getString(R.string.app_name)
 
         homeMenuItem.title = resourcess.getString(R.string.home)
@@ -626,7 +635,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
 
         val isConnected = isNetworkConnected(this.applicationContext)
-        super.onResume()
+
         if(!isOnline(this@HomeScreen)){
 
             val alertDialog2: AlertDialog.Builder = AlertDialog.Builder(
@@ -882,19 +891,48 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
         var geocoder: Geocoder
         //  val addresses: List<Address>
-        geocoder = Geocoder(this, Locale.getDefault())
 
+
+        geocoder = Geocoder(this, Locale.getDefault())
 
         var strAdd : String? = null
         try {
             Log.d("addressX",to_lat+" "+to_lng)
+            val url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=$to_lat,$to_lng&language=hi&key=$apiKey"
+
+            val request = Request.Builder()
+                .url(url)
+                .build()
+
+            val client = OkHttpClient()
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    e.printStackTrace()
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    val responseBody = response.body?.string()
+                    // Parse the response and extract the city name in Hindi
+                    // Update the UI with the localized city name
+                    Log.d("responseBody",responseBody.toString()+"")
+                }
+            })
+
             val addresses = geocoder.getFromLocation(to_lat!!.toDouble(), to_lng!!.toDouble(), 1)
             if (addresses != null) {
                 val returnedAddress = addresses[0]
                 val strReturnedAddress = java.lang.StringBuilder("")
 
                 val cityState = returnedAddress.locality +","+returnedAddress.adminArea;
+               /* if (prefManager.getLanID() == "hi") {
+                    strAdd =
+
+                }else{
+                    strAdd = cityState
+                }*/
                 strAdd = cityState
+
+
                 Log.d("cityX",returnedAddress.toString()+"")
             } else {
 //                Log.w(" Current loction address", "No Address returned!")
@@ -1081,11 +1119,11 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
 
     private fun requestCityName(latitude: Double, longitude: Double) {
-        val apiKey = R.string.google_api_key
+
         val language = "hi" // Specify the desired language code, e.g., "fr" for French
 
         val client = OkHttpClient()
-        val url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=$to_lat,$to_lng&key=$apiKey&language=$language"
+        val url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=$to_lat,$to_lng&language=hi&key=$apiKey&language=$language"
         val request = Request.Builder()
             .url(url)
             .build()
