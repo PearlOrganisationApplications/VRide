@@ -5,9 +5,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.os.*
 import android.util.Log
 import android.view.View
 
@@ -62,9 +60,12 @@ class MainActivity : BaseClass() {
     private lateinit var phoneNumber: String
     var verifyOTP = ""
     var otpCode = ""
+    var vOTP = ""
     lateinit var credential:PhoneAuthCredential
     lateinit var resentToken: PhoneAuthProvider.ForceResendingToken
     lateinit var resend_otp: TextView
+    lateinit var view_timer:TextView
+    lateinit var cTimer:CountDownTimer
 
     override fun setLayoutXml() {
         setContentView(R.layout.activity_main)
@@ -84,6 +85,7 @@ class MainActivity : BaseClass() {
         phoneNumber = usrID.text.toString()
         progressBar = findViewById(R.id.progressBar)
         resend_otp = findViewById(R.id.resend_otp)
+        view_timer=findViewById(R.id.view_timer)
 
     }
 
@@ -102,9 +104,11 @@ class MainActivity : BaseClass() {
 
 
             otpBt.setOnClickListener {
+                view_timer.visibility = View.VISIBLE
                 phoneNumber = usrID.text.toString().trim()
 //                if(validateNumber(usrID)) {
 
+                startTimer()
                     if (validateNumber(usrID)) {
 //                        startPhoneNumberVerification("+918979441470")
                      /*   loginOtp.visibility = View.VISIBLE
@@ -130,21 +134,33 @@ class MainActivity : BaseClass() {
         }
 
         resend_otp.setOnClickListener {
+            loginOtp.visibility = View.VISIBLE
+
             resentOtp()
+            startTimer()
             resentTVVisibility()
         }
 
         login.setOnClickListener {
             prefManager.setLogin(true)
 
-            otpCode = loginOtp.text.toString()
+            otpCode = loginOtp.getText().toString()
             if (otpCode.isNotEmpty()) {
                 if (otpCode.length == 6){
                     credential = PhoneAuthProvider.getCredential(verifyOTP, otpCode)
-                    progressBar.visibility = View.VISIBLE
-                signInWithPhoneAuthCredential(credential)
+                    vOTP = verifyOTP
+Log.d("OTPOTP",verifyOTP+"  "+otpCode)
+                    if (vOTP == verifyOTP)  {
+//                        Toast.makeText(this@MainActivity, "Please enter correct 1 OTP", Toast.LENGTH_SHORT).show()
+                        progressBar.visibility = View.VISIBLE
+                        loginOtp.visibility = View.GONE
+                        signInWithPhoneAuthCredential(credential)
+                    }
+                    else{
+                        Toast.makeText(this@MainActivity, "Please enter correct OTP", Toast.LENGTH_SHORT).show()
+                    }
                 }else{
-                    Toast.makeText(this@MainActivity, "Please enter correct OTP", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity, "Please enter 6 digits OTP", Toast.LENGTH_SHORT).show()
                 }
             } else {
                 Toast.makeText(this@MainActivity, "Please enter the OTP", Toast.LENGTH_SHORT).show()
@@ -181,7 +197,6 @@ class MainActivity : BaseClass() {
         internetChangeBroadCast()
 
         resentTVVisibility()
-
 
 //        validateNumber+
 
@@ -326,6 +341,7 @@ class MainActivity : BaseClass() {
             resend_otp.visibility = View.VISIBLE
             progressBar.visibility = View.GONE
             verifyOTP =  verificationId
+            vOTP =  verificationId
             resentToken = token
 
 
@@ -382,6 +398,21 @@ class MainActivity : BaseClass() {
                 resend_otp.visibility = View.VISIBLE
                 resend_otp.isEnabled = true
         },60000)
+    }
+    fun startTimer() {
+
+        cTimer = object : CountDownTimer(60000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                view_timer.setText("00:00: " + (millisUntilFinished / 1000).toString())
+            }
+
+            override fun onFinish() {
+                view_timer.setText("Re send OTP!")
+                resend_otp.visibility=View.VISIBLE
+
+            }
+        }
+        cTimer.start()
     }
 
 }

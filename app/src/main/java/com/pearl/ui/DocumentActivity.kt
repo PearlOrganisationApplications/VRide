@@ -578,7 +578,7 @@ class DocumentActivity : BaseClass() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
-            //Image Uri will not be null for RESULT_OK
+           //Image Uri will not be null for RESULT_OK
             val uri: Uri = data?.data!!
 
             // Use Uri object instead of File to avoid storage permissions

@@ -65,10 +65,9 @@
         />
 -->
 
-<!--
     <item
         android:id="@+id/logout"
-        android:title="Update"
-        android:icon="@drawable/ic_ogin"/>-->
+        android:title="Logout"
+        android:icon="@drawable/ic_ogin"/>
 
 </menu>

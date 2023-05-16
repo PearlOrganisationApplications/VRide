@@ -45,7 +45,9 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.utils.MPPointF
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
@@ -311,18 +313,17 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                     // Inflate the new menu
                     //navView.inflateMenu(R.menu.nav_menu)
                 }
-/*
+
                 R.id.logout -> {
 
 
                     mAuth = FirebaseAuth.getInstance()
-                    */
-/* if (::mAuth.isInitialized) {
+               if (::mAuth.isInitialized) {
                          mAuth.signOut()
  //                        GoogleSignIn.
                          Toast.makeText(applicationContext,"Logout", Toast.LENGTH_SHORT).show()
                          finish()
-                     }*//*
+                     }
 
 
                     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -340,7 +341,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
                     prefManager.setLogin(false)
                 }
-*/
+
             }
             true
         }
