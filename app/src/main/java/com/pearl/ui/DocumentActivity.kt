@@ -277,7 +277,7 @@ class DocumentActivity : BaseClass() {
          }*/
 
         updateBT2.setOnClickListener {
-            startActivity(Intent(this@DocumentActivity, HomeScreen::class.java))
+            startActivity(Intent(this@DocumentActivity, DocumentStatus::class.java))
             finish()
         }
         updateBT.setOnClickListener {

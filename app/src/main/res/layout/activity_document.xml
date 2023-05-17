@@ -461,7 +461,7 @@
                         android:id="@+id/layout1LL"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         android:orientation="vertical">
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
@@ -828,7 +828,7 @@
 
                     <LinearLayout
                         android:id="@+id/layout2LL"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">

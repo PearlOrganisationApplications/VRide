@@ -297,14 +297,20 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                     }
                     englishLL.setOnClickListener {
                         prefManager.setLangauge("en")
-                        finish()
-                        startActivity(intent)
                         dialog.dismiss()
+                        finish()
+//                        overridePendingTransition(0, 0);
+                        startActivity(intent)
+//                        overridePendingTransition(0, 0);
+
                     }
                     hindiLL.setOnClickListener {
                         prefManager.setLangauge("hi")
+                        dialog.dismiss()
                         finish()
                         startActivity(intent)
+                        /*recreate()
+                        dialog.dismiss()*/
                     }
 //                    hindiLang.isVisible = !hindiLang.isVisible
                    //navView.menu.clear()
@@ -633,6 +639,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         issue.title = resourcess.getString(R.string.service_request)
         document.title = resourcess.getString(R.string.document)
         language1.title = resourcess.getString(R.string.language)
+
 
 
         val isConnected = isNetworkConnected(this.applicationContext)

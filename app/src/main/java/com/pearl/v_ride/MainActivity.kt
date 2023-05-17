@@ -70,7 +70,6 @@ class MainActivity : BaseClass() {
     override fun setLayoutXml() {
         setContentView(R.layout.activity_main)
 
-
     }
 
     override fun initializeViews() {
@@ -88,8 +87,6 @@ class MainActivity : BaseClass() {
         view_timer=findViewById(R.id.view_timer)
 
     }
-
-
 
     @SuppressLint("SuspiciousIndentation")
     override fun initializeClickListners() {
