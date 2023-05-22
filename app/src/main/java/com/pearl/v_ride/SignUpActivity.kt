@@ -390,6 +390,7 @@ class SignUpActivity : BaseClass() {
                     // Handle the error response code and body
                     Log.e("API Error", "Response Code: $errorResponseCode, Body: $errorResponseBody")
                     // Show a generic error message to the user
+
 //                    showErrorDialog("An error occurred. Please try again later.","OK")
 
                     if (errorResponseCode == 422) {
@@ -445,7 +446,6 @@ class SignUpActivity : BaseClass() {
 
     }
 
-
-
 }
+
 //16|KkhIddFekLgRBkFV3b3dQT3ac9czyJttxOa9Srzg
