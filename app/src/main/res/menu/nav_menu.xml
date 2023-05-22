@@ -20,11 +20,11 @@
         android:title="@string/wallet"
         />
 
-    <item
+<!--    <item
         android:id="@+id/earning"
         android:title="@string/my_earning"
         android:icon="@drawable/ic_baseline_wallet"
-        />
+        />-->
 
     <item
         android:id="@+id/history"

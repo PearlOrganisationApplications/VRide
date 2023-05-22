@@ -118,6 +118,7 @@ class DocumentActivity : BaseClass() {
     private lateinit var ifscCode: EditText
     private lateinit var licenceNoET: EditText
     private lateinit var items: Array<String>
+    var i: Int = 0
 
     override fun setLayoutXml() {
         setContentView(R.layout.activity_document)
@@ -225,6 +226,21 @@ class DocumentActivity : BaseClass() {
         dataList = mutableListOf()
         adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, dataList)
         merchantList.adapter = adapter
+
+        i = intent.getIntExtra("key", 0)
+
+        if (i == 0) {
+//            apptitle.text = "My Earning"
+            updateBT.visibility = View.VISIBLE
+            layout1LL.visibility = View.VISIBLE
+        } else if(i == 1) {
+
+//            apptitle.text = "Wallet"
+            layout1LL.visibility = View.GONE
+            layout2LL.visibility = View.VISIBLE
+            updateBT.visibility = View.GONE
+            updateBT2.visibility = View.VISIBLE
+        }
     }
 
     override fun initializeClickListners() {

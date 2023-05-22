@@ -57,9 +57,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.pearl.adapter.AttendanceAdapter
 import com.pearl.v_ride_lib.Global
 import com.pearl.adapter.NotificationAdapter
-import com.pearl.data.AttendanceList
-import com.pearl.data.NotificationList
-import com.pearl.ui.DocumentActivity
+import com.pearl.common.retrofit.data_model_class.AttendanceList
+import com.pearl.common.retrofit.data_model_class.NotificationList
 import com.pearl.ui.DocumentStatus
 import com.pearl.v_ride_lib.BaseClass
 import com.pearl.v_ride_lib.PrefManager
@@ -187,7 +186,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         homeMenuItem = menu.findItem(R.id.homemenu)
         profileMenuItem = menu.findItem(R.id.profile)
         walletMenuItem = menu.findItem(R.id.wallet)
-        earning = menu.findItem(R.id.earning)
+//        earning = menu.findItem(R.id.earning)
         history = menu.findItem(R.id.history)
         nearest_service = menu.findItem(R.id.nearest_service)
         document = menu.findItem(R.id.document)
@@ -251,11 +250,11 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                     drawerLayout.closeDrawers()
 
                 }
-                R.id.earning-> {
+           /*     R.id.earning-> {
                     startActivity(Intent(this@HomeScreen, MyWalletActivity::class.java).putExtra("key",0))
                     drawerLayout.closeDrawers()
 
-                }
+                }*/
                 R.id.history -> {
 
                     startActivity(Intent(this@HomeScreen, UserHistoryActivity::class.java))
@@ -401,7 +400,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         homeMenuItem.title = resourcess.getString(R.string.home)
         profileMenuItem.title = resourcess.getString(R.string.profile)
         walletMenuItem.title = resourcess.getString(R.string.wallet)
-        earning.title = resourcess.getString(R.string.my_earning)
+//        earning.title = resourcess.getString(R.string.my_earning)
         history.title = resourcess.getString(R.string.history)
         nearest_service.title = resourcess.getString(R.string.my_nearest_service)
         issue.title = resourcess.getString(R.string.service_request)
@@ -634,7 +633,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         homeMenuItem.title = resourcess.getString(R.string.home)
         profileMenuItem.title = resourcess.getString(R.string.profile)
         walletMenuItem.title = resourcess.getString(R.string.wallet)
-        earning.title = resourcess.getString(R.string.my_earning)
+//        earning.title = resourcess.getString(R.string.my_earning)
         history.title = resourcess.getString(R.string.history)
         nearest_service.title = resourcess.getString(R.string.my_nearest_service)
         issue.title = resourcess.getString(R.string.service_request)
@@ -1053,7 +1052,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
         // add a lot of colors to list
         val colors: ArrayList<Int> = ArrayList()
-        colors.add(resources.getColor(R.color.purple_200))
+        colors.add(resources.getColor(R.color.teal_700))
         colors.add(resources.getColor(R.color.yellow))
         colors.add(resources.getColor(R.color.red))
         colors.add(resources.getColor(R.color.lite_blue))

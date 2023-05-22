@@ -132,8 +132,9 @@
         </activity>
         <activity
             android:name="com.pearl.v_ride.SignUpActivity"
-            android:exported="false"
+            android:exported="true"
             android:theme="@style/AppThemeTest">
+
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -159,19 +160,23 @@
             android:exported="true"
             android:theme="@style/AppThemeTest">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name="com.pearl.v_ride.MainActivity"
-            android:exported="false"
+            android:exported="true"
             android:theme="@style/AppThemeTest">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

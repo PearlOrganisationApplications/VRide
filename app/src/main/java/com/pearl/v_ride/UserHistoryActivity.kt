@@ -8,7 +8,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pearl.adapter.HistoryAdapter
-import com.pearl.data.HistoryList
+import com.pearl.common.retrofit.data_model_class.HistoryList
 import com.pearl.v_ride_lib.Global
 
 class UserHistoryActivity : AppCompatActivity() {

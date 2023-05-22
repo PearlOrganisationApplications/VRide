@@ -2,15 +2,13 @@ package com.pearl.adapter
 
 import android.view.LayoutInflater
 import android.view.View
-import com.pearl.v_ride_lib.Global
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-import com.pearl.data.OnboardingItem
+import com.pearl.common.retrofit.data_model_class.OnboardingItem
 import com.pearl.v_ride.R
-import pl.droidsonroids.gif.GifImageView
 
 class OnboardingItemAdapter(private  val  onboardingItem: List<OnboardingItem>):
 RecyclerView.Adapter<OnboardingItemAdapter.OnboardingItemViewHolder>()

@@ -8,7 +8,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pearl.adapter.NearestListAapter
-import com.pearl.data.NearestList
+import com.pearl.common.retrofit.data_model_class.NearestList
 
 import com.pearl.v_ride_lib.Global
 

@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.Application
 import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -16,7 +15,6 @@ import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
 import android.view.View
-import com.pearl.v_ride_lib.Global
 import android.view.Window
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -28,7 +26,6 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.pearl.data.AttendanceList
 import com.pearl.v_ride.R
 import java.io.ByteArrayOutputStream
 import java.util.regex.Matcher
@@ -87,6 +84,7 @@ abstract  class BaseClass: AppCompatActivity() {
             window.statusBarColor = getResources().getColor(R.color.white)
         }
     }
+
 
     @SuppressLint("MissingPermission")
     fun isNetworkConnected(context: Context): Boolean {
@@ -154,6 +152,15 @@ abstract  class BaseClass: AppCompatActivity() {
             startActivity(intent);
             finish();
         }*/
+    }
+    public fun showErrorDialog(message: String, ok:String) {
+
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Error")
+            .setMessage(message)
+            .setPositiveButton(ok) { dialog, _ -> dialog.dismiss() }
+        val dialog = builder.create()
+        dialog.show()
     }
 
     fun openFileExplorer() {
@@ -296,14 +303,14 @@ abstract  class BaseClass: AppCompatActivity() {
     }
 
     fun validateNumber(number: EditText): Boolean {
-        val num: String = number.getText().toString().trim { it <= ' ' }
+        val num: String = number.text.toString().trim { it <= ' ' }
         setCustomError(null, number)
         return if (num.isEmpty()) {
-            val sMessage = "Please enter number..!!"
+            val sMessage = "Please enter number & don't need to add +91 before..!!"
             setCustomError(sMessage, number)
             false
         } else if (!isValidMobile(num)) {
-            val sMessage = "Number must be 10 or less than 13 character and not be alphabet..!!"
+            val sMessage = "Number must be 10 character and not be alphabet..!!"
             setCustomError(sMessage, number)
             false
         } else {

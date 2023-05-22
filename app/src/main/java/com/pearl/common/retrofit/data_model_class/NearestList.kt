@@ -1,6 +1,4 @@
-package com.pearl.data
-
-import android.icu.text.CaseMap.Title
+package com.pearl.common.retrofit.data_model_class
 
 data class NearestList(
     var place_name: String,

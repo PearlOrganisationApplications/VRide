@@ -6,7 +6,6 @@ import android.app.Dialog
 import android.content.Context
 import android.content.res.Resources
 import android.os.Bundle
-import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -16,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.pearl.adapter.TransactionsAdapter
-import com.pearl.data.TransactionList
+import com.pearl.common.retrofit.data_model_class.TransactionList
 import com.pearl.v_ride_lib.BaseClass
 import com.pearl.v_ride_lib.Global
 import com.razorpay.Checkout

@@ -2,11 +2,10 @@ package com.pearl.adapter
 
 import android.view.LayoutInflater
 import android.view.View
-import com.pearl.v_ride_lib.Global
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.pearl.data.TransactionList
+import com.pearl.common.retrofit.data_model_class.TransactionList
 import com.pearl.v_ride.R
 
 class TransactionsAdapter(private val transactionList: ArrayList<TransactionList>):
