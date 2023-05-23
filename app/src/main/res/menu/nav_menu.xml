@@ -5,55 +5,69 @@
 
     <item
         android:id="@+id/homemenu"
-        android:title="Home"
+        android:title="@string/home"
         android:icon="@drawable/ic_home"
         />
     <item
         android:id="@+id/profile"
-        android:title="profile"
+        android:title="@string/profile"
         android:icon="@drawable/user"
         />
 
     <item
         android:id="@+id/wallet"
         android:icon="@drawable/ic_account_balance_wallet"
-        android:title="Wallet"
-
+        android:title="@string/wallet"
         />
 
-    <item
+<!--    <item
         android:id="@+id/earning"
-        android:title="My Earning"
+        android:title="@string/my_earning"
         android:icon="@drawable/ic_baseline_wallet"
-
-        />
+        />-->
 
     <item
         android:id="@+id/history"
         android:icon="@drawable/ic_baseline_history"
-        android:title="History"/>
+        android:title="@string/history"/>
 
     <item
         android:id="@+id/nearest_service"
-        android:title="My Nearest Service"
+        android:title="@string/my_nearest_service"
         android:icon="@drawable/nearby"
         />
 
     <item
         android:id="@+id/issue"
         android:icon="@drawable/report"
-        android:title="issue Request"/>
+        android:title="@string/service_request"/>
 
     <item
         android:id="@+id/document"
-        android:title="Document"
+        android:title="@string/document"
         android:icon="@drawable/file"
         />
+
+    <item
+        android:id="@+id/language"
+        android:title="@string/language"
+        android:icon="@drawable/languages"
+        />
+<!--
+    <item
+        android:id="@+id/btnHindiLang"
+        android:title="@string/lang_hindi"
+
+        />
+    <item
+        android:id="@+id/btnEngLang"
+        android:title="@string/lang_eng"
+        />
+-->
 
     <item
         android:id="@+id/logout"
         android:title="Logout"
         android:icon="@drawable/ic_ogin"/>
-
 
 </menu>

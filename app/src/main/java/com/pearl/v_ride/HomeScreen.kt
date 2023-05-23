@@ -1,46 +1,78 @@
 package com.pearl.v_ride
 
-
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
-
 import android.content.pm.PackageManager
+import android.content.res.Resources
+import android.graphics.Color
+import android.graphics.Typeface
+import android.location.Geocoder
 import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.app.ActivityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.formatter.PercentFormatter
+import com.github.mikephil.charting.utils.MPPointF
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.tasks.Task
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationView
-import com.pearl.Global
-import com.pearl.test5.R
+import com.google.firebase.auth.FirebaseAuth
+import com.pearl.adapter.AttendanceAdapter
+import com.pearl.v_ride_lib.Global
+import com.pearl.adapter.NotificationAdapter
+import com.pearl.common.retrofit.data_model_class.AttendanceList
+import com.pearl.common.retrofit.data_model_class.NotificationList
+import com.pearl.ui.DocumentStatus
+import com.pearl.v_ride_lib.BaseClass
+import com.pearl.v_ride_lib.PrefManager
+import com.pearl.v_ride_lib.SessionManager
 import de.hdodenhof.circleimageview.CircleImageView
+import okhttp3.*
+import org.json.JSONObject
+import java.io.IOException
+import java.util.*
+import kotlin.collections.ArrayList
 
 
-class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
+class HomeScreen : BaseClass(), OnMapReadyCallback {
     lateinit var toggle: ActionBarDrawerToggle
-
     lateinit var navView: NavigationView
     lateinit var drawerLayout:DrawerLayout
     lateinit var  appbar: MaterialToolbar
@@ -53,103 +85,154 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     lateinit var mapLL: LinearLayout
     lateinit var  dImage: CircleImageView
-
+    private var hasGps = false
+    private var hasNetwork = false
+    var to_lat :String ?= ""
+    var from_lat :String ?= ""
+    var to_lng :String ?= ""
+    val apiKey = R.string.google_api_key
+    var from_lng :String ?= ""
+    private var locationByGps: Location? = null
+    private var locationByNetwork: Location? = null
+    lateinit var locationManager: LocationManager
+    private lateinit var  location:LatLng
     //    lateinit var mapFragment: Fragment
     private lateinit var currentLocation: Location
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private val REQUEST_CODE = 101
+    lateinit var mAuth: FirebaseAuth
+    lateinit var mGoogleSignInClient: GoogleSignInClient
+    lateinit var cityTextView: TextView
+    lateinit var pieChart: PieChart
+    lateinit var prefManager: PrefManager
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    lateinit var calendarRV: RecyclerView
+    lateinit var monthlyCal: TextView
+    lateinit var hideCal: TextView
+    lateinit var headerLayout: View
+    val attendanceCard = ArrayList<AttendanceList>()
+    lateinit var toggle_off: LinearLayout
+    lateinit var toggle_on: LinearLayout
+    lateinit var on_duty: TextView
+    lateinit var earnTxt: TextView
+    lateinit var off_duty: TextView
+    lateinit var hideCalendar: TextView
+    lateinit var rate_list: TextView
+    lateinit var monthly_pay: TextView
+    private lateinit var resourcess : Resources
+    private lateinit var homeMenuItem: MenuItem
+    private lateinit var profileMenuItem: MenuItem
+    private lateinit var walletMenuItem: MenuItem
+    private lateinit var earning: MenuItem
+    private lateinit var history: MenuItem
+    private lateinit var nearest_service: MenuItem
+    private lateinit var issue: MenuItem
+    private lateinit var document: MenuItem
+    private lateinit var language1: MenuItem
+    private lateinit var englishLL: LinearLayout
+    private lateinit var hindiLL: LinearLayout
+    private lateinit var cancelLang: TextView
+    lateinit var menu: Menu
+    lateinit var context : Context
+    private lateinit var  dialog : Dialog
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
+    override fun setLayoutXml() {
         setContentView(R.layout.activity_home_screen)
 
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.homeScreenmap) as SupportMapFragment
-        fetchLocation()
+    }
+
+    @SuppressLint("CutPasteId")
+    override fun initializeViews() {
 
 
-
-
-
-/*        val ai: ApplicationInfo = applicationContext.packageManager
-            ?.getApplicationInfo(applicationContext.applicationContext!!.packageName, PackageManager.GET_META_DATA)!!
-        val value = ai.metaData["com.google.android.geo.${R.string.google_map_api_key}"]
-        val apiKey = value.toString()
-        // Initializing the Places API with the help of our API_KEY
-        if (!Places.isInitialized()) {
-            Places.initialize(applicationContext.applicationContext,apiKey)
-        }*/
-        mapFragment.getMapAsync(this)
-
-      /*  mapFragment.getMapAsync {
-            mMap = it
-
-            val originLocation = LatLng( 30.2891496, 78.0437616)
-
-            mMap.addMarker(MarkerOptions().position(originLocation).title("hey"))
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(originLocation))
-
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(originLocation, 15F))
-        }*/
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-
+        context = SessionManager.setLocale(this@HomeScreen,prefManager.getLanID().toString())
         appbar = findViewById<MaterialToolbar>(R.id.appBar)
 
         drawerLayout = findViewById(R.id.drawerLayout)
         navView = findViewById(R.id.nav_view)
-//        notificationI = findViewById(R.id.notificationI)
+        //        notificationI = findViewById(R.id.notificationI)
         notificationLL = findViewById(R.id.notificationLL)
         notificationRV = findViewById(R.id.notificationRV)
         nBell = findViewById(R.id.nBell)
         mapLL = findViewById(R.id.mapLL)
+        rate_list = findViewById(R.id.rate_list)
 
-        val headerLayout: View = navView.inflateHeaderView(R.layout.nav_header)
+        headerLayout = navView.inflateHeaderView(R.layout.nav_header)
+//        navView.inflateMenu(R.menu.nav_menu)
         dImage = headerLayout.findViewById(R.id.drawerImage)
-
-
-
-            //set Image
-//                dImage.setImageURI(uri)
-
-
-
-
-        val notificationCard = ArrayList<NotificationList>()
-
-
+        val dName = headerLayout.findViewById<TextView>(R.id.drawerName)
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        hasGps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        hasNetwork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
         ivback=findViewById(R.id.ivBack)
         apptitle = findViewById(R.id.titleTVAppbar)
 
-        setUpViews()
+        cityTextView = findViewById(R.id.stateTV)
+        pieChart = findViewById(R.id.pieChart)
+        swipeRefreshLayout = findViewById(R.id.container)
+        calendarRV = findViewById(R.id.calenderRV)
+        monthlyCal = findViewById(R.id.monthlyCalender)
+        hideCal = findViewById(R.id.hideCalendar)
+        hideCalendar = findViewById(R.id.hideCalendar)
 
+        toggle_off = findViewById(R.id.toggle_off)
+        toggle_on = findViewById(R.id.toggle_on)
+        on_duty = findViewById(R.id.dutyON)
+        earnTxt = findViewById(R.id.txt_earn)
+        off_duty = findViewById(R.id.dutyOFF)
+        monthly_pay = findViewById(R.id.monthly_pay)
+        menu = navView.menu
+        homeMenuItem = menu.findItem(R.id.homemenu)
+        profileMenuItem = menu.findItem(R.id.profile)
+        walletMenuItem = menu.findItem(R.id.wallet)
+//        earning = menu.findItem(R.id.earning)
+        history = menu.findItem(R.id.history)
+        nearest_service = menu.findItem(R.id.nearest_service)
+        document = menu.findItem(R.id.document)
+        issue = menu.findItem(R.id.issue)
+        language1 = menu.findItem(R.id.language)
+//        hindiLang = menu.findItem(R.id.btnHindiLang)
+//        engLang = menu.findItem(R.id.btnEngLang)
+
+//        hindiLang.isVisible=false
+//        engLang.isVisible=false
+
+        resourcess = context.resources
+//        groupLang = menu.findItem(R.id.group_language)
+        dialog = Dialog(this)
+
+
+
+
+    }
+
+    override fun initializeClickListners() {
+
+
+            toggle_on.setOnClickListener {
+            on_duty.visibility = View.GONE
+            off_duty.visibility = View.VISIBLE
+            toggle_off.visibility = View.VISIBLE
+            toggle_on.visibility = View.GONE
+        }
+        toggle_off.setOnClickListener {
+            on_duty.visibility = View.VISIBLE
+            off_duty.visibility = View.GONE
+            toggle_off.visibility = View.GONE
+            toggle_on.visibility = View.VISIBLE
+        }
         nBell.setOnClickListener {
 //            onBackPressed()
             notificationLL.visibility=View.VISIBLE
             appbar.visibility = View.GONE
             mapLL.setVisibility(View.GONE)
-
         }
-        apptitle.text ="Notification"
         ivback.setOnClickListener {
-
-
             mapLL.setVisibility(View.VISIBLE)
             onBackPressed()
-/*            notificationLL.visibility = View.GONE
-            notificationI.visibility =View.VISIBLE
-            appbar.visibility = View.VISIBLE*/
-//            mapFragment.view?.setVisibility(View.VISIBLE)
         }
-
-
-/*        notificationI.setOnClickListener {
-                   notificationLL.visibility = View.VISIBLE
-                   notificationI.visibility =View.GONE
-                   appbar.visibility = View.GONE
-            onBackPressed()
-
-        }*/
-          navView.setNavigationItemSelectedListener {
+        navView.setNavigationItemSelectedListener {
 
 //           it.isChecked = true
             when(it.itemId){
@@ -167,11 +250,11 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
                     drawerLayout.closeDrawers()
 
                 }
-                R.id.earning-> {
+           /*     R.id.earning-> {
                     startActivity(Intent(this@HomeScreen, MyWalletActivity::class.java).putExtra("key",0))
                     drawerLayout.closeDrawers()
 
-                }
+                }*/
                 R.id.history -> {
 
                     startActivity(Intent(this@HomeScreen, UserHistoryActivity::class.java))
@@ -190,18 +273,275 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
                 }
                 R.id.document-> {
 
-                    startActivity(Intent(this@HomeScreen, DocumentActivity::class.java))
+                    startActivity(Intent(this@HomeScreen, DocumentStatus::class.java))
                     drawerLayout.closeDrawers()
                 }
-                R.id.logout -> {
-                    startActivity(Intent(this@HomeScreen, MainActivity::class.java))
-                    Toast.makeText(applicationContext,"Logout", Toast.LENGTH_SHORT).show()
-                    finish()
+                R.id.language -> {
+                  /*  startActivity(Intent(this@HomeScreen, LanguageActivity::class.java))
+                    drawerLayout.closeDrawers()*/
+
+
+
+                    drawerLayout.closeDrawers()
+                    dialog.setContentView(R.layout.language_dialog)
+                    dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                    dialog.setCancelable(false)
+                    hindiLL = dialog.findViewById(R.id.hindiLL)!!
+                    englishLL = dialog.findViewById(R.id.englishLL)!!
+                    cancelLang = dialog.findViewById(R.id.cancelLang)!!
+                    dialog.window?.attributes?.windowAnimations = R.style.animation
+
+                    dialog.show()
+                    cancelLang.setOnClickListener {
+                        dialog.dismiss()
+                    }
+                    englishLL.setOnClickListener {
+                        prefManager.setLangauge("en")
+                        dialog.dismiss()
+                        finish()
+//                        overridePendingTransition(0, 0);
+                        startActivity(intent)
+//                        overridePendingTransition(0, 0);
+
+                    }
+                    hindiLL.setOnClickListener {
+                        prefManager.setLangauge("hi")
+                        dialog.dismiss()
+                        finish()
+                        startActivity(intent)
+                        /*recreate()
+                        dialog.dismiss()*/
+                    }
+//                    hindiLang.isVisible = !hindiLang.isVisible
+                   //navView.menu.clear()
+
+
+                    // Inflate the new menu
+                    //navView.inflateMenu(R.menu.nav_menu)
                 }
+
+                R.id.logout -> {
+
+
+                    mAuth = FirebaseAuth.getInstance()
+               if (::mAuth.isInitialized) {
+                         mAuth.signOut()
+ //                        GoogleSignIn.
+                         Toast.makeText(applicationContext,"Logout", Toast.LENGTH_SHORT).show()
+                         finish()
+                     }
+
+
+                    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestEmail()
+                        .build()
+                    mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+//                    mGoogleSignInClient= GoogleSignInClient
+
+                    mGoogleSignInClient.signOut().addOnCompleteListener {
+                        startActivity(Intent(this@HomeScreen, MainActivity::class.java))
+                        finish()
+                    }
+                    mAuth.signOut()
+                    Toast.makeText(applicationContext,"Logout", Toast.LENGTH_SHORT).show()
+
+                    prefManager.setLogin(false)
+                }
+
             }
             true
         }
 
+        swipeRefreshLayout.setOnRefreshListener {
+
+            // on below line we are setting is refreshing to false.
+            swipeRefreshLayout.isRefreshing = false
+
+        }
+
+        monthlyCal.setOnClickListener {
+            calendarRV.visibility = View.VISIBLE
+            hideCalendar.visibility = View.VISIBLE
+            monthlyCal.visibility = View.GONE
+        }
+        hideCalendar.setOnClickListener {
+            calendarRV.visibility = View.GONE
+            monthlyCal.visibility= View.VISIBLE
+            hideCalendar.visibility = View.GONE
+        }
+    }
+
+    override fun initializeInputs() {
+    }
+    override fun initializeLabels() {
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+
+
+        /*val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.homeScreenmap) as SupportMapFragment
+        fetchLocation()*/
+
+
+        prefManager = PrefManager(this)
+
+        prefManager.setLogin(true)
+
+        setLayoutXml()
+        initializeViews()
+        initializeClickListners()
+        initializeInputs()
+        initializeLabels()
+
+        resourcess = Global.language(this,resources)
+        homeMenuItem.title = resourcess.getString(R.string.home)
+        profileMenuItem.title = resourcess.getString(R.string.profile)
+        walletMenuItem.title = resourcess.getString(R.string.wallet)
+//        earning.title = resourcess.getString(R.string.my_earning)
+        history.title = resourcess.getString(R.string.history)
+        nearest_service.title = resourcess.getString(R.string.my_nearest_service)
+        issue.title = resourcess.getString(R.string.service_request)
+        document.title = resourcess.getString(R.string.document)
+        language1.title = resourcess.getString(R.string.language)
+
+        internetChangeBroadCast()
+
+        pieChart()
+        showAttendance()
+
+
+
+
+        /*    {       val mapFragment = supportFragmentManager
+               .findFragmentById(R.id.homeScreenmap) as SupportMapFragment?
+           mapFragment!!.getMapAsync(this)*/
+
+/*        val ai: ApplicationInfo = applicationContext.packageManager
+            ?.getApplicationInfo(applicationContext.applicationContext!!.packageName, PackageManager.GET_META_DATA)!!
+        val value = ai.metaData["com.google.android.geo.${R.string.google_map_api_key}"]
+        val apiKey = value.toString()
+        // Initializing the Places API with the help of our API_KEY
+        if (!Places.isInitialized()) {
+            Places.initialize(applicationContext.applicationContext,apiKey)
+        }
+
+            /*  mapFragment.getMapAsync {
+                  mMap = it
+
+                  val originLocation = LatLng( 30.2891496, 78.0437616)
+
+                  mMap.addMarker(MarkerOptions().position(originLocation).title("hey"))
+                  mMap.moveCamera(CameraUpdateFactory.newLatLng(originLocation))
+
+                  mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(originLocation, 15F))
+              }*/
+            //  fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        }*/
+
+        val notificationCard = ArrayList<NotificationList>()
+
+        setUpViews()
+
+
+        apptitle.text ="Notification"
+
+
+/*        notificationI.setOnClickListener {
+                   notificationLL.visibility = View.VISIBLE
+                   notificationI.visibility =View.GONE
+                   appbar.visibility = View.GONE
+            onBackPressed()
+
+        }*/
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title","this is my notification body"
+            )
+        )
         notificationCard.add(
             NotificationList(
                 "Notification Title","this is my notification body"
@@ -226,17 +566,117 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
 
 
 
+//        startService(Intent(this,MyService::class.java))
+        unregisterBroadcast()
+
     }
 
 
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    @SuppressLint("MissingPermission", "SuspiciousIndentation")
+    fun isOnline(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        val x = connectivityManager.activeNetworkInfo
+
+        if (x != null) {
+            if (!x.isConnected&&!x.isConnectedOrConnecting&&!x.isAvailable&&x.isFailover)
+                return false
+        }else {
+            return false
+        }
+        if (connectivityManager != null) {
+            val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+
+
+                    if (capabilities != null) {
+
+                        if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+
+                            return true
+                        } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+
+                            return true
+                        } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+
+                            return true
+                        }
+                    }
+            }
+
+        return false
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onResume() {
         super.onResume()
+        context = SessionManager.setLocale(this@HomeScreen,prefManager.getLanID().toString())
+
+        resourcess = Global.language(this,resources)
+        earnTxt.text = resourcess.getString(R.string.net_earn)
+        cityTextView.text = resourcess.getString(R.string.state)
+//        R.id.earning = resourcess.getString(R.string.my_earning)
+        on_duty.text = resourcess.getString(R.string.on_duty)
+        off_duty.text = resourcess.getString(R.string.off_duty)
+        rate_list.text = resourcess.getString(R.string.rate_list)
+        monthlyCal.text = resourcess.getString(R.string.monthly_calender)
+        hideCalendar.text = resourcess.getString(R.string.hide_calender)
+        rate_list.text = resourcess.getString(R.string.rate_list)
+        monthly_pay.text = resourcess.getString(R.string.monthly_pay)
+        if (::cancelLang.isInitialized) {
+            cancelLang.text = resourcess.getString(R.string.cancel)
+        }
+        appbar.title = resourcess.getString(R.string.app_name)
+
+        homeMenuItem.title = resourcess.getString(R.string.home)
+        profileMenuItem.title = resourcess.getString(R.string.profile)
+        walletMenuItem.title = resourcess.getString(R.string.wallet)
+//        earning.title = resourcess.getString(R.string.my_earning)
+        history.title = resourcess.getString(R.string.history)
+        nearest_service.title = resourcess.getString(R.string.my_nearest_service)
+        issue.title = resourcess.getString(R.string.service_request)
+        document.title = resourcess.getString(R.string.document)
+        language1.title = resourcess.getString(R.string.language)
+
+
+
+        val isConnected = isNetworkConnected(this.applicationContext)
+
+        if(!isOnline(this@HomeScreen)){
+
+            val alertDialog2: AlertDialog.Builder = AlertDialog.Builder(
+                this@HomeScreen
+            )
+            alertDialog2.setTitle("No Internet Connection")
+            alertDialog2.setPositiveButton("Try Again",
+                DialogInterface.OnClickListener { dialog, which ->
+                    val intent = intent
+                    finish()
+                    startActivity(intent)
+                })
+            alertDialog2.setNegativeButton("Cancel",
+                DialogInterface.OnClickListener { dialog, which ->
+                    dialog.cancel()
+                    finishAffinity()
+                    System.exit(0)
+                })
+            alertDialog2.setCancelable(false)
+            alertDialog2.show()
+
+        }
+        if(isOnline(this@HomeScreen)) {
+            getLocation()
+        }
+
         if(Global.imageString != "") {
             val uri = Uri.parse(Global.imageString)
             dImage.setImageURI(uri)
             Log.d("abc", Global.imageString)
         }
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -290,7 +730,7 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
 
         setSupportActionBar(appbar)
         toggle= ActionBarDrawerToggle( this,drawerLayout,R.string.open,R.string.close)
-//        drawerLayout.addDrawerListener(toggle)
+        drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
     }
 
@@ -329,21 +769,10 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
     @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
 
-     /*   if (ActivityCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                REQUEST_CODE
-            )
-        }*/
+        mMap = googleMap
+
+        getLocation()
+/*
         val task: Task<Location> = fusedLocationProviderClient.lastLocation
         task.addOnSuccessListener { location ->
             if (location != null) {
@@ -361,34 +790,27 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
 
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng))
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
-//            mMap.addMarker(MarkerOptions().position(latLng).title("hey"))
                 mMap.addMarker(markerOptions)
-                /*val supportMapFragment =
+                *//*val supportMapFragment =
                     supportFragmentManager.findFragmentById(R.id.myMap) as SupportMapFragment
-                supportMapFragment.getMapAsync(this)*/
+                supportMapFragment.getMapAsync(this)*//*
             }
-        }
+        }*/
 
-        /*    val sydney = LatLng(-33.852, 151.211)
-            googleMap.addMarker(
-                MarkerOptions()
-                    .position(sydney)
-                    .title("Marker in Sydney")
-            )*/
 
 
     }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
-        permissions: Array<out String>,
+        permissions: Array<String>,
         grantResults: IntArray
     ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        super.onRequestPermissionsResult(requestCode, permissions , grantResults)
         when (requestCode) {
             REQUEST_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    fetchLocation()
+                    getLocation()
                 }
             }
         }
@@ -401,5 +823,354 @@ class HomeScreen : AppCompatActivity(), OnMapReadyCallback {
         drawerLayout.closeDrawers()
         setTitle(title)
     }*/
+
+
+    @SuppressLint("MissingPermission")
+    private fun getLocation() {
+
+
+        if (hasGps) {
+            locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER,
+                5000,
+                0F,
+                gpsLocationListener
+            )
+        }
+//------------------------------------------------------//
+        if (hasNetwork) {
+            locationManager.requestLocationUpdates(
+                LocationManager.NETWORK_PROVIDER,
+                5000,
+                0F,
+                networkLocationListener
+            )
+        }
+
+
+        val lastKnownLocationByGps =
+            locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+
+        // locationByGps = getLastKnownLocation()
+        lastKnownLocationByGps?.let {
+            locationByGps = lastKnownLocationByGps
+        }
+        //------------------------------------------------------//
+
+
+        val lastKnownLocationByNetwork =
+            locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+        lastKnownLocationByNetwork?.let {
+            locationByNetwork = lastKnownLocationByNetwork
+        }
+     //------------------------------------------------------//
+        if (locationByGps != null && locationByNetwork != null) {
+            Log.d("locaitonGPS3",locationByGps.toString()+" "+locationByNetwork)
+            if (locationByGps!!.accuracy > locationByNetwork!!.accuracy) {
+
+
+                to_lat = locationByGps?.latitude.toString()
+                to_lng = locationByGps?.longitude.toString()
+
+            }else{
+
+                to_lat = locationByNetwork?.latitude.toString()
+                to_lng = locationByNetwork?.longitude.toString()
+
+            }
+        }else {
+
+            if (locationByNetwork == null) {
+                // Toast.makeText(this, "No Network", Toast.LENGTH_LONG).show()
+                Log.d("locaitonGPS1"," "+locationByNetwork)
+                to_lat = locationByGps?.latitude.toString()
+                to_lng = locationByGps?.longitude.toString()
+
+            } else {
+                Log.d("locaitonGPS2",locationByGps.toString()+" ")
+                to_lat = locationByNetwork?.latitude.toString()
+                to_lng = locationByNetwork?.longitude.toString()
+
+
+            }
+
+
+        }
+
+        var geocoder: Geocoder
+        //  val addresses: List<Address>
+
+
+        geocoder = Geocoder(this, Locale.getDefault())
+
+        var strAdd : String? = null
+        try {
+            Log.d("addressX",to_lat+" "+to_lng)
+            val url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=$to_lat,$to_lng&language=hi&key=$apiKey"
+
+            val request = Request.Builder()
+                .url(url)
+                .build()
+
+            val client = OkHttpClient()
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    e.printStackTrace()
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    val responseBody = response.body?.string()
+                    // Parse the response and extract the city name in Hindi
+                    // Update the UI with the localized city name
+                    Log.d("responseBody",responseBody.toString()+"")
+                }
+            })
+
+            val addresses = geocoder.getFromLocation(to_lat!!.toDouble(), to_lng!!.toDouble(), 1)
+            if (addresses != null) {
+                val returnedAddress = addresses[0]
+                val strReturnedAddress = java.lang.StringBuilder("")
+
+                val cityState = returnedAddress.locality +","+returnedAddress.adminArea;
+               /* if (prefManager.getLanID() == "hi") {
+                    strAdd =
+
+                }else{
+                    strAdd = cityState
+                }*/
+                strAdd = cityState
+
+
+                Log.d("cityX",returnedAddress.toString()+"")
+            } else {
+//                Log.w(" Current loction address", "No Address returned!")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            //Log.w(" Current loction address",  e.printStackTrace().toString())
+        }
+
+       cityTextView.text = strAdd.toString()
+/*
+
+        location = LatLng(to_lat.toString().toDouble(), to_lng.toString().toDouble())
+
+//        location = LatLng(Global.curr_lat.toString().toDouble(), Global.curr_long.toString().toDouble())
+        val bitmapdraw = resources.getDrawable(R.drawable.logo_round) as BitmapDrawable
+        val b = bitmapdraw.bitmap
+        val smallMarker = Bitmap.createScaledBitmap(b, 80, 80, false)
+        mMap?.addMarker(
+            MarkerOptions().position(location!!)
+                .icon(BitmapDescriptorFactory.fromBitmap(smallMarker))
+                .title("Driver Location")
+        )
+        mMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(location!!, 15F))
+*/
+
+    }
+    val gpsLocationListener: LocationListener = object : LocationListener {
+        override fun onLocationChanged(location: Location) {
+            locationByGps = location
+        }
+
+        override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
+        override fun onProviderEnabled(provider: String) {}
+        override fun onProviderDisabled(provider: String) {}
+
+    }
+    val networkLocationListener: LocationListener = object : LocationListener {
+        override fun onLocationChanged(location: Location) {
+            locationByNetwork= location
+        }
+
+        override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
+        override fun onProviderEnabled(provider: String) {}
+        override fun onProviderDisabled(provider: String) {}
+    }
+
+    private fun pieChart(){
+
+        // on below line we are setting user percent value,
+        // setting description as enabled and offset for pie chart
+        pieChart.setUsePercentValues(true)
+        pieChart.description.isEnabled = false
+        pieChart.setExtraOffsets(5f, 10f, 5f, 5f)
+
+        // on below line we are setting drag for our pie chart
+        pieChart.setDragDecelerationFrictionCoef(0.95f)
+
+        // on below line we are setting hole
+        // and hole color for pie chart
+        pieChart.isDrawHoleEnabled = true
+        pieChart.setHoleColor(Color.WHITE)
+
+        // on below line we are setting circle color and alpha
+        pieChart.setTransparentCircleColor(Color.WHITE)
+        pieChart.setTransparentCircleAlpha(110)
+
+        // on  below line we are setting hole radius
+        pieChart.setHoleRadius(0f)
+        pieChart.transparentCircleRadius = 0f
+
+        // on below line we are setting center text
+        pieChart.setDrawCenterText(true)
+
+        // on below line we are setting
+        // rotation for our pie chart
+        pieChart.setRotationAngle(0f)
+
+        // enable rotation of the pieChart by touch
+        pieChart.setRotationEnabled(true)
+        pieChart.setHighlightPerTapEnabled(true)
+
+        // on below line we are setting animation for our pie chart
+        pieChart.animateY(1400, Easing.EaseInOutQuad)
+
+        // on below line we are disabling our legend for pie chart
+        pieChart.legend.isEnabled = false
+        pieChart.setEntryLabelColor(Color.WHITE)
+        pieChart.setEntryLabelTextSize(12f)
+
+        // on below line we are creating array list and
+        // adding data to it to display in pie chart
+        val entries: ArrayList<PieEntry> = ArrayList()
+        entries.add(PieEntry(60f))
+        entries.add(PieEntry(20f))
+        entries.add(PieEntry(10f))
+        entries.add(PieEntry(10f))
+
+        // on below line we are setting pie data set
+        val dataSet = PieDataSet(entries, "Merchant")
+
+        // on below line we are setting icons.
+        dataSet.setDrawIcons(false)
+
+        // on below line we are setting slice for pie
+        dataSet.sliceSpace = 3f
+        dataSet.iconsOffset = MPPointF(0f, 40f)
+        dataSet.selectionShift = 5f
+
+        // add a lot of colors to list
+        val colors: ArrayList<Int> = ArrayList()
+        colors.add(resources.getColor(R.color.teal_700))
+        colors.add(resources.getColor(R.color.yellow))
+        colors.add(resources.getColor(R.color.red))
+        colors.add(resources.getColor(R.color.lite_blue))
+
+        // on below line we are setting colors.
+        dataSet.colors = colors
+
+        // on below line we are setting pie data set
+        val data = PieData(dataSet)
+        data.setValueFormatter(PercentFormatter())
+        data.setValueTextSize(15f)
+        data.setValueTypeface(Typeface.DEFAULT_BOLD)
+        data.setValueTextColor(Color.WHITE)
+        pieChart.setData(data)
+
+        // undo all highlights
+        pieChart.highlightValues(null)
+
+        // loading chart
+        pieChart.invalidate()
+
+
+    }
+
+
+    private fun showAttendance(){
+        attendanceCard.add(
+            AttendanceList(
+                "10:00 AM","7.00 PM","20/12/2022",R.drawable.online
+            )
+        )
+        attendanceCard.add(
+            AttendanceList(
+                "10 AM","7.00 PM","20/12/2022",R.drawable.online
+            )
+        )
+        attendanceCard.add(
+            AttendanceList(
+                "10 AM","7.00 PM","20/12/2022",R.drawable.online
+            )
+        )
+        attendanceCard.add(
+            AttendanceList(
+                "10 AM","7.00 PM","20/12/2022",R.drawable.online
+            )
+        )
+        attendanceCard.add(
+            AttendanceList(
+                "10 AM","7.00 PM","20/12/2022",R.drawable.red_dot
+            )
+        )
+        attendanceCard.add(
+            AttendanceList(
+                "10 AM","7.00 PM","20/12/2022",R.drawable.online
+            )
+        )
+        attendanceCard.add(
+            AttendanceList(
+                "10 AM","7.00 PM","20/12/2022",R.drawable.red_dot
+            )
+        )
+        attendanceCard.add(
+            AttendanceList(
+                "10 AM","7.00 PM","20/12/2022",R.drawable.online
+            )
+        )
+        calendarRV.layoutManager = LinearLayoutManager(this)
+        val calAdapter = AttendanceAdapter(attendanceCard)
+        calendarRV.adapter = calAdapter
+    }
+
+
+
+    private fun requestCityName(latitude: Double, longitude: Double) {
+
+        val language = "hi" // Specify the desired language code, e.g., "fr" for French
+
+        val client = OkHttpClient()
+        val url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=$to_lat,$to_lng&language=hi&key=$apiKey&language=$language"
+        val request = Request.Builder()
+            .url(url)
+            .build()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val responseData = response.body?.string()
+                if (response.isSuccessful && responseData != null) {
+                    try {
+                        val jsonObject = JSONObject(responseData)
+                        val results = jsonObject.getJSONArray("results")
+                        if (results.length() > 0) {
+                            val addressComponents =
+                                results.getJSONObject(0).getJSONArray("address_components")
+                            for (i in 0 until addressComponents.length()) {
+                                val component = addressComponents.getJSONObject(i)
+                                val types = component.getJSONArray("types")
+                                if (types.toString().contains("locality")) {
+                                    val city = component.getString("long_name")
+                                    runOnUiThread {
+                                        cityTextView.text = city
+                                    }
+                                    break
+                                }
+                            }
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+        })
+    }
+
+    companion object {
+        private const val PERMISSION_REQUEST_LOCATION = 100
+    }
 
 }

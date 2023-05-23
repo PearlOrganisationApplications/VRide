@@ -1,7 +1,6 @@
 package com.pearl.v_ride
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
@@ -10,16 +9,43 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.pearl.test5.R
+import com.pearl.adapter.OnboardingItemAdapter
+import com.pearl.common.retrofit.data_model_class.OnboardingItem
+import com.pearl.v_ride_lib.BaseClass
+import com.pearl.v_ride_lib.Global
 
-class WelcomeScreen : AppCompatActivity() {
+class WelcomeScreen : BaseClass() {
     private  lateinit var onboardingItemAdapter: OnboardingItemAdapter
 
     private lateinit var indicatorContainer: LinearLayout
+    override fun setLayoutXml() {
+        setContentView(R.layout.activity_welcome_screen)
+    }
+
+    override fun initializeViews() {
+
+    }
+
+    override fun initializeClickListners() {
+    }
+
+    override fun initializeInputs() {
+    }
+
+    override fun initializeLabels() {
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_welcome_screen)
+        Global.language(this,resources)
+
+
+        setLayoutXml()
+        initializeViews()
+        initializeClickListners()
+        initializeInputs()
+        initializeLabels()
 
         setOnboardingItem()
         setUpIndicator()
@@ -46,6 +72,10 @@ class WelcomeScreen : AppCompatActivity() {
                     discription = "We are a highly acknowledged name for Bike Rental in Dehradun, Providing Bikes, Activa Scooty Bullets on Rent in Dehradun at an affordable price near ISBT"
                 ),
                 OnboardingItem(
+                    onboardingImage = R.drawable.delivery_man,
+                    title = "Rent Bikes",
+                    discription = "We are a highly acknowledged name for Bike Rental in Dehradun, Providing Bikes, Activa Scooty Bullets on Rent in Dehradun at an affordable price near ISBT"
+                ),    OnboardingItem(
                     onboardingImage = R.drawable.delivery_man,
                     title = "Rent Bikes",
                     discription = "We are a highly acknowledged name for Bike Rental in Dehradun, Providing Bikes, Activa Scooty Bullets on Rent in Dehradun at an affordable price near ISBT"
@@ -84,8 +114,11 @@ class WelcomeScreen : AppCompatActivity() {
     }
 
     private fun navigateToDashboarde() {
-        startActivity(Intent(applicationContext,MainActivity::class.java))
-        finish()
+
+            val i = Intent(this@WelcomeScreen, PermissionActivity::class.java)
+            startActivity(i)
+            finish()
+
     }
 
 
@@ -132,4 +165,5 @@ class WelcomeScreen : AppCompatActivity() {
             }
         }
     }
+
 }

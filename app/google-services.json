@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1033319284328",
+    "project_id": "vrun-f031c",
+    "storage_bucket": "vrun-f031c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1033319284328:android:53450e7f0b099cc17405dd",
+        "android_client_info": {
+          "package_name": "com.pearl.v_ride"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1033319284328-7cl4qjpho8racceup5j3tmqrejv3t544.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAxT9PiC1j23aUSzFP5obYHYyd8neABEQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1033319284328-3jti85ra6aekmiu5jb81kt7dq7oa4ml2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

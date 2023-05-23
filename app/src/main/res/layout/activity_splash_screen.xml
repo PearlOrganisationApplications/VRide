@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    tools:context="com.pearl.v_ride.SplashScreenActivity">
+    android:background="@color/background_combo"
+    tools:context="com.pearl.splash_screen.SplashScreenActivity">
 
     <ImageView
         android:id="@+id/iv_node"

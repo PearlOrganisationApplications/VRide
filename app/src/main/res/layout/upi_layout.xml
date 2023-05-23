@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_combo"
+    android:orientation="vertical"
+   >
+
+    <!--edit text for entering amount to be paid-->
+    <EditText
+        android:id="@+id/idEdtAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="8dp"
+        android:hint="@string/enter_amount_to_be_paid"
+        android:inputType="numberDecimal" />
+
+    <!--edit text for entering the upi id
+        to which we have to make payment-->
+    <EditText
+        android:id="@+id/idEdtUpi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/idEdtAmount"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="8dp"
+        android:hint="@string/enter_your_upi_id"
+        android:inputType="text" />
+
+    <!--edit text for adding the name of the
+        user whom we have to make payment-->
+    <EditText
+        android:id="@+id/idEdtName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/idEdtUpi"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="8dp"
+        android:hint="@string/enter_your_name"
+        android:inputType="text" />
+
+    <!--edit text for adding the description for
+        the payment which we are making-->
+    <EditText
+        android:id="@+id/idEdtDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/idEdtName"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="8dp"
+        android:hint="@string/enter_payment_description"
+        android:inputType="text" />
+
+    <!--button for making a payment-->
+    <Button
+        android:id="@+id/idBtnMakePayment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/idEdtDescription"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        android:backgroundTint="@color/color_primary"
+        android:text="@string/make_payment"
+        android:textColor="@color/white"
+        android:textAllCaps="false" />
+
+    <!--text view for displaying transaction status-->
+    <TextView
+        android:id="@+id/idTVTransactionDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/idBtnMakePayment"
+        android:layout_marginTop="30dp"
+        android:text="@string/transaction_details"
+        android:textAlignment="center"
+        android:textColor="@color/purple_700"
+        android:visibility="gone" />
+
+</RelativeLayout>

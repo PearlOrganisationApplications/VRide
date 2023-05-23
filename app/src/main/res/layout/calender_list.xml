@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_margin="@dimen/_5sdp"
+        app:cardCornerRadius="15dp"
+        android:backgroundTint="@color/card_bg"
+        app:cardElevation="10dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="15dp"
+        android:orientation="vertical">
+
+       <LinearLayout
+           android:weightSum="3"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal">
+           <TextView
+               android:id="@+id/calenderDate"
+               android:layout_weight="2"
+               android:layout_width="0dp"
+               android:layout_height="wrap_content"
+               android:textStyle="bold"
+               android:text="Date"/>
+
+           <ImageView
+               android:id="@+id/attendanceStatus"
+               android:layout_width="0dp"
+               android:layout_height="@dimen/_15sdp"
+               android:layout_weight="1.5"
+               android:gravity="end"
+               android:src="@drawable/online"
+               android:text="Status" />
+
+       </LinearLayout>
+
+        <LinearLayout
+            android:weightSum="3"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="Out Time"/>
+            <TextView
+                android:id="@+id/outTime"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:gravity="end"
+                android:layout_height="wrap_content"
+                android:text="Out Time"/>
+
+            <ImageView
+                android:id="@+id/exitIV"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_15sdp"
+                android:text="Status"
+                android:src="@drawable/out"
+                android:gravity="end"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:weightSum="3"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:textStyle="bold"
+                android:layout_height="wrap_content"
+                android:text="In Time"/>
+            <TextView
+                android:id="@+id/inTime"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:gravity="end"
+                android:layout_height="wrap_content"
+                android:text="In Time"/>
+
+            <ImageView
+                android:id="@+id/entryIV"
+
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_15sdp"
+                android:text="Status"
+                android:src="@drawable/in"
+                android:gravity="end"
+                />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+    </androidx.cardview.widget.CardView>
+

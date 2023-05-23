@@ -3,61 +3,165 @@ package com.pearl.v_ride
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.content.Intent
+import android.content.res.Resources
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.EditText
+import android.view.View
+import com.pearl.v_ride_lib.Global
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.textfield.TextInputEditText
-import com.pearl.Global
-import com.pearl.test5.R
+import com.google.android.material.textfield.TextInputLayout
+
+import com.pearl.v_ride_lib.BaseClass
 import de.hdodenhof.circleimageview.CircleImageView
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ProfileActivity : AppCompatActivity() {
+class ProfileActivity : BaseClass() {
 
     lateinit var ivback: AppCompatImageView
     lateinit var apptitle: AppCompatTextView
     lateinit var dob: TextInputEditText
     private val myCalendar = Calendar.getInstance()
     lateinit var selfiee: CircleImageView
+    lateinit var edtProfile: Button
+    lateinit var update_profileBT: Button
+    private lateinit var dialog: Dialog
+    lateinit var moblie_no: TextInputLayout
+    lateinit var email_id: TextInputLayout
+    lateinit var aadharCardTL: TextInputLayout
+    lateinit var pancardTL: TextInputLayout
+    lateinit var dobTIL: TextInputLayout
+    lateinit var nameTL: TextInputLayout
+    lateinit var update_profile: TextView
+    lateinit var verify: Button
+    lateinit var cancel: ImageView
+    private lateinit var resourcess : Resources
+//    lateinit var emaiTIL:TextInputLayout
+    override fun setLayoutXml() {
+        setContentView(R.layout.activity_profile)
+    }
+
+    override fun initializeViews() {
+        resourcess = Global.language(this,resources)
+        ivback=findViewById(R.id.ivBack)
+        apptitle = findViewById(R.id.titleTVAppbar)
+        selfiee = findViewById(R.id.show_selfiee)
+        dob= findViewById(R.id.dobTL)
+        apptitle.setText(R.string.profile)
+        edtProfile = findViewById(R.id.editprofile)
+        update_profileBT = findViewById(R.id.updateButton)
+        moblie_no = findViewById(R.id.mobileTL)
+        email_id = findViewById(R.id.emailTL)
+        aadharCardTL = findViewById(R.id.aadharCardTL)
+        pancardTL = findViewById(R.id.pancardTL)
+        dobTIL = findViewById(R.id.dobTIL)
+        nameTL = findViewById(R.id.nameTL)
+        update_profile = findViewById(R.id.update_profile)
+//        emaiTIL = findViewById(R.id.emailTIL)
+         dialog = Dialog(this)
+    }
+
+    override fun initializeClickListners() {
+        ivback.setOnClickListener {
+            onBackPressed()
+        }
+       /* dob.setOnClickListener {
+            showDatePicker()
+        }*/
+
+        edtProfile.setOnClickListener {
+            update_profileBT.visibility = View.VISIBLE
+            edtProfile.visibility = View.GONE
+            moblie_no.isEnabled = true
+//            moblie_no.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,getDrawable(R.drawable.ic_baseline_lock)), null)
+            email_id.isEnabled = true
+
+            selfiee.setOnClickListener {
+                ImagePicker.with(this)
+                    .crop()
+                    .cameraOnly()
+                    .compress(1024)
+                    .maxResultSize(1080, 1080)
+                    .start()
+
+            }
+
+        }
+
+        update_profileBT.setOnClickListener {
+            moblie_no.isEnabled = false
+            email_id.isEnabled = false
+
+            dialog.setContentView(R.layout.activity_forgot_password)
+            dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            dialog.setCancelable(false)
+            dialog.window?.attributes?.windowAnimations = R.style.animation
+
+            verify = dialog.findViewById(R.id.otp_Verify_button)
+            cancel = dialog.findViewById(R.id.view_cancel_dialog)
+
+            verify.setOnClickListener {
+                dialog.dismiss()
+                Toast.makeText(this@ProfileActivity, "okay clicked", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this@ProfileActivity,HomeScreen::class.java))
+            }
+
+            cancel.setOnClickListener {
+                dialog.dismiss()
+                Toast.makeText(this@ProfileActivity, "Cancel clicked", Toast.LENGTH_SHORT).show()
+            }
+            dialog.show()
+
+            edtProfile.visibility = View.VISIBLE
+            update_profileBT.visibility = View.GONE
+
+
+        }
+    }
+
+    override fun initializeInputs() {
+
+    }
+
+    override fun initializeLabels() {
+    }
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_profile)
+        Global.language(this,resources)
 
+        setLayoutXml()
+        initializeViews()
+        initializeClickListners()
+        initializeInputs()
+        initializeLabels()
 
-        ivback=findViewById(R.id.ivBack)
-        apptitle = findViewById(R.id.titleTVAppbar)
-        selfiee = findViewById(R.id.show_selfiee)
-
-        apptitle.text =title
-        ivback.setOnClickListener {
-            onBackPressed()
-        }
-
-        dob= findViewById(R.id.dobTL)
-
-        dob.setOnClickListener {
-            showDatePicker()
-        }
-        selfiee.setOnClickListener {
-            ImagePicker.with(this)
-                .crop()
-                .compress(1024)
-                .maxResultSize(1080, 1080)
-                .start()
-        }
     }
 
+    override fun onResume() {
+        super.onResume()
+        apptitle.text = resourcess.getString(R.string.profile)
+        edtProfile.text = resourcess.getString(R.string.edit_profile)
+        update_profileBT.text = resourcess.getString(R.string.update_profile)
+        update_profile.text = resourcess.getString(R.string.update_profile)
+        nameTL.hint = resourcess.getString(R.string.full_name)
+        dobTIL.hint = resourcess.getString(R.string.dob)
+        pancardTL.hint = resourcess.getString(R.string.pan_card)
+        aadharCardTL.hint = resourcess.getString(R.string.aadhar_card)
+
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -69,7 +173,7 @@ class ProfileActivity : AppCompatActivity() {
             selfiee.setImageURI(uri)
 //            Global.imageString = uri
             Global.imageString = uri.toString()
-            Log.d("abc2",Global.imageString)
+            Log.d("abc2", Global.imageString)
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
         } else {
