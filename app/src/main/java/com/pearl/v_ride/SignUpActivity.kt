@@ -22,8 +22,10 @@ import com.pearl.common.retrofit.data_model_class.SignUpInfo
 import com.pearl.common.retrofit.rest_api_interface.LoginApi
 import com.pearl.common.retrofit.rest_api_interface.SignupApi
 import com.pearl.ui.DocumentActivity
+import com.pearl.ui.DocumentStatus
 import com.pearl.v_ride_lib.BaseClass
 import com.pearl.v_ride_lib.Global
+import com.pearl.v_ride_lib.PrefManager
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -42,6 +44,7 @@ class SignUpActivity : BaseClass() {
         private const val RC_SIGN_IN = 1
         private const val TAG = "PhoneAUTH"
     }
+    lateinit var prefManager: PrefManager
     lateinit var dob: EditText
     lateinit var signup: Button
     private val myCalendar = Calendar.getInstance()
@@ -64,6 +67,7 @@ class SignUpActivity : BaseClass() {
     var email = ""
     var signup_dob = ""
     val prefix = "+91"
+    var tkn = ""
     lateinit var credential: PhoneAuthCredential
     override fun setLayoutXml() {
         setContentView(R.layout.activity_sign_up)
@@ -82,6 +86,7 @@ class SignUpActivity : BaseClass() {
         signup_otp = findViewById(R.id.signup_otp)
         signup_otpLL = findViewById(R.id.signup_otpLL)
         signup_otpVerifyBT = findViewById(R.id.signup_otpVerifyBT)
+        prefManager = PrefManager(this)
 
 
 
@@ -150,7 +155,7 @@ class SignUpActivity : BaseClass() {
             }
         }*/
 
-        sPhone.addTextChangedListener(object : TextWatcher{
+        /*sPhone.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }
@@ -183,7 +188,7 @@ class SignUpActivity : BaseClass() {
                 }
             }
 
-        })
+        })*/
 
         signup_otpVerifyBT.setOnClickListener {
 
@@ -375,12 +380,20 @@ class SignUpActivity : BaseClass() {
         call.enqueue(object : Callback<SignUpInfo> {
             override fun onResponse(call: Call<SignUpInfo>, response: Response<SignUpInfo>) {
                 if (response.isSuccessful) {
+                    val STATUSCODE = response.body()?.status
                     val createdUser = response.body()
                     Log.d("ResponseSignup ",createdUser.toString())
                     // Handle the created user object
 //                    showErrorDialog("successful","OK")
-                    if (validateName(sName) && validateNumber(sPhone) && validateDob(dob)){
-                        startActivity(Intent(this@SignUpActivity, DocumentActivity::class.java))
+                    if (response.body()?.status?.toInt() != 501) {
+                       tkn = response.body()?.token.toString()
+                        prefManager.setToken(tkn)
+                        Log.d("tkn","$tkn")
+                        if (validateName(sName) && validateNumber(sPhone) && validateDob(dob)) {
+                            Log.d("STATUSCODE","$STATUSCODE")
+                            startActivity(Intent(this@SignUpActivity, DocumentStatus::class.java))
+
+                        }
                     }
                 } else {
                     // Handle the error response
@@ -447,5 +460,3 @@ class SignUpActivity : BaseClass() {
     }
 
 }
-
-//16|KkhIddFekLgRBkFV3b3dQT3ac9czyJttxOa9Srzg

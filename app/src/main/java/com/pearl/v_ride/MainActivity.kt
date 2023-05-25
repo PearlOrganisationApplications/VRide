@@ -29,6 +29,7 @@ import com.google.firebase.auth.*
 import com.pearl.common.retrofit.data_model_class.LoginInfo
 import com.pearl.common.retrofit.rest_api_interface.LoginApi
 import com.pearl.ui.DocumentActivity
+import com.pearl.ui.DocumentStatus
 
 import com.pearl.v_ride_lib.PrefManager
 import retrofit2.Call
@@ -460,6 +461,7 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
                         val createdUser = response.body()
                         Log.d("ResponseLogin ",createdUser.toString())
                         // Handle the created user object
+                        prefManager.setToken(response.body()?.token.toString())
                         if(createdUser?.signin.equals("0") ){
                             // sign in
                             val builder = AlertDialog.Builder(this@MainActivity)
@@ -478,11 +480,13 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
                                 .setMessage("You are not register user, fill verification form first")
                                 .setPositiveButton("ok") { dialog, _ ->
                                     dialog.dismiss()
-                                    startActivity(Intent(this@MainActivity,DocumentActivity::class.java).putExtra("key",0))
+                                    startActivity(Intent(this@MainActivity,DocumentStatus::class.java))
                                 }
                             val dialog = builder.create()
                             dialog.show()
-                        }else if(createdUser?.signin.equals("1") && createdUser?.profile.equals( "0") && createdUser?.verification.equals("0") ){
+                        }
+
+                        /*else if(createdUser?.signin.equals("1") && createdUser?.profile.equals( "0") && createdUser?.verification.equals("0") ){
                             // only profile 1
                             val builder = AlertDialog.Builder(this@MainActivity)
                             builder.setTitle("Error")
@@ -494,8 +498,19 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
                             val dialog = builder.create()
                             dialog.show()
 
-                        }else if (createdUser?.signin.equals("1") && createdUser?.profile.equals("1") && createdUser?.verification.equals("0")) {
+                        }*/
+
+                        else if (createdUser?.signin.equals("1") && createdUser?.profile.equals("1") && createdUser?.verification.equals("0")) {
                             //profile 2
+                            val builder = AlertDialog.Builder(this@MainActivity)
+                            builder.setTitle("Error")
+                                .setMessage("You are not register user, fill verification form first")
+                                .setPositiveButton("ok") { dialog, _ ->
+                                    dialog.dismiss()
+                                    startActivity(Intent(this@MainActivity,DocumentStatus::class.java))
+                                }
+                            val dialog = builder.create()
+                            dialog.show()
 
                         }else if(createdUser?.signin.equals("1") && createdUser?.profile.equals( "1") && createdUser?.verification.equals("0") ){
                             // validation page
@@ -508,7 +523,6 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
                                 .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
                                 .build()
                             PhoneAuthProvider.verifyPhoneNumber(options)
-
                         }
                     } else {
                         // Handle the error response

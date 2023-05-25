@@ -141,5 +141,12 @@ import android.content.SharedPreferences
      fun getLanID():String{
          return pref?.getString("lanID", "en").toString()
      }
+     fun setToken(token: String){
+         editor!!.putString("token", token)
+         editor!!.commit()
+     }
+     fun getToken(): String{
+         return  pref?.getString("token","").toString()
+     }
  }
 

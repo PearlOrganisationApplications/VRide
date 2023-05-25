@@ -5,10 +5,11 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.content.res.Resources
-import android.graphics.Color
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.AppCompatImageView
@@ -16,16 +17,16 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.pearl.v_ride.HomeScreen
 import com.pearl.v_ride.R
 import com.pearl.v_ride_lib.BaseClass
 import com.pearl.v_ride_lib.Global
 import com.pearl.v_ride_lib.PrefManager
 import de.hdodenhof.circleimageview.CircleImageView
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.properties.Delegates
+
 
 class DocumentActivity : BaseClass() {
 
@@ -600,7 +601,9 @@ class DocumentActivity : BaseClass() {
             // Use Uri object instead of File to avoid storage permissions
 
             if (image_type == 1) {
-                adharFrontIV.setImageURI(uri)
+             adharFrontIV.setImageURI(uri)
+//                Log.d("Image64",BitMapToString(bitmap))
+
             } else if (image_type == 2) {
                 adhadharRear.setImageURI(uri)
             } else if (image_type == 3) {
@@ -610,6 +613,7 @@ class DocumentActivity : BaseClass() {
             } else if (image_type == 5) {
                 licenceIV.setImageURI(uri)
             } else if (image_type == 6) {
+                val file = File(uri.path)
                 doc_profile.setImageURI(uri)
             }/*else if (image_type == 7){
                 selfieCor.setImageURI(uri)

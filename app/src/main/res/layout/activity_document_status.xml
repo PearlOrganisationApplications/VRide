@@ -380,7 +380,7 @@
                             android:layout_gravity="center"
                             android:layout_weight=".7"
                             android:src="@drawable/check"
-                            android:visibility="visible" />
+                            android:visibility="gone" />
 
                         <ImageView
                             android:id="@+id/doc_addressError"
@@ -389,7 +389,7 @@
                             android:layout_gravity="center"
                             android:layout_weight=".7"
                             android:src="@drawable/warning"
-                            android:visibility="gone" />
+                            android:visibility="visible" />
 
                         <ImageView
                             android:id="@+id/doc_address_showMore"
@@ -487,6 +487,7 @@
                         </LinearLayout>
 
                         <Button
+                            android:id="@+id/doc_updateAddressBT"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_5sdp"
@@ -994,7 +995,7 @@
                                 app:layout_constraintTop_toBottomOf="@+id/doc_panNoET" />
 
 
-                            <EditText
+                           <!-- <EditText
                                 android:id="@+id/doc_pan_dobET"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -1009,7 +1010,7 @@
                                 android:padding="8dp"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/doc_panNameET" />
+                                app:layout_constraintTop_toBottomOf="@+id/doc_panNameET" />-->
 
                             <Button
                                 android:id="@+id/doc_submitPanBT"
@@ -1065,7 +1066,7 @@
                             android:layout_gravity="center"
                             android:layout_weight=".7"
                             android:src="@drawable/check"
-                            android:visibility="visible" />
+                            android:visibility="gone" />
 
                         <ImageView
                             android:id="@+id/doc_bankError"
@@ -1074,7 +1075,7 @@
                             android:layout_gravity="center"
                             android:layout_weight=".7"
                             android:src="@drawable/warning"
-                            android:visibility="gone" />
+                            android:visibility="visible" />
 
                         <ImageView
                             android:id="@+id/doc_bank_showMore"

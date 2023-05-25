@@ -7,5 +7,6 @@ data class LoginInfo(
      val signin: String,
      val profile: String,
      val verification: String,
+     val token:String
      //    @SerializedName("otp") val Otp: String?,
 )

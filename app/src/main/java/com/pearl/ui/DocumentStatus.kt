@@ -1,30 +1,48 @@
 package com.pearl.ui
 
+import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
-import androidx.lifecycle.VIEW_MODEL_STORE_OWNER_KEY
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.pearl.common.retrofit.data_model_class.*
+import com.pearl.common.retrofit.rest_api_interface.*
 import com.pearl.v_ride.HomeScreen
 import com.pearl.v_ride.R
 import com.pearl.v_ride_lib.BaseClass
 import com.pearl.v_ride_lib.Global
 import com.pearl.v_ride_lib.PrefManager
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.properties.Delegates
 
+
 class DocumentStatus : BaseClass() {
+    lateinit var prefManager: PrefManager
+    val baseUrl = "https://test.pearl-developer.com/vrun/public/"
     private lateinit var doc_selfieCL: ConstraintLayout
     private lateinit var doc_constraintLayout: ConstraintLayout
     private lateinit var doc_addressLL: LinearLayout
@@ -109,15 +127,27 @@ class DocumentStatus : BaseClass() {
     private lateinit var accountNOET: EditText
     private lateinit var raccountNOET: EditText
     private lateinit var ifscCode: EditText
+    private lateinit var doc_adharNoET: EditText
     private lateinit var doc_selfieUpdateBT: Button
+    private lateinit var doc_submitAdharBT: Button
+    private lateinit var doc_submitPanBT: Button
+    private lateinit var doc_updateAddressBT: Button
+    private lateinit var doc_submitBankBt: Button
     private var req_code = 1
+    var b64: String = ""
+    var adharNo: String = ""
+    var panName: String = ""
+    var panNo: String = ""
 
 
     override fun setLayoutXml() {
         setContentView(R.layout.activity_document_status)
+        prefManager = PrefManager(this)
+        getDocStatus()
     }
 
     override fun initializeViews() {
+
 //        inner Layouts
         doc_selfieCL = findViewById(R.id.doc_selfieCL)
         doc_constraintLayout = findViewById(R.id.doc_constraintLayout)
@@ -136,11 +166,14 @@ class DocumentStatus : BaseClass() {
         doc_aadharError = findViewById(R.id.doc_aadharError)
         doc_aadhar_showMore = findViewById(R.id.doc_aadhar_showMore)
         doc_aadhar_showLess = findViewById(R.id.doc_aadhar_showLess)
+        doc_adharNoET = findViewById(R.id.doc_adharNoET)
+        doc_submitAdharBT = findViewById(R.id.doc_submitAdharBT)
 //        address
         doc_addressOK = findViewById(R.id.doc_addressOK)
         doc_addressError = findViewById(R.id.doc_addressError)
         doc_address_showMore = findViewById(R.id.doc_address_showMore)
         doc_address_showLess = findViewById(R.id.doc_address_showLess)
+        doc_updateAddressBT = findViewById(R.id.doc_updateAddressBT)
 //        merchant
         doc_merchantOK = findViewById(R.id.doc_merchantOK)
         doc_merchantError = findViewById(R.id.doc_merchantError)
@@ -151,18 +184,20 @@ class DocumentStatus : BaseClass() {
         doc_panError = findViewById(R.id.doc_panError)
         doc_pan_showMore = findViewById(R.id.doc_pan_showMore)
         doc_pan_showLess = findViewById(R.id.doc_pan_showLess)
-        pan_dob = findViewById(R.id.doc_pan_dobET)
+        doc_submitPanBT = findViewById(R.id.doc_submitPanBT)
+//        pan_dob = findViewById(R.id.doc_pan_dobET)
 //        bankDetails
         doc_bankOk = findViewById(R.id.doc_bankOk)
         doc_bankError = findViewById(R.id.doc_bankError)
         doc_bank_showMore = findViewById(R.id.doc_bank_showMore)
         doc_bank_showLess = findViewById(R.id.doc_bank_showLess)
+        doc_submitBankBt = findViewById(R.id.doc_submitBankBt)
 
         okBT = findViewById(R.id.okBT)
         doc_select_state = findViewById(R.id.doc_statelistSP)
         doc_profile = findViewById(R.id.doc_doc_selfie)
         doc_add_selfie = findViewById(R.id.doc_add_selfie)
-        doc_pan_dob = findViewById(R.id.doc_pan_dobET)
+//        doc_pan_dob = findViewById(R.id.doc_pan_dobET)
 
         addFAB = findViewById(R.id.doc_addFAB)
         merchantList = findViewById(R.id.doc_merchantList)
@@ -223,12 +258,12 @@ class DocumentStatus : BaseClass() {
         dataList = mutableListOf()
         adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, dataList)
         merchantList.adapter = adapter
-        
+
     }
 
     override fun initializeClickListners() {
 
-        if (doc_selfieError.isVisible){
+        if (doc_selfieError.isVisible) {
             doc_selfie_showMore.setOnClickListener {
                 doc_selfieCL.visibility = View.VISIBLE
                 doc_selfie_showLess.visibility = View.VISIBLE
@@ -245,6 +280,7 @@ class DocumentStatus : BaseClass() {
                 doc_selfieOK.visibility = View.VISIBLE
                 doc_selfie_showLess.visibility = View.GONE
                 doc_selfie_showMore.visibility = View.VISIBLE
+                selfiee()
             }
 
         }
@@ -261,6 +297,10 @@ class DocumentStatus : BaseClass() {
             doc_aadhar_showLess.visibility = View.GONE
             doc_aadhar_showMore.visibility = View.VISIBLE
         }
+        doc_submitAdharBT.setOnClickListener {
+            adharNo = doc_adharNoET.text.toString().trim()
+            adharDetails()
+        }
 
         if (doc_addressError.isVisible) {
             doc_address_showMore.setOnClickListener {
@@ -274,8 +314,11 @@ class DocumentStatus : BaseClass() {
             doc_address_showLess.visibility = View.GONE
             doc_address_showMore.visibility = View.VISIBLE
         }
+        doc_updateAddressBT.setOnClickListener {
+            addressDetails()
+        }
 
-        if (doc_merchantError.isVisible){
+        if (doc_merchantError.isVisible) {
             doc_merchant_showMore.setOnClickListener {
                 doc_merchantLL.visibility = View.VISIBLE
                 doc_merchant_showLess.visibility = View.VISIBLE
@@ -300,6 +343,12 @@ class DocumentStatus : BaseClass() {
             doc_pan_showLess.visibility = View.GONE
             doc_pan_showMore.visibility = View.VISIBLE
         }
+        doc_submitPanBT.setOnClickListener {
+
+            panName = panNameET.text.toString().trim()
+            panNo = panNoET.text.toString().trim()
+            panDetails()
+        }
 
         if (doc_bankError.isVisible) {
             doc_bank_showMore.setOnClickListener {
@@ -313,9 +362,12 @@ class DocumentStatus : BaseClass() {
             doc_bank_showLess.visibility = View.GONE
             doc_bank_showMore.visibility = View.VISIBLE
         }
+        doc_submitBankBt.setOnClickListener {
+            bankDetails()
+        }
 
         okBT.setOnClickListener {
-            startActivity(Intent(this@DocumentStatus,HomeScreen::class.java))
+            startActivity(Intent(this@DocumentStatus, HomeScreen::class.java))
             finish()
         }
 
@@ -357,10 +409,10 @@ class DocumentStatus : BaseClass() {
             checkboxLL.visibility = View.VISIBLE
 
         }
-        pan_dob.setOnClickListener {
-            req_code = 1
-            showDatePicker()
-        }
+        /*  pan_dob.setOnClickListener {
+              req_code = 1
+              showDatePicker()
+          }*/
 
 
         ivback.setOnClickListener {
@@ -565,4 +617,421 @@ class DocumentStatus : BaseClass() {
         return minDateCalendar.timeInMillis
 
     }
+
+    fun getImageUri(inContext: Context, inImage: Bitmap): Uri? {
+        val bytes = ByteArrayOutputStream()
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path =
+            MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+        return Uri.parse(path)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            //Image Uri will not be null for RESULT_OK
+            val uri: Uri = data?.data!!
+
+            // Use Uri object instead of File to avoid storage permissions
+
+            if (image_type == 1) {
+                adharFrontIV.setImageURI(uri)
+
+                var bitmap = MediaStore.Images.Media.getBitmap(
+                    this.contentResolver,
+                    uri
+                )
+                b64 = BitMapToString(bitmap).toString()
+
+                Log.d("Image64QQ", "XXX " + b64)
+
+            } else if (image_type == 2) {
+                adhadharRear.setImageURI(uri)
+
+                var bitmap = MediaStore.Images.Media.getBitmap(
+                    this.contentResolver,
+                    uri
+                )
+                b64 = BitMapToString(bitmap).toString()
+
+                Log.d("Image64QQ", "yyy " + b64)
+
+            } else if (image_type == 3) {
+                panFront.setImageURI(uri)
+                var bitmap = MediaStore.Images.Media.getBitmap(
+                    this.contentResolver,
+                    uri
+                )
+                b64 = BitMapToString(bitmap).toString()
+            } else if (image_type == 4) {
+                passbookIV.setImageURI(uri)
+                var bitmap = MediaStore.Images.Media.getBitmap(
+                    this.contentResolver,
+                    uri
+                )
+                b64 = BitMapToString(bitmap).toString()
+            } /*else if (image_type == 5) {
+                licenceIV.setImageURI(uri)
+            }*/ else if (image_type == 6) {
+                val file = File(uri.path)
+                doc_profile.setImageURI(uri)
+//                val bitmap = BitmapFactory.decodeFile(file.toString())
+
+                var bitmap = MediaStore.Images.Media.getBitmap(
+                    this.contentResolver,
+                    uri
+                )
+                b64 = BitMapToString(bitmap).toString()
+
+                Log.d("Image64QQ", "XXX " + b64)
+                Log.d("Image64XX", "YY " + BitMapToString(bitmap))
+            }/*else if (image_type == 7){
+                selfieCor.setImageURI(uri)
+            }else if (image_type == 8){
+                companyID.setImageURI(uri)
+            }
+            else if (image_type == 9) {
+                corporateAadharF.setImageURI(uri)
+            }else if (image_type == 10){
+                corporateAadharR.setImageURI(uri)
+            }*/
+            else if (image_type == 11) {
+                addressProofIV.setImageURI(uri)
+
+                val bitmap = MediaStore.Images.Media.getBitmap(
+                    this.contentResolver,
+                    uri
+                )
+                b64 = BitMapToString(bitmap).toString()
+
+            }
+
+
+        } else if (resultCode == ImagePicker.RESULT_ERROR) {
+            Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun getDocStatus() {
+
+        /*        // Function to create an OkHttpClient instance with the bearer token interceptor
+              fun createOkHttpClient(): OkHttpClient {
+                  val interceptor = Interceptor { chain ->
+                      val originalRequest = chain.request()
+                      val token = "33|H2UAYjgfVA4O21n1dxqTNnsXUGHQ8Lu4lOKKpShV"
+
+                      val newRequest = originalRequest.newBuilder()
+                          .header("Authorization", "Bearer $token")
+                          .build()
+
+                      chain.proceed(newRequest)
+                  }
+
+                  return OkHttpClient.Builder()
+                      .addInterceptor(interceptor)
+                      .build()
+              }*/
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://test.pearl-developer.com/vrun/public/api/")
+            .addConverterFactory(GsonConverterFactory.create())
+//            .client(createOkHttpClient())
+            .build()
+
+
+        val profileApi = retrofit.create(ProfileApi::class.java)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+//                val response = profileApi.getProfileData()
+                val token = prefManager.getToken()
+                val response = profileApi.getProfileData("Bearer $token")
+                if (response.isSuccessful) {
+                    val profileData = response.body()
+                    if (profileData != null) {
+                        val profile = profileData.profileData
+                        val message = profileData.message
+                        val profilePicUrl = profile?.profilePic
+                        val mobile = profile?.mobile
+                        val name = profile?.name
+                        val dob = profile?.dob
+                        val address = profile?.address
+                        val state = profile?.state
+                        val city = profile?.city
+                        val pincode = profile?.pincode
+                        val adharNo = profile?.adharNo
+                        val adharFrontPicUrl = profile?.adharFrontPic
+                        val adharBackPicUrl = profile?.adharBackPic
+                        val addressProofPicUrl = profile?.addressProofPic
+                        val otherDetails = profileData.otherDetails
+                        val bankName = otherDetails?.bankName
+                        val accountNo = otherDetails?.accountNo
+                        val ifscCode = otherDetails?.ifscCode
+                        val panNo = otherDetails?.panNo
+                        val panName = otherDetails?.panName
+
+                        Log.d("profile", "$profile $otherDetails")
+                        Log.d("msg", "$message")
+//                        showErrorDialog("$message","ok")
+
+                        // Use the profile data as needed
+
+                    } else {
+                        // Handle the case when profileData is null
+                        Log.d("else", "t.toString")
+                    }
+                } else {
+                    val errorBody = response.errorBody()
+                    val errorMessage = errorBody?.string()
+//                    showErrorDialog(errorMessage.toString(),"ok")
+                    // Handle the case when the API call is unsuccessful
+                    // Log or display the error message
+                    Log.e("API Error", "body: $errorBody, errorMessage: $errorMessage")
+                }
+            } catch (e: IOException) {
+                // Handle network error
+                Log.d("API Error", "Network error occurred", e)
+            } catch (e: Exception) {
+                // Handle other errors
+                Log.d("API Error", "Error occurred", e)
+            }
+        }
+
+    }
+
+    fun selfiee() {
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val selfieApi = retrofit.create(SelfieApi::class.java)
+
+
+
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val bearerToken = prefManager.getToken()
+
+                val selfieRequestData = SelfieRequestData(
+                    selfiee = b64
+//          bearerToken = prefManager.getToken()
+                )
+                val response = selfieApi.uploadImage("Bearer $bearerToken", selfieRequestData)
+                if (response.isSuccessful) {
+                    val responseData = response.body()
+                    if (responseData != null) {
+                        val msg = responseData.msg
+                        val status = responseData.status
+                        // Handle successful responser
+                        Log.d("msg", msg)
+                    } else {
+                        // Handle case when responseData is null
+
+                        Log.d("else", "t.toString")
+                    }
+                } else {
+                    // Handle unsuccessful response
+                    val errorBody = response.errorBody()
+                    val errorMessage = errorBody?.string()
+//                    showErrorDialog(errorMessage.toString(),"ok")
+                    // Handle the case when the API call is unsuccessful
+                    // Log or display the error message
+                    Log.e(
+                        "API Error",
+                        "token \n $bearerToken body: $errorBody, errorMessage: $errorMessage"
+                    )
+                }
+            } catch (e: Exception) {
+                Log.e("API Exception", "${e.message}")
+            }
+        }
+    }
+
+    fun adharDetails() {
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        // Make the API request
+        val adharApi = retrofit.create(AdharApi::class.java)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                // Replace "YOUR_TOKEN" with your actual bearer token
+                val token = prefManager.getToken()
+
+                val requestData = AdharRequestData(
+                    adhar_front = b64,
+                    adhar_back = b64,
+                    adhar_no = adharNo
+                )
+
+                val response = adharApi.saveAdharData("Bearer $token", requestData)
+                if (response.isSuccessful) {
+                    val responseData = response.body()
+                    if (responseData != null) {
+                        val msg = responseData.msg
+                        val status = responseData.status
+                        // Process the response data as needed
+                        Log.d("msg", msg + adharNo)
+                    } else {
+                        // Handle case when responseData is null
+                        Log.d("else", "t.toString")
+                    }
+                } else {
+                    // Handle unsuccessful response
+                    val errorBody = response.errorBody()
+                    val errorMessage = errorBody?.string()
+//                    showErrorDialog(errorMessage.toString(),"ok")
+                    // Handle the case when the API call is unsuccessful
+                    // Log or display the error message
+                    Log.e("API Error", "body: $errorBody, errorMessage: $errorMessage")
+                }
+            } catch (e: Exception) {
+                // Handle network or other errors
+
+                Log.d("catch", e.toString())
+            }
+        }
+
+    }
+
+    fun panDetails() {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        // Make the API request
+        val panApi = retrofit.create(PanApi::class.java)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                // Replace "YOUR_TOKEN" with your actual bearer token
+                val token = prefManager.getToken()
+
+                val requestData = PanRequestData(
+                    pan_image = b64,
+                    pan_no = "123456789",
+                    adhar_no = "Vipin"
+                )
+
+                val response = panApi.savePanData("Bearer $token", requestData)
+                if (response.isSuccessful) {
+                    val responseData = response.body()
+                    if (responseData != null) {
+                        val msg = responseData.msg
+                        val status = responseData.status
+                        // Process the response data as needed
+                        Log.d("msg", msg + panNo + status)
+                    } else {
+                        // Handle case when responseData is null
+                        Log.d("else", "t.toString")
+                    }
+                } else {
+                    // Handle unsuccessful response
+                    val errorBody = response.errorBody()
+                    val errorMessage = errorBody?.string()
+//                    showErrorDialog(errorMessage.toString(),"ok")
+                    // Handle the case when the API call is unsuccessful
+                    // Log or display the error message
+                    Log.e("API Error", "body: $errorBody, errorMessage: $errorMessage")
+                }
+            } catch (e: Exception) {
+                // Handle network or other errors
+
+                Log.e("API ErrorC", "Error: ${e.message}")
+
+            }
+        }
+    }
+
+    fun addressDetails() {
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val addressApi = retrofit.create(AddressApi::class.java)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val token = prefManager.getToken()
+                val requestData = AddressRequestData(
+
+                    "Dehradoon",
+                    "Uttarakhand",
+                    "dehradoon",
+                    "123456",
+                    b64
+                )
+                val response = addressApi.updateProfileData("Bearer $token",requestData)
+                if (response.isSuccessful) {
+                    val responseData = response.body()
+                    if (responseData != null ) {
+                        val message = responseData.msg
+                        // Handle the success message as needed
+                        Log.d("msg", message )
+                    } else {
+                        // Handle the case when responseData is null or status is not "201"
+                        Log.d("else", "t.toString")
+                    }
+                } else {
+                    // Handle the case when the API call is unsuccessful
+                    val errorBody = response.errorBody()?.string()
+                    // Log or handle the error response as needed
+                    Log.d("Api Error","$errorBody")
+                }
+            } catch (e: Exception) {
+                // Handle the network or other errors
+                Log.e("API ErrorC", "Error: ${e.message}")
+            }
+        }
+
+    }
+
+    fun bankDetails(){
+        val retrofit = Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val bankApi = retrofit.create(BankApi::class.java)
+
+        CoroutineScope(Dispatchers.IO).launch{
+            try {
+                val token = prefManager.getToken()
+                val requestData = BankRequestData(
+                    "SBI",
+                    "7410258963",
+                    "SBI123",
+                    b64
+                )
+                val response = bankApi.updateBankData("Bearer $token",requestData)
+                if (response.isSuccessful) {
+                    val responseData = response.body()
+                    if (responseData != null) {
+                        val msg = responseData.msg
+                        Log.d("msg", msg)
+                    } else {
+                        Log.d("else", "t.toString")
+                    }
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    // Log or handle the error response as needed
+                    Log.d("Api Error","$errorBody")
+                }
+            } catch (e: Exception) {
+
+            }
+        }
+
+    }
+
 }
