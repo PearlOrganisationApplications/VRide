@@ -148,5 +148,12 @@ import android.content.SharedPreferences
      fun getToken(): String{
          return  pref?.getString("token","").toString()
      }
+     fun setCode(code: Int){
+         editor!!.putInt("code", code)
+         editor!!.commit()
+     }
+     fun getCode(): Int{
+         return  pref?.getInt("code",0)!!.toInt()
+     }
  }
 

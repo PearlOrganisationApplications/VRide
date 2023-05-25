@@ -24,17 +24,20 @@ import com.pearl.v_ride.HomeScreen
 import com.pearl.v_ride.R
 import com.pearl.v_ride_lib.BaseClass
 import com.pearl.v_ride_lib.Global
+import com.pearl.v_ride_lib.Global.CODE
 import com.pearl.v_ride_lib.PrefManager
+import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.properties.Delegates
@@ -42,7 +45,7 @@ import kotlin.properties.Delegates
 
 class DocumentStatus : BaseClass() {
     lateinit var prefManager: PrefManager
-    val baseUrl = "https://test.pearl-developer.com/vrun/public/"
+       val baseUrl = "https://test.pearl-developer.com/vrun/public/"
     private lateinit var doc_selfieCL: ConstraintLayout
     private lateinit var doc_constraintLayout: ConstraintLayout
     private lateinit var doc_addressLL: LinearLayout
@@ -138,6 +141,7 @@ class DocumentStatus : BaseClass() {
     var adharNo: String = ""
     var panName: String = ""
     var panNo: String = ""
+    var selectedItem: String = ""
 
 
     override fun setLayoutXml() {
@@ -147,6 +151,7 @@ class DocumentStatus : BaseClass() {
     }
 
     override fun initializeViews() {
+
 
 //        inner Layouts
         doc_selfieCL = findViewById(R.id.doc_selfieCL)
@@ -259,9 +264,95 @@ class DocumentStatus : BaseClass() {
         adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, dataList)
         merchantList.adapter = adapter
 
+        items = arrayOf("S")
+        if (prefManager.getLanID() == "en")
+            items = arrayOf(
+                "Select State",
+                "Andhra Pradesh",
+                "Arunachal Pradesh",
+                "Assam",
+                "Bihar",
+                "Chhattisgarh",
+                "Goa",
+                "Gujarat",
+                "Haryana",
+                "Himachal Pradesh",
+                "Jammu and Kashmir",
+                "Jharkhand",
+                "Karnataka",
+                "Kerala",
+                "Madhya Pradesh",
+                "Maharashtra",
+                "Manipur",
+                "Meghalaya",
+                "Mizoram",
+                "Nagaland",
+                "Odisha",
+                "Punjab",
+                "Sikkim",
+                "Tamil Nadu",
+                "Telangana",
+                "Tripura",
+                "Uttar Pradesh",
+                "Uttarakhand",
+                "West Bengal"
+            )
+        else
+            items = arrayOf(
+                "राज्य चुनें",
+                "आंध्र प्रदेश",
+                "अरुणाचल प्रदेश",
+                "असम",
+                "बिहार",
+                "छत्तीसगढ़",
+                "गोवा",
+                "गुजरात",
+                "हरियाणा",
+                "हिमाचल प्रदेश",
+                "जम्मू और कश्मीर",
+                "झारखंड",
+                "कर्नाटक",
+                "केरल",
+                "मध्य प्रदेश",
+                "महाराष्ट्र",
+                "मणिपुर",
+                "मेघालय",
+                "मिजोरम",
+                "नागालैंड",
+                "ओडिशा",
+                "पंजाब",
+                "सिक्किम",
+                "तमिलनाडु",
+                "तेलंगाना",
+                "त्रिपुरा",
+                "उत्तर प्रदेश",
+                "उत्तराखंड",
+                "पश्चिम बंगाल"
+            )
+
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
+        doc_select_state.adapter = adapter
+
     }
 
     override fun initializeClickListners() {
+
+        doc_select_state.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                selectedItem = parent.getItemAtPosition(position).toString()
+                // Do something with the selected item
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Handle the case when nothing is selected
+            }
+        }
 
         if (doc_selfieError.isVisible) {
             doc_selfie_showMore.setOnClickListener {
@@ -274,15 +365,19 @@ class DocumentStatus : BaseClass() {
                 doc_selfie_showLess.visibility = View.GONE
                 doc_selfie_showMore.visibility = View.VISIBLE
             }
-            doc_selfieUpdateBT.setOnClickListener {
-                doc_selfieCL.visibility = View.GONE
-                doc_selfieError.visibility = View.GONE
-                doc_selfieOK.visibility = View.VISIBLE
-                doc_selfie_showLess.visibility = View.GONE
-                doc_selfie_showMore.visibility = View.VISIBLE
-                selfiee()
-            }
 
+            doc_selfieUpdateBT.setOnClickListener {
+                selfieDetails()
+                Log.d("image","$CODE")
+                if (prefManager.getCode() == 1) {
+                    doc_selfieCL.visibility = View.GONE
+                    doc_selfieError.visibility = View.GONE
+                    doc_selfieOK.visibility = View.VISIBLE
+                    doc_selfie_showLess.visibility = View.GONE
+                    doc_selfie_showMore.visibility = View.VISIBLE
+                }
+
+            }
         }
 
         if (doc_aadharError.isVisible) {
@@ -315,6 +410,7 @@ class DocumentStatus : BaseClass() {
             doc_address_showMore.visibility = View.VISIBLE
         }
         doc_updateAddressBT.setOnClickListener {
+            selectedItem
             addressDetails()
         }
 
@@ -395,6 +491,7 @@ class DocumentStatus : BaseClass() {
         anotherNoBT.setOnClickListener {
 
         }*/
+
         addFAB.setOnClickListener {
             listLayout.visibility = View.GONE
             merchantAlready.visibility = View.VISIBLE
@@ -503,77 +600,6 @@ class DocumentStatus : BaseClass() {
         initializeClickListners()
         initializeInputs()
         initializeLabels()
-
-        var prefManager = PrefManager(this)
-        items = arrayOf("S")
-        if (prefManager.getLanID().equals("en"))
-            items = arrayOf(
-                "Select State",
-                "Andhra Pradesh",
-                "Arunachal Pradesh",
-                "Assam",
-                "Bihar",
-                "Chhattisgarh",
-                "Goa",
-                "Gujarat",
-                "Haryana",
-                "Himachal Pradesh",
-                "Jammu and Kashmir",
-                "Jharkhand",
-                "Karnataka",
-                "Kerala",
-                "Madhya Pradesh",
-                "Maharashtra",
-                "Manipur",
-                "Meghalaya",
-                "Mizoram",
-                "Nagaland",
-                "Odisha",
-                "Punjab",
-                "Sikkim",
-                "Tamil Nadu",
-                "Telangana",
-                "Tripura",
-                "Uttar Pradesh",
-                "Uttarakhand",
-                "West Bengal"
-            )
-        else
-            items = arrayOf(
-                "राज्य चुनें",
-                "आंध्र प्रदेश",
-                "अरुणाचल प्रदेश",
-                "असम",
-                "बिहार",
-                "छत्तीसगढ़",
-                "गोवा",
-                "गुजरात",
-                "हरियाणा",
-                "हिमाचल प्रदेश",
-                "जम्मू और कश्मीर",
-                "झारखंड",
-                "कर्नाटक",
-                "केरल",
-                "मध्य प्रदेश",
-                "महाराष्ट्र",
-                "मणिपुर",
-                "मेघालय",
-                "मिजोरम",
-                "नागालैंड",
-                "ओडिशा",
-                "पंजाब",
-                "सिक्किम",
-                "तमिलनाडु",
-                "तेलंगाना",
-                "त्रिपुरा",
-                "उत्तर प्रदेश",
-                "उत्तराखंड",
-                "पश्चिम बंगाल"
-            )
-
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
-        doc_select_state.adapter = adapter
-
 
     }
 
@@ -741,13 +767,15 @@ class DocumentStatus : BaseClass() {
             .build()
 
 
-        val profileApi = retrofit.create(ProfileApi::class.java)
+        val profileService = retrofit.create(ProfileApi::class.java)
 
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
+
 //                val response = profileApi.getProfileData()
+
                 val token = prefManager.getToken()
-                val response = profileApi.getProfileData("Bearer $token")
+                val call = profileService.getProfileData("Bearer $token")
+        call.enqueue(object : Callback<ProfileData>{
+            override fun onResponse(call: Call<ProfileData>, response: Response<ProfileData>) {
                 if (response.isSuccessful) {
                     val profileData = response.body()
                     if (profileData != null) {
@@ -771,37 +799,39 @@ class DocumentStatus : BaseClass() {
                         val ifscCode = otherDetails?.ifscCode
                         val panNo = otherDetails?.panNo
                         val panName = otherDetails?.panName
+                        val profilePic = profile?.profilePic
+                        Picasso.get().load(profilePic).placeholder(R.drawable.profile).into(doc_profile)
 
+                        Log.d("profile", ""+profilePic)
                         Log.d("profile", "$profile $otherDetails")
                         Log.d("msg", "$message")
 //                        showErrorDialog("$message","ok")
 
                         // Use the profile data as needed
 
-                    } else {
-                        // Handle the case when profileData is null
-                        Log.d("else", "t.toString")
+                    }  else {
+                        Log.d("ElseSignup ","t.toString()")
+                        val errorResponseCode = response.code()
+                        val errorResponseBody = response.errorBody()?.string()
+                        // Handle the error response code and body
+                        Log.e("API Error", "Response Code: $errorResponseCode, Body: $errorResponseBody")
                     }
-                } else {
-                    val errorBody = response.errorBody()
-                    val errorMessage = errorBody?.string()
-//                    showErrorDialog(errorMessage.toString(),"ok")
-                    // Handle the case when the API call is unsuccessful
-                    // Log or display the error message
-                    Log.e("API Error", "body: $errorBody, errorMessage: $errorMessage")
                 }
-            } catch (e: IOException) {
-                // Handle network error
-                Log.d("API Error", "Network error occurred", e)
-            } catch (e: Exception) {
-                // Handle other errors
-                Log.d("API Error", "Error occurred", e)
             }
+
+            override fun onFailure(call: Call<ProfileData>, t: Throwable) {
+               Log.d("fail",t.toString())
+            }
+
+        })
+
+
+
         }
 
-    }
 
-    fun selfiee() {
+
+    fun selfieDetails() {
 
         val retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
@@ -809,9 +839,6 @@ class DocumentStatus : BaseClass() {
             .build()
 
         val selfieApi = retrofit.create(SelfieApi::class.java)
-
-
-
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -827,6 +854,7 @@ class DocumentStatus : BaseClass() {
                     if (responseData != null) {
                         val msg = responseData.msg
                         val status = responseData.status
+                        prefManager.setCode(1)
                         // Handle successful responser
                         Log.d("msg", msg)
                     } else {
@@ -966,18 +994,18 @@ class DocumentStatus : BaseClass() {
                 val requestData = AddressRequestData(
 
                     "Dehradoon",
-                    "Uttarakhand",
+                    selectedItem,
                     "dehradoon",
                     "123456",
                     b64
                 )
-                val response = addressApi.updateProfileData("Bearer $token",requestData)
+                val response = addressApi.updateProfileData("Bearer $token", requestData)
                 if (response.isSuccessful) {
                     val responseData = response.body()
-                    if (responseData != null ) {
+                    if (responseData != null) {
                         val message = responseData.msg
                         // Handle the success message as needed
-                        Log.d("msg", message )
+                        Log.d("msg", message)
                     } else {
                         // Handle the case when responseData is null or status is not "201"
                         Log.d("else", "t.toString")
@@ -986,7 +1014,7 @@ class DocumentStatus : BaseClass() {
                     // Handle the case when the API call is unsuccessful
                     val errorBody = response.errorBody()?.string()
                     // Log or handle the error response as needed
-                    Log.d("Api Error","$errorBody")
+                    Log.d("Api Error", "$errorBody")
                 }
             } catch (e: Exception) {
                 // Handle the network or other errors
@@ -996,7 +1024,7 @@ class DocumentStatus : BaseClass() {
 
     }
 
-    fun bankDetails(){
+    fun bankDetails() {
         val retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
@@ -1004,7 +1032,7 @@ class DocumentStatus : BaseClass() {
 
         val bankApi = retrofit.create(BankApi::class.java)
 
-        CoroutineScope(Dispatchers.IO).launch{
+        CoroutineScope(Dispatchers.IO).launch {
             try {
                 val token = prefManager.getToken()
                 val requestData = BankRequestData(
@@ -1013,7 +1041,7 @@ class DocumentStatus : BaseClass() {
                     "SBI123",
                     b64
                 )
-                val response = bankApi.updateBankData("Bearer $token",requestData)
+                val response = bankApi.updateBankData("Bearer $token", requestData)
                 if (response.isSuccessful) {
                     val responseData = response.body()
                     if (responseData != null) {
@@ -1025,7 +1053,7 @@ class DocumentStatus : BaseClass() {
                 } else {
                     val errorBody = response.errorBody()?.string()
                     // Log or handle the error response as needed
-                    Log.d("Api Error","$errorBody")
+                    Log.d("Api Error", "$errorBody")
                 }
             } catch (e: Exception) {
 
