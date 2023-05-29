@@ -9,6 +9,6 @@ import retrofit2.http.POST
 
 interface LoginApi {
     @Headers("Content-Type: application/json")
-    @POST("api/login")
+    @POST("login")
         fun addUser(@Body userData: Map<String,String>): Call<LoginInfo>
 }

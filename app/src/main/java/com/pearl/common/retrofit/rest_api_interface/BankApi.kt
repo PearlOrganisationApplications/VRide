@@ -10,7 +10,7 @@ import retrofit2.http.POST
 
 interface BankApi {
     @Headers("Content-Type: application/json")
-    @POST("api/add-bank")
+    @POST("add-bank")
     suspend fun updateBankData(
         @Header("Authorization") token: String,
         @Body requestData: BankRequestData

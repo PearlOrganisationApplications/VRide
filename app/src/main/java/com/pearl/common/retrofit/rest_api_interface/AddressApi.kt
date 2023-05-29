@@ -10,7 +10,7 @@ import retrofit2.http.POST
 
 interface AddressApi {
     @Headers("Content-Type: application/json")
-    @POST("api/add-address")
+    @POST("add-address")
     suspend fun updateProfileData(
         @Header("Authorization") token: String,
         @Body requestData: AddressRequestData

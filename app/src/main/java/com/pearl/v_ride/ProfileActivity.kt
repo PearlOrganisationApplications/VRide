@@ -21,9 +21,18 @@ import androidx.appcompat.widget.AppCompatTextView
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.pearl.common.retrofit.data_model_class.ProfileData
+import com.pearl.common.retrofit.rest_api_interface.ProfileApi
 
 import com.pearl.v_ride_lib.BaseClass
+import com.pearl.v_ride_lib.PrefManager
+import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -31,7 +40,11 @@ class ProfileActivity : BaseClass() {
 
     lateinit var ivback: AppCompatImageView
     lateinit var apptitle: AppCompatTextView
-    lateinit var dob: TextInputEditText
+    lateinit var dobET: TextInputEditText
+    lateinit var adharNoTIT: TextInputEditText
+    lateinit var fullNameET: TextInputEditText
+    lateinit var mobileNoEt: TextInputEditText
+    lateinit var panNoTIT: TextInputEditText
     private val myCalendar = Calendar.getInstance()
     lateinit var selfiee: CircleImageView
     lateinit var edtProfile: Button
@@ -47,17 +60,19 @@ class ProfileActivity : BaseClass() {
     lateinit var verify: Button
     lateinit var cancel: ImageView
     private lateinit var resourcess : Resources
+    lateinit var prefManager: PrefManager
 //    lateinit var emaiTIL:TextInputLayout
     override fun setLayoutXml() {
         setContentView(R.layout.activity_profile)
     }
 
     override fun initializeViews() {
+        prefManager = PrefManager(this)
         resourcess = Global.language(this,resources)
         ivback=findViewById(R.id.ivBack)
         apptitle = findViewById(R.id.titleTVAppbar)
         selfiee = findViewById(R.id.show_selfiee)
-        dob= findViewById(R.id.dobTL)
+        dobET= findViewById(R.id.dobTL)
         apptitle.setText(R.string.profile)
         edtProfile = findViewById(R.id.editprofile)
         update_profileBT = findViewById(R.id.updateButton)
@@ -68,6 +83,10 @@ class ProfileActivity : BaseClass() {
         dobTIL = findViewById(R.id.dobTIL)
         nameTL = findViewById(R.id.nameTL)
         update_profile = findViewById(R.id.update_profile)
+        adharNoTIT = findViewById(R.id.adharNo)
+        fullNameET = findViewById(R.id.fullNameET)
+        mobileNoEt = findViewById(R.id.mobileNoEt)
+        panNoTIT = findViewById(R.id.panNoTIT)
 //        emaiTIL = findViewById(R.id.emailTIL)
          dialog = Dialog(this)
     }
@@ -147,6 +166,7 @@ class ProfileActivity : BaseClass() {
         initializeClickListners()
         initializeInputs()
         initializeLabels()
+        getDocStatus()
 
     }
 
@@ -206,14 +226,84 @@ class ProfileActivity : BaseClass() {
     }
 
     private fun updateLabel() {
-        val myFormat = "MM/dd/yyyy"
+        val myFormat = "yyyy/MM/DD"
         val dateFormat = SimpleDateFormat(myFormat, Locale.US)
-        dob.setText(dateFormat.format(myCalendar.time))
+        dobET.setText(dateFormat.format(myCalendar.time))
     }
 
     private fun getMinimumDate(): Long {
         val minDateCalendar = Calendar.getInstance()
         minDateCalendar.add(Calendar.YEAR, -100) // Set 100 years ago from now
         return minDateCalendar.timeInMillis
+    }
+    fun getDocStatus() {
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl(Global.baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+//            .client(createOkHttpClient())
+            .build()
+
+
+        val profileService = retrofit.create(ProfileApi::class.java)
+
+
+//                val response = profileApi.getProfileData()
+
+        val token = prefManager.getToken()
+        val call = profileService.getProfileData("Bearer $token")
+        call.enqueue(object : Callback<ProfileData> {
+            override fun onResponse(call: Call<ProfileData>, response: Response<ProfileData>) {
+                if (response.isSuccessful) {
+                    val profileData = response.body()
+                    if (profileData != null) {
+                        val profile = profileData.profileData
+                        val message = profileData.message
+                        val profilePicUrl = profile?.profilePic
+                        val mobile = profile?.mobile
+                        val name = profile?.name
+                        val dob = profile?.dob
+                        val adharNo = profile?.adharNo
+                        val otherDetails = profileData.otherDetails
+                        val panNo = otherDetails?.panNo
+
+                        adharNoTIT.setText(adharNo.toString())
+                        dobET.setText(dob)
+                        fullNameET.setText(name)
+                        mobileNoEt.setText(mobile)
+                        update_profile.text = name
+//                        panNoTIT.setText(panNo)
+
+
+
+
+
+                        Picasso.get().load(profilePicUrl).placeholder(R.drawable.profile).into(selfiee)
+
+                        Log.d("profile", ""+profilePicUrl)
+                        Log.d("profile", "$profile $otherDetails")
+                        Log.d("msg", "$message")
+//                        showErrorDialog("$message","ok")
+
+                        // Use the profile data as needed
+
+                    }  else {
+                        Log.d("ElseSignup ","t.toString()")
+                        val errorResponseCode = response.code()
+                        val errorResponseBody = response.errorBody()?.string()
+                        // Handle the error response code and body
+                        Log.e("API Error", "Response Code: $errorResponseCode, Body: $errorResponseBody")
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ProfileData>, t: Throwable) {
+                Log.d("fail",t.toString())
+            }
+
+        })
+
+
+
     }
 }

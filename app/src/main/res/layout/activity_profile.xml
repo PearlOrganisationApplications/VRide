@@ -73,6 +73,7 @@
                                 >
 
                                 <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/fullNameET"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:imeOptions="actionNext"
@@ -119,6 +120,7 @@
                                 >
 
                                 <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/mobileNoEt"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:imeOptions="actionDone"
@@ -166,6 +168,7 @@
                                 >
 
                                 <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/panNoTIT"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:imeOptions="actionNext"
@@ -212,6 +215,7 @@
                                 >
 
                                 <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/adharNo"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:imeOptions="actionDone"

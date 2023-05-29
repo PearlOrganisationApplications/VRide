@@ -57,21 +57,19 @@ import com.google.firebase.auth.FirebaseAuth
 import com.pearl.adapter.AttendanceAdapter
 import com.pearl.v_ride_lib.Global
 import com.pearl.adapter.NotificationAdapter
-import com.pearl.common.retrofit.data_model_class.AttendanceList
-import com.pearl.common.retrofit.data_model_class.LocationRequest
-import com.pearl.common.retrofit.data_model_class.NotificationList
-import com.pearl.common.retrofit.data_model_class.ResponseData
+import com.pearl.common.retrofit.data_model_class.*
 import com.pearl.common.retrofit.rest_api_interface.LocationApi
+import com.pearl.common.retrofit.rest_api_interface.ProfileApi
 import com.pearl.ui.DocumentStatus
 import com.pearl.v_ride_lib.BaseClass
 import com.pearl.v_ride_lib.PrefManager
 import com.pearl.v_ride_lib.SessionManager
+import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.*
-import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
@@ -94,6 +92,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     lateinit var mapLL: LinearLayout
     lateinit var dImage: CircleImageView
+    lateinit var drawerName: TextView
     private var hasGps = false
     private var hasNetwork = false
     var to_lat: String? = ""
@@ -171,6 +170,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         headerLayout = navView.inflateHeaderView(R.layout.nav_header)
 //        navView.inflateMenu(R.menu.nav_menu)
         dImage = headerLayout.findViewById(R.id.drawerImage)
+        drawerName = headerLayout.findViewById(R.id.drawerName)
         val dName = headerLayout.findViewById<TextView>(R.id.drawerName)
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         hasGps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
@@ -411,6 +411,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         initializeClickListners()
         initializeInputs()
         initializeLabels()
+        getDocStatus()
 
 
 
@@ -752,36 +753,6 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         toggle.syncState()
     }
 
-    @SuppressLint("MissingPermission")
-    private fun fetchLocation() {
-
-/*        if (ActivityCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                REQUEST_CODE
-            )
-        }
-        val task: Task<Location> = fusedLocationProviderClient.lastLocation
-        task.addOnSuccessListener { location ->
-            if (location != null) {
-                currentLocation = location
-                Toast.makeText(
-                    applicationContext,
-                    "${currentLocation.latitude} ${currentLocation.longitude}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }*/
-    }
 
 
     @SuppressLint("MissingPermission")
@@ -970,6 +941,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         }
 
         cityTextView.text = strAdd.toString()
+
 /*
 
         location = LatLng(to_lat.toString().toDouble(), to_lng.toString().toDouble())
@@ -1097,7 +1069,6 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
     }
 
-
     private fun showAttendance() {
         attendanceCard.add(
             AttendanceList(
@@ -1142,55 +1113,6 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         calendarRV.layoutManager = LinearLayoutManager(this)
         val calAdapter = AttendanceAdapter(attendanceCard)
         calendarRV.adapter = calAdapter
-    }
-
-
-    private fun requestCityName(latitude: Double, longitude: Double) {
-
-        val language = "hi" // Specify the desired language code, e.g., "fr" for French
-
-        val client = OkHttpClient()
-        val url =
-            "https://maps.googleapis.com/maps/api/geocode/json?latlng=$to_lat,$to_lng&language=hi&key=$apiKey&language=$language"
-        val request = Request.Builder()
-            .url(url)
-            .build()
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                e.printStackTrace()
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val responseData = response.body?.string()
-                if (response.isSuccessful && responseData != null) {
-                    try {
-                        val jsonObject = JSONObject(responseData)
-                        val results = jsonObject.getJSONArray("results")
-                        if (results.length() > 0) {
-                            val addressComponents =
-                                results.getJSONObject(0).getJSONArray("address_components")
-                            for (i in 0 until addressComponents.length()) {
-                                val component = addressComponents.getJSONObject(i)
-                                val types = component.getJSONArray("types")
-                                if (types.toString().contains("locality")) {
-                                    val city = component.getString("long_name")
-                                    runOnUiThread {
-                                        cityTextView.text = city
-                                    }
-                                    break
-                                }
-                            }
-                        }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
-            }
-        })
-    }
-
-    companion object {
-        private const val PERMISSION_REQUEST_LOCATION = 100
     }
 
     fun sendLocation() {
@@ -1258,4 +1180,113 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
     }
 
+    fun getDocStatus() {
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl(Global.baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+//            .client(createOkHttpClient())
+            .build()
+
+
+        val profileService = retrofit.create(ProfileApi::class.java)
+
+
+//                val response = profileApi.getProfileData()
+
+        val token = prefManager.getToken()
+        val call = profileService.getProfileData("Bearer $token")
+        call.enqueue(object : retrofit2.Callback<ProfileData> {
+            override fun onResponse(call: retrofit2.Call<ProfileData>, response: retrofit2.Response<ProfileData>) {
+                if (response.isSuccessful) {
+                    val profileData = response.body()
+                    if (profileData != null) {
+                        val profile = profileData.profileData
+                        val message = profileData.message
+                        val profilePicUrl = profile?.profilePic
+                        val profileName = profile?.name
+
+
+                        drawerName.text = profileName
+
+                        Picasso.get().load(profilePicUrl).placeholder(R.drawable.profile).into(dImage)
+
+                        Log.d("profile", ""+profilePicUrl)
+                        Log.d("msg", "$message")
+//                        showErrorDialog("$message","ok")
+
+                        // Use the profile data as needed
+
+                    }  else {
+                        Log.d("ElseSignup ","t.toString()")
+                        val errorResponseCode = response.code()
+                        val errorResponseBody = response.errorBody()?.string()
+                        // Handle the error response code and body
+                        Log.e("API Error", "Response Code: $errorResponseCode, Body: $errorResponseBody")
+                    }
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<ProfileData>, t: Throwable) {
+                Log.d("fail",t.toString())
+            }
+
+        })
+
+
+
+    }
+
 }
+
+
+
+
+/*
+private fun requestCityName(latitude: Double, longitude: Double) {
+
+    val language = "hi" // Specify the desired language code, e.g., "fr" for French
+
+    val client = OkHttpClient()
+    val url =
+        "https://maps.googleapis.com/maps/api/geocode/json?latlng=$to_lat,$to_lng&language=hi&key=$apiKey&language=$language"
+    val request = Request.Builder()
+        .url(url)
+        .build()
+    client.newCall(request).enqueue(object : Callback {
+        override fun onFailure(call: Call, e: IOException) {
+            e.printStackTrace()
+        }
+
+        override fun onResponse(call: Call, response: Response) {
+            val responseData = response.body?.string()
+            if (response.isSuccessful && responseData != null) {
+                try {
+                    val jsonObject = JSONObject(responseData)
+                    val results = jsonObject.getJSONArray("results")
+                    if (results.length() > 0) {
+                        val addressComponents =
+                            results.getJSONObject(0).getJSONArray("address_components")
+                        for (i in 0 until addressComponents.length()) {
+                            val component = addressComponents.getJSONObject(i)
+                            val types = component.getJSONArray("types")
+                            if (types.toString().contains("locality")) {
+                                val city = component.getString("long_name")
+                                runOnUiThread {
+                                    cityTextView.text = city
+                                }
+                                break
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+    })
+}
+
+companion object {
+    private const val PERMISSION_REQUEST_LOCATION = 100
+}*/

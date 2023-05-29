@@ -30,6 +30,7 @@ import com.pearl.common.retrofit.data_model_class.LoginInfo
 import com.pearl.common.retrofit.rest_api_interface.LoginApi
 import com.pearl.ui.DocumentActivity
 import com.pearl.ui.DocumentStatus
+import com.pearl.v_ride_lib.Global
 
 import com.pearl.v_ride_lib.PrefManager
 import retrofit2.Call
@@ -121,7 +122,7 @@ class MainActivity : BaseClass() {
                         otpBt.visibility = View.GONE*/
 
                         if (phoneNumber.length == 10){
-                            if(phoneNumber == "1234567890"){
+                            if(phoneNumber == "1234567890" /*||phoneNumber == "1122334455"*/){
                                 view_timer.visibility = View.VISIBLE
                                 phoneNumber = "+91$phoneNumber"
                                 progressBar.visibility = View.VISIBLE
@@ -133,6 +134,7 @@ class MainActivity : BaseClass() {
                                     .build()
                                 PhoneAuthProvider.verifyPhoneNumber(options)
                               startTimer()
+//                                checkLogin()
                             }else {
                                 checkLogin()
                             }
@@ -449,7 +451,7 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
             Toast.makeText(this,"Please Enter Name",Toast.LENGTH_SHORT).show()
         }else{*/
     val retrofit = Retrofit.Builder()
-        .baseUrl("https://test.pearl-developer.com/vrun/public/")
+        .baseUrl(Global.baseUrl)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
             val userService  = retrofit.create(LoginApi::class.java)
@@ -465,7 +467,7 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
                         if(createdUser?.signin.equals("0") ){
                             // sign in
                             val builder = AlertDialog.Builder(this@MainActivity)
-                            builder.setTitle("Error")
+                            builder.setTitle("Signup")
                                 .setMessage("You are not register user, SignIn first")
                                 .setPositiveButton("ok") { dialog, _ ->
                                     dialog.dismiss()
@@ -475,8 +477,9 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
                             dialog.show()
                         }else if(createdUser?.signin.equals("1") && createdUser?.profile.equals( "-1") && createdUser?.verification.equals("0") ){
                             // profile no
+                            Log.d("status1 " ,"${createdUser?.profile}")
                             val builder = AlertDialog.Builder(this@MainActivity)
-                            builder.setTitle("Error")
+                            builder.setTitle("Profile Details")
                                 .setMessage("You are not register user, fill verification form first")
                                 .setPositiveButton("ok") { dialog, _ ->
                                     dialog.dismiss()
@@ -500,8 +503,9 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
 
                         }*/
 
-                        else if (createdUser?.signin.equals("1") && createdUser?.profile.equals("1") && createdUser?.verification.equals("0")) {
+                        else if (createdUser?.signin.equals("1") && createdUser?.profile.equals("0") && createdUser?.verification.equals("0")) {
                             //profile 2
+                            Log.d("status12 " ,"${createdUser?.profile}")
                             val builder = AlertDialog.Builder(this@MainActivity)
                             builder.setTitle("Error")
                                 .setMessage("You are not register user, fill verification form first")
@@ -514,6 +518,7 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
 
                         }else if(createdUser?.signin.equals("1") && createdUser?.profile.equals( "1") && createdUser?.verification.equals("0") ){
                             // validation page
+                           /* Log.d("status123 " ,"${createdUser?.profile}")
                             phoneNumber = "+91$phoneNumber"
                             progressBar.visibility = View.VISIBLE
                             val options = PhoneAuthOptions.newBuilder(mAuth)
@@ -522,7 +527,9 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
                                 .setActivity(this@MainActivity) // Activity (for callback binding)
                                 .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
                                 .build()
-                            PhoneAuthProvider.verifyPhoneNumber(options)
+                            PhoneAuthProvider.verifyPhoneNumber(options)*/
+                            startActivity(Intent(this@MainActivity,HomeScreen::class.java))
+                            finish()
                         }
                     } else {
                         // Handle the error response
@@ -556,16 +563,6 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
     }
 
 }
-
-
-
-
-
-
-
-
-
-
 
 
 

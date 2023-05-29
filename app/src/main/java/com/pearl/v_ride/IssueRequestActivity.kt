@@ -6,6 +6,8 @@ import android.content.res.Resources
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -15,10 +17,20 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.DataBindingUtil
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.textfield.TextInputLayout
+import com.pearl.common.retrofit.data_model_class.ResponseData
+import com.pearl.common.retrofit.data_model_class.ServiceRequestData
+import com.pearl.common.retrofit.rest_api_interface.ServiceApi
 import com.pearl.v_ride.databinding.ActivityIssueRequestBinding
 
 
 import com.pearl.v_ride_lib.Global
+import com.pearl.v_ride_lib.Global.baseUrl
+import com.pearl.v_ride_lib.PrefManager
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class IssueRequestActivity : AppCompatActivity() {
     private lateinit var binding: ActivityIssueRequestBinding
@@ -31,9 +43,12 @@ class IssueRequestActivity : AppCompatActivity() {
     lateinit var requestTV: TextView
     lateinit var descriptionET: EditText
     lateinit var subjectTIL: TextInputLayout
+    lateinit var issue_submit: Button
+    lateinit var prefManager: PrefManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        prefManager = PrefManager(this)
         setContentView(R.layout.activity_issue_request)
         resourcess = Global.language(this,resources)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_issue_request)
@@ -45,10 +60,14 @@ class IssueRequestActivity : AppCompatActivity() {
         setImageIV = findViewById(R.id.setImageIV)
         requestTV = findViewById(R.id.requestTV)
         subjectTIL = findViewById(R.id.subjectTIL)
+        issue_submit = findViewById(R.id.issue_submit)
         descriptionET = findViewById(R.id.descriptionET)
         apptitle.setText(R.string.service_request)
         ivback.setOnClickListener {
             onBackPressed()
+        }
+        issue_submit.setOnClickListener {
+            issueRequest()
         }
         clickIV.setOnClickListener {
             ImagePicker.with(this)
@@ -69,6 +88,55 @@ class IssueRequestActivity : AppCompatActivity() {
         descriptionET.hint = resourcess.getString(R.string.issue_description)
 
     }
+
+    fun issueRequest() {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val requestData = ServiceRequestData(
+            request_name = "Dehradoon",
+            description = "dehradoon"
+        )
+
+        val token = prefManager.getToken()
+
+        val apiService = retrofit.create(ServiceApi::class.java)
+        val call = apiService.sendRequest("Bearer $token", requestData)
+
+        call.enqueue(object : Callback<ResponseData> {
+            override fun onResponse(call: Call<ResponseData>, response: Response<ResponseData>) {
+                if (response.isSuccessful) {
+                    val responseData = response.body()
+                    if (responseData != null && responseData.status == "true") {
+                        // Request sent successfully
+                        val message = responseData.msg
+                        Log.d("msg", message)
+                        // Handle the success case
+                    } else {
+                        // Request failed or response body is null
+                        // Handle the failure case
+                        Log.d("elseFail","$response")
+                    }
+                } else {
+                    // Request failed
+                    // Handle the failure case
+                    val errorResponseCode = response.code()
+                    val errorResponseBody = response.errorBody()?.string()
+                    // Handle the error response code and body
+                    Log.e("API Error", "Response Code: $errorResponseCode, Body: $errorResponseBody")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseData>, t: Throwable) {
+                // Handle network errors or request failure
+               Log.d("failure", "${t.toString()} ${t.printStackTrace()}")
+            }
+        })
+
+    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

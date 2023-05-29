@@ -11,7 +11,7 @@ import retrofit2.http.POST
 interface LocationApi {
 
         @Headers("Content-Type: application/json")
-        @POST("api/send-location")
+        @POST("send-location")
         suspend fun updateLocation(
             @Header("Authorization") token: String,
             @Body requestData: LocationRequest

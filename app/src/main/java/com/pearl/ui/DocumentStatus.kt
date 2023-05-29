@@ -87,6 +87,7 @@ class DocumentStatus : BaseClass() {
     lateinit var apptitle: AppCompatTextView
 
     lateinit var pan_dob: EditText
+
     private val myCalendar = Calendar.getInstance()
     lateinit var adhadharF: ImageView
     lateinit var adhadharR: ImageView
@@ -115,9 +116,9 @@ class DocumentStatus : BaseClass() {
     private lateinit var resourcess: Resources
     private lateinit var aadhar_n_front: TextView
     private lateinit var aadhar_n_rear: TextView
-    private lateinit var address: TextView
-    private lateinit var city: TextView
-    private lateinit var pin_code: TextView
+    private lateinit var doc_address: EditText
+    private lateinit var doc_city: EditText
+    private lateinit var pin_code: EditText
     private lateinit var merchant: TextView
     private lateinit var enter_all_merchant_name_you_are_working_with: TextView
     private lateinit var enter_merchant_id: TextView
@@ -129,7 +130,7 @@ class DocumentStatus : BaseClass() {
     private lateinit var bNameET: EditText
     private lateinit var accountNOET: EditText
     private lateinit var raccountNOET: EditText
-    private lateinit var ifscCode: EditText
+    private lateinit var ifsc_code: EditText
     private lateinit var doc_adharNoET: EditText
     private lateinit var doc_selfieUpdateBT: Button
     private lateinit var doc_submitAdharBT: Button
@@ -142,6 +143,12 @@ class DocumentStatus : BaseClass() {
     var panName: String = ""
     var panNo: String = ""
     var selectedItem: String = ""
+    var isSelfie = false
+    var isAdharcard = false
+    var isPancard = false
+    var isAddress = false
+    var isBank = false
+    var isMerchant = false
 
 
     override fun setLayoutXml() {
@@ -178,7 +185,11 @@ class DocumentStatus : BaseClass() {
         doc_addressError = findViewById(R.id.doc_addressError)
         doc_address_showMore = findViewById(R.id.doc_address_showMore)
         doc_address_showLess = findViewById(R.id.doc_address_showLess)
+        doc_address = findViewById(R.id.doc_address)
+        doc_city = findViewById(R.id.doc_city)
+        pin_code = findViewById(R.id.doc_pin_code)
         doc_updateAddressBT = findViewById(R.id.doc_updateAddressBT)
+
 //        merchant
         doc_merchantOK = findViewById(R.id.doc_merchantOK)
         doc_merchantError = findViewById(R.id.doc_merchantError)
@@ -189,6 +200,9 @@ class DocumentStatus : BaseClass() {
         doc_panError = findViewById(R.id.doc_panError)
         doc_pan_showMore = findViewById(R.id.doc_pan_showMore)
         doc_pan_showLess = findViewById(R.id.doc_pan_showLess)
+        pancardTV = findViewById(R.id.doc_pancardTV)
+        panNoET = findViewById(R.id.doc_panNoET)
+        panNameET = findViewById(R.id.doc_panNameET)
         doc_submitPanBT = findViewById(R.id.doc_submitPanBT)
 //        pan_dob = findViewById(R.id.doc_pan_dobET)
 //        bankDetails
@@ -196,6 +210,11 @@ class DocumentStatus : BaseClass() {
         doc_bankError = findViewById(R.id.doc_bankError)
         doc_bank_showMore = findViewById(R.id.doc_bank_showMore)
         doc_bank_showLess = findViewById(R.id.doc_bank_showLess)
+        passbookTV = findViewById(R.id.doc_passbookTV)
+        bNameET = findViewById(R.id.doc_bNameET)
+        accountNOET = findViewById(R.id.doc_accountNOET)
+        raccountNOET = findViewById(R.id.doc_raccountNOET)
+        ifsc_code = findViewById(R.id.doc_ifscCode)
         doc_submitBankBt = findViewById(R.id.doc_submitBankBt)
 
         okBT = findViewById(R.id.okBT)
@@ -213,19 +232,11 @@ class DocumentStatus : BaseClass() {
 
         aadhar_n_front = findViewById(R.id.doc_aadhar_n_front)
         aadhar_n_rear = findViewById(R.id.doc_aadhar_n_rear)
-        address = findViewById(R.id.doc_address)
-        city = findViewById(R.id.doc_city)
-        pin_code = findViewById(R.id.doc_pin_code)
 
-        pancardTV = findViewById(R.id.doc_pancardTV)
-        panNoET = findViewById(R.id.doc_panNoET)
-        panNameET = findViewById(R.id.doc_panNameET)
 
-        passbookTV = findViewById(R.id.doc_passbookTV)
-        bNameET = findViewById(R.id.doc_bNameET)
-        accountNOET = findViewById(R.id.doc_accountNOET)
-        raccountNOET = findViewById(R.id.doc_raccountNOET)
-        ifscCode = findViewById(R.id.doc_ifscCode)
+
+
+
 
         merchant = findViewById(R.id.doc_merchant)
         enter_all_merchant_name_you_are_working_with =
@@ -249,6 +260,7 @@ class DocumentStatus : BaseClass() {
         noBT = findViewById(R.id.doc_merchantNo)
         adhadharF = findViewById(R.id.doc_addfront)
         adharFrontIV = findViewById(R.id.doc_adharFrotIV)
+
         adhadharRear = findViewById(R.id.doc_adharrearIV)
         adhadharR = findViewById(R.id.doc_addrear)
         addPan = findViewById(R.id.doc_add_pan_cam)
@@ -345,6 +357,8 @@ class DocumentStatus : BaseClass() {
                 id: Long
             ) {
                 selectedItem = parent.getItemAtPosition(position).toString()
+
+                Log.d("selectedItem",selectedItem)
                 // Do something with the selected item
 
             }
@@ -353,6 +367,7 @@ class DocumentStatus : BaseClass() {
                 // Handle the case when nothing is selected
             }
         }
+
 
         if (doc_selfieError.isVisible) {
             doc_selfie_showMore.setOnClickListener {
@@ -410,7 +425,9 @@ class DocumentStatus : BaseClass() {
             doc_address_showMore.visibility = View.VISIBLE
         }
         doc_updateAddressBT.setOnClickListener {
-            selectedItem
+
+
+            Log.d("selectedItem1",selectedItem)
             addressDetails()
         }
 
@@ -578,7 +595,7 @@ class DocumentStatus : BaseClass() {
                 .maxResultSize(
                     1080,
                     1080
-                )    //Final image resolution will be less than 1080 x 1080(Optional)
+                )                    //Final image resolution will be less than 1080 x 1080(Optional)
                 .start()
             image_type = 11
         }
@@ -601,56 +618,15 @@ class DocumentStatus : BaseClass() {
         initializeInputs()
         initializeLabels()
 
-    }
-
-    private fun showDatePicker() {
-        val date = DatePickerDialog.OnDateSetListener { view, year, month, day ->
-            myCalendar.set(Calendar.YEAR, year)
-            myCalendar.set(Calendar.MONTH, month)
-            myCalendar.set(Calendar.DAY_OF_MONTH, day)
-            updateLabel()
+        if (isAdharcard) {
+            Log.d("isAdharcard",isAdharcard.toString())
+            doc_aadharError.visibility = View.GONE
+            doc_submitAdharBT.visibility = View.GONE
+            doc_aadharOK.visibility = View.VISIBLE
         }
-        val datePickerDialog = DatePickerDialog(
-            this@DocumentStatus,
-            R.style.MyDatePickerDialogTheme, // use your custom theme here
-            date,
-            myCalendar.get(Calendar.YEAR),
-            myCalendar.get(Calendar.MONTH),
-            myCalendar.get(Calendar.DAY_OF_MONTH)
-        )
-
-        // Set the maximum and minimum date for the DatePickerDialog
-        datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
-        datePickerDialog.datePicker.minDate = getMinimumDate()
-
-        datePickerDialog.show()
-    }
-
-    private fun updateLabel() {
-        val myFormat = "MM/dd/yyyy"
-        val dateFormat = SimpleDateFormat(myFormat, Locale.US)
-        if (req_code == 1) {
-            pan_dob.setText(dateFormat.format(myCalendar.time))
-        }
-        /*else if (req_code == 2){
-                        doc_dob.setText(dateFormat.format(myCalendar.time))
-            }*/
-    }
-
-    private fun getMinimumDate(): Long {
-        val minDateCalendar = Calendar.getInstance()
-        minDateCalendar.add(Calendar.YEAR, -100) //Set 100 years ago from now
-        return minDateCalendar.timeInMillis
 
     }
 
-    fun getImageUri(inContext: Context, inImage: Bitmap): Uri? {
-        val bytes = ByteArrayOutputStream()
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-        val path =
-            MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
-        return Uri.parse(path)
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -739,97 +715,6 @@ class DocumentStatus : BaseClass() {
             Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
         }
     }
-
-    fun getDocStatus() {
-
-        /*        // Function to create an OkHttpClient instance with the bearer token interceptor
-              fun createOkHttpClient(): OkHttpClient {
-                  val interceptor = Interceptor { chain ->
-                      val originalRequest = chain.request()
-                      val token = "33|H2UAYjgfVA4O21n1dxqTNnsXUGHQ8Lu4lOKKpShV"
-
-                      val newRequest = originalRequest.newBuilder()
-                          .header("Authorization", "Bearer $token")
-                          .build()
-
-                      chain.proceed(newRequest)
-                  }
-
-                  return OkHttpClient.Builder()
-                      .addInterceptor(interceptor)
-                      .build()
-              }*/
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://test.pearl-developer.com/vrun/public/api/")
-            .addConverterFactory(GsonConverterFactory.create())
-//            .client(createOkHttpClient())
-            .build()
-
-
-        val profileService = retrofit.create(ProfileApi::class.java)
-
-
-//                val response = profileApi.getProfileData()
-
-                val token = prefManager.getToken()
-                val call = profileService.getProfileData("Bearer $token")
-        call.enqueue(object : Callback<ProfileData>{
-            override fun onResponse(call: Call<ProfileData>, response: Response<ProfileData>) {
-                if (response.isSuccessful) {
-                    val profileData = response.body()
-                    if (profileData != null) {
-                        val profile = profileData.profileData
-                        val message = profileData.message
-                        val profilePicUrl = profile?.profilePic
-                        val mobile = profile?.mobile
-                        val name = profile?.name
-                        val dob = profile?.dob
-                        val address = profile?.address
-                        val state = profile?.state
-                        val city = profile?.city
-                        val pincode = profile?.pincode
-                        val adharNo = profile?.adharNo
-                        val adharFrontPicUrl = profile?.adharFrontPic
-                        val adharBackPicUrl = profile?.adharBackPic
-                        val addressProofPicUrl = profile?.addressProofPic
-                        val otherDetails = profileData.otherDetails
-                        val bankName = otherDetails?.bankName
-                        val accountNo = otherDetails?.accountNo
-                        val ifscCode = otherDetails?.ifscCode
-                        val panNo = otherDetails?.panNo
-                        val panName = otherDetails?.panName
-                        val profilePic = profile?.profilePic
-                        Picasso.get().load(profilePic).placeholder(R.drawable.profile).into(doc_profile)
-
-                        Log.d("profile", ""+profilePic)
-                        Log.d("profile", "$profile $otherDetails")
-                        Log.d("msg", "$message")
-//                        showErrorDialog("$message","ok")
-
-                        // Use the profile data as needed
-
-                    }  else {
-                        Log.d("ElseSignup ","t.toString()")
-                        val errorResponseCode = response.code()
-                        val errorResponseBody = response.errorBody()?.string()
-                        // Handle the error response code and body
-                        Log.e("API Error", "Response Code: $errorResponseCode, Body: $errorResponseBody")
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<ProfileData>, t: Throwable) {
-               Log.d("fail",t.toString())
-            }
-
-        })
-
-
-
-        }
-
-
 
     fun selfieDetails() {
 
@@ -946,7 +831,7 @@ class DocumentStatus : BaseClass() {
                 val requestData = PanRequestData(
                     pan_image = b64,
                     pan_no = "123456789",
-                    adhar_no = "Vipin"
+                    pan_name = "Vipin"
                 )
 
                 val response = panApi.savePanData("Bearer $token", requestData)
@@ -954,6 +839,7 @@ class DocumentStatus : BaseClass() {
                     val responseData = response.body()
                     if (responseData != null) {
                         val msg = responseData.msg
+
                         val status = responseData.status
                         // Process the response data as needed
                         Log.d("msg", msg + panNo + status)
@@ -992,14 +878,15 @@ class DocumentStatus : BaseClass() {
             try {
                 val token = prefManager.getToken()
                 val requestData = AddressRequestData(
-
                     "Dehradoon",
-                    selectedItem,
+                    selectedItem ,/*+ "+" + state_id,*/
+
                     "dehradoon",
                     "123456",
                     b64
                 )
                 val response = addressApi.updateProfileData("Bearer $token", requestData)
+                Log.d("ResponseBody",response.body().toString())
                 if (response.isSuccessful) {
                     val responseData = response.body()
                     if (responseData != null) {
@@ -1018,7 +905,7 @@ class DocumentStatus : BaseClass() {
                 }
             } catch (e: Exception) {
                 // Handle the network or other errors
-                Log.e("API ErrorC", "Error: ${e.message}")
+                Log.e("API ErrorC", "Error: ${e.message} ${e.localizedMessage} ${e.cause} ${e.stackTrace}")
             }
         }
 
@@ -1059,6 +946,131 @@ class DocumentStatus : BaseClass() {
 
             }
         }
+
+    }
+
+    fun getDocStatus() {
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://test.pearl-developer.com/vrun/public/api/")
+            .addConverterFactory(GsonConverterFactory.create())
+//            .client(createOkHttpClient())
+            .build()
+
+
+        val profileService = retrofit.create(ProfileApi::class.java)
+
+
+//                val response = profileApi.getProfileData()
+
+        val token = prefManager.getToken()
+        val call = profileService.getProfileData("Bearer $token")
+        call.enqueue(object : Callback<ProfileData>{
+            override fun onResponse(call: Call<ProfileData>, response: Response<ProfileData>) {
+                if (response.isSuccessful) {
+                    val profileData = response.body()
+                    if (profileData != null) {
+                        val profile = profileData.profileData
+                        val message = profileData.message
+                        val profilePicUrl = profile?.profilePic
+                        val mobile = profile?.mobile
+                        val name = profile?.name
+                        val dob = profile?.dob
+                        val address = profile?.address
+                        val state = profile?.state
+                        val city = profile?.city
+                        val pincode = profile?.pincode
+                        val adharNo = profile?.adharNo
+                        val adharFrontPicUrl = profile?.adharFrontPic
+                        val adharBackPicUrl = profile?.adharBackPic
+                        val addressProofPicUrl = profile?.addressProofPic
+                        val otherDetails = profileData.otherDetails
+                        val bankName = otherDetails?.bankName
+                        val accountNo = otherDetails?.accountNo
+                        val ifscCode = otherDetails?.ifscCode
+                        val panNo = otherDetails?.panNo
+                        val panName = otherDetails?.panName
+                        val panPhotoUrl = otherDetails?.panPhoto
+                        val bankPhotoUrl = otherDetails?.bankPhoto
+                        doc_adharNoET.setText(adharNo.toString())
+                        doc_address.setText( address.toString())
+                        doc_city.setText(city)
+                        pin_code.setText(pincode)
+                        val stateIndex = items.indexOf(state)
+                        doc_select_state.setSelection(stateIndex)
+                        panNoET.setText(panNo)
+                        panNameET.setText(panName)
+
+                        ifsc_code.setText(ifscCode)
+                        bNameET.setText(bankName)
+                        accountNOET.setText(accountNo)
+                        raccountNOET.setText(accountNo)
+
+                        Picasso.get().load(profilePicUrl).placeholder(R.drawable.profile).into(doc_profile)
+                        Picasso.get().load(adharFrontPicUrl).placeholder(R.drawable.dummy_aadhar).into(adharFrontIV)
+                        Picasso.get().load(adharBackPicUrl).placeholder(R.drawable.dummy_aadhar).into(adhadharRear)
+                        Picasso.get().load(addressProofPicUrl).placeholder(R.drawable.dummy_dl).into(addressProofIV)
+                        Picasso.get().load(panPhotoUrl).placeholder(R.drawable.dummy_pancard).into(panFront)
+                        Picasso.get().load(bankPhotoUrl).placeholder(R.drawable.passbook).into(passbookIV)
+
+                        if (state != null && city != null && address != null && pincode != null) {
+                            isAddress =true
+                            doc_addressError.visibility = View.GONE
+                            doc_updateAddressBT.visibility = View.GONE
+                            doc_addressOK.visibility = View.VISIBLE
+                        }
+                        if (bankName != null && accountNo != null && ifscCode != null ) {
+                            isBank = true
+                            doc_bankError.visibility = View.GONE
+                            doc_submitBankBt.visibility = View.GONE
+                            doc_bankOk.visibility = View.VISIBLE
+                        }
+                        if (adharNo != null && adharFrontPicUrl != null && adharBackPicUrl != null) {
+                            isAdharcard = true
+                            doc_aadharError.visibility = View.GONE
+                            doc_submitAdharBT.visibility = View.GONE
+                            doc_aadharOK.visibility = View.VISIBLE
+                            Log.d("isAdharcard",isAdharcard.toString())
+                        }
+                        if (profile != null) {
+                            isSelfie = true
+                            doc_selfieError.visibility = View.GONE
+                            doc_selfieUpdateBT.visibility = View.GONE
+                            doc_selfieOK.visibility = View.VISIBLE
+                        }
+                        if (panName != null && panNo != null && panPhotoUrl != null){
+                            isPancard = true
+                            doc_panError.visibility = View.GONE
+                            doc_submitPanBT.visibility = View.GONE
+                            doc_panOK.visibility = View.VISIBLE
+                        }
+
+
+
+                        Log.d("profile", ""+profilePicUrl)
+                        Log.d("profile", "$profile $otherDetails")
+                        Log.d("msg", "$message")
+//                        showErrorDialog("$message","ok")
+
+                        // Use the profile data as needed
+
+                    }  else {
+                        Log.d("ElseSignup ","t.toString()")
+                        val errorResponseCode = response.code()
+                        val errorResponseBody = response.errorBody()?.string()
+                        // Handle the error response code and body
+                        Log.e("API Error", "Response Code: $errorResponseCode, Body: $errorResponseBody")
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ProfileData>, t: Throwable) {
+                Log.d("fail",t.toString())
+            }
+
+        })
+
+
 
     }
 

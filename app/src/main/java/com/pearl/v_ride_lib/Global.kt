@@ -6,7 +6,7 @@ import android.content.res.Resources
 object Global {
        var imageString: String = ""
        var CODE = 1
-       val baseUrl = "https://test.pearl-developer.com/vrun/public/"
+       val baseUrl = "https://test.pearl-developer.com/vrun/public/api/"
        var curr_lat: Double = 0.0
        var curr_long: Double = 0.0
        fun language(context2:Context,resourcess2:Resources):Resources{

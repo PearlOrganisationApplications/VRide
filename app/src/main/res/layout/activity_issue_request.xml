@@ -127,6 +127,7 @@
        <LinearLayout
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
+           android:visibility="gone"
            android:orientation="horizontal">
 
            <ImageView
@@ -152,17 +153,19 @@
 
 
     </LinearLayout>
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Submit"
-        android:shadowRadius="20"
-        android:backgroundTint="@color/color_secondary"
-        android:layout_marginTop="30dp"
-        app:cornerRadius="8dp"/>
+
+        <Button
+            android:id="@+id/issue_submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="@color/color_secondary"
+            android:shadowRadius="20"
+            android:text="Submit"
+            app:cornerRadius="8dp" />
 
 
-</LinearLayout>
+    </LinearLayout>
     </ScrollView>
 </LinearLayout>
 </layout>

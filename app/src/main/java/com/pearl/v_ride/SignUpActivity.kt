@@ -25,6 +25,7 @@ import com.pearl.ui.DocumentActivity
 import com.pearl.ui.DocumentStatus
 import com.pearl.v_ride_lib.BaseClass
 import com.pearl.v_ride_lib.Global
+import com.pearl.v_ride_lib.Global.baseUrl
 import com.pearl.v_ride_lib.PrefManager
 import org.json.JSONException
 import org.json.JSONObject
@@ -368,7 +369,7 @@ class SignUpActivity : BaseClass() {
                Toast.makeText(this,"Please Enter Name",Toast.LENGTH_SHORT).show()
            }else{*/
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://test.pearl-developer.com/vrun/public/")
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val userService  = retrofit.create(SignupApi::class.java)
@@ -424,6 +425,7 @@ class SignUpActivity : BaseClass() {
                             }
                             if (dobError != null) {
                                 // Display dob validation error
+
                                 showErrorDialog(dobError,"")
                             }
                         } catch (e: JSONException) {
@@ -434,6 +436,7 @@ class SignUpActivity : BaseClass() {
                         }
                     } else {
                         // Show a generic error message to the user
+                        Log.d("errormsg","${response.code()}")
                         showErrorDialog("An else error occurred. Please try again later.","Ok")
                     }
                 }
