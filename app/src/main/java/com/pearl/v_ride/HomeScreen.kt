@@ -73,6 +73,7 @@ import okhttp3.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
+import java.net.SocketTimeoutException
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -1196,6 +1197,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
         val token = prefManager.getToken()
         val call = profileService.getProfileData("Bearer $token")
+        Log.d("Bearer token",token)
         call.enqueue(object : retrofit2.Callback<ProfileData> {
             override fun onResponse(call: retrofit2.Call<ProfileData>, response: retrofit2.Response<ProfileData>) {
                 if (response.isSuccessful) {
@@ -1222,19 +1224,43 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                         val errorResponseCode = response.code()
                         val errorResponseBody = response.errorBody()?.string()
                         // Handle the error response code and body
-                        Log.e("API Error", "Response Code: $errorResponseCode, Body: $errorResponseBody")
+                        Log.e("API Error3", "Response Code: $errorResponseCode, Body: $errorResponseBody")
+                        Log.d("responserror","${response.body()?.message} ${response.body()?.status}")
                     }
                 }
             }
 
             override fun onFailure(call: retrofit2.Call<ProfileData>, t: Throwable) {
-                Log.d("fail",t.toString())
+                when (t) {
+                    is SocketTimeoutException -> {
+                        // Handle SocketTimeoutException
+                        Log.d("fail1", "Socket Timeout: ${t.message}")
+                        val errorMessage = "Socket Timeout: ${t.message}"
+                        showErrorToast(errorMessage)
+                    }
+                    is IOException -> {
+                        // Handle IOException
+                        Log.d("fail", "IO Exception: ${t.message}")
+                        val errorMessage = "IO Exception: ${t.message}"
+                        showErrorToast(errorMessage)
+                    }
+                    else -> {
+                        // Handle other types of exceptions or generic error
+                        val errorMessage = "Error: ${t.message}"
+                        Log.d("fail3", "Error: ${t.message}")
+                        showErrorToast(errorMessage)
+                    }
+                }
             }
 
         })
 
 
 
+    }
+    private fun showErrorToast(errorMessage: String) {
+        // Display error message to the user using a Toast or any other UI element
+        Toast.makeText(applicationContext, errorMessage, Toast.LENGTH_LONG).show()
     }
 
 }

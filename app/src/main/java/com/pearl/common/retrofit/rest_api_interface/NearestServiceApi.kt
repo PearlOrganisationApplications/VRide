@@ -7,6 +7,6 @@ import retrofit2.http.Header
 
 interface NearestServiceApi {
 
-    @GET("nearest-service") // Replace with your actual endpoint
+    @GET("api/nearest-service") // Replace with your actual endpoint
     fun getNearestServiceCenters(@Header("Authorization") token: String): Call<ServiceResponseData>
 }

@@ -9,7 +9,7 @@ import retrofit2.http.POST
 
 interface SignupApi {
     @Headers("Content-Type: application/json")
-    @POST("signup")
+    @POST("api/signup")
     fun addUser(@Body userData: Map<String,String>): Call<SignUpInfo>
 
 }

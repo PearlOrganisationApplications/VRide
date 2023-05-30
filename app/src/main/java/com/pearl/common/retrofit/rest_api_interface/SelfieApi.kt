@@ -10,7 +10,7 @@ import retrofit2.http.POST
 
 interface SelfieApi {
     @Headers("Content-Type: application/json")
-    @POST("add-profile")
+    @POST("api/add-profile")
     suspend fun uploadImage(
         @Header("Authorization") token: String,
         @Body selfie: SelfieRequestData

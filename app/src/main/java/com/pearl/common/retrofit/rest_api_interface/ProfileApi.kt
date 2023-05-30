@@ -11,7 +11,7 @@ interface ProfileApi {
 
 //    @Headers({"Authorization", "Bearer "+ 33|H2UAYjgfVA4O21n1dxqTNnsXUGHQ8Lu4lOKKpShV})
     @Headers("Content-Type: application/json")
-    @GET("get-details")
+    @GET("api/get-details")
 //    suspend fun getProfileData(): Response<ProfileData>
     fun getProfileData(@Header("Authorization") token: String): Call<ProfileData>
 

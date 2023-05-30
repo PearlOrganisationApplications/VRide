@@ -10,7 +10,7 @@ import retrofit2.http.POST
 
 interface AdharApi {
     @Headers("Content-Type: application/json")
-    @POST("add-adhar")
+    @POST("api/add-adhar")
     suspend fun saveAdharData(
         @Header("Authorization") token: String,
         @Body requestData: AdharRequestData

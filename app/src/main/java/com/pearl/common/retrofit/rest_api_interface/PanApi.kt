@@ -10,7 +10,7 @@ import retrofit2.http.POST
 
 interface PanApi {
     @Headers("Content-Type: application/json")
-    @POST("add-pan")
+    @POST("api/add-pan")
     suspend fun savePanData(
         @Header("Authorization") token: String,
         @Body requestData: PanRequestData

@@ -8,7 +8,7 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface ServiceApi {
-    @POST("service-request")
+    @POST("api/service-request")
     fun sendRequest(
         @Header("Authorization") token: String,
         @Body requestData: ServiceRequestData
