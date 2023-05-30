@@ -459,8 +459,9 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
             val call = userService.addUser(parameters)
             call.enqueue(object : Callback<LoginInfo> {
                 override fun onResponse(call: Call<LoginInfo>, response: Response<LoginInfo>) {
+                    val createdUser = response.body()
                     if (response.isSuccessful) {
-                        val createdUser = response.body()
+
                         Log.d("ResponseLogin ",createdUser.toString())
                         // Handle the created user object
                         prefManager.setToken(response.body()?.token.toString())
@@ -475,7 +476,7 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
                                 }
                             val dialog = builder.create()
                             dialog.show()
-                        }else if(createdUser?.signin.equals("1") && createdUser?.profile.equals( "-1") && createdUser?.verification.equals("0") ){
+                        }else if(createdUser?.signin.equals("1") && createdUser?.profile.equals( "-4") && createdUser?.verification.equals("0") ){
                             // profile no
                             Log.d("status1 " ,"${createdUser?.profile}")
                             val builder = AlertDialog.Builder(this@MainActivity)
@@ -503,20 +504,7 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
 
                         }*/
 
-                        else if (createdUser?.signin.equals("1") && createdUser?.profile.equals("0") && createdUser?.verification.equals("0")) {
-                            //profile 2
-                            Log.d("status12 " ,"${createdUser?.profile}")
-                            val builder = AlertDialog.Builder(this@MainActivity)
-                            builder.setTitle("Error")
-                                .setMessage("You are not register user, fill verification form first")
-                                .setPositiveButton("ok") { dialog, _ ->
-                                    dialog.dismiss()
-                                    startActivity(Intent(this@MainActivity,DocumentStatus::class.java))
-                                }
-                            val dialog = builder.create()
-                            dialog.show()
-
-                        }else if(createdUser?.signin.equals("1") && createdUser?.profile.equals( "1") && createdUser?.verification.equals("0") ){
+                        else if(createdUser?.signin.equals("1") && createdUser?.profile.equals( "1") && createdUser?.verification.equals("0") ){
                             // validation page
                            /* Log.d("status123 " ,"${createdUser?.profile}")
                             phoneNumber = "+91$phoneNumber"
@@ -530,8 +518,22 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
                             PhoneAuthProvider.verifyPhoneNumber(options)*/
                             startActivity(Intent(this@MainActivity,HomeScreen::class.java))
                             finish()
+                        }else  {
+                            //profile 2
+                            Log.d("status12 " ,"${createdUser?.profile}")
+                            val builder = AlertDialog.Builder(this@MainActivity)
+                            builder.setTitle("Verification")
+                                .setMessage("You are not register user yet,Some Details are missing ")
+                                .setPositiveButton("ok") { dialog, _ ->
+                                    dialog.dismiss()
+                                    startActivity(Intent(this@MainActivity,DocumentStatus::class.java))
+                                }
+                            val dialog = builder.create()
+                            dialog.show()
+
                         }
-                    } else {
+                    }
+                    if (createdUser?.signin.equals("1") && createdUser?.profile.equals("1") && createdUser?.verification.equals("1")) {
                         // Handle the error response
                         Log.d("ElseLogin ","t.toString()")
                         val errorResponseCode = response.code()
