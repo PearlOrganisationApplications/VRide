@@ -11,6 +11,8 @@ import com.pearl.v_ride.R
 class CheckboxAdapter(private val merchantList: ArrayList<Merchant>) :
     RecyclerView.Adapter<CheckboxAdapter.ItemViewHolder>() {
 
+    private val selectedMerchants = HashMap<Int, Merchant>()
+
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val checkBoxName = itemView.findViewById<CheckBox>(R.id.doc_zomatoCB)
     }
@@ -24,24 +26,26 @@ class CheckboxAdapter(private val merchantList: ArrayList<Merchant>) :
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val currentItem = merchantList[position]
         holder.checkBoxName.text = currentItem.name
-        /*holder.checkBoxName.isChecked = currentItem.isSelected
+
+        holder.checkBoxName.isChecked = selectedMerchants.containsKey(currentItem.id)
 
         holder.checkBoxName.setOnCheckedChangeListener { _, isChecked ->
-            currentItem.isSelected = isChecked
-        }*/
+            if (isChecked) {
+                selectedMerchants[currentItem.id] = currentItem
+            } else {
+                selectedMerchants.remove(currentItem.id)
+            }
+        }
     }
 
     override fun getItemCount(): Int {
         return merchantList.size
     }
 
-    /*fun getSelectedMerchants(): List<Merchant> {
-        val selectedMerchants = mutableListOf<Merchant>()
-        for (merchant in merchantList) {
-            if (merchant.isSelected) {
-                selectedMerchants.add(merchant)
-            }
-        }
-        return selectedMerchants
-    }*/
+    fun getSelectedMerchants(): List<Merchant> {
+        return selectedMerchants.values.toMutableList()
+    }
+
 }
+
+

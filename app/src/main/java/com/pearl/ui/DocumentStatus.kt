@@ -146,6 +146,10 @@ class DocumentStatus : BaseClass() {
     var panName: String = ""
     var panNo: String = ""
     var selectedItem: String = ""
+    var bName: String = ""
+    var bAcount: String = ""
+    var bRAcount: String = ""
+    var bifsc: String = ""
     var isSelfie = false
     var isAdharcard = false
     var isPancard = false
@@ -397,17 +401,18 @@ class DocumentStatus : BaseClass() {
 //                Log.d("image","$CODE")
 
                 if (isSelfie) {
-                doc_selfieCL.visibility = View.GONE
-                doc_selfieError.visibility = View.GONE
-                doc_selfieOK.visibility = View.VISIBLE
-                doc_selfie_showLess.visibility = View.GONE
-                doc_selfie_showMore.visibility = View.VISIBLE
+                    doc_selfieCL.visibility = View.GONE
+                    doc_selfieError.visibility = View.GONE
+                    doc_selfieOK.visibility = View.VISIBLE
+                    doc_selfie_showLess.visibility = View.GONE
+                    doc_selfie_showMore.visibility = View.VISIBLE
                     doc_selfieUpdateBT.visibility = View.GONE
-                selfieDetails()
-                        } else {
-                            showErrorToast("please upload your photo first ")
-                        }
+                    doc_adharNoET.isEnabled = false
 
+                    selfieDetails()
+                } else {
+                    showErrorToast("please upload your photo first ")
+                }
 
 
             }
@@ -427,6 +432,15 @@ class DocumentStatus : BaseClass() {
         }
         doc_submitAdharBT.setOnClickListener {
             adharNo = doc_adharNoET.text.toString().trim()
+            doc_constraintLayout.visibility = View.GONE
+            doc_aadhar_showLess.visibility = View.GONE
+            doc_aadhar_showMore.visibility = View.VISIBLE
+            doc_aadharError.visibility = View.GONE
+            doc_submitBankBt.visibility = View.GONE
+            adhadharF.isEnabled = false
+//            adhadharF.visibility = View.GONE
+            adhadharR.isEnabled = false
+//            adhadharR.visibility = View.GONE
             adharDetails()
         }
 
@@ -443,7 +457,17 @@ class DocumentStatus : BaseClass() {
             doc_address_showMore.visibility = View.VISIBLE
         }
         doc_updateAddressBT.setOnClickListener {
-
+            doc_updateAddressBT.visibility = View.GONE
+            doc_addressLL.visibility = View.GONE
+            doc_address_showLess.visibility = View.GONE
+            doc_address_showMore.visibility = View.VISIBLE
+            doc_addressOK.visibility = View.VISIBLE
+            doc_addressError.visibility = View.GONE
+            doc_address.isEnabled = false
+            doc_city.isEnabled = false
+            pin_code.isEnabled = false
+            doc_select_state.isEnabled = false
+            addressProofTV.isEnabled = false
 
             Log.d("selectedItem1", selectedItem)
             addressDetails()
@@ -478,6 +502,16 @@ class DocumentStatus : BaseClass() {
 
             panName = panNameET.text.toString().trim()
             panNo = panNoET.text.toString().trim()
+
+            doc_pancardCL.visibility = View.GONE
+            doc_pan_showLess.visibility = View.GONE
+            doc_pan_showMore.visibility = View.VISIBLE
+            doc_panError.visibility = View.GONE
+            doc_panOK.visibility = View.VISIBLE
+            doc_submitPanBT.visibility = View.GONE
+            panNoET.isEnabled = false
+            panNameET.isEnabled = false
+            addPan.isEnabled = false
             panDetails()
         }
 
@@ -494,6 +528,21 @@ class DocumentStatus : BaseClass() {
             doc_bank_showMore.visibility = View.VISIBLE
         }
         doc_submitBankBt.setOnClickListener {
+            bName = bNameET.text.toString()
+            bAcount = accountNOET.text.toString()
+            bRAcount = raccountNOET.text.toString()
+            bifsc = ifsc_code.text.toString()
+            doc_bankCl.visibility = View.GONE
+            doc_bank_showLess.visibility = View.GONE
+            doc_submitBankBt.visibility = View.GONE
+            doc_bankError.visibility = View.GONE
+            doc_bank_showMore.visibility = View.VISIBLE
+            doc_bankOk.visibility = View.VISIBLE
+            bNameET.isEnabled = false
+            accountNOET.isEnabled = false
+            raccountNOET.isEnabled = false
+            ifsc_code.isEnabled = false
+            addPassbook.isEnabled = false
             bankDetails()
         }
 
@@ -503,6 +552,7 @@ class DocumentStatus : BaseClass() {
         }
 
         submitAlreadyBT.setOnClickListener {
+
             listLayout.visibility = View.VISIBLE
             merchantAlready.visibility = View.GONE
 
@@ -863,8 +913,8 @@ class DocumentStatus : BaseClass() {
 
                 val requestData = PanRequestData(
                     pan_image = b64,
-                    pan_no = "123456789",
-                    pan_name = "Vipin"
+                    pan_no = panNo,
+                    pan_name = panName
                 )
 
                 val response = panApi.savePanData("Bearer $token", requestData)
@@ -900,8 +950,6 @@ class DocumentStatus : BaseClass() {
             }
         }
     }
-
-
 
     fun addressDetails() {
 
@@ -963,9 +1011,9 @@ class DocumentStatus : BaseClass() {
             try {
                 val token = prefManager.getToken()
                 val requestData = BankRequestData(
-                    "SBI",
-                    "7410258963",
-                    "SBI123",
+                    bName,
+                    bAcount,
+                    bifsc,
                     b64
                 )
                 val response = bankApi.updateBankData("Bearer $token", requestData)
@@ -1018,7 +1066,7 @@ class DocumentStatus : BaseClass() {
 
                                 listCard.add(
                                     Merchant(
-                                        checkBoxId,checkBoxName
+                                        checkBoxId, checkBoxName
                                     )
                                 )
                                 Log.d("CheckBox1", "Merchant ID: $checkBoxId")
@@ -1035,12 +1083,12 @@ class DocumentStatus : BaseClass() {
 
                             }
 
-                            checkBoxRV.layoutManager = GridLayoutManager(this@DocumentStatus,2)
+                            checkBoxRV.layoutManager = GridLayoutManager(this@DocumentStatus, 2)
                             checkBoxRV.adapter = adapterCheckBox
 
 
 
-                            Log.d("checkBox","$merchants")
+                            Log.d("checkBox", "$merchants")
                         }
                     } else {
                         // Handle case when responseData is null
@@ -1071,26 +1119,27 @@ class DocumentStatus : BaseClass() {
                 val token = prefManager.getToken()
 
                 // Retrieve the selected merchant IDs from the adapter
-//                val selectedMerchantIds = adapterCheckBox.getSelectedMerchants()
-                val selectedMerchants = listOf(selectedMerchantIds) // Replace with the IDs of the selected merchants
+                val selectedMerchantIds = adapterCheckBox.getSelectedMerchants()
+                val selectedMerchants =
+                    mutableListOf(selectedMerchantIds) // Replace with the IDs of the selected merchants
 
 
-                val requestBody = SubmitMerchantsRequest(selectedMerchants as List<MutableList<Int>>)
+                val requestBody = SubmitMerchantsRequest(selectedMerchants)
 
                 val response = merchantApi.submitMerchants("Bearer $token", requestBody)
                 if (response.isSuccessful) {
                     val responseData = response.body()
                     if (responseData != null) {
-                        val merchants = responseData.merchants
+                        val merchants = requestBody.merchants
                         val status = responseData.status
                         val message = responseData.msg
 
-                        Log.d("msgSUbmit","$message $merchants $selectedMerchants $status ")
+                        Log.d("msgSUbmit", "$message $merchants $selectedMerchants $status ")
+                        Log.d("ResponseM", "$merchants ")
                         // Handle the response accordingly
                         runOnUiThread {
                             // Update the UI if needed
 //                            for(merchant in merchants)
-
                         }
                     } else {
                         // Handle case when responseData is null
@@ -1106,7 +1155,6 @@ class DocumentStatus : BaseClass() {
             }
         }
     }
-
 
     fun getDocStatus() {
 
@@ -1183,18 +1231,33 @@ class DocumentStatus : BaseClass() {
                             doc_addressError.visibility = View.GONE
                             doc_updateAddressBT.visibility = View.GONE
                             doc_addressOK.visibility = View.VISIBLE
+                            doc_address.isEnabled = false
+                            doc_city.isEnabled = false
+                            pin_code.isEnabled = false
+                            doc_select_state.isEnabled = false
+                            addressProofTV.isEnabled = false
                         }
                         if (bankName != null && accountNo != null && ifscCode != null) {
                             isBank = true
                             doc_bankError.visibility = View.GONE
                             doc_submitBankBt.visibility = View.GONE
                             doc_bankOk.visibility = View.VISIBLE
+                            bNameET.isEnabled = false
+                            accountNOET.isEnabled = false
+                            raccountNOET.isEnabled = false
+                            ifsc_code.isEnabled = false
+                            addPassbook.isEnabled = false
                         }
                         if (adharNo != null && adharFrontPicUrl != null && adharBackPicUrl != null) {
                             isAdharcard = true
                             doc_aadharError.visibility = View.GONE
                             doc_submitAdharBT.visibility = View.GONE
                             doc_aadharOK.visibility = View.VISIBLE
+                            doc_adharNoET.isEnabled = false
+                            adhadharF.isEnabled = false
+//                            adhadharF.visibility = View.GONE
+                            adhadharR.isEnabled = false
+//                            adhadharR.visibility = View.GONE
                             Log.d("isAdharcard", isAdharcard.toString())
                         }
                         if (profile != null) {
@@ -1209,9 +1272,10 @@ class DocumentStatus : BaseClass() {
                             doc_panError.visibility = View.GONE
                             doc_submitPanBT.visibility = View.GONE
                             doc_panOK.visibility = View.VISIBLE
+                            panNoET.isEnabled = false
+                            panNameET.isEnabled = false
+                            addPan.isEnabled = false
                         }
-
-
 
                         Log.d("profile", "" + profilePicUrl)
                         Log.d("profile", "$profile $otherDetails")
