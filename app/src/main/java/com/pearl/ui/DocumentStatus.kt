@@ -1123,6 +1123,7 @@ class DocumentStatus : BaseClass() {
                 val selectedMerchants =
                     mutableListOf(selectedMerchantIds) // Replace with the IDs of the selected merchants
 
+                Log.d("selectedMerchants",selectedMerchants.toString())
 
                 val requestBody = SubmitMerchantsRequest(selectedMerchants)
 
@@ -1139,7 +1140,6 @@ class DocumentStatus : BaseClass() {
                         // Handle the response accordingly
                         runOnUiThread {
                             // Update the UI if needed
-//                            for(merchant in merchants)
                         }
                     } else {
                         // Handle case when responseData is null
@@ -1293,6 +1293,7 @@ class DocumentStatus : BaseClass() {
                             "API Error",
                             "Response Code: $errorResponseCode, Body: $errorResponseBody"
                         )
+                        showToast("documents updated ")
                     }
                 }
             }

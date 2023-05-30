@@ -272,7 +272,7 @@ class ProfileActivity : BaseClass() {
                         fullNameET.setText(name)
                         mobileNoEt.setText(mobile)
                         update_profile.text = name
-//                        panNoTIT.setText(panNo)
+                        panNoTIT.setText(panNo)
 
 
 

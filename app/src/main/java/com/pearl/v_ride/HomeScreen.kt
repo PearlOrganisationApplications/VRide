@@ -148,8 +148,8 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
 
     override fun setLayoutXml() {
-        setContentView(R.layout.activity_home_screen)
 
+        setContentView(R.layout.activity_home_screen)
     }
 
     @SuppressLint("CutPasteId")
@@ -394,6 +394,42 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     override fun initializeLabels() {
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun onStart() {
+        super.onStart()
+        internetChangeBroadCast()
+        if (!isOnline(this@HomeScreen)) {
+
+            val alertDialog2: AlertDialog.Builder = AlertDialog.Builder(
+                this@HomeScreen
+            )
+            alertDialog2.setTitle("No Internet Connection")
+            alertDialog2.setPositiveButton("Try Again",
+                DialogInterface.OnClickListener { dialog, which ->
+                    val intent = intent
+                    finish()
+                    startActivity(intent)
+                })
+            alertDialog2.setNegativeButton("Cancel",
+                DialogInterface.OnClickListener { dialog, which ->
+                    dialog.cancel()
+                    finishAffinity()
+                    System.exit(0)
+                })
+            alertDialog2.setCancelable(false)
+            alertDialog2.show()
+
+        }
+        if (isOnline(this@HomeScreen)) {
+            getLocation()
+        }
+
+        if (Global.imageString != "") {
+            val uri = Uri.parse(Global.imageString)
+            dImage.setImageURI(uri)
+            Log.d("abc", Global.imageString)
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -427,7 +463,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         document.title = resourcess.getString(R.string.document)
         language1.title = resourcess.getString(R.string.language)
 
-        internetChangeBroadCast()
+
 
         pieChart()
         showAttendance()
@@ -585,11 +621,14 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         notificationRV.layoutManager = LinearLayoutManager(this)
         val nAdapter = NotificationAdapter(notificationCard)
         notificationRV.adapter = nAdapter
-
-
+        
 //        startService(Intent(this,MyService::class.java))
-        unregisterBroadcast()
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterBroadcast()
     }
 
 
@@ -664,37 +703,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
         val isConnected = isNetworkConnected(this.applicationContext)
 
-        if (!isOnline(this@HomeScreen)) {
 
-            val alertDialog2: AlertDialog.Builder = AlertDialog.Builder(
-                this@HomeScreen
-            )
-            alertDialog2.setTitle("No Internet Connection")
-            alertDialog2.setPositiveButton("Try Again",
-                DialogInterface.OnClickListener { dialog, which ->
-                    val intent = intent
-                    finish()
-                    startActivity(intent)
-                })
-            alertDialog2.setNegativeButton("Cancel",
-                DialogInterface.OnClickListener { dialog, which ->
-                    dialog.cancel()
-                    finishAffinity()
-                    System.exit(0)
-                })
-            alertDialog2.setCancelable(false)
-            alertDialog2.show()
-
-        }
-        if (isOnline(this@HomeScreen)) {
-            getLocation()
-        }
-
-        if (Global.imageString != "") {
-            val uri = Uri.parse(Global.imageString)
-            dImage.setImageURI(uri)
-            Log.d("abc", Global.imageString)
-        }
     }
 
 
