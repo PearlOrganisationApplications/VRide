@@ -1,27 +1,18 @@
 package com.pearl.v_ride
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.Dialog
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
-import android.service.controls.ControlsProviderService.TAG
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
-import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
 import com.pearl.common.retrofit.data_model_class.SignUpInfo
-import com.pearl.common.retrofit.rest_api_interface.LoginApi
 import com.pearl.common.retrofit.rest_api_interface.SignupApi
-import com.pearl.ui.DocumentActivity
 import com.pearl.ui.DocumentStatus
 import com.pearl.v_ride_lib.BaseClass
 import com.pearl.v_ride_lib.Global
@@ -37,7 +28,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 class SignUpActivity : BaseClass() {
 

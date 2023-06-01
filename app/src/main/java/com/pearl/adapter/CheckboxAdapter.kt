@@ -1,5 +1,6 @@
 package com.pearl.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,17 +8,26 @@ import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
 import com.pearl.common.retrofit.data_model_class.Merchant
 import com.pearl.v_ride.R
+import com.pearl.v_ride_lib.PrefManager
 
-class CheckboxAdapter(private val merchantList: ArrayList<Merchant>) :
+class CheckboxAdapter(private  val context: Context,private val merchantList: ArrayList<Merchant>) :
     RecyclerView.Adapter<CheckboxAdapter.ItemViewHolder>() {
 
     private val selectedMerchants = HashMap<Int, Merchant>()
+    lateinit var pref: PrefManager
+
+    /*val list = pref.getIds()
+    */
+    lateinit var list: List<String>
+
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val checkBoxName = itemView.findViewById<CheckBox>(R.id.doc_zomatoCB)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
+        pref = PrefManager(context)
+
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.merchant_checkbox, parent, false)
         return ItemViewHolder(itemView)
@@ -28,7 +38,17 @@ class CheckboxAdapter(private val merchantList: ArrayList<Merchant>) :
         holder.checkBoxName.text = currentItem.name
 
         holder.checkBoxName.isChecked = selectedMerchants.containsKey(currentItem.id)
+       /* list = pref.get
+        list.contains(currentItem.id)*/
 
+//        mList = list.split(",")
+//        mList = listOf(list)
+        val  mList = pref.getIds()
+        list = mList.split(",")
+//        list = listOf(mList)
+   /*     if (list.contains(currentItem.id)){
+            holder.checkBoxName.isChecked = true
+        }*/
         holder.checkBoxName.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 selectedMerchants[currentItem.id] = currentItem
@@ -36,6 +56,9 @@ class CheckboxAdapter(private val merchantList: ArrayList<Merchant>) :
                 selectedMerchants.remove(currentItem.id)
             }
         }
+
+//        holder.checkBoxName.isChecked = true
+
     }
 
     override fun getItemCount(): Int {

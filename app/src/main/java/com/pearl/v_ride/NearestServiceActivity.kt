@@ -1,6 +1,5 @@
 package com.pearl.v_ride
 
-import android.content.Context
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

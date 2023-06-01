@@ -5,11 +5,8 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.AppCompatImageView

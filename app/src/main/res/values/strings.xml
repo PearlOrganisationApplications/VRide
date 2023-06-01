@@ -131,5 +131,8 @@
     <string name="make_payment">Make Payment</string>
     <string name="enter_your_upi_id">Enter your UPI Id</string>
     <string name="cancel">Cancel</string>
+    <string name="vrun_app">Hello [name] You registered an account on V-Run App.Your Document Verification is under process, we will connect with you shortly.</string>
+    <string name="monthly_report">Monthly Report</string>
+    <string name="hide_report">Hide Report</string>
 
 </resources>

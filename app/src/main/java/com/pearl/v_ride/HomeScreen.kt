@@ -681,8 +681,8 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         on_duty.text = resourcess.getString(R.string.on_duty)
         off_duty.text = resourcess.getString(R.string.off_duty)
         rate_list.text = resourcess.getString(R.string.rate_list)
-        monthlyCal.text = resourcess.getString(R.string.monthly_calender)
-        hideCalendar.text = resourcess.getString(R.string.hide_calender)
+        monthlyCal.text = resourcess.getString(R.string.monthly_report)
+        hideCalendar.text = resourcess.getString(R.string.hide_report)
         rate_list.text = resourcess.getString(R.string.rate_list)
         monthly_pay.text = resourcess.getString(R.string.monthly_pay)
         if (::cancelLang.isInitialized) {

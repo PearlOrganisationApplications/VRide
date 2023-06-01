@@ -16,8 +16,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.app.ActivityCompat
 
-import com.pearl.v_ride.MainActivity
-import com.pearl.v_ride.WelcomeScreen
 import com.pearl.v_ride_lib.PrefManager
 
 

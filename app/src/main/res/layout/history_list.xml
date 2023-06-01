@@ -2,8 +2,8 @@
 
 
     <androidx.cardview.widget.CardView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/_2sdp"
@@ -15,72 +15,70 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="2dp"
             android:orientation="vertical"
             >
             <LinearLayout
-                android:layout_weight="1"
+                android:weightSum="3"
                 android:layout_width="match_parent"
-                android:padding="10dp"
                 android:layout_height="wrap_content">
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_weight=".5"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content">
 
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_gravity="center"
                     android:src="@drawable/profile"
                     android:id="@+id/history_profile"/>
 
             </LinearLayout>
 
                 <LinearLayout
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
+                    android:layout_weight="2.5"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <LinearLayout
-                        android:layout_weight="1"
+                        android:weightSum="5"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
-                        android:gravity="end">
+                        >
 
                         <TextView
-                            android:layout_weight="1"
+                            android:layout_weight="3.5"
                             android:id="@+id/history_title"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginTop="5dp"
                             android:fontFamily="sans-serif-black"
                             android:text="Title"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_weight="1.5"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:id="@+id/history_Date"
                             android:text="Date"
+                            android:layout_gravity="center"
                             android:textStyle="bold"
-                            android:layout_marginEnd="5dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginStart="5dp"
                             />
-                        <TextView
 
+                        <TextView
+                            android:layout_weight=".5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/history_Time"
                             android:text="Time"
                             android:textStyle="bold"
-                            android:layout_marginEnd="15dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginStart="5dp"/>
+                            android:layout_gravity="end"
+                            />
+
                     </LinearLayout>
 
                     <TextView

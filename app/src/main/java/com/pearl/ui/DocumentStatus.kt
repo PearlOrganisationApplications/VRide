@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
@@ -21,6 +22,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.pearl.adapter.CheckboxAdapter
 import com.pearl.common.retrofit.data_model_class.*
 import com.pearl.common.retrofit.rest_api_interface.*
+import com.pearl.v_ride.Dialog
 import com.pearl.v_ride.HomeScreen
 import com.pearl.v_ride.R
 import com.pearl.v_ride_lib.BaseClass
@@ -32,6 +34,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.internal.toImmutableList
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -79,6 +82,7 @@ class DocumentStatus : BaseClass() {
     private lateinit var doc_bank_showMore: ImageView
     private lateinit var doc_bank_showLess: ImageView
     private lateinit var okBT: Button
+    private lateinit var loadingDialog: Dialog
 
     private lateinit var items: Array<String>
     lateinit var doc_select_state: Spinner
@@ -150,6 +154,9 @@ class DocumentStatus : BaseClass() {
     var bAcount: String = ""
     var bRAcount: String = ""
     var bifsc: String = ""
+    var city: String = ""
+    var addrass: String = ""
+    var pinCode: String = ""
     var isSelfie = false
     var isAdharcard = false
     var isPancard = false
@@ -158,10 +165,11 @@ class DocumentStatus : BaseClass() {
     var isMerchant = false
     lateinit var checkBoxRV: RecyclerView
     val listCard = ArrayList<Merchant>()
-    val adapterCheckBox = CheckboxAdapter(listCard)
+    val adapterCheckBox = CheckboxAdapter(this, listCard)
     val selectedMerchantIds = mutableListOf<Int>()
     lateinit var checkBox: CheckBox
-
+    val merchantIds = listOf<String>()
+    var list = ""
 
     override fun setLayoutXml() {
         setContentView(R.layout.activity_document_status)
@@ -173,6 +181,7 @@ class DocumentStatus : BaseClass() {
     override fun initializeViews() {
 
 
+        loadingDialog = Dialog(this)
 //        inner Layouts
         doc_selfieCL = findViewById(R.id.doc_selfieCL)
         doc_constraintLayout = findViewById(R.id.doc_constraintLayout)
@@ -250,12 +259,9 @@ class DocumentStatus : BaseClass() {
 
 
 
-
-
-
         merchant = findViewById(R.id.doc_merchant)
         enter_all_merchant_name_you_are_working_with =
-            findViewById(R.id.doc_enter_all_merchant_name_you_are_working_with)
+                findViewById(R.id.doc_enter_all_merchant_name_you_are_working_with)
         enter_merchant_id = findViewById(R.id.doc_enter_merchant_id)
         enter_merchant_name = findViewById(R.id.doc_enter_merchant_name)
 
@@ -264,6 +270,7 @@ class DocumentStatus : BaseClass() {
         submitAlreadyBT = findViewById(R.id.doc_submitAlreadyBT)
 
         resourcess = Global.language(this, resources)
+
         /* merchantanotherWorkingLL = findViewById(R.id.doc_merchantanotherWorkingLL)
            anotherYesBT = findViewById(R.id.doc_merchantAYes)
            anotherNoBT = findViewById(R.id.doc_merchantANo) */
@@ -294,67 +301,67 @@ class DocumentStatus : BaseClass() {
         items = arrayOf("S")
         if (prefManager.getLanID() == "en")
             items = arrayOf(
-                "Select State",
-                "Andhra Pradesh",
-                "Arunachal Pradesh",
-                "Assam",
-                "Bihar",
-                "Chhattisgarh",
-                "Goa",
-                "Gujarat",
-                "Haryana",
-                "Himachal Pradesh",
-                "Jammu and Kashmir",
-                "Jharkhand",
-                "Karnataka",
-                "Kerala",
-                "Madhya Pradesh",
-                "Maharashtra",
-                "Manipur",
-                "Meghalaya",
-                "Mizoram",
-                "Nagaland",
-                "Odisha",
-                "Punjab",
-                "Sikkim",
-                "Tamil Nadu",
-                "Telangana",
-                "Tripura",
-                "Uttar Pradesh",
-                "Uttarakhand",
-                "West Bengal"
+                    "Select State",
+                    "Andhra Pradesh",
+                    "Arunachal Pradesh",
+                    "Assam",
+                    "Bihar",
+                    "Chhattisgarh",
+                    "Goa",
+                    "Gujarat",
+                    "Haryana",
+                    "Himachal Pradesh",
+                    "Jammu and Kashmir",
+                    "Jharkhand",
+                    "Karnataka",
+                    "Kerala",
+                    "Madhya Pradesh",
+                    "Maharashtra",
+                    "Manipur",
+                    "Meghalaya",
+                    "Mizoram",
+                    "Nagaland",
+                    "Odisha",
+                    "Punjab",
+                    "Sikkim",
+                    "Tamil Nadu",
+                    "Telangana",
+                    "Tripura",
+                    "Uttar Pradesh",
+                    "Uttarakhand",
+                    "West Bengal"
             )
         else
             items = arrayOf(
-                "राज्य चुनें",
-                "आंध्र प्रदेश",
-                "अरुणाचल प्रदेश",
-                "असम",
-                "बिहार",
-                "छत्तीसगढ़",
-                "गोवा",
-                "गुजरात",
-                "हरियाणा",
-                "हिमाचल प्रदेश",
-                "जम्मू और कश्मीर",
-                "झारखंड",
-                "कर्नाटक",
-                "केरल",
-                "मध्य प्रदेश",
-                "महाराष्ट्र",
-                "मणिपुर",
-                "मेघालय",
-                "मिजोरम",
-                "नागालैंड",
-                "ओडिशा",
-                "पंजाब",
-                "सिक्किम",
-                "तमिलनाडु",
-                "तेलंगाना",
-                "त्रिपुरा",
-                "उत्तर प्रदेश",
-                "उत्तराखंड",
-                "पश्चिम बंगाल"
+                    "राज्य चुनें",
+                    "आंध्र प्रदेश",
+                    "अरुणाचल प्रदेश",
+                    "असम",
+                    "बिहार",
+                    "छत्तीसगढ़",
+                    "गोवा",
+                    "गुजरात",
+                    "हरियाणा",
+                    "हिमाचल प्रदेश",
+                    "जम्मू और कश्मीर",
+                    "झारखंड",
+                    "कर्नाटक",
+                    "केरल",
+                    "मध्य प्रदेश",
+                    "महाराष्ट्र",
+                    "मणिपुर",
+                    "मेघालय",
+                    "मिजोरम",
+                    "नागालैंड",
+                    "ओडिशा",
+                    "पंजाब",
+                    "सिक्किम",
+                    "तमिलनाडु",
+                    "तेलंगाना",
+                    "त्रिपुरा",
+                    "उत्तर प्रदेश",
+                    "उत्तराखंड",
+                    "पश्चिम बंगाल"
             )
 
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
@@ -366,10 +373,10 @@ class DocumentStatus : BaseClass() {
 
         doc_select_state.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View?,
-                position: Int,
-                id: Long
+                    parent: AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long
             ) {
                 selectedItem = parent.getItemAtPosition(position).toString()
 
@@ -401,14 +408,7 @@ class DocumentStatus : BaseClass() {
 //                Log.d("image","$CODE")
 
                 if (isSelfie) {
-                    doc_selfieCL.visibility = View.GONE
-                    doc_selfieError.visibility = View.GONE
-                    doc_selfieOK.visibility = View.VISIBLE
-                    doc_selfie_showLess.visibility = View.GONE
-                    doc_selfie_showMore.visibility = View.VISIBLE
-                    doc_selfieUpdateBT.visibility = View.GONE
-                    doc_adharNoET.isEnabled = false
-
+                    loadingDialog.startLoadingDialog()
                     selfieDetails()
                 } else {
                     showErrorToast("please upload your photo first ")
@@ -432,15 +432,8 @@ class DocumentStatus : BaseClass() {
         }
         doc_submitAdharBT.setOnClickListener {
             adharNo = doc_adharNoET.text.toString().trim()
-            doc_constraintLayout.visibility = View.GONE
-            doc_aadhar_showLess.visibility = View.GONE
-            doc_aadhar_showMore.visibility = View.VISIBLE
-            doc_aadharError.visibility = View.GONE
-            doc_submitBankBt.visibility = View.GONE
-            adhadharF.isEnabled = false
-//            adhadharF.visibility = View.GONE
-            adhadharR.isEnabled = false
-//            adhadharR.visibility = View.GONE
+
+            loadingDialog.startLoadingDialog()
             adharDetails()
         }
 
@@ -457,18 +450,11 @@ class DocumentStatus : BaseClass() {
             doc_address_showMore.visibility = View.VISIBLE
         }
         doc_updateAddressBT.setOnClickListener {
-            doc_updateAddressBT.visibility = View.GONE
-            doc_addressLL.visibility = View.GONE
-            doc_address_showLess.visibility = View.GONE
-            doc_address_showMore.visibility = View.VISIBLE
-            doc_addressOK.visibility = View.VISIBLE
-            doc_addressError.visibility = View.GONE
-            doc_address.isEnabled = false
-            doc_city.isEnabled = false
-            pin_code.isEnabled = false
-            doc_select_state.isEnabled = false
-            addressProofTV.isEnabled = false
+            city = doc_city.text.toString()
+            addrass = doc_address.text.toString()
+            pinCode = pin_code.text.toString()
 
+            loadingDialog.startLoadingDialog()
             Log.d("selectedItem1", selectedItem)
             addressDetails()
         }
@@ -502,16 +488,8 @@ class DocumentStatus : BaseClass() {
 
             panName = panNameET.text.toString().trim()
             panNo = panNoET.text.toString().trim()
+            loadingDialog.startLoadingDialog()
 
-            doc_pancardCL.visibility = View.GONE
-            doc_pan_showLess.visibility = View.GONE
-            doc_pan_showMore.visibility = View.VISIBLE
-            doc_panError.visibility = View.GONE
-            doc_panOK.visibility = View.VISIBLE
-            doc_submitPanBT.visibility = View.GONE
-            panNoET.isEnabled = false
-            panNameET.isEnabled = false
-            addPan.isEnabled = false
             panDetails()
         }
 
@@ -532,17 +510,8 @@ class DocumentStatus : BaseClass() {
             bAcount = accountNOET.text.toString()
             bRAcount = raccountNOET.text.toString()
             bifsc = ifsc_code.text.toString()
-            doc_bankCl.visibility = View.GONE
-            doc_bank_showLess.visibility = View.GONE
-            doc_submitBankBt.visibility = View.GONE
-            doc_bankError.visibility = View.GONE
-            doc_bank_showMore.visibility = View.VISIBLE
-            doc_bankOk.visibility = View.VISIBLE
-            bNameET.isEnabled = false
-            accountNOET.isEnabled = false
-            raccountNOET.isEnabled = false
-            ifsc_code.isEnabled = false
-            addPassbook.isEnabled = false
+            loadingDialog.startLoadingDialog()
+
             bankDetails()
         }
 
@@ -570,6 +539,7 @@ class DocumentStatus : BaseClass() {
         }
         doc_submitMerchantBT.setOnClickListener {
 //            getMerchant()
+            loadingDialog.startLoadingDialog()
             submitMerchants()
         }
 
@@ -606,69 +576,72 @@ class DocumentStatus : BaseClass() {
         }
         // camera
 //        imageUri = createImageUri()!!
-        adhadharF.setOnClickListener {
+        adharFrontIV.setOnClickListener {
             ImagePicker.with(this)
-                .crop()
-                .compress(1024)                    //Final image size will be less than 1 MB(Optional)
-                .maxResultSize(
-                    1080,
-                    1080
-                )    //Final image resolution will be less than 1080 x 1080(Optional)
-                .start()
+                    .crop(16F, 9F)
+                    .compress(1024)                    //Final image size will be less than 1 MB(Optional)
+                    .maxResultSize(
+                            1080,
+                            1080
+                    )    //Final image resolution will be less than 1080 x 1080(Optional)
+                    .start()
             image_type = 1
 
 //                .galleryOnly()
 //            contract.launch(imageUri)
         }
-        adhadharR.setOnClickListener {
+        adhadharRear.setOnClickListener {
             ImagePicker.with(this)
-                .crop()                            //Crop image(Optional), Check Customization for more option
-                .compress(1024)            //Final image size will be less than 1 MB(Optional)
-                .maxResultSize(
-                    1080,
-                    1080
-                )    //Final image resolution will be less than 1080 x 1080(Optional)
-                .start()
+                    .crop(
+                            16F,
+                            9f
+                    )                         //Crop image(Optional), Check Customization for more option
+                    .compress(1024)            //Final image size will be less than 1 MB(Optional)
+                    .maxResultSize(
+                            1080,
+                            1080
+                    )    //Final image resolution will be less than 1080 x 1080(Optional)
+                    .start()
             image_type = 2
         }
-        addPan.setOnClickListener {
+        panFront.setOnClickListener {
             ImagePicker.with(this)
-                .crop()                      // Crop image(Optional), Check Customization for more option
-                .compress(1024)            //Final image size will be less than 1 MB(Optional)
-                .maxResultSize(
-                    1080,
-                    1080
-                )    //Final image resolution will be less than 1080 x 1080(Optional)
-                .start()
+                    .crop()                      // Crop image(Optional), Check Customization for more option
+                    .compress(1024)            //Final image size will be less than 1 MB(Optional)
+                    .maxResultSize(
+                            1080,
+                            1080
+                    )    //Final image resolution will be less than 1080 x 1080(Optional)
+                    .start()
             image_type = 3
         }
-        addPassbook.setOnClickListener {
+        passbookIV.setOnClickListener {
             ImagePicker.with(this)
-                .crop()
-                .compress(1024)
-                .maxResultSize(1080, 1080)
-                .start()
+                    .crop()
+                    .compress(1024)
+                    .maxResultSize(1080, 1080)
+                    .start()
             image_type = 4
         }
 
-        doc_add_selfie.setOnClickListener {
+        doc_profile.setOnClickListener {
             ImagePicker.with(this)
-                .crop()
-                .cameraOnly()
-                .compress(1024)
-                .maxResultSize(1080, 1080)
-                .start()
+                    .crop()
+                    .cameraOnly()
+                    .compress(1024)
+                    .maxResultSize(1080, 1080)
+                    .start()
             image_type = 6
         }
         addressProofTV.setOnClickListener {
             ImagePicker.with(this)
-                .crop()
-                .compress(1024)                    //Final image size will be less than 1 MB(Optional)
-                .maxResultSize(
-                    1080,
-                    1080
-                )                    //Final image resolution will be less than 1080 x 1080(Optional)
-                .start()
+                    .crop()
+                    .compress(1024)                    //Final image size will be less than 1 MB(Optional)
+                    .maxResultSize(
+                            1080,
+                            1080
+                    )                    //Final image resolution will be less than 1080 x 1080(Optional)
+                    .start()
             image_type = 11
         }
 
@@ -715,10 +688,11 @@ class DocumentStatus : BaseClass() {
 
             if (image_type == 1) {
                 adharFrontIV.setImageURI(uri)
+                adharFrontIV.maxWidth = 50
 
                 var bitmap = MediaStore.Images.Media.getBitmap(
-                    this.contentResolver,
-                    uri
+                        this.contentResolver,
+                        uri
                 )
                 b64 = BitMapToString(bitmap).toString()
 
@@ -728,8 +702,8 @@ class DocumentStatus : BaseClass() {
                 adhadharRear.setImageURI(uri)
 
                 var bitmap = MediaStore.Images.Media.getBitmap(
-                    this.contentResolver,
-                    uri
+                        this.contentResolver,
+                        uri
                 )
                 b64 = BitMapToString(bitmap).toString()
 
@@ -738,15 +712,15 @@ class DocumentStatus : BaseClass() {
             } else if (image_type == 3) {
                 panFront.setImageURI(uri)
                 var bitmap = MediaStore.Images.Media.getBitmap(
-                    this.contentResolver,
-                    uri
+                        this.contentResolver,
+                        uri
                 )
                 b64 = BitMapToString(bitmap).toString()
             } else if (image_type == 4) {
                 passbookIV.setImageURI(uri)
                 var bitmap = MediaStore.Images.Media.getBitmap(
-                    this.contentResolver,
-                    uri
+                        this.contentResolver,
+                        uri
                 )
                 b64 = BitMapToString(bitmap).toString()
             } /*else if (image_type == 5) {
@@ -757,8 +731,8 @@ class DocumentStatus : BaseClass() {
 //                val bitmap = BitmapFactory.decodeFile(file.toString())
 
                 var bitmap = MediaStore.Images.Media.getBitmap(
-                    this.contentResolver,
-                    uri
+                        this.contentResolver,
+                        uri
                 )
                 b64 = BitMapToString(bitmap).toString()
                 isSelfie = true
@@ -779,8 +753,8 @@ class DocumentStatus : BaseClass() {
                 addressProofIV.setImageURI(uri)
 
                 val bitmap = MediaStore.Images.Media.getBitmap(
-                    this.contentResolver,
-                    uri
+                        this.contentResolver,
+                        uri
                 )
                 b64 = BitMapToString(bitmap).toString()
 
@@ -797,9 +771,9 @@ class DocumentStatus : BaseClass() {
     fun selfieDetails() {
 
         val retrofit = Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
 
         val selfieApi = retrofit.create(SelfieApi::class.java)
 
@@ -808,7 +782,7 @@ class DocumentStatus : BaseClass() {
                 val bearerToken = prefManager.getToken()
 
                 val selfieRequestData = SelfieRequestData(
-                    selfiee = b64
+                        selfiee = b64
 //          bearerToken = prefManager.getToken()
                 )
                 Log.d("SentRes", "$bearerToken $b64")
@@ -819,8 +793,22 @@ class DocumentStatus : BaseClass() {
                     if (responseData != null) {
                         val msg = responseData.msg
                         val status = responseData.status
-                        prefManager.setCode(1)
+//                        prefManager.setCode(1)
                         // Handle successful responser
+                        runOnUiThread {
+                            Handler().postDelayed({
+                                // After 4 seconds
+                                loadingDialog.dismissDialog()
+
+                                doc_selfieCL.visibility = View.GONE
+                                doc_selfieError.visibility = View.GONE
+                                doc_selfieOK.visibility = View.VISIBLE
+                                doc_selfie_showLess.visibility = View.GONE
+                                doc_selfie_showMore.visibility = View.VISIBLE
+                                doc_selfieUpdateBT.visibility = View.GONE
+                                doc_adharNoET.isEnabled = false
+                            }, 4000) // 4 seconds
+                        }
                         Log.d("msgSelfie", msg)
                     } else {
                         // Handle case when responseData is null
@@ -835,8 +823,8 @@ class DocumentStatus : BaseClass() {
                     // Handle the case when the API call is unsuccessful
                     // Log or display the error message
                     Log.e(
-                        "API Error",
-                        "token \n $bearerToken body: $errorBody, errorMessage: $errorMessage"
+                            "API Error",
+                            "token \n $bearerToken body: $errorBody, errorMessage: $errorMessage"
                     )
                 }
             } catch (e: Exception) {
@@ -848,9 +836,9 @@ class DocumentStatus : BaseClass() {
     fun adharDetails() {
 
         val retrofit = Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
         // Make the API request
         val adharApi = retrofit.create(AdharApi::class.java)
 
@@ -860,9 +848,9 @@ class DocumentStatus : BaseClass() {
                 val token = prefManager.getToken()
 
                 val requestData = AdharRequestData(
-                    adhar_front = b64,
-                    adhar_back = b64,
-                    adhar_no = adharNo
+                        adhar_front = b64,
+                        adhar_back = b64,
+                        adhar_no = adharNo
                 )
 
                 val response = adharApi.saveAdharData("Bearer $token", requestData)
@@ -872,6 +860,23 @@ class DocumentStatus : BaseClass() {
                         val msg = responseData.msg
                         val status = responseData.status
                         // Process the response data as needed
+                        runOnUiThread {
+                            Handler().postDelayed({
+                                // After 4 seconds
+                                loadingDialog.dismissDialog()
+
+                                doc_constraintLayout.visibility = View.GONE
+                                doc_aadhar_showLess.visibility = View.GONE
+                                doc_aadhar_showMore.visibility = View.VISIBLE
+                                doc_aadharError.visibility = View.GONE
+                                doc_aadharOK.visibility = View.GONE
+                                doc_submitBankBt.visibility = View.GONE
+                                adhadharF.isEnabled = false
+//            adhadharF.visibility = View.GONE
+                                adhadharR.isEnabled = false
+//            adhadharR.visibility = View.GONE
+                            }, 4000) // 4 seconds
+                        }
                         Log.d("msg", msg + adharNo)
                     } else {
                         // Handle case when responseData is null
@@ -900,9 +905,9 @@ class DocumentStatus : BaseClass() {
 
     fun panDetails() {
         val retrofit = Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
         // Make the API request
         val panApi = retrofit.create(PanApi::class.java)
 
@@ -912,9 +917,9 @@ class DocumentStatus : BaseClass() {
                 val token = prefManager.getToken()
 
                 val requestData = PanRequestData(
-                    pan_image = b64,
-                    pan_no = panNo,
-                    pan_name = panName
+                        pan_image = b64,
+                        pan_no = panNo,
+                        pan_name = panName
                 )
 
                 val response = panApi.savePanData("Bearer $token", requestData)
@@ -925,6 +930,22 @@ class DocumentStatus : BaseClass() {
 
                         val status = responseData.status
                         // Process the response data as needed
+                        runOnUiThread {
+                            Handler().postDelayed({
+                                // After 4 seconds
+                                loadingDialog.dismissDialog()
+
+                                doc_pancardCL.visibility = View.GONE
+                                doc_pan_showLess.visibility = View.GONE
+                                doc_pan_showMore.visibility = View.VISIBLE
+                                doc_panError.visibility = View.GONE
+                                doc_panOK.visibility = View.VISIBLE
+                                doc_submitPanBT.visibility = View.GONE
+                                panNoET.isEnabled = false
+                                panNameET.isEnabled = false
+                                addPan.isEnabled = false
+                            }, 4000) // 4 seconds
+                        }
                         Log.d("msg", msg + panNo + status)
                     } else {
                         // Handle case when responseData is null
@@ -954,9 +975,9 @@ class DocumentStatus : BaseClass() {
     fun addressDetails() {
 
         val retrofit = Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
 
         val addressApi = retrofit.create(AddressApi::class.java)
 
@@ -964,11 +985,11 @@ class DocumentStatus : BaseClass() {
             try {
                 val token = prefManager.getToken()
                 val requestData = AddressRequestData(
-                    "Dehradoon",
-                    selectedItem,/*+ "+" + state_id,*/
-                    "dehradoon",
-                    "123456",
-                    b64
+                        city,
+                        selectedItem,/*+ "+" + state_id,*/
+                        addrass,
+                        pinCode,
+                        b64
                 )
                 val response = addressApi.updateProfileData("Bearer $token", requestData)
                 Log.d("ResponseBody", response.body().toString())
@@ -977,6 +998,23 @@ class DocumentStatus : BaseClass() {
                     if (responseData != null) {
                         val message = responseData.msg
                         // Handle the success message as needed
+                        runOnUiThread {
+                            Handler().postDelayed({
+                                // After 4 seconds
+                                loadingDialog.dismissDialog()
+                                doc_updateAddressBT.visibility = View.GONE
+                                doc_addressLL.visibility = View.GONE
+                                doc_address_showLess.visibility = View.GONE
+                                doc_address_showMore.visibility = View.VISIBLE
+                                doc_addressOK.visibility = View.VISIBLE
+                                doc_addressError.visibility = View.GONE
+                                doc_address.isEnabled = false
+                                doc_city.isEnabled = false
+                                pin_code.isEnabled = false
+                                doc_select_state.isEnabled = false
+                                addressProofTV.isEnabled = false
+                            }, 4000) // 4 seconds
+                        }
                         Log.d("msg", message)
                     } else {
                         // Handle the case when responseData is null or status is not "201"
@@ -991,8 +1029,8 @@ class DocumentStatus : BaseClass() {
             } catch (e: Exception) {
                 // Handle the network or other errors
                 Log.e(
-                    "API ErrorC",
-                    "Error: ${e.message} ${e.localizedMessage} ${e.cause} ${e.stackTrace}"
+                        "API ErrorC",
+                        "Error: ${e.message} ${e.localizedMessage} ${e.cause} ${e.stackTrace}"
                 )
             }
         }
@@ -1001,9 +1039,9 @@ class DocumentStatus : BaseClass() {
 
     fun bankDetails() {
         val retrofit = Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
 
         val bankApi = retrofit.create(BankApi::class.java)
 
@@ -1011,10 +1049,10 @@ class DocumentStatus : BaseClass() {
             try {
                 val token = prefManager.getToken()
                 val requestData = BankRequestData(
-                    bName,
-                    bAcount,
-                    bifsc,
-                    b64
+                        bName,
+                        bAcount,
+                        bifsc,
+                        b64
                 )
                 val response = bankApi.updateBankData("Bearer $token", requestData)
                 if (response.isSuccessful) {
@@ -1022,6 +1060,23 @@ class DocumentStatus : BaseClass() {
                     if (responseData != null) {
                         val msg = responseData.msg
                         Log.d("msg", msg)
+                        runOnUiThread {
+                            Handler().postDelayed({
+                                // After 4 seconds
+                                loadingDialog.dismissDialog()
+                                doc_bankCl.visibility = View.GONE
+                                doc_bank_showLess.visibility = View.GONE
+                                doc_submitBankBt.visibility = View.GONE
+                                doc_bankError.visibility = View.GONE
+                                doc_bank_showMore.visibility = View.VISIBLE
+                                doc_bankOk.visibility = View.VISIBLE
+                                bNameET.isEnabled = false
+                                accountNOET.isEnabled = false
+                                raccountNOET.isEnabled = false
+                                ifsc_code.isEnabled = false
+                                addPassbook.isEnabled = false
+                            }, 4000) // 4 seconds
+                        }
                     } else {
                         Log.d("else", "t.toString")
                     }
@@ -1039,9 +1094,9 @@ class DocumentStatus : BaseClass() {
 
     fun getMerchant() {
         val retrofit = Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
 
         val merchantApi = retrofit.create(MerchantApi::class.java)
 
@@ -1054,9 +1109,9 @@ class DocumentStatus : BaseClass() {
                     val responseData = response.body()
                     if (responseData != null) {
                         val merchants = responseData.merchants
-
                         // Switch to the main thread to update UI
-//                        withContext(Dispatchers.Main)
+//                        withContext(`ispatchers.Main)
+
                         runOnUiThread {
 
 
@@ -1065,21 +1120,21 @@ class DocumentStatus : BaseClass() {
                                 val checkBoxName = merchant.name
 
                                 listCard.add(
-                                    Merchant(
-                                        checkBoxId, checkBoxName
-                                    )
+                                        Merchant(
+                                                checkBoxId, checkBoxName
+                                        )
                                 )
                                 Log.d("CheckBox1", "Merchant ID: $checkBoxId")
                                 checkBox.text = checkBoxName
-                                checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
-                                    if (isChecked) {
-                                        selectedMerchantIds.add(checkBoxId)
-                                        Log.d("CheckBox2", "Merchant $checkBoxId selected")
-                                    } else {
-                                        selectedMerchantIds.remove(checkBoxId)
-                                        Log.d("CheckBox3", "Merchant $checkBoxId deselected")
-                                    }
-                                }
+                                /*   checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
+                                       if (isChecked) {
+                                           selectedMerchantIds.add(checkBoxId)
+                                           Log.d("CheckBox2", "Merchant $checkBoxId selected")
+                                       } else {
+                                           selectedMerchantIds.remove(checkBoxId)
+                                           Log.d("CheckBox3", "Merchant $checkBoxId deselected")
+                                       }
+                                   }*/
 
                             }
 
@@ -1108,9 +1163,9 @@ class DocumentStatus : BaseClass() {
 
     fun submitMerchants() {
         val retrofit = Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
 
         val merchantApi = retrofit.create(MerchantApi::class.java)
 
@@ -1121,9 +1176,9 @@ class DocumentStatus : BaseClass() {
                 // Retrieve the selected merchant IDs from the adapter
                 val selectedMerchantIds = adapterCheckBox.getSelectedMerchants()
                 val selectedMerchants =
-                    mutableListOf(selectedMerchantIds) // Replace with the IDs of the selected merchants
+                        mutableListOf(selectedMerchantIds) // Replace with the IDs of the selected merchants
 
-                Log.d("selectedMerchants",selectedMerchants.toString())
+                Log.d("selectedMerchants", selectedMerchants.toString())
 
                 val requestBody = SubmitMerchantsRequest(selectedMerchants)
 
@@ -1140,6 +1195,39 @@ class DocumentStatus : BaseClass() {
                         // Handle the response accordingly
                         runOnUiThread {
                             // Update the UI if needed
+                            /* for (m in merchants) {
+                                 val merchantId = m.getInt("id")
+                                 merchantIds.add(merchantId)
+                             }
+
+ // Access the merchant IDs in the merchantIds array
+                             for (merchantId in merchantIds) {
+                                 println(merchantId)
+                             }*/
+//                            prefManager.setList(merchants as List<String>)
+                            if (selectedMerchantIds.isNotEmpty()) {
+                                for (i in 0..selectedMerchantIds.size - 1) {
+                                    if (i != merchants.size - 1){
+                                        list += selectedMerchantIds[i].id.toString() + ","}
+                                    else{
+                                        list += selectedMerchantIds[i].id.toString()
+                                    }
+
+                                }
+                            }
+//                            prefManager.setIds("")
+//                            prefManager.setIds(list)
+
+                            Handler().postDelayed({
+                                // After 4 seconds
+                                loadingDialog.dismissDialog()
+                                doc_merchantError.visibility = View.GONE
+                                doc_merchantLL.visibility = View.GONE
+                                doc_merchant_showLess.visibility = View.GONE
+                                doc_merchant_showMore.visibility = View.VISIBLE
+                                doc_merchantOK.visibility = View.VISIBLE
+                            }, 4000) // 4 seconds
+
                         }
                     } else {
                         // Handle case when responseData is null
@@ -1159,10 +1247,10 @@ class DocumentStatus : BaseClass() {
     fun getDocStatus() {
 
         val retrofit = Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
 //            .client(createOkHttpClient())
-            .build()
+                .build()
 
 
         val profileService = retrofit.create(ProfileApi::class.java)
@@ -1179,6 +1267,7 @@ class DocumentStatus : BaseClass() {
                     if (profileData != null) {
                         val profile = profileData.profileData
                         val message = profileData.message
+                        val merchants = profileData.merchants
                         val profilePicUrl = profile?.profilePic
                         val mobile = profile?.mobile
                         val name = profile?.name
@@ -1199,6 +1288,9 @@ class DocumentStatus : BaseClass() {
                         val panName = otherDetails?.panName
                         val panPhotoUrl = otherDetails?.panPhoto
                         val bankPhotoUrl = otherDetails?.bankPhoto
+
+
+
                         doc_adharNoET.setText(adharNo.toString())
                         doc_address.setText(address.toString())
                         doc_city.setText(city)
@@ -1214,17 +1306,17 @@ class DocumentStatus : BaseClass() {
                         raccountNOET.setText(accountNo)
 
                         Picasso.get().load(profilePicUrl).placeholder(R.drawable.profile)
-                            .into(doc_profile)
+                                .into(doc_profile)
                         Picasso.get().load(adharFrontPicUrl).placeholder(R.drawable.dummy_aadhar)
-                            .into(adharFrontIV)
+                                .into(adharFrontIV)
                         Picasso.get().load(adharBackPicUrl).placeholder(R.drawable.dummy_aadhar)
-                            .into(adhadharRear)
+                                .into(adhadharRear)
                         Picasso.get().load(addressProofPicUrl).placeholder(R.drawable.dummy_dl)
-                            .into(addressProofIV)
+                                .into(addressProofIV)
                         Picasso.get().load(panPhotoUrl).placeholder(R.drawable.dummy_pancard)
-                            .into(panFront)
+                                .into(panFront)
                         Picasso.get().load(bankPhotoUrl).placeholder(R.drawable.passbook)
-                            .into(passbookIV)
+                                .into(passbookIV)
 
                         if (state != null && city != null && address != null && pincode != null) {
                             isAddress = true
@@ -1236,6 +1328,10 @@ class DocumentStatus : BaseClass() {
                             pin_code.isEnabled = false
                             doc_select_state.isEnabled = false
                             addressProofTV.isEnabled = false
+                        } else {
+                            doc_address.setText("")
+                            doc_city.setText("")
+                            pin_code.setText("")
                         }
                         if (bankName != null && accountNo != null && ifscCode != null) {
                             isBank = true
@@ -1259,6 +1355,8 @@ class DocumentStatus : BaseClass() {
                             adhadharR.isEnabled = false
 //                            adhadharR.visibility = View.GONE
                             Log.d("isAdharcard", isAdharcard.toString())
+                        } else {
+                            doc_adharNoET.setText("")
                         }
                         if (profile != null) {
                             isSelfie = true
@@ -1277,12 +1375,34 @@ class DocumentStatus : BaseClass() {
                             addPan.isEnabled = false
                         }
 
-                        Log.d("profile", "" + profilePicUrl)
-                        Log.d("profile", "$profile $otherDetails")
-                        Log.d("msg", "$message")
-//                        showErrorDialog("$message","ok")
+                        if (merchant != null) {
 
-                        // Use the profile data as needed
+//                            checkBox.text = merchant
+                            /*  checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
+                               if (isChecked) {
+                                      selectedMerchantIds.add(merchant)
+                                      Log.d("CheckBox2", "Merchant $checkBoxId selected")
+                                  }
+                              }*/
+//                            adapterCheckBox
+
+
+                        }
+                        Log.d("profile", "" + profilePicUrl)
+                        Log.d("profile", "$profile $otherDetails $merchants")
+                        Log.d("merchantsQQ", "$merchants")
+                        //prefManager.setList(merchant as List<String>)
+                        Log.d("msg", "$message")
+                        if (merchants != null) {
+                            for (i in 0..merchants.size - 1) {
+                                if (i != merchants.size - 1)
+                                    list += merchants[i].id.toString() + ","
+                                else
+                                    list += merchants[i].id.toString()
+                            }
+                        }
+                        prefManager.setIds(list)
+
 
                     } else {
                         Log.d("ElseSignup ", "t.toString()")
@@ -1290,10 +1410,10 @@ class DocumentStatus : BaseClass() {
                         val errorResponseBody = response.errorBody()?.string()
                         // Handle the error response code and body
                         Log.e(
-                            "API Error",
-                            "Response Code: $errorResponseCode, Body: $errorResponseBody"
+                                "API Error",
+                                "Response Code: $errorResponseCode, Body: $errorResponseBody"
                         )
-                        showToast("documents updated ")
+                        showToast("documents updated")
                     }
                 }
             }
@@ -1324,7 +1444,6 @@ class DocumentStatus : BaseClass() {
         })
 
     }
-
 
     private fun showErrorToast(errorMessage: String) {
         // Display error message to the user using a Toast or any other UI element

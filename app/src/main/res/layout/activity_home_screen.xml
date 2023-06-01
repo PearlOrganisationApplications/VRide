@@ -398,7 +398,7 @@
                            android:minHeight="48dp"
                            android:padding="@dimen/_2ssp"
                            android:textColor="@color/color_primary"
-                           android:text="@string/monthly_calender"/>
+                           android:text="@string/monthly_report"/>
                        <TextView
                            android:visibility="gone"
                            android:id="@+id/hideCalendar"
@@ -413,7 +413,7 @@
                            android:minHeight="48dp"
                            android:padding="@dimen/_2ssp"
                            android:textColor="@color/color_primary"
-                           android:text="@string/hide_calender"/>
+                           android:text="@string/hide_report"/>
                        <TextView
                            android:id="@+id/rate_list"
                            android:layout_weight=".6"

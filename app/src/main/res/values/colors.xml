@@ -8,8 +8,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="color_primary">#2DB83D</color>
-    <color name="app_background">#2DB83D</color>
+    <color name="color_primary">#067006</color>
+   <!-- <color name="app_background">#2DB83D</color>-->
+    <color name="app_background">#067006</color>
     <color name="color_secondary">#F4B330</color>
     <color name="pie_chart">#2DB83D</color>
     <color name="lite_blue">#0498DC</color>

@@ -6,6 +6,7 @@ import android.content.res.Resources
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -45,6 +46,7 @@ class IssueRequestActivity : AppCompatActivity() {
     lateinit var subjectTIL: TextInputLayout
     lateinit var issue_submit: Button
     lateinit var prefManager: PrefManager
+    private lateinit var loadingDialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +69,7 @@ class IssueRequestActivity : AppCompatActivity() {
             onBackPressed()
         }
         issue_submit.setOnClickListener {
+            loadingDialog.startLoadingDialog()
             issueRequest()
         }
         clickIV.setOnClickListener {
@@ -114,6 +117,11 @@ class IssueRequestActivity : AppCompatActivity() {
                         val message = responseData.msg
                         Log.d("msg", message)
                         // Handle the success case
+                        Handler().postDelayed({
+                            // After 4 seconds
+                            loadingDialog.dismissDialog()
+
+                        }, 4000) // 4 seconds
                     } else {
                         // Request failed or response body is null
                         // Handle the failure case

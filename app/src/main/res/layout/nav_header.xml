@@ -9,26 +9,20 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/drawerImage"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="@dimen/_60sdp"
         android:layout_marginTop="15dp"
-        android:src="@drawable/profile"/>
+        android:src="@drawable/profile" />
+
     <TextView
         android:id="@+id/drawerName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="NAME"
         android:padding="5dp"
-        android:fontFamily="sans-serif-black"
+        android:fontFamily="@font/alata"
         android:textColor="@color/white"
-        android:textSize="20sp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="hello there how are you"
-        android:padding="5dp"
-        android:textColor="@color/white"
-        android:textSize="12sp"/>
+        android:textSize="@dimen/_20ssp"/>
 
     <View
         android:layout_width="match_parent"

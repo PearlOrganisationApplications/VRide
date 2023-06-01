@@ -6,10 +6,12 @@ data class ProfileData(
     @SerializedName("msg") val message: String?,
     @SerializedName("profile_data") val profileData: Profile?,
     @SerializedName("other_details") val otherDetails: OtherDetails?,
+    @SerializedName("merchants") val merchants: List<Merchant>?,
     @SerializedName("status") val status: String?
 )
 
 data class Profile(
+
     @SerializedName("mobile") val mobile: String?,
     @SerializedName("name") val name: String?,
     @SerializedName("dob") val dob: String?,
@@ -25,6 +27,7 @@ data class Profile(
 )
 
 data class OtherDetails(
+
     @SerializedName("bank_name") val bankName: String?,
     @SerializedName("account_no") val accountNo: String?,
     @SerializedName("ifsc_code") val ifscCode: String?,
@@ -35,5 +38,6 @@ data class OtherDetails(
     @SerializedName("bank_photo") val bankPhoto: String?,
     @SerializedName("pan_photo") val panPhoto: String?,
     @SerializedName("dl_photo") val dlPhoto: String?
+
 )
 

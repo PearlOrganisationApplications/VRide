@@ -94,7 +94,7 @@ class UserHistoryActivity : AppCompatActivity() {
         )
         histroyListCard.add(
             HistoryList(
-                R.drawable.profile,"Dehradoon","hello there hiw are you hello there hiw are youhello there hiw are you","13/03/2023","11.43"
+                R.drawable.profile,"Dehradoon, Transport nagar","hello there hiw are you hello there hiw are youhello there hiw are you","13/03/2023","11.43"
             )
         )
 
