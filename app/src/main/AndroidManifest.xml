@@ -164,6 +164,7 @@
             android:name="com.pearl.splash_screen.SplashScreenActivity"
             android:exported="true"
             android:theme="@style/AppThemeTest">
+
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -172,6 +173,7 @@
             android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/AppThemeTest">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

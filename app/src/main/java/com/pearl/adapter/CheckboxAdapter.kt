@@ -1,6 +1,7 @@
 package com.pearl.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,12 +44,29 @@ class CheckboxAdapter(private  val context: Context,private val merchantList: Ar
 
 //        mList = list.split(",")
 //        mList = listOf(list)
-        val  mList = pref.getIds()
-        list = mList.split(",")
+//        val  mList = pref.getIds()
+//        list = mList.split(",")
 //        list = listOf(mList)
-   /*     if (list.contains(currentItem.id)){
+
+        val mList = pref.getIds()
+        val items = mList.split(",")
+        val intList = mutableListOf<Int>()
+
+        for (item in items) {
+            if (item.isNotEmpty()) {
+                intList.add(item.toInt())
+            }
+        }
+
+        if (intList.contains(currentItem.id)){
+            Log.d("Ifcase","jkahsdlk")
             holder.checkBoxName.isChecked = true
-        }*/
+
+        }
+        else{
+            Log.d("Elsecase","${currentItem.id}  ${intList}")
+
+        }
         holder.checkBoxName.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 selectedMerchants[currentItem.id] = currentItem

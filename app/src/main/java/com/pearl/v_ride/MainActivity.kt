@@ -74,6 +74,7 @@ class MainActivity : BaseClass() {
     lateinit var resend_otp: TextView
     lateinit var view_timer:TextView
     lateinit var cTimer:CountDownTimer
+    private lateinit var loadingDialog: com.pearl.v_ride.Dialog
 
     override fun setLayoutXml() {
         setContentView(R.layout.activity_main)
@@ -93,6 +94,7 @@ class MainActivity : BaseClass() {
         progressBar = findViewById(R.id.progressBar)
         resend_otp = findViewById(R.id.resend_otp)
         view_timer=findViewById(R.id.view_timer)
+        loadingDialog = com.pearl.v_ride.Dialog(this)
 //        checkLogin()
 
     }
@@ -123,9 +125,15 @@ class MainActivity : BaseClass() {
 
                         if (phoneNumber.length == 10){
                             if(phoneNumber == "1234567890" /*||phoneNumber == "1122334455"*/){
+
                                 view_timer.visibility = View.VISIBLE
                                 phoneNumber = "+91$phoneNumber"
                                 progressBar.visibility = View.VISIBLE
+//                                loadingDialog.startLoadingDialog()
+
+//                                Handler(Looper.getMainLooper()).postDelayed({
+//                                    loadingDialog.dismissDialog()
+
                                 val options = PhoneAuthOptions.newBuilder(mAuth)
                                     .setPhoneNumber(phoneNumber) // Phone number to verify
                                     .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
@@ -134,8 +142,10 @@ class MainActivity : BaseClass() {
                                     .build()
                                 PhoneAuthProvider.verifyPhoneNumber(options)
                               startTimer()
+//                                },2500)
 //                                checkLogin()
                             }else {
+                                loadingDialog.startLoadingDialog()
                                 checkLogin()
                             }
                         }else{
@@ -205,9 +215,10 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
         val isConnected = isNetworkConnected(this.applicationContext)
 
 
-        prefManager = PrefManager(this)
+
 
         setLayoutXml()
+        prefManager = PrefManager(this)
         initializeViews()
         initializeClickListners()
         initializeInputs()
@@ -467,6 +478,9 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
                         prefManager.setToken(response.body()?.token.toString())
                         if(createdUser?.signin.equals("0") ){
                             // sign in
+                            Handler().postDelayed({
+                                // After 4 seconds
+                                loadingDialog.dismissDialog()
                             val builder = AlertDialog.Builder(this@MainActivity)
                             builder.setTitle("Signup")
                                 .setMessage("You are not register user, SignIn first")
@@ -476,9 +490,13 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
                                 }
                             val dialog = builder.create()
                             dialog.show()
+                        }, 4000) // 4 seconds
                         }else if(createdUser?.signin.equals("1") && createdUser?.profile.equals( "-4") && createdUser?.verification.equals("0") ){
                             // profile no
                             Log.d("status1 " ,"${createdUser?.profile}")
+                            Handler().postDelayed({
+                                // After 4 seconds
+                                loadingDialog.dismissDialog()
                             val builder = AlertDialog.Builder(this@MainActivity)
                             builder.setTitle("Profile Details")
                                 .setMessage("You are not register user, fill verification form first")
@@ -488,6 +506,7 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
                                 }
                             val dialog = builder.create()
                             dialog.show()
+                            }, 4000) // 4 seconds
                         }
 
                         /*else if(createdUser?.signin.equals("1") && createdUser?.profile.equals( "0") && createdUser?.verification.equals("0") ){
@@ -516,11 +535,18 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
                                 .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
                                 .build()
                             PhoneAuthProvider.verifyPhoneNumber(options)*/
+                            Handler().postDelayed({
+                                // After 4 seconds
+                                loadingDialog.dismissDialog()
                             startActivity(Intent(this@MainActivity,HomeScreen::class.java))
                             finish()
+                        }, 4000) // 4 seconds
                         }else  {
                             //profile 2
                             Log.d("status12 " ,"${createdUser?.profile}")
+                            Handler().postDelayed({
+                                // After 4 seconds
+                                loadingDialog.dismissDialog()
                             val builder = AlertDialog.Builder(this@MainActivity)
                             builder.setTitle("Verification")
                                 .setMessage("You are not register user yet,Some Details are missing ")
@@ -530,6 +556,7 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
                                 }
                             val dialog = builder.create()
                             dialog.show()
+                            }, 4000) // 4 seconds
 
                         }
                     }

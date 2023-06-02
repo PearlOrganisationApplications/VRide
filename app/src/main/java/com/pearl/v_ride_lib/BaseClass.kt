@@ -183,7 +183,7 @@ abstract  class BaseClass: AppCompatActivity() {
 
     protected fun setCustomErrorDisabled(mEditView: EditText) {
         mEditView.setError(null)
-        mEditView.setBackgroundResource(R.drawable.input_boder_profile)
+        mEditView.setBackgroundResource(R.drawable.empty_edt)
     }
 
     fun validateName(inputUser: EditText):Boolean{

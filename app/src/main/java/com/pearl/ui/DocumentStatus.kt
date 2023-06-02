@@ -268,7 +268,6 @@ class DocumentStatus : BaseClass() {
         addressProofIV = findViewById(R.id.doc_addressProofIV)
         addressProofTV = findViewById(R.id.doc_addressProofTV)
         submitAlreadyBT = findViewById(R.id.doc_submitAlreadyBT)
-
         resourcess = Global.language(this, resources)
 
         /* merchantanotherWorkingLL = findViewById(R.id.doc_merchantanotherWorkingLL)
@@ -295,6 +294,7 @@ class DocumentStatus : BaseClass() {
         apptitle.setText(R.string.document)
 
         dataList = mutableListOf()
+
         adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, dataList)
         merchantList.adapter = adapter
 
@@ -379,6 +379,7 @@ class DocumentStatus : BaseClass() {
                     id: Long
             ) {
                 selectedItem = parent.getItemAtPosition(position).toString()
+
 
                 Log.d("selectedItem", selectedItem)
                 // Do something with the selected item
@@ -869,8 +870,8 @@ class DocumentStatus : BaseClass() {
                                 doc_aadhar_showLess.visibility = View.GONE
                                 doc_aadhar_showMore.visibility = View.VISIBLE
                                 doc_aadharError.visibility = View.GONE
-                                doc_aadharOK.visibility = View.GONE
-                                doc_submitBankBt.visibility = View.GONE
+                                doc_aadharOK.visibility = View.VISIBLE
+                                doc_submitAdharBT.visibility = View.GONE
                                 adhadharF.isEnabled = false
 //            adhadharF.visibility = View.GONE
                                 adhadharR.isEnabled = false
@@ -1138,8 +1139,6 @@ class DocumentStatus : BaseClass() {
 
                             }
 
-                            checkBoxRV.layoutManager = GridLayoutManager(this@DocumentStatus, 2)
-                            checkBoxRV.adapter = adapterCheckBox
 
 
 
@@ -1205,6 +1204,7 @@ class DocumentStatus : BaseClass() {
                                  println(merchantId)
                              }*/
 //                            prefManager.setList(merchants as List<String>)
+/*
                             if (selectedMerchantIds.isNotEmpty()) {
                                 for (i in 0..selectedMerchantIds.size - 1) {
                                     if (i != merchants.size - 1){
@@ -1215,6 +1215,7 @@ class DocumentStatus : BaseClass() {
 
                                 }
                             }
+*/
 
 //                            prefManager.setIds("")
 //                            prefManager.setIds(list)
@@ -1227,6 +1228,8 @@ class DocumentStatus : BaseClass() {
                                 doc_merchant_showLess.visibility = View.GONE
                                 doc_merchant_showMore.visibility = View.VISIBLE
                                 doc_merchantOK.visibility = View.VISIBLE
+                                doc_submitMerchantBT.visibility = View.GONE
+
                             }, 4000) // 4 seconds
 
                         }
@@ -1376,7 +1379,7 @@ class DocumentStatus : BaseClass() {
                             addPan.isEnabled = false
                         }
 
-                        if (merchant != null) {
+//                        if (merchant != null) {
 
 //                            checkBox.text = merchant
                             /*  checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -1388,21 +1391,40 @@ class DocumentStatus : BaseClass() {
 //                            adapterCheckBox
 
 
-                        }
+//                        }
                         Log.d("profile", "" + profilePicUrl)
                         Log.d("profile", "$profile $otherDetails $merchants")
                         Log.d("merchantsQQ", "$merchants")
                         //prefManager.setList(merchant as List<String>)
                         Log.d("msg", "$message")
-                        if (merchants != null) {
-                            for (i in 0..merchants.size - 1) {
-                                if (i != merchants.size - 1)
-                                    list += merchants[i].id.toString() + ","
-                                else
-                                    list += merchants[i].id.toString()
+//                        if (merchants != null) {
+                            if (merchants?.isNotEmpty() == true) {
+                                merchantWorkingLL.visibility = View.GONE
+                                checkboxLL.visibility = View.VISIBLE
+                                for (i in 0..merchants.size - 1) {
+                                    if (i != merchants.size - 1)
+                                        list += merchants[i].id.toString() + ","
+                                    else
+                                        list += merchants[i].id.toString()
+                                }
+//                                merchants.toImmutableList()
+                                doc_submitMerchantBT.visibility = View.GONE
+                                doc_merchantError.visibility = View.GONE
+                                doc_merchantOK.visibility = View.VISIBLE
+
+
+                            }else{
+                              /*  merchantWorkingLL.visibility = View.VISIBLE
+                                checkboxLL.visibility = View.GONE
+                                doc_submitMerchantBT.visibility = View.VISIBLE
+                                doc_merchantError.visibility = View.VISIBLE
+                                doc_merchantOK.visibility = View.GONE*/
                             }
-                        }
+//                        }
                         prefManager.setIds(list)
+
+                        checkBoxRV.layoutManager = GridLayoutManager(this@DocumentStatus, 2)
+                        checkBoxRV.adapter = adapterCheckBox
 
 
                     } else {

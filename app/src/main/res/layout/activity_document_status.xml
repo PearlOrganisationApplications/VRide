@@ -383,8 +383,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
                             android:padding="@dimen/_5sdp"
-                            android:textColor="@color/white"
                             android:text="@string/current_address"
+                            android:textColor="@color/white"
                             android:textSize="@dimen/_18ssp" />
 
                         <ImageView
@@ -438,12 +438,14 @@
 
                         <EditText
                             android:id="@+id/doc_address"
+                            android:backgroundTint="@color/white"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10ssp"
                             android:hint="@string/address"
+                            android:textColorHint="@color/white"
                             android:imeOptions="actionNext"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:inputType="textPostalAddress"
                             android:maxLines="2" />
 
@@ -453,8 +455,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10ssp"
                             android:hint="@string/city"
+                            android:backgroundTint="@color/white"
+                            android:textColorHint="@color/white"
                             android:imeOptions="actionNext"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:inputType="textPostalAddress"
                             android:maxLines="1" />
 
@@ -468,6 +472,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:backgroundTint="@color/black"
+
                                 android:layout_gravity="center"
                                 android:layout_weight="1" />
 
@@ -476,9 +481,11 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:textColor="@color/black"
+                                android:textColor="@color/white"
                                 android:autofillHints="postalCode"
                                 android:hint="@string/pin_code"
+                                android:backgroundTint="@color/white"
+                                android:textColorHint="@color/white"
                                 android:imeOptions="actionDone"
                                 android:inputType="number"
                                 android:maxLength="6" />
@@ -743,7 +750,6 @@
                             android:id="@+id/doc_checkboxLL"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/card_bg"
                             android:orientation="vertical"
                             android:visibility="gone">
 
@@ -984,10 +990,12 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/pan_no"
+                                android:backgroundTint="@color/white"
+                                android:textColor="@color/white"
+                                android:textColorHint="@color/white"
                                 android:imeOptions="actionNext"
                                 android:inputType="textCapCharacters"
                                 android:maxLength="8"
-                                android:textColor="@color/black"
                                 android:minHeight="48dp" />
 
                             <EditText
@@ -998,7 +1006,9 @@
                                 android:imeOptions="actionDone"
                                 android:inputType="textPersonName"
                                 android:minHeight="48dp"
-                                android:textColor="@color/black"
+                                android:backgroundTint="@color/white"
+                                android:textColor="@color/white"
+                                android:textColorHint="@color/white"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/doc_panNoET" />
@@ -1152,6 +1162,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/bank_name"
+                                android:backgroundTint="@color/white"
+                                android:textColor="@color/white"
+                                android:textColorHint="@color/white"
                                 android:imeOptions="actionNext"
                                 android:inputType="textCapWords"
                                 android:minHeight="48dp" />
@@ -1159,6 +1172,9 @@
                             <EditText
                                 android:id="@+id/doc_accountNOET"
                                 android:layout_width="match_parent"
+                                android:backgroundTint="@color/white"
+                                android:textColor="@color/white"
+                                android:textColorHint="@color/white"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/please_enter_your_account_no"
                                 android:imeOptions="actionNext"
@@ -1173,6 +1189,9 @@
                                 android:id="@+id/doc_raccountNOET"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:backgroundTint="@color/white"
+                                android:textColor="@color/white"
+                                android:textColorHint="@color/white"
                                 android:hint="@string/renter_your_account_no"
                                 android:imeOptions="actionNext"
                                 android:inputType="text"
@@ -1185,6 +1204,9 @@
                                 android:id="@+id/doc_ifscCode"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:backgroundTint="@color/white"
+                                android:textColor="@color/white"
+                                android:textColorHint="@color/white"
                                 android:hint="@string/ifsc_code"
                                 android:imeOptions="actionDone"
                                 android:inputType="text"

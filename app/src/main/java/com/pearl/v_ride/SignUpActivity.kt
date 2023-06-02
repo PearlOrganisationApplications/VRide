@@ -5,6 +5,9 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -28,6 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class SignUpActivity : BaseClass() {
 
@@ -60,6 +64,7 @@ class SignUpActivity : BaseClass() {
     val prefix = "+91"
     var tkn = ""
     lateinit var credential: PhoneAuthCredential
+    private lateinit var loadingDialog: com.pearl.v_ride.Dialog
     override fun setLayoutXml() {
         setContentView(R.layout.activity_sign_up)
 //        checkSignUp()
@@ -78,6 +83,7 @@ class SignUpActivity : BaseClass() {
         signup_otpLL = findViewById(R.id.signup_otpLL)
         signup_otpVerifyBT = findViewById(R.id.signup_otpVerifyBT)
         prefManager = PrefManager(this)
+        loadingDialog = com.pearl.v_ride.Dialog(this)
 
 
 
@@ -100,6 +106,7 @@ class SignUpActivity : BaseClass() {
             full_name = sName.text.toString().trim()
             signup_dob = dob.text.toString().trim()
             Log.d("dob","$signup_dob,$phoneNumber, $full_name")
+            loadingDialog.startLoadingDialog()
             checkSignUp()
 
 
@@ -134,7 +141,7 @@ class SignUpActivity : BaseClass() {
    /*     if (sPhone.text.length == 10){
             signup_otpLL.visibility = View.VISIBLE
         }*/
-/*        sPhone.setOnFocusChangeListener { _, hasFocus ->
+       /* sPhone.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 if (!sPhone.text.startsWith(prefix)) {
                     sPhone.setText(prefix + sPhone.text)
@@ -145,8 +152,8 @@ class SignUpActivity : BaseClass() {
                 }
             }
         }*/
-
-        /*sPhone.addTextChangedListener(object : TextWatcher{
+        // for otp verification
+     /*   sPhone.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }
@@ -180,6 +187,7 @@ class SignUpActivity : BaseClass() {
             }
 
         })*/
+
 
         signup_otpVerifyBT.setOnClickListener {
 
@@ -382,7 +390,11 @@ class SignUpActivity : BaseClass() {
                         Log.d("tkn","$tkn")
                         if (validateName(sName) && validateNumber(sPhone) && validateDob(dob)) {
                             Log.d("STATUSCODE","$STATUSCODE")
+                            Handler().postDelayed({
+                                // After 4 seconds
+                                loadingDialog.dismissDialog()
                             startActivity(Intent(this@SignUpActivity, DocumentStatus::class.java))
+                            }, 4000) // 4 seconds
 
                         }
                     }
