@@ -16,6 +16,7 @@ RecyclerView.Adapter<AttendanceAdapter.MyItemViewHolder>()
     class MyItemViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
         val inTime = itemView.findViewById<TextView>(R.id.inTime)
         val outTime = itemView.findViewById<TextView>(R.id.outTime)
+
         val calDate = itemView.findViewById<TextView>(R.id.calenderDate)
         val statusIV = itemView.findViewById<ImageView>(R.id.attendanceStatus)
     }

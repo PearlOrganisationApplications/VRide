@@ -17,6 +17,7 @@ class CheckboxAdapter(private  val context: Context,private val merchantList: Ar
     private val selectedMerchants = HashMap<Int, Merchant>()
     lateinit var pref: PrefManager
 
+
     /*val list = pref.getIds()
     */
     lateinit var list: List<String>
