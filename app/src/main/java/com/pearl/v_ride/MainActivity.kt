@@ -99,6 +99,7 @@ class MainActivity : BaseClass() {
 
     }
 
+
     @SuppressLint("SuspiciousIndentation")
     override fun initializeClickListners() {
 
