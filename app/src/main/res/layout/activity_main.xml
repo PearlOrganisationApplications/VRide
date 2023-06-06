@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/background_combo"
+    android:background="@color/background_combo2"
     android:layout_height="match_parent"
     android:orientation="vertical"
    >
@@ -60,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:background="@color/card_bg"
+                android:background="@color/card_bg2"
                 android:padding="10dp">
 
 
@@ -86,6 +86,7 @@
                         android:layout_height="wrap_content"
                         android:paddingStart="@dimen/_10ssp"
                         android:gravity="center"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_15ssp"
                         android:text="+91"/>
                     <EditText
@@ -93,7 +94,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/empty_edt"
-                        android:drawableEnd="@drawable/ic_person"
+                        android:drawableEnd="@drawable/ic_baseline_phone_"
                         android:drawablePadding="8dp"
                         android:hint="@string/mobile_no"
                         android:maxLength="10"
@@ -196,6 +197,7 @@
 
                                 </LinearLayout>
                 -->
+
                 <!--
                                 <LinearLayout
                                     android:id="@+id/ll_number"
@@ -230,30 +232,29 @@
                                 </LinearLayout>
                 -->
 
+                <!--               <EditText
+                   android:id="@+id/passwordET"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="20dp"
+                   android:background="@drawable/custom_edittext"
+                   android:drawableLeft="@drawable/ic_baseline_lock"
+                   android:drawablePadding="8dp"
+                   android:hint="password"
+                   android:inputType="textPassword"
+                   android:minHeight="48dp"
+                   android:padding="8dp" />
 
- <!--               <EditText
-                    android:id="@+id/passwordET"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/custom_edittext"
-                    android:drawableLeft="@drawable/ic_baseline_lock"
-                    android:drawablePadding="8dp"
-                    android:hint="password"
-                    android:inputType="textPassword"
-                    android:minHeight="48dp"
-                    android:padding="8dp" />
 
-
-                <TextView
-                    android:id="@+id/forgotPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="end"
-                    android:text="Forgot Password?"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />-->
+               <TextView
+                   android:id="@+id/forgotPassword"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="10dp"
+                   android:gravity="end"
+                   android:text="Forgot Password?"
+                   android:textColor="@color/black"
+                   android:textStyle="bold" />-->
 
 
                 <Button

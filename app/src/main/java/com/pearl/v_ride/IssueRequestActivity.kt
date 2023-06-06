@@ -43,14 +43,18 @@ class IssueRequestActivity : AppCompatActivity() {
     lateinit var setImageIV: ImageView
     lateinit var requestTV: TextView
     lateinit var descriptionET: EditText
+    lateinit var subjectET: EditText
     lateinit var subjectTIL: TextInputLayout
     lateinit var issue_submit: Button
     lateinit var prefManager: PrefManager
     private lateinit var loadingDialog: Dialog
+    var subject = ""
+    var description = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         prefManager = PrefManager(this)
+        loadingDialog = Dialog(this)
         setContentView(R.layout.activity_issue_request)
         resourcess = Global.language(this,resources)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_issue_request)
@@ -64,11 +68,14 @@ class IssueRequestActivity : AppCompatActivity() {
         subjectTIL = findViewById(R.id.subjectTIL)
         issue_submit = findViewById(R.id.issue_submit)
         descriptionET = findViewById(R.id.descriptionET)
+        subjectET = findViewById(R.id.subjectET)
         apptitle.setText(R.string.service_request)
         ivback.setOnClickListener {
             onBackPressed()
         }
         issue_submit.setOnClickListener {
+            subject = subjectET.text.toString()
+            description = descriptionET.text.toString()
             loadingDialog.startLoadingDialog()
             issueRequest()
         }
@@ -99,8 +106,8 @@ class IssueRequestActivity : AppCompatActivity() {
             .build()
 
         val requestData = ServiceRequestData(
-            request_name = "Dehradoon",
-            description = "dehradoon"
+            request_name = subject,
+            description = description
         )
 
         val token = prefManager.getToken()
@@ -119,6 +126,8 @@ class IssueRequestActivity : AppCompatActivity() {
                         // Handle the success case
                         Handler().postDelayed({
                             // After 4 seconds
+                            subjectET.text.clear()
+                            descriptionET.text.clear()
                             loadingDialog.dismissDialog()
 
                         }, 4000) // 4 seconds

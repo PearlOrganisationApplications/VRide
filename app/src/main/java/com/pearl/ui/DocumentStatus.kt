@@ -1361,6 +1361,7 @@ class DocumentStatus : BaseClass() {
                             Log.d("isAdharcard", isAdharcard.toString())
                         } else {
                             doc_adharNoET.setText("")
+                            doc_adharNoET.isEnabled = true
                         }
                         if (profile != null) {
                             isSelfie = true
@@ -1411,7 +1412,7 @@ class DocumentStatus : BaseClass() {
                                 doc_submitMerchantBT.visibility = View.GONE
                                 doc_merchantError.visibility = View.GONE
                                 doc_merchantOK.visibility = View.VISIBLE
-
+                                checkboxLL.isClickable = false
 
                             }else{
                               /*  merchantWorkingLL.visibility = View.VISIBLE

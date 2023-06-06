@@ -147,7 +147,7 @@
                     android:outlineAmbientShadowColor="@color/black"
                     app:cardCornerRadius="12dp"
                     app:cardElevation="8dp"
-                    app:cardBackgroundColor="#F8E0B6"
+                    app:cardBackgroundColor="@color/background_combo"
                     app:cardPreventCornerOverlap="true"
                     app:cardUseCompatPadding="true">
                     <LinearLayout

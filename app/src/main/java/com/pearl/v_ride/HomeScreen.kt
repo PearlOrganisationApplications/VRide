@@ -377,9 +377,9 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         }
 
         monthlyCal.setOnClickListener {
-            calendarRV.visibility = View.VISIBLE
+          /*  calendarRV.visibility = View.VISIBLE
             hideCalendar.visibility = View.VISIBLE
-            monthlyCal.visibility = View.GONE
+            monthlyCal.visibility = View.GONE*/
         }
         hideCalendar.setOnClickListener {
             calendarRV.visibility = View.GONE

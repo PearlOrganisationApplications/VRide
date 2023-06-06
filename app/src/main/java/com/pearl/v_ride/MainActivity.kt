@@ -78,7 +78,7 @@ class MainActivity : BaseClass() {
 
     override fun setLayoutXml() {
         setContentView(R.layout.activity_main)
-
+        prefManager = PrefManager(this)
     }
 
     override fun initializeViews() {
@@ -214,13 +214,8 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val isConnected = isNetworkConnected(this.applicationContext)
-
-
-
-
         setLayoutXml()
-        prefManager = PrefManager(this)
+        val isConnected = isNetworkConnected(this.applicationContext)
         initializeViews()
         initializeClickListners()
         initializeInputs()
@@ -525,7 +520,7 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
 
                         }*/
 
-                        else if(createdUser?.signin.equals("1") && createdUser?.profile.equals( "1") && createdUser?.verification.equals("0") ){
+                        else if(createdUser?.signin.equals("1") && createdUser?.profile.equals( "2") && createdUser?.verification.equals("0") ){
                             // validation page
                            /* Log.d("status123 " ,"${createdUser?.profile}")
                             phoneNumber = "+91$phoneNumber"
@@ -540,7 +535,7 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
                             Handler().postDelayed({
                                 // After 4 seconds
                                 loadingDialog.dismissDialog()
-                            startActivity(Intent(this@MainActivity,HomeScreen::class.java))
+                            startActivity(Intent(this@MainActivity,VerificationActivity::class.java))
                             finish()
                         }, 4000) // 4 seconds
                         }else  {

@@ -50,7 +50,6 @@
                     android:textOn=""
                     android:textOff=""/>-->
 
-
              <!--   <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/customSwitch"
                     android:layout_width="wrap_content"
@@ -69,6 +68,7 @@
                     app:trackTint="@color/green"
                     app:trackTintMode="screen"
                     app:track="@drawable/track" />-->
+
                 <androidx.cardview.widget.CardView
                     android:layout_width="@dimen/_82sdp"
                     android:layout_gravity="end"
@@ -433,7 +433,7 @@
                    </LinearLayout>
 
                    <androidx.recyclerview.widget.RecyclerView
-                       android:visibility="gone"
+                       android:visibility="visible"
                        android:layout_width="match_parent"
                        android:layout_height="wrap_content"
                        android:id="@+id/calenderRV"/>

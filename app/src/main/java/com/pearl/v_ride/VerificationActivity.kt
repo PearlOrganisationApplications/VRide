@@ -15,6 +15,7 @@ class VerificationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_verification)
+        supportActionBar?.height
         var number = findViewById<LinearLayout>(R.id.call_us)
         var email = findViewById<LinearLayout>(R.id.email_us)
         var exit = findViewById<Button>(R.id.exit)

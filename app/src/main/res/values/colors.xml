@@ -15,12 +15,14 @@
     <color name="pie_chart">#2DB83D</color>
     <color name="lite_blue">#0498DC</color>
     <color name="color_secondary2">#B4BF75</color>
-    <color name="card_bg">#EFEADD</color>
+    <color name="card_bg">#99CD9B</color>
+    <color name="background_combo2">#FAEBD7</color>
     <color name="text_color">#222020</color>
-    <color name="background_combo">#FAEBD7</color>
+    <color name="background_combo">#E8F5E4</color>
     <!--<color name="text_color">#096E0A</color>-->
 
     <color name="yellow">#FFEB3B</color>
+    <color name="card_bg2">#EFEADD</color>
     <color name="red">#F44336</color>
     <color name="green">#11F11A</color>
 </resources>

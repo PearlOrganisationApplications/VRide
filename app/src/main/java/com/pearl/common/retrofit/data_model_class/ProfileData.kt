@@ -27,7 +27,6 @@ data class Profile(
 )
 
 data class OtherDetails(
-
     @SerializedName("bank_name") val bankName: String?,
     @SerializedName("account_no") val accountNo: String?,
     @SerializedName("ifsc_code") val ifscCode: String?,
