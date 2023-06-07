@@ -47,33 +47,36 @@ class MainActivity : BaseClass() {
         private const val RC_SIGN_IN = 1
         private const val TAG = "GOOGLEAUTH"
     }
+
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var mAuth: FirebaseAuth
     private lateinit var dialog: Dialog
     lateinit var gooleSignIn: SignInButton
-//    lateinit var forgotPassword: TextView
+
+    //    lateinit var forgotPassword: TextView
     lateinit var signup: TextView
     lateinit var login: Button
     private val REQUEST_CODE = 101
-    private lateinit var usrID:EditText
-    private lateinit var progressBar:ProgressBar
-    var storedVerificationId=""
+    private lateinit var usrID: EditText
+    private lateinit var progressBar: ProgressBar
+    var storedVerificationId = ""
 
-   /* lateinit var verify: Button
-    lateinit var cancel: ImageView*/
+    /* lateinit var verify: Button
+     lateinit var cancel: ImageView*/
     lateinit var loginOtp: EditText
     lateinit var otpBt: Button
     lateinit var prefManager: PrefManager
-//    private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
+
+    //    private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
     private lateinit var phoneNumber: String
     var verifyOTP = ""
     var otpCode = ""
     var vOTP = ""
-    lateinit var credential:PhoneAuthCredential
+    lateinit var credential: PhoneAuthCredential
     lateinit var resentToken: PhoneAuthProvider.ForceResendingToken
     lateinit var resend_otp: TextView
-    lateinit var view_timer:TextView
-    lateinit var cTimer:CountDownTimer
+    lateinit var view_timer: TextView
+    lateinit var cTimer: CountDownTimer
     private lateinit var loadingDialog: com.pearl.v_ride.Dialog
 
     override fun setLayoutXml() {
@@ -93,7 +96,7 @@ class MainActivity : BaseClass() {
         phoneNumber = usrID.text.toString()
         progressBar = findViewById(R.id.progressBar)
         resend_otp = findViewById(R.id.resend_otp)
-        view_timer=findViewById(R.id.view_timer)
+        view_timer = findViewById(R.id.view_timer)
         loadingDialog = com.pearl.v_ride.Dialog(this)
 //        checkLogin()
 
@@ -103,9 +106,9 @@ class MainActivity : BaseClass() {
     @SuppressLint("SuspiciousIndentation")
     override fun initializeClickListners() {
 
-           gooleSignIn.setOnClickListener {
-               signIn()
-           }
+        gooleSignIn.setOnClickListener {
+            signIn()
+        }
         signup.setOnClickListener {
             startActivity(Intent(this@MainActivity, SignUpActivity::class.java))
 //            finish()
@@ -113,53 +116,53 @@ class MainActivity : BaseClass() {
 
 
 
-            otpBt.setOnClickListener {
+        otpBt.setOnClickListener {
 
-                phoneNumber = usrID.text.toString().trim()
+            phoneNumber = usrID.text.toString().trim()
 //                if(validateNumber(usrID)) {
 
 
-                    if (validateNumber(usrID)) {
+            if (validateNumber(usrID)) {
 //                        startPhoneNumberVerification("+918979441470")
-                     /*   loginOtp.visibility = View.VISIBLE
-                        login.visibility = View.VISIBLE
-                        otpBt.visibility = View.GONE*/
+                /*   loginOtp.visibility = View.VISIBLE
+                   login.visibility = View.VISIBLE
+                   otpBt.visibility = View.GONE*/
 
-                        if (phoneNumber.length == 10){
-                            if(phoneNumber == "1234567890" /*||phoneNumber == "1122334455"*/){
+                if (phoneNumber.length == 10) {
+                    if (phoneNumber == "1234567890" /*||phoneNumber == "1122334455"*/) {
 
-                                view_timer.visibility = View.VISIBLE
-                                phoneNumber = "+91$phoneNumber"
-                                progressBar.visibility = View.VISIBLE
+                        view_timer.visibility = View.VISIBLE
+                        phoneNumber = "+91$phoneNumber"
+                        progressBar.visibility = View.VISIBLE
 //                                loadingDialog.startLoadingDialog()
 
 //                                Handler(Looper.getMainLooper()).postDelayed({
 //                                    loadingDialog.dismissDialog()
 
-                                val options = PhoneAuthOptions.newBuilder(mAuth)
-                                    .setPhoneNumber(phoneNumber) // Phone number to verify
-                                    .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-                                    .setActivity(this@MainActivity) // Activity (for callback binding)
-                                    .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
-                                    .build()
-                                PhoneAuthProvider.verifyPhoneNumber(options)
-                              startTimer()
+                        val options = PhoneAuthOptions.newBuilder(mAuth)
+                                .setPhoneNumber(phoneNumber) // Phone number to verify
+                                .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                                .setActivity(this@MainActivity) // Activity (for callback binding)
+                                .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
+                                .build()
+                        PhoneAuthProvider.verifyPhoneNumber(options)
+                        startTimer()
 //                                },2500)
 //                                checkLogin()
-                            }else {
-                                loadingDialog.startLoadingDialog()
-                                checkLogin()
-                            }
-                        }else{
-                            Toast.makeText(this,"please Enter correct no",Toast.LENGTH_SHORT).show()
-                        }
-
+                    } else {
+                        loadingDialog.startLoadingDialog()
+                        checkLogin()
                     }
+                } else {
+                    Toast.makeText(this, "please Enter correct no", Toast.LENGTH_SHORT).show()
+                }
+
+            }
 //                startTimer()
 //            }
         }
 
-        if(::resentToken.isInitialized) {
+        if (::resentToken.isInitialized) {
             resend_otp.setOnClickListener {
                 loginOtp.visibility = View.VISIBLE
 
@@ -167,7 +170,7 @@ class MainActivity : BaseClass() {
                 startTimer()
                 resentTVVisibility()
             }
-        }else{
+        } else {
             resend_otp.visibility = View.GONE
         }
 
@@ -176,20 +179,19 @@ class MainActivity : BaseClass() {
 
             otpCode = loginOtp.getText().toString()
             if (otpCode.isNotEmpty()) {
-                if (otpCode.length == 6){
+                if (otpCode.length == 6) {
                     credential = PhoneAuthProvider.getCredential(verifyOTP, otpCode)
                     vOTP = verifyOTP
-Log.d("OTPOTP",verifyOTP+"  "+otpCode)
-                    if (vOTP == verifyOTP)  {
+                    Log.d("OTPOTP", verifyOTP + "  " + otpCode)
+                    if (vOTP == verifyOTP) {
 //                        Toast.makeText(this@MainActivity, "Please enter correct 1 OTP", Toast.LENGTH_SHORT).show()
                         progressBar.visibility = View.VISIBLE
                         loginOtp.visibility = View.GONE
                         signInWithPhoneAuthCredential(credential)
-                    }
-                    else{
+                    } else {
                         Toast.makeText(this@MainActivity, "Please enter correct OTP", Toast.LENGTH_SHORT).show()
                     }
-                }else{
+                } else {
                     Toast.makeText(this@MainActivity, "Please enter 6 digits OTP", Toast.LENGTH_SHORT).show()
                 }
             } else {
@@ -197,7 +199,6 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
             }
 
 //             startActivity(Intent(this,HomeScreen::class.java))
-
 
 
         }
@@ -226,52 +227,51 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
 
 //        validateNumber+
 
-        if(!isConnected){
+        if (!isConnected) {
 
             val alertDialog2: AlertDialog.Builder = AlertDialog.Builder(
-                this@MainActivity
+                    this@MainActivity
             )
             alertDialog2.setTitle("No Internet Connection")
             alertDialog2.setPositiveButton("Try Again",
-                DialogInterface.OnClickListener { dialog, which ->
-                    val intent = intent
-                    finish()
-                    startActivity(intent)
-                })
+                    DialogInterface.OnClickListener { dialog, which ->
+                        val intent = intent
+                        finish()
+                        startActivity(intent)
+                    })
             alertDialog2.setNegativeButton("Cancel",
-                DialogInterface.OnClickListener { dialog, which ->
-                    dialog.cancel()
-                    finishAffinity()
-                    System.exit(0)
-                })
+                    DialogInterface.OnClickListener { dialog, which ->
+                        dialog.cancel()
+                        finishAffinity()
+                        System.exit(0)
+                    })
             alertDialog2.setCancelable(false)
             alertDialog2.show()
 
         }
 
 
-
-            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build()
-            mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
-            dialog = Dialog(this)
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            dialog.setContentView(R.layout.dialog_wait)
-            dialog.setCanceledOnTouchOutside(false)
-        }
-
-
-
-
-    private fun validateForm(){
+        dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_wait)
+        dialog.setCanceledOnTouchOutside(false)
     }
+
+
+    private fun validateForm() {
+    }
+
     private fun signIn() {
         val signInIntent = mGoogleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -296,21 +296,22 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
     private fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         mAuth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
 // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithCredential:success")
-                    val user = mAuth.currentUser
-                    val i = Intent(this@MainActivity, DocumentActivity::class.java)
-                    startActivity(i)
-                    finish()
-                    dialog.dismiss()
-                    dialog.dismiss()
-                    Toast.makeText(this@MainActivity, "Login failed", Toast.LENGTH_SHORT).show()
-                }
+                        Log.d(TAG, "signInWithCredential:success")
+                        val user = mAuth.currentUser
+                        val i = Intent(this@MainActivity, DocumentActivity::class.java)
+                        startActivity(i)
+                        finish()
+                        dialog.dismiss()
+                        dialog.dismiss()
+                        Toast.makeText(this@MainActivity, "Login failed", Toast.LENGTH_SHORT).show()
+                    }
 
-            }
+                }
     }
+
     private var doubleBackToExitPressedOnce = false
     override fun onBackPressed() {
         if (doubleBackToExitPressedOnce) {
@@ -324,7 +325,7 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
         Handler(Looper.getMainLooper()).postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
     }
 
-   private val callbacks = object: PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+    private val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
         override fun onVerificationCompleted(credential: PhoneAuthCredential) {
             // This callback will be invoked in two situations:
@@ -342,10 +343,10 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
 
             if (e is FirebaseAuthInvalidCredentialsException) {
                 // Invalid request
-                Log.d("TAG","verificationFailed ${e.toString()}")
+                Log.d("TAG", "verificationFailed ${e.toString()}")
             } else if (e is FirebaseTooManyRequestsException) {
                 // The SMS quota for the project has been exceeded
-                Log.d("TAG","FirebaseTooManyRequestsException ${e.toString()}")
+                Log.d("TAG", "FirebaseTooManyRequestsException ${e.toString()}")
             } else if (e is FirebaseAuthMissingActivityForRecaptchaException) {
                 // reCAPTCHA verification attempted with null Activity
             }
@@ -354,8 +355,8 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
         }
 
         override fun onCodeSent(
-            verificationId: String,
-            token: PhoneAuthProvider.ForceResendingToken,
+                verificationId: String,
+                token: PhoneAuthProvider.ForceResendingToken,
         ) {
             // The SMS verification code has been sent to the provided phone number, we
             // now need to ask the user to enter the code and then construct a credential
@@ -366,65 +367,67 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
             otpBt.visibility = View.GONE
             resend_otp.visibility = View.VISIBLE
             progressBar.visibility = View.GONE
-            verifyOTP =  verificationId
-            vOTP =  verificationId
+            verifyOTP = verificationId
+            vOTP = verificationId
             resentToken = token
 
 
             // Save verification ID and resending token so we can use them later
-     /*       storedVerificationId = verificationId
-            resendToken = token*/
+            /*       storedVerificationId = verificationId
+                   resendToken = token*/
         }
     }
 
     override fun onStart() {
         super.onStart()
-        if (mAuth.currentUser != null){
-            startActivity(Intent(this@MainActivity,HomeScreen::class.java))
+        if (mAuth.currentUser != null) {
+            startActivity(Intent(this@MainActivity, HomeScreen::class.java))
         }
     }
+
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
         mAuth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
 
-                    startActivity(Intent(this@MainActivity, HomeScreen::class.java))
-                    finish()
-                    val user = task.result?.user
-                } else {
-                    // Sign in failed, display a message and update the UI
-                    if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                        // The verification code entered was invalid
+                        startActivity(Intent(this@MainActivity, HomeScreen::class.java))
+                        finish()
+                        val user = task.result?.user
+                    } else {
+                        // Sign in failed, display a message and update the UI
+                        if (task.exception is FirebaseAuthInvalidCredentialsException) {
+                            // The verification code entered was invalid
+                        }
+                        // Update UI
                     }
-                    // Update UI
+                    progressBar.visibility = View.VISIBLE
                 }
-                progressBar.visibility = View.VISIBLE
-            }
     }
 
-    private fun resentOtp(){
+    private fun resentOtp() {
         val options = PhoneAuthOptions.newBuilder(mAuth)
-            .setPhoneNumber(phoneNumber) // Phone number to verify
-            .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-            .setActivity(this) // Activity (for callback binding)
-            .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
-            .setForceResendingToken(resentToken)
-            .build()
+                .setPhoneNumber(phoneNumber) // Phone number to verify
+                .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                .setActivity(this) // Activity (for callback binding)
+                .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
+                .setForceResendingToken(resentToken)
+                .build()
         PhoneAuthProvider.verifyPhoneNumber(options)
     }
 
-    private fun resentTVVisibility(){
+    private fun resentTVVisibility() {
         loginOtp.setText("")
-        resend_otp.visibility =View.GONE
+        resend_otp.visibility = View.GONE
         resend_otp.isEnabled = false
 
         Handler(Looper.myLooper()!!).postDelayed(
-            Runnable {
-                resend_otp.visibility = View.VISIBLE
-                resend_otp.isEnabled = true
-        },60000)
+                Runnable {
+                    resend_otp.visibility = View.VISIBLE
+                    resend_otp.isEnabled = true
+                }, 60000)
     }
+
     fun startTimer() {
 
         cTimer = object : CountDownTimer(60000, 1000) {
@@ -434,7 +437,7 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
 
             override fun onFinish() {
                 view_timer.setText("Re send OTP!")
-                resend_otp.visibility=View.VISIBLE
+                resend_otp.visibility = View.VISIBLE
 
             }
         }
@@ -453,145 +456,141 @@ Log.d("OTPOTP",verifyOTP+"  "+otpCode)
         }
     }*/
 
-    fun checkLogin(){
-     /*   if(phoneNumber == "")
-        {
-            Toast.makeText(this,"Please Enter Name",Toast.LENGTH_SHORT).show()
-        }else{*/
-    val retrofit = Retrofit.Builder()
-        .baseUrl(Global.baseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-            val userService  = retrofit.create(LoginApi::class.java)
-    val parameters = mapOf("mobileNo" to phoneNumber)
-            val call = userService.addUser(parameters)
-            call.enqueue(object : Callback<LoginInfo> {
-                override fun onResponse(call: Call<LoginInfo>, response: Response<LoginInfo>) {
-                    val createdUser = response.body()
-                    if (response.isSuccessful) {
+    fun checkLogin() {
+        /*   if(phoneNumber == "")
+           {
+               Toast.makeText(this,"Please Enter Name",Toast.LENGTH_SHORT).show()
+           }else{*/
+        val retrofit = Retrofit.Builder()
+                .baseUrl(Global.baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        val userService = retrofit.create(LoginApi::class.java)
+        val parameters = mapOf("mobileNo" to phoneNumber)
+        val call = userService.addUser(parameters)
+        call.enqueue(object : Callback<LoginInfo> {
+            override fun onResponse(call: Call<LoginInfo>, response: Response<LoginInfo>) {
+                val createdUser = response.body()
+                if (response.isSuccessful) {
 
-                        Log.d("ResponseLogin ",createdUser.toString())
-                        // Handle the created user object
-                        prefManager.setToken(response.body()?.token.toString())
-                        if(createdUser?.signin.equals("0") ){
-                            // sign in
-                            Handler().postDelayed({
-                                // After 4 seconds
-                                loadingDialog.dismissDialog()
+                    Log.d("ResponseLogin ", createdUser.toString())
+                    // Handle the created user object
+                    prefManager.setToken(response.body()?.token.toString())
+                    if (createdUser?.signin.equals("0")) {
+                        // sign in
+                        Handler().postDelayed({
+                            // After 4 seconds
+                            loadingDialog.dismissDialog()
                             val builder = AlertDialog.Builder(this@MainActivity)
                             builder.setTitle("Signup")
-                                .setMessage("You are not register user, SignIn first")
-                                .setPositiveButton("ok") { dialog, _ ->
-                                    dialog.dismiss()
-                                    startActivity(Intent(this@MainActivity,SignUpActivity::class.java))
-                                }
+                                    .setMessage("You are not register user, SignIn first")
+                                    .setPositiveButton("ok") { dialog, _ ->
+                                        dialog.dismiss()
+                                        startActivity(Intent(this@MainActivity, SignUpActivity::class.java))
+                                    }
                             val dialog = builder.create()
                             dialog.show()
                         }, 4000) // 4 seconds
-                        }else if(createdUser?.signin.equals("1") && createdUser?.profile.equals( "-4") && createdUser?.verification.equals("0") ){
-                            // profile no
-                            Log.d("status1 " ,"${createdUser?.profile}")
-                            Handler().postDelayed({
-                                // After 4 seconds
-                                loadingDialog.dismissDialog()
+                    } else if (createdUser?.signin.equals("1") && createdUser?.profile.equals("-4") && createdUser?.verification.equals("0")) {
+                        // profile no
+                        Log.d("status1 ", "${createdUser?.profile}")
+                        Handler().postDelayed({
+                            // After 4 seconds
+                            loadingDialog.dismissDialog()
                             val builder = AlertDialog.Builder(this@MainActivity)
                             builder.setTitle("Profile Details")
-                                .setMessage("You are not register user, fill verification form first")
-                                .setPositiveButton("ok") { dialog, _ ->
-                                    dialog.dismiss()
-                                    startActivity(Intent(this@MainActivity,DocumentStatus::class.java))
-                                }
+                                    .setMessage("You are not register user, fill verification form first")
+                                    .setPositiveButton("ok") { dialog, _ ->
+                                        dialog.dismiss()
+                                        startActivity(Intent(this@MainActivity, DocumentStatus::class.java))
+                                    }
                             val dialog = builder.create()
                             dialog.show()
-                            }, 4000) // 4 seconds
-                        }
+                        }, 4000) // 4 seconds
+                    }
 
-                        /*else if(createdUser?.signin.equals("1") && createdUser?.profile.equals( "0") && createdUser?.verification.equals("0") ){
-                            // only profile 1
-                            val builder = AlertDialog.Builder(this@MainActivity)
-                            builder.setTitle("Error")
-                                .setMessage("You are not register user, fill verification form first")
-                                .setPositiveButton("ok") { dialog, _ ->
-                                    dialog.dismiss()
-                                    startActivity(Intent(this@MainActivity,DocumentActivity::class.java).putExtra("key",1))
-                                }
-                            val dialog = builder.create()
-                            dialog.show()
+                    /*else if(createdUser?.signin.equals("1") && createdUser?.profile.equals( "0") && createdUser?.verification.equals("0") ){
+                        // only profile 1
+                        val builder = AlertDialog.Builder(this@MainActivity)
+                        builder.setTitle("Error")
+                            .setMessage("You are not register user, fill verification form first")
+                            .setPositiveButton("ok") { dialog, _ ->
+                                dialog.dismiss()
+                                startActivity(Intent(this@MainActivity,DocumentActivity::class.java).putExtra("key",1))
+                            }
+                        val dialog = builder.create()
+                        dialog.show()
 
-                        }*/
-
-                        else if(createdUser?.signin.equals("1") && createdUser?.profile.equals( "2") && createdUser?.verification.equals("0") ){
-                            // validation page
-                           /* Log.d("status123 " ,"${createdUser?.profile}")
-                            phoneNumber = "+91$phoneNumber"
-                            progressBar.visibility = View.VISIBLE
-                            val options = PhoneAuthOptions.newBuilder(mAuth)
-                                .setPhoneNumber(phoneNumber) // Phone number to verify
-                                .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-                                .setActivity(this@MainActivity) // Activity (for callback binding)
-                                .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
-                                .build()
-                            PhoneAuthProvider.verifyPhoneNumber(options)*/
-                            Handler().postDelayed({
-                                // After 4 seconds
-                                loadingDialog.dismissDialog()
-                            startActivity(Intent(this@MainActivity,VerificationActivity::class.java))
+                    }*/
+                    else if (createdUser?.signin.equals("1") && createdUser?.profile.equals("2") || createdUser?.profile.equals("1") && createdUser?.verification.equals("0")) {
+                        // validation page
+                        /* Log.d("status123 " ,"${createdUser?.profile}")
+                         phoneNumber = "+91$phoneNumber"
+                         progressBar.visibility = View.VISIBLE
+                         val options = PhoneAuthOptions.newBuilder(mAuth)
+                             .setPhoneNumber(phoneNumber) // Phone number to verify
+                             .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                             .setActivity(this@MainActivity) // Activity (for callback binding)
+                             .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
+                             .build()
+                         PhoneAuthProvider.verifyPhoneNumber(options)*/
+                        Handler().postDelayed({
+                            // After 4 seconds
+                            loadingDialog.dismissDialog()
+                            startActivity(Intent(this@MainActivity, VerificationActivity::class.java))
                             finish()
                         }, 4000) // 4 seconds
-                        }else  {
-                            //profile 2
-                            Log.d("status12 " ,"${createdUser?.profile}")
-                            Handler().postDelayed({
-                                // After 4 seconds
-                                loadingDialog.dismissDialog()
+                    } else {
+                        //profile 2
+                        Log.d("status12 ", "${createdUser?.profile}")
+                        Handler().postDelayed({
+                            // After 4 seconds
+                            loadingDialog.dismissDialog()
                             val builder = AlertDialog.Builder(this@MainActivity)
-                            builder.setTitle("Verification")
-                                .setMessage("You are not register user yet,Some Details are missing ")
-                                .setPositiveButton("ok") { dialog, _ ->
-                                    dialog.dismiss()
-                                    startActivity(Intent(this@MainActivity,DocumentStatus::class.java))
-                                }
+                            builder.setTitle("Document Details")
+                                    .setMessage("Some Details are missing,\n please fill registration from first ")
+                                    .setPositiveButton("ok") { dialog, _ ->
+                                        dialog.dismiss()
+                                        startActivity(Intent(this@MainActivity, DocumentStatus::class.java))
+                                    }
                             val dialog = builder.create()
                             dialog.show()
-                            }, 4000) // 4 seconds
+                        }, 4000) // 4 seconds
 
-                        }
-                    }
-                    if (createdUser?.signin.equals("1") && createdUser?.profile.equals("1") && createdUser?.verification.equals("1")) {
-                        // Handle the error response
-                        Log.d("ElseLogin ","t.toString()")
-                        val errorResponseCode = response.code()
-                        val errorResponseBody = response.errorBody()?.string()
-                        // Handle the error response code and body
-                        Log.e("API Error", "Response Code: $errorResponseCode, Body: $errorResponseBody")
-                        // Show a generic error message to the user
-                        showErrorDialog("An error occurred. Please try again later.","OK")
                     }
                 }
-
-                override fun onFailure(call: Call<LoginInfo>, t: Throwable) {
-                    Log.d("ErrorLogin ", t.toString())
-                    // Handle the network error
-                    if (t is IOException) {
-                        // Network error occurred
-                        Log.e("API Error", "Network error occurred", t)
-                        // Show a generic network error message to the user
-                        showErrorDialog("Network error. Please check your internet connection.","OK")
-                    } else {
-                        // Other types of errors occurred
-                        Log.e("API Error", "Error occurred", t)
-                        // Show a generic error message to the user
-                        showErrorDialog("An error occurred. Please try again later.","OK")
-                    }
+                if (createdUser?.signin.equals("1") && createdUser?.profile.equals("1") && createdUser?.verification.equals("1")) {
+                    // Handle the error response
+                    Log.d("ElseLogin ", "t.toString()")
+                    val errorResponseCode = response.code()
+                    val errorResponseBody = response.errorBody()?.string()
+                    // Handle the error response code and body
+                    Log.e("API Error", "Response Code: $errorResponseCode, Body: $errorResponseBody")
+                    // Show a generic error message to the user
+                    showErrorDialog("An error occurred. Please try again later.", "OK")
                 }
-            })
+            }
+
+            override fun onFailure(call: Call<LoginInfo>, t: Throwable) {
+                Log.d("ErrorLogin ", t.toString())
+                // Handle the network error
+                if (t is IOException) {
+                    // Network error occurred
+                    Log.e("API Error", "Network error occurred", t)
+                    // Show a generic network error message to the user
+                    showErrorDialog("Network error. Please check your internet connection.", "OK")
+                } else {
+                    // Other types of errors occurred
+                    Log.e("API Error", "Error occurred", t)
+                    // Show a generic error message to the user
+                    showErrorDialog("An error occurred. Please try again later.", "OK")
+                }
+            }
+        })
 
     }
 
 }
-
-
-
 
 
 /* override fun onRequestPermissionsResult(

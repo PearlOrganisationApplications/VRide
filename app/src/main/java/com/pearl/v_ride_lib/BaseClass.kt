@@ -21,6 +21,7 @@ import android.view.inputmethod.InputMethodManager
 import android.webkit.MimeTypeMap
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -204,6 +205,59 @@ abstract  class BaseClass: AppCompatActivity() {
         }
 
     }
+    fun validateBankName(inputUser: EditText):Boolean{
+        val bankName = inputUser.text.toString()
+        System.out.println("NAMEE==="+bankName)
+        setCustomError(null, inputUser)
+        return if (bankName.isEmpty()) {
+            val sMessage = "Please enter bank name..!!"
+            setCustomError(sMessage, inputUser)
+            false
+        } else if (bankName.length < 4) {
+            val sMessage = "Please enter full name of bank!!"
+            setCustomError(sMessage, inputUser)
+            false
+        } else {
+            setCustomErrorDisabled(inputUser)
+            true
+        }
+    }
+
+    fun validateAccountNo(inputUser: EditText):Boolean{
+        val accountNo = inputUser.text.toString()
+        System.out.println("NAMEE==="+accountNo)
+        setCustomError(null, inputUser)
+        return if (accountNo.isEmpty()) {
+            val sMessage = "Please enter account number..!!"
+            setCustomError(sMessage, inputUser)
+            false
+        } else if (accountNo.length < 9) {
+            val sMessage = "Please enter valid account number!!"
+            setCustomError(sMessage, inputUser)
+            false
+        } else {
+            setCustomErrorDisabled(inputUser)
+            true
+        }
+    }
+
+    fun validateIFSC(inputUser: EditText):Boolean{
+        val ifsc = inputUser.text.toString()
+        System.out.println("NAMEE==="+ifsc)
+        setCustomError(null, inputUser)
+        return if (ifsc.isEmpty()) {
+            val sMessage = "ifsc code is must..!!"
+            setCustomError(sMessage, inputUser)
+            false
+        } else if (ifsc.length < 12) {
+            val sMessage = "Please enter valid ifsc code!!"
+            setCustomError(sMessage, inputUser)
+            false
+        } else {
+            setCustomErrorDisabled(inputUser)
+            true
+        }
+    }
 
     fun validateAddress1(inputUser: EditText): Boolean {
         val address: String = inputUser.getText().toString().trim { it <= ' ' }
@@ -215,6 +269,24 @@ abstract  class BaseClass: AppCompatActivity() {
         } else if (!isValidAddress10(address)) {
             val sMessage =
                 "Address must be at least 10 character and should have House no / Flat no / Road no."
+            setCustomError(sMessage, inputUser)
+            false
+        } else {
+            setCustomErrorDisabled(inputUser)
+            true
+        }
+    }
+
+    fun validatePincode(inputUser: EditText):Boolean{
+        val pinCode = inputUser.text.toString()
+        System.out.println("NAMEE==="+pinCode)
+        setCustomError(null, inputUser)
+        return if (pinCode.isEmpty()) {
+            val sMessage = "Please enter pincode..!!"
+            setCustomError(sMessage, inputUser)
+            false
+        } else if (pinCode.length < 6) {
+            val sMessage = "Pincode must have 6 digits!!"
             setCustomError(sMessage, inputUser)
             false
         } else {
@@ -720,5 +792,12 @@ abstract  class BaseClass: AppCompatActivity() {
             return result
         }
 
+    }
+     fun showErrorToast(errorMessage: String) {
+        // Display error message to the user using a Toast or any other UI element
+        Toast.makeText(applicationContext, errorMessage, Toast.LENGTH_LONG).show()
+    }
+     fun showToast(message: String) {
+        Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
     }
 }

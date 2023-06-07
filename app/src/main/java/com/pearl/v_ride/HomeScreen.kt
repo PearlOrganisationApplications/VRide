@@ -146,254 +146,6 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     lateinit var context: Context
     private lateinit var dialog: Dialog
 
-
-    override fun setLayoutXml() {
-
-        setContentView(R.layout.activity_home_screen)
-    }
-
-    @SuppressLint("CutPasteId")
-    override fun initializeViews() {
-
-
-        context = SessionManager.setLocale(this@HomeScreen, prefManager.getLanID().toString())
-        appbar = findViewById<MaterialToolbar>(R.id.appBar)
-
-        drawerLayout = findViewById(R.id.drawerLayout)
-        navView = findViewById(R.id.nav_view)
-        //        notificationI = findViewById(R.id.notificationI)
-        notificationLL = findViewById(R.id.notificationLL)
-        notificationRV = findViewById(R.id.notificationRV)
-        nBell = findViewById(R.id.nBell)
-        mapLL = findViewById(R.id.mapLL)
-        rate_list = findViewById(R.id.rate_list)
-
-        headerLayout = navView.inflateHeaderView(R.layout.nav_header)
-//        navView.inflateMenu(R.menu.nav_menu)
-        dImage = headerLayout.findViewById(R.id.drawerImage)
-        drawerName = headerLayout.findViewById(R.id.drawerName)
-        val dName = headerLayout.findViewById<TextView>(R.id.drawerName)
-        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        hasGps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-        hasNetwork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-        ivback = findViewById(R.id.ivBack)
-        apptitle = findViewById(R.id.titleTVAppbar)
-
-        cityTextView = findViewById(R.id.stateTV)
-        pieChart = findViewById(R.id.pieChart)
-        swipeRefreshLayout = findViewById(R.id.container)
-        calendarRV = findViewById(R.id.calenderRV)
-        monthlyCal = findViewById(R.id.monthlyCalender)
-        hideCal = findViewById(R.id.hideCalendar)
-        hideCalendar = findViewById(R.id.hideCalendar)
-
-        toggle_off = findViewById(R.id.toggle_off)
-        toggle_on = findViewById(R.id.toggle_on)
-        on_duty = findViewById(R.id.dutyON)
-        earnTxt = findViewById(R.id.txt_earn)
-        off_duty = findViewById(R.id.dutyOFF)
-        monthly_pay = findViewById(R.id.monthly_pay)
-        menu = navView.menu
-        homeMenuItem = menu.findItem(R.id.homemenu)
-        profileMenuItem = menu.findItem(R.id.profile)
-        walletMenuItem = menu.findItem(R.id.wallet)
-//        earning = menu.findItem(R.id.earning)
-        history = menu.findItem(R.id.history)
-        nearest_service = menu.findItem(R.id.nearest_service)
-        document = menu.findItem(R.id.document)
-        issue = menu.findItem(R.id.issue)
-        language1 = menu.findItem(R.id.language)
-//        hindiLang = menu.findItem(R.id.btnHindiLang)
-//        engLang = menu.findItem(R.id.btnEngLang)
-
-//        hindiLang.isVisible=false
-//        engLang.isVisible=false
-
-        resourcess = context.resources
-//        groupLang = menu.findItem(R.id.group_language)
-        dialog = Dialog(this)
-
-
-    }
-
-    override fun initializeClickListners() {
-
-
-        toggle_on.setOnClickListener {
-            on_duty.visibility = View.GONE
-            off_duty.visibility = View.VISIBLE
-            toggle_off.visibility = View.VISIBLE
-            toggle_on.visibility = View.GONE
-        }
-        toggle_off.setOnClickListener {
-            on_duty.visibility = View.VISIBLE
-            off_duty.visibility = View.GONE
-            toggle_off.visibility = View.GONE
-            toggle_on.visibility = View.VISIBLE
-        }
-        nBell.setOnClickListener {
-//            onBackPressed()
-            notificationLL.visibility = View.VISIBLE
-            appbar.visibility = View.GONE
-            mapLL.setVisibility(View.GONE)
-        }
-        ivback.setOnClickListener {
-            mapLL.setVisibility(View.VISIBLE)
-            onBackPressed()
-        }
-        navView.setNavigationItemSelectedListener {
-
-//           it.isChecked = true
-            when (it.itemId) {
-
-                R.id.homemenu -> {
-                    startActivity(Intent(this@HomeScreen, HomeScreen::class.java))
-                    finish()
-                }
-                R.id.profile -> {
-                    startActivity(Intent(this@HomeScreen, ProfileActivity::class.java))
-                    drawerLayout.closeDrawers()
-                }
-                R.id.wallet -> {
-                    startActivity(
-                        Intent(
-                            this@HomeScreen,
-                            MyWalletActivity::class.java
-                        ).putExtra("key", 1)
-                    )
-                    drawerLayout.closeDrawers()
-
-                }
-                /*     R.id.earning-> {
-                         startActivity(Intent(this@HomeScreen, MyWalletActivity::class.java).putExtra("key",0))
-                         drawerLayout.closeDrawers()
-
-                     }*/
-                R.id.history -> {
-
-                    startActivity(Intent(this@HomeScreen, UserHistoryActivity::class.java))
-                    drawerLayout.closeDrawers()
-
-                }
-                R.id.nearest_service -> {
-
-                    startActivity(Intent(this@HomeScreen, NearestServiceActivity::class.java))
-                    drawerLayout.closeDrawers()
-                }
-                R.id.issue -> {
-                    startActivity(Intent(this@HomeScreen, IssueRequestActivity::class.java))
-                    drawerLayout.closeDrawers()
-                    it.isChecked = false
-                }
-                R.id.document -> {
-
-                    startActivity(Intent(this@HomeScreen, DocumentStatus::class.java))
-                    drawerLayout.closeDrawers()
-                }
-                R.id.language -> {
-                    /*  startActivity(Intent(this@HomeScreen, LanguageActivity::class.java))
-                      drawerLayout.closeDrawers()*/
-
-
-
-                    drawerLayout.closeDrawers()
-                    dialog.setContentView(R.layout.language_dialog)
-                    dialog.window?.setLayout(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                    )
-                    dialog.setCancelable(false)
-                    hindiLL = dialog.findViewById(R.id.hindiLL)!!
-                    englishLL = dialog.findViewById(R.id.englishLL)!!
-                    cancelLang = dialog.findViewById(R.id.cancelLang)!!
-                    dialog.window?.attributes?.windowAnimations = R.style.animation
-
-                    dialog.show()
-                    cancelLang.setOnClickListener {
-                        dialog.dismiss()
-                    }
-                    englishLL.setOnClickListener {
-                        prefManager.setLangauge("en")
-                        dialog.dismiss()
-                        finish()
-//                        overridePendingTransition(0, 0);
-                        startActivity(intent)
-//                        overridePendingTransition(0, 0);
-
-                    }
-                    hindiLL.setOnClickListener {
-                        prefManager.setLangauge("hi")
-                        dialog.dismiss()
-                        finish()
-                        startActivity(intent)
-                        /*recreate()
-                        dialog.dismiss()*/
-                    }
-//                    hindiLang.isVisible = !hindiLang.isVisible
-                    //navView.menu.clear()
-
-
-                    // Inflate the new menu
-                    //navView.inflateMenu(R.menu.nav_menu)
-                }
-
-                R.id.logout -> {
-
-
-                    mAuth = FirebaseAuth.getInstance()
-                    if (::mAuth.isInitialized) {
-                        mAuth.signOut()
-                        //                        GoogleSignIn.
-                        Toast.makeText(applicationContext, "Logout", Toast.LENGTH_SHORT).show()
-                        finish()
-                    }
-
-
-                    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestEmail()
-                        .build()
-                    mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-//                    mGoogleSignInClient= GoogleSignInClient
-
-                    mGoogleSignInClient.signOut().addOnCompleteListener {
-                        startActivity(Intent(this@HomeScreen, MainActivity::class.java))
-                        finish()
-                    }
-                    mAuth.signOut()
-                    Toast.makeText(applicationContext, "Logout", Toast.LENGTH_SHORT).show()
-
-                    prefManager.setLogin(false)
-                }
-
-            }
-            true
-        }
-
-        swipeRefreshLayout.setOnRefreshListener {
-
-            // on below line we are setting is refreshing to false.
-            swipeRefreshLayout.isRefreshing = false
-
-        }
-
-        monthlyCal.setOnClickListener {
-          /*  calendarRV.visibility = View.VISIBLE
-            hideCalendar.visibility = View.VISIBLE
-            monthlyCal.visibility = View.GONE*/
-        }
-        hideCalendar.setOnClickListener {
-            calendarRV.visibility = View.GONE
-            monthlyCal.visibility = View.VISIBLE
-            hideCalendar.visibility = View.GONE
-        }
-    }
-
-    override fun initializeInputs() {
-    }
-
-    override fun initializeLabels() {
-    }
-
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onStart() {
         super.onStart()
@@ -424,11 +176,11 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
             getLocation()
         }
 
-        if (Global.imageString != "") {
+      /*  if (Global.imageString != "") {
             val uri = Uri.parse(Global.imageString)
             dImage.setImageURI(uri)
             Log.d("abc", Global.imageString)
-        }
+        }*/
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -626,6 +378,253 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
     }
 
+    override fun setLayoutXml() {
+
+        setContentView(R.layout.activity_home_screen)
+    }
+
+    @SuppressLint("CutPasteId")
+    override fun initializeViews() {
+
+
+        context = SessionManager.setLocale(this@HomeScreen, prefManager.getLanID().toString())
+        appbar = findViewById<MaterialToolbar>(R.id.appBar)
+
+        drawerLayout = findViewById(R.id.drawerLayout)
+        navView = findViewById(R.id.nav_view)
+        //        notificationI = findViewById(R.id.notificationI)
+        notificationLL = findViewById(R.id.notificationLL)
+        notificationRV = findViewById(R.id.notificationRV)
+        nBell = findViewById(R.id.nBell)
+        mapLL = findViewById(R.id.mapLL)
+        rate_list = findViewById(R.id.rate_list)
+
+        headerLayout = navView.inflateHeaderView(R.layout.nav_header)
+//        navView.inflateMenu(R.menu.nav_menu)
+        dImage = headerLayout.findViewById(R.id.drawerImage)
+        drawerName = headerLayout.findViewById(R.id.drawerName)
+        val dName = headerLayout.findViewById<TextView>(R.id.drawerName)
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        hasGps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        hasNetwork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+        ivback = findViewById(R.id.ivBack)
+        apptitle = findViewById(R.id.titleTVAppbar)
+
+        cityTextView = findViewById(R.id.stateTV)
+        pieChart = findViewById(R.id.pieChart)
+        swipeRefreshLayout = findViewById(R.id.container)
+        calendarRV = findViewById(R.id.calenderRV)
+        monthlyCal = findViewById(R.id.monthlyCalender)
+        hideCal = findViewById(R.id.hideCalendar)
+        hideCalendar = findViewById(R.id.hideCalendar)
+
+        toggle_off = findViewById(R.id.toggle_off)
+        toggle_on = findViewById(R.id.toggle_on)
+        on_duty = findViewById(R.id.dutyON)
+        earnTxt = findViewById(R.id.txt_earn)
+        off_duty = findViewById(R.id.dutyOFF)
+        monthly_pay = findViewById(R.id.monthly_pay)
+        menu = navView.menu
+        homeMenuItem = menu.findItem(R.id.homemenu)
+        profileMenuItem = menu.findItem(R.id.profile)
+        walletMenuItem = menu.findItem(R.id.wallet)
+//        earning = menu.findItem(R.id.earning)
+        history = menu.findItem(R.id.history)
+        nearest_service = menu.findItem(R.id.nearest_service)
+        document = menu.findItem(R.id.document)
+        issue = menu.findItem(R.id.issue)
+        language1 = menu.findItem(R.id.language)
+//        hindiLang = menu.findItem(R.id.btnHindiLang)
+//        engLang = menu.findItem(R.id.btnEngLang)
+
+//        hindiLang.isVisible=false
+//        engLang.isVisible=false
+
+        resourcess = context.resources
+//        groupLang = menu.findItem(R.id.group_language)
+        dialog = Dialog(this)
+
+
+    }
+
+    override fun initializeClickListners() {
+
+
+        toggle_on.setOnClickListener {
+            on_duty.visibility = View.GONE
+            off_duty.visibility = View.VISIBLE
+            toggle_off.visibility = View.VISIBLE
+            toggle_on.visibility = View.GONE
+        }
+        toggle_off.setOnClickListener {
+            on_duty.visibility = View.VISIBLE
+            off_duty.visibility = View.GONE
+            toggle_off.visibility = View.GONE
+            toggle_on.visibility = View.VISIBLE
+        }
+        nBell.setOnClickListener {
+//            onBackPressed()
+            notificationLL.visibility = View.VISIBLE
+            appbar.visibility = View.GONE
+            mapLL.setVisibility(View.GONE)
+        }
+        ivback.setOnClickListener {
+            mapLL.setVisibility(View.VISIBLE)
+            onBackPressed()
+        }
+        navView.setNavigationItemSelectedListener {
+
+//           it.isChecked = true
+            when (it.itemId) {
+
+                R.id.homemenu -> {
+                    startActivity(Intent(this@HomeScreen, HomeScreen::class.java))
+                    finish()
+                }
+                R.id.profile -> {
+                    startActivity(Intent(this@HomeScreen, ProfileActivity::class.java))
+                    drawerLayout.closeDrawers()
+                }
+                R.id.wallet -> {
+                    startActivity(
+                            Intent(
+                                    this@HomeScreen,
+                                    MyWalletActivity::class.java
+                            ).putExtra("key", 1)
+                    )
+                    drawerLayout.closeDrawers()
+
+                }
+                /*     R.id.earning-> {
+                         startActivity(Intent(this@HomeScreen, MyWalletActivity::class.java).putExtra("key",0))
+                         drawerLayout.closeDrawers()
+
+                     }*/
+                R.id.history -> {
+
+                    startActivity(Intent(this@HomeScreen, UserHistoryActivity::class.java))
+                    drawerLayout.closeDrawers()
+
+                }
+                R.id.nearest_service -> {
+
+                    startActivity(Intent(this@HomeScreen, NearestServiceActivity::class.java))
+                    drawerLayout.closeDrawers()
+                }
+                R.id.issue -> {
+                    startActivity(Intent(this@HomeScreen, IssueRequestActivity::class.java))
+                    drawerLayout.closeDrawers()
+                    it.isChecked = false
+                }
+                R.id.document -> {
+
+                    startActivity(Intent(this@HomeScreen, DocumentStatus::class.java))
+                    drawerLayout.closeDrawers()
+                }
+                R.id.language -> {
+                    /*  startActivity(Intent(this@HomeScreen, LanguageActivity::class.java))
+                      drawerLayout.closeDrawers()*/
+
+
+
+                    drawerLayout.closeDrawers()
+                    dialog.setContentView(R.layout.language_dialog)
+                    dialog.window?.setLayout(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT
+                    )
+                    dialog.setCancelable(false)
+                    hindiLL = dialog.findViewById(R.id.hindiLL)!!
+                    englishLL = dialog.findViewById(R.id.englishLL)!!
+                    cancelLang = dialog.findViewById(R.id.cancelLang)!!
+                    dialog.window?.attributes?.windowAnimations = R.style.animation
+
+                    dialog.show()
+                    cancelLang.setOnClickListener {
+                        dialog.dismiss()
+                    }
+                    englishLL.setOnClickListener {
+                        prefManager.setLangauge("en")
+                        dialog.dismiss()
+                        finish()
+//                        overridePendingTransition(0, 0);
+                        startActivity(intent)
+//                        overridePendingTransition(0, 0);
+
+                    }
+                    hindiLL.setOnClickListener {
+                        prefManager.setLangauge("hi")
+                        dialog.dismiss()
+                        finish()
+                        startActivity(intent)
+                        /*recreate()
+                        dialog.dismiss()*/
+                    }
+//                    hindiLang.isVisible = !hindiLang.isVisible
+                    //navView.menu.clear()
+
+
+                    // Inflate the new menu
+                    //navView.inflateMenu(R.menu.nav_menu)
+                }
+
+                R.id.logout -> {
+
+
+                    mAuth = FirebaseAuth.getInstance()
+                    if (::mAuth.isInitialized) {
+                        mAuth.signOut()
+                        //                        GoogleSignIn.
+                        Toast.makeText(applicationContext, "Logout", Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
+
+
+                    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                            .requestEmail()
+                            .build()
+                    mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+//                    mGoogleSignInClient= GoogleSignInClient
+
+                    mGoogleSignInClient.signOut().addOnCompleteListener {
+                        startActivity(Intent(this@HomeScreen, MainActivity::class.java))
+                        finish()
+                    }
+                    mAuth.signOut()
+                    Toast.makeText(applicationContext, "Logout", Toast.LENGTH_SHORT).show()
+
+                    prefManager.setLogin(false)
+                }
+
+            }
+            true
+        }
+
+        swipeRefreshLayout.setOnRefreshListener {
+
+            // on below line we are setting is refreshing to false.
+            swipeRefreshLayout.isRefreshing = false
+
+        }
+
+        monthlyCal.setOnClickListener {
+            /*  calendarRV.visibility = View.VISIBLE
+              hideCalendar.visibility = View.VISIBLE
+              monthlyCal.visibility = View.GONE*/
+        }
+        hideCalendar.setOnClickListener {
+            calendarRV.visibility = View.GONE
+            monthlyCal.visibility = View.VISIBLE
+            hideCalendar.visibility = View.GONE
+        }
+    }
+
+    override fun initializeInputs() {
+    }
+
+    override fun initializeLabels() {
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         unregisterBroadcast()
@@ -676,7 +675,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
         resourcess = Global.language(this, resources)
         earnTxt.text = resourcess.getString(R.string.net_earn)
-        cityTextView.text = resourcess.getString(R.string.state)
+//        cityTextView.text = resourcess.getString(R.string.state)
 //        R.id.earning = resourcess.getString(R.string.my_earning)
         on_duty.text = resourcess.getString(R.string.on_duty)
         off_duty.text = resourcess.getString(R.string.off_duty)
@@ -940,6 +939,12 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                  }*/
                 strAdd = cityState
 
+                cityTextView.text = returnedAddress.locality + "," + returnedAddress.adminArea
+
+//                cityTextView.text = cityState
+                Log.d("strAdd",strAdd.toString())
+                Log.d("cityState",cityState.toString())
+                Log.d("cityTextView",cityTextView.toString())
 
                 Log.d("cityX", returnedAddress.toString() + "")
             } else {
@@ -950,7 +955,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
             //Log.w(" Current loction address",  e.printStackTrace().toString())
         }
 
-        cityTextView.text = strAdd.toString()
+
 
 /*
 
@@ -1266,10 +1271,6 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
 
 
-    }
-    private fun showErrorToast(errorMessage: String) {
-        // Display error message to the user using a Toast or any other UI element
-        Toast.makeText(applicationContext, errorMessage, Toast.LENGTH_LONG).show()
     }
 
 }

@@ -7,6 +7,7 @@ import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
@@ -14,6 +15,8 @@ import android.widget.*
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.get
+import androidx.core.view.isNotEmpty
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -34,7 +37,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.internal.toImmutableList
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -144,7 +146,13 @@ class DocumentStatus : BaseClass() {
     private lateinit var doc_updateAddressBT: Button
     private lateinit var doc_submitBankBt: Button
     private lateinit var doc_submitMerchantBT: Button
-    private var req_code = 1
+    private lateinit var doc_selfieeLL: LinearLayout
+    private lateinit var doc_aadharLL: LinearLayout
+    private lateinit var doc_adrsLL: LinearLayout
+    private lateinit var doc_merchantLayout: LinearLayout
+    private lateinit var doc_pancardLL: LinearLayout
+    private lateinit var doc_bankLL: LinearLayout
+    private var req_code = 0
     var b64: String = ""
     var adharNo: String = ""
     var panName: String = ""
@@ -170,7 +178,12 @@ class DocumentStatus : BaseClass() {
     lateinit var checkBox: CheckBox
     val merchantIds = listOf<String>()
     var list = ""
-
+    var isAadharVisible = false
+    var isSelfieVisible = false
+    var isAddressVisible = false
+    var isMerchantVisible = false
+    var isBankVisible = false
+    var isPancardVisible = false
     override fun setLayoutXml() {
         setContentView(R.layout.activity_document_status)
         prefManager = PrefManager(this)
@@ -195,6 +208,7 @@ class DocumentStatus : BaseClass() {
         doc_selfie_showMore = findViewById(R.id.doc_selfie_showMore)
         doc_selfie_showLess = findViewById(R.id.doc_selfie_showLess)
         doc_selfieUpdateBT = findViewById(R.id.doc_selfieUpdateBT)
+        doc_selfieeLL = findViewById(R.id.doc_selfieeLL)
 //        aadharCard
         doc_aadharOK = findViewById(R.id.doc_aadharOK)
         doc_aadharError = findViewById(R.id.doc_aadharError)
@@ -202,6 +216,7 @@ class DocumentStatus : BaseClass() {
         doc_aadhar_showLess = findViewById(R.id.doc_aadhar_showLess)
         doc_adharNoET = findViewById(R.id.doc_adharNoET)
         doc_submitAdharBT = findViewById(R.id.doc_submitAdharBT)
+        doc_aadharLL = findViewById(R.id.doc_aadharLL)
 //        address
         doc_addressOK = findViewById(R.id.doc_addressOK)
         doc_addressError = findViewById(R.id.doc_addressError)
@@ -211,6 +226,7 @@ class DocumentStatus : BaseClass() {
         doc_city = findViewById(R.id.doc_city)
         pin_code = findViewById(R.id.doc_pin_code)
         doc_updateAddressBT = findViewById(R.id.doc_updateAddressBT)
+        doc_adrsLL = findViewById(R.id.doc_adrsLL)
 
 //        merchant
         doc_merchantOK = findViewById(R.id.doc_merchantOK)
@@ -218,6 +234,7 @@ class DocumentStatus : BaseClass() {
         doc_merchant_showMore = findViewById(R.id.doc_merchant_showMore)
         doc_merchant_showLess = findViewById(R.id.doc_merchant_showLess)
         doc_submitMerchantBT = findViewById(R.id.doc_submitMerchantBT)
+        doc_merchantLayout = findViewById(R.id.doc_merchantLayout)
 //        pancard
         doc_panOK = findViewById(R.id.doc_panOK)
         doc_panError = findViewById(R.id.doc_panError)
@@ -227,6 +244,7 @@ class DocumentStatus : BaseClass() {
         panNoET = findViewById(R.id.doc_panNoET)
         panNameET = findViewById(R.id.doc_panNameET)
         doc_submitPanBT = findViewById(R.id.doc_submitPanBT)
+        doc_pancardLL = findViewById(R.id.doc_pancardLL)
 //        pan_dob = findViewById(R.id.doc_pan_dobET)
 //        bankDetails
         doc_bankOk = findViewById(R.id.doc_bankOk)
@@ -239,6 +257,7 @@ class DocumentStatus : BaseClass() {
         raccountNOET = findViewById(R.id.doc_raccountNOET)
         ifsc_code = findViewById(R.id.doc_ifscCode)
         doc_submitBankBt = findViewById(R.id.doc_submitBankBt)
+        doc_bankLL = findViewById(R.id.doc_bankLL)
 
         okBT = findViewById(R.id.okBT)
         doc_select_state = findViewById(R.id.doc_statelistSP)
@@ -403,6 +422,19 @@ class DocumentStatus : BaseClass() {
                 doc_selfie_showLess.visibility = View.GONE
                 doc_selfie_showMore.visibility = View.VISIBLE
             }
+                doc_selfieeLL.setOnClickListener {
+                    if (isSelfieVisible) {
+                        doc_selfieCL.visibility = View.GONE
+                        doc_selfie_showLess.visibility = View.GONE
+                        doc_selfie_showMore.visibility = View.VISIBLE
+                    } else {
+                        doc_selfieCL.visibility = View.VISIBLE
+                        doc_selfie_showLess.visibility = View.VISIBLE
+                        doc_selfie_showMore.visibility = View.GONE
+                    }
+                    isSelfieVisible = !isSelfieVisible
+                }
+
 
             doc_selfieUpdateBT.setOnClickListener {
 
@@ -431,11 +463,32 @@ class DocumentStatus : BaseClass() {
             doc_aadhar_showLess.visibility = View.GONE
             doc_aadhar_showMore.visibility = View.VISIBLE
         }
+        doc_aadharLL.setOnClickListener {
+            if (isAadharVisible) {
+                doc_constraintLayout.visibility = View.GONE
+                doc_aadhar_showLess.visibility = View.GONE
+                doc_aadhar_showMore.visibility = View.VISIBLE
+            } else {
+                doc_constraintLayout.visibility = View.VISIBLE
+                doc_aadhar_showLess.visibility = View.VISIBLE
+                doc_aadhar_showMore.visibility = View.GONE
+            }
+            isAadharVisible = !isAadharVisible
+        }
         doc_submitAdharBT.setOnClickListener {
             adharNo = doc_adharNoET.text.toString().trim()
 
             loadingDialog.startLoadingDialog()
-            adharDetails()
+            if (validateAadharNo(doc_adharNoET) && req_code == 3) {
+                adharDetails()
+            } else {
+                Handler(Looper.myLooper()!!).postDelayed({
+                    loadingDialog.dismissDialog()
+                    Toast.makeText(this@DocumentStatus,"please fill all details",Toast.LENGTH_SHORT).show()
+                },2000)
+
+            }
+
         }
 
         if (doc_addressError.isVisible) {
@@ -450,6 +503,18 @@ class DocumentStatus : BaseClass() {
             doc_address_showLess.visibility = View.GONE
             doc_address_showMore.visibility = View.VISIBLE
         }
+        doc_adrsLL.setOnClickListener {
+            if (isAddressVisible) {
+                doc_addressLL.visibility = View.GONE
+                doc_address_showLess.visibility = View.GONE
+                doc_address_showMore.visibility = View.VISIBLE
+            } else {
+                doc_addressLL.visibility = View.VISIBLE
+                doc_address_showLess.visibility = View.VISIBLE
+                doc_address_showMore.visibility = View.GONE
+            }
+            isAddressVisible = !isAddressVisible
+        }
         doc_updateAddressBT.setOnClickListener {
             city = doc_city.text.toString()
             addrass = doc_address.text.toString()
@@ -457,7 +522,16 @@ class DocumentStatus : BaseClass() {
 
             loadingDialog.startLoadingDialog()
             Log.d("selectedItem1", selectedItem)
-            addressDetails()
+            if (validateAddress1(doc_address) && validateCity(doc_city) && selectedItem.isNotEmpty() && req_code == 6 && validatePincode(pin_code)) {
+                addressDetails()
+            } else {
+                Handler(Looper.myLooper()!!).postDelayed({
+                    loadingDialog.dismissDialog()
+                    Toast.makeText(this@DocumentStatus,"please fill all details",Toast.LENGTH_SHORT).show()
+                },2000)
+
+            }
+
         }
 
         if (doc_merchantError.isVisible) {
@@ -472,6 +546,18 @@ class DocumentStatus : BaseClass() {
             doc_merchant_showLess.visibility = View.GONE
             doc_merchant_showMore.visibility = View.VISIBLE
         }
+        doc_merchantLayout.setOnClickListener {
+            if (isMerchantVisible) {
+                doc_merchantLL.visibility = View.GONE
+                doc_merchant_showLess.visibility = View.GONE
+                doc_merchant_showMore.visibility = View.VISIBLE
+            } else {
+                doc_merchantLL.visibility = View.VISIBLE
+                doc_merchant_showLess.visibility = View.VISIBLE
+                doc_merchant_showMore.visibility = View.GONE
+            }
+            isMerchantVisible = !isMerchantVisible
+        }
 
         if (doc_panError.isVisible) {
             doc_pan_showMore.setOnClickListener {
@@ -485,13 +571,34 @@ class DocumentStatus : BaseClass() {
             doc_pan_showLess.visibility = View.GONE
             doc_pan_showMore.visibility = View.VISIBLE
         }
+        doc_pancardLL.setOnClickListener {
+            if (isPancardVisible) {
+                doc_pancardCL.visibility = View.GONE
+                doc_pan_showLess.visibility = View.GONE
+                doc_pan_showMore.visibility = View.VISIBLE
+            } else {
+                doc_pancardCL.visibility = View.VISIBLE
+                doc_pan_showLess.visibility = View.VISIBLE
+                doc_pan_showMore.visibility = View.GONE
+            }
+            isPancardVisible = !isPancardVisible
+        }
         doc_submitPanBT.setOnClickListener {
 
             panName = panNameET.text.toString().trim()
             panNo = panNoET.text.toString().trim()
             loadingDialog.startLoadingDialog()
 
-            panDetails()
+            if (validatePanNo(panNoET) && validateName(panNameET) &&  req_code == 4) {
+                panDetails()
+            } else {
+                Handler(Looper.myLooper()!!).postDelayed({
+                    loadingDialog.dismissDialog()
+                    Toast.makeText(this@DocumentStatus,"please fill all details",Toast.LENGTH_SHORT).show()
+                },2000)
+
+            }
+
         }
 
         if (doc_bankError.isVisible) {
@@ -506,6 +613,18 @@ class DocumentStatus : BaseClass() {
             doc_bank_showLess.visibility = View.GONE
             doc_bank_showMore.visibility = View.VISIBLE
         }
+        doc_bankLL.setOnClickListener {
+            if (isBankVisible) {
+                doc_bankCl.visibility = View.GONE
+                doc_bank_showLess.visibility = View.GONE
+                doc_bank_showMore.visibility = View.VISIBLE
+            } else {
+                doc_bankCl.visibility = View.VISIBLE
+                doc_bank_showLess.visibility = View.VISIBLE
+                doc_bank_showMore.visibility = View.GONE
+            }
+            isBankVisible = !isBankVisible
+        }
         doc_submitBankBt.setOnClickListener {
             bName = bNameET.text.toString()
             bAcount = accountNOET.text.toString()
@@ -513,7 +632,21 @@ class DocumentStatus : BaseClass() {
             bifsc = ifsc_code.text.toString()
             loadingDialog.startLoadingDialog()
 
-            bankDetails()
+            if (validateBankName(bNameET) && validateAccountNo(accountNOET) && validateAccountNo(raccountNOET) && validateIFSC(ifsc_code) && req_code == 5) {
+               if(accountNOET.text.toString() == raccountNOET.text.toString()) {
+                   bankDetails()
+               }else{
+                   loadingDialog.dismissDialog()
+                   Toast.makeText(this@DocumentStatus,"please check account number",Toast.LENGTH_SHORT).show()
+               }
+            } else {
+                Handler(Looper.myLooper()!!).postDelayed({
+                    loadingDialog.dismissDialog()
+                    Toast.makeText(this@DocumentStatus,"please fill all details",Toast.LENGTH_SHORT).show()
+                },2000)
+
+            }
+
         }
 
         okBT.setOnClickListener {
@@ -522,7 +655,6 @@ class DocumentStatus : BaseClass() {
         }
 
         submitAlreadyBT.setOnClickListener {
-
             listLayout.visibility = View.VISIBLE
             merchantAlready.visibility = View.GONE
 
@@ -557,8 +689,8 @@ class DocumentStatus : BaseClass() {
             merchantAlready.visibility = View.VISIBLE
         }
         yesBT.setOnClickListener {
-            merchantAlready.visibility = View.VISIBLE
-            merchantWorkingLL.visibility = View.GONE
+         /*   merchantAlready.visibility = View.VISIBLE
+            merchantWorkingLL.visibility = View.GONE*/
 
         }
         noBT.setOnClickListener {
@@ -696,8 +828,10 @@ class DocumentStatus : BaseClass() {
                         uri
                 )
                 b64 = BitMapToString(bitmap).toString()
+                req_code =1
 
                 Log.d("Image64QQ", "XXX " + b64)
+                req_code = 2
 
             } else if (image_type == 2) {
                 adhadharRear.setImageURI(uri)
@@ -709,6 +843,7 @@ class DocumentStatus : BaseClass() {
                 b64 = BitMapToString(bitmap).toString()
 
                 Log.d("Image64QQ", "yyy " + b64)
+                req_code = 3
 
             } else if (image_type == 3) {
                 panFront.setImageURI(uri)
@@ -717,6 +852,7 @@ class DocumentStatus : BaseClass() {
                         uri
                 )
                 b64 = BitMapToString(bitmap).toString()
+                req_code = 4
             } else if (image_type == 4) {
                 passbookIV.setImageURI(uri)
                 var bitmap = MediaStore.Images.Media.getBitmap(
@@ -724,6 +860,7 @@ class DocumentStatus : BaseClass() {
                         uri
                 )
                 b64 = BitMapToString(bitmap).toString()
+                req_code = 5
             } /*else if (image_type == 5) {
                 licenceIV.setImageURI(uri)
             }*/ else if (image_type == 6) {
@@ -740,7 +877,8 @@ class DocumentStatus : BaseClass() {
 
                 Log.d("Image64QQ", "XXX " + b64)
                 Log.d("Image64XX", "YY " + BitMapToString(bitmap))
-            }/*else if (image_type == 7){
+            }
+            /*else if (image_type == 7){
                 selfieCor.setImageURI(uri)
             }else if (image_type == 8){
                 companyID.setImageURI(uri)
@@ -750,6 +888,7 @@ class DocumentStatus : BaseClass() {
             }else if (image_type == 10){
                 corporateAadharR.setImageURI(uri)
             }*/
+
             else if (image_type == 11) {
                 addressProofIV.setImageURI(uri)
 
@@ -758,6 +897,7 @@ class DocumentStatus : BaseClass() {
                         uri
                 )
                 b64 = BitMapToString(bitmap).toString()
+                req_code = 6
 
             }
 
@@ -1189,46 +1329,25 @@ class DocumentStatus : BaseClass() {
                         val status = responseData.status
                         val message = responseData.msg
 
-                        Log.d("msgSUbmit", "$message $merchants $selectedMerchants $status ")
+                        Log.d("msgSUbmit", "$message $merchants ${selectedMerchants.size}  $selectedMerchants $status ${selectedMerchantIds.size} ")
                         Log.d("ResponseM", "$merchants ")
                         // Handle the response accordingly
                         runOnUiThread {
-                            // Update the UI if needed
-                            /* for (m in merchants) {
-                                 val merchantId = m.getInt("id")
-                                 merchantIds.add(merchantId)
-                             }
-
- // Access the merchant IDs in the merchantIds array
-                             for (merchantId in merchantIds) {
-                                 println(merchantId)
-                             }*/
-//                            prefManager.setList(merchants as List<String>)
-/*
-                            if (selectedMerchantIds.isNotEmpty()) {
-                                for (i in 0..selectedMerchantIds.size - 1) {
-                                    if (i != merchants.size - 1){
-                                        list += selectedMerchantIds[i].id.toString() + ","}
-                                    else{
-                                        list += selectedMerchantIds[i].id.toString()
-                                    }
-
-                                }
-                            }
-*/
-
-//                            prefManager.setIds("")
-//                            prefManager.setIds(list)
-
                             Handler().postDelayed({
                                 // After 4 seconds
                                 loadingDialog.dismissDialog()
-                                doc_merchantError.visibility = View.GONE
-                                doc_merchantLL.visibility = View.GONE
-                                doc_merchant_showLess.visibility = View.GONE
-                                doc_merchant_showMore.visibility = View.VISIBLE
-                                doc_merchantOK.visibility = View.VISIBLE
-                                doc_submitMerchantBT.visibility = View.GONE
+                                if(selectedMerchantIds.isNotEmpty()) {
+
+                                    doc_merchantError.visibility = View.GONE
+                                    doc_merchantLL.visibility = View.GONE
+                                    doc_merchant_showLess.visibility = View.GONE
+                                    doc_merchant_showMore.visibility = View.VISIBLE
+                                    doc_merchantOK.visibility = View.VISIBLE
+                                    doc_submitMerchantBT.visibility = View.GONE
+
+                                }else{
+                                    Toast.makeText(this@DocumentStatus,"please select merchants",Toast.LENGTH_SHORT).show()
+                                }
 
                             }, 4000) // 4 seconds
 
@@ -1390,9 +1509,8 @@ class DocumentStatus : BaseClass() {
                                   }
                               }*/
 //                            adapterCheckBox
-
-
 //                        }
+
                         Log.d("profile", "" + profilePicUrl)
                         Log.d("profile", "$profile $otherDetails $merchants")
                         Log.d("merchantsQQ", "$merchants")
@@ -1469,15 +1587,8 @@ class DocumentStatus : BaseClass() {
 
     }
 
-    private fun showErrorToast(errorMessage: String) {
-        // Display error message to the user using a Toast or any other UI element
-        Toast.makeText(applicationContext, errorMessage, Toast.LENGTH_SHORT).show()
-    }
-
 
     // Utility function to show Toast messages
-    private fun showToast(message: String) {
-        Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
-    }
+
 
 }

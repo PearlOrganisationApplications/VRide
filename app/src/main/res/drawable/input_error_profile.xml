@@ -4,14 +4,15 @@
     <item android:state_pressed="true"><shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
 
         <stroke android:width=".5dp" android:color="#CEFF2A2A" />
+        <solid android:color="#00000000" />
 
 
         <corners android:radius="2px"/>
     </shape></item>
     <item><shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
 
+        <solid android:color="#00000000" />
         <stroke android:width=".5dp" android:color="#CEFF2A2A" />
-
 
         <corners android:radius="2px"/>
     </shape></item>

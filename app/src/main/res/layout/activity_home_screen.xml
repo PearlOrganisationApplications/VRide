@@ -270,7 +270,7 @@
                            android:textSize="@dimen/_13ssp"
                            android:textStyle="bold"
                            android:padding="@dimen/_2ssp"
-                           android:text="@string/state"/>
+                           android:text=  "@string/state"/>
                    </LinearLayout>
 
             <androidx.cardview.widget.CardView
