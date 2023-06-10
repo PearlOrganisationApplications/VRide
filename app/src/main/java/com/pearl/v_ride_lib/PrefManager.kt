@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.pearl.common.retrofit.data_model_class.Merchant
 
 
 class PrefManager(var context: Context) {
@@ -149,12 +148,12 @@ class PrefManager(var context: Context) {
      fun getToken(): String{
          return  pref?.getString("token","").toString()
      }
-     fun setCode(code: Int){
-         editor!!.putInt("code", code)
+     fun setCode(code1: Int){
+         editor!!.putInt("code1", code1)
          editor!!.commit()
      }
      fun getCode(): Int{
-         return  pref?.getInt("code",0)!!.toInt()
+         return  pref?.getInt("code1",0)!!.toInt()
      }
      fun setIds(id: String) {
          editor!!.putString("id",id)
@@ -180,5 +179,6 @@ class PrefManager(var context: Context) {
          }
          return emptyList()
      }
+
  }
 

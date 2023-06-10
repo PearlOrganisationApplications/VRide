@@ -28,6 +28,7 @@ import com.pearl.common.retrofit.rest_api_interface.*
 import com.pearl.v_ride.Dialog
 import com.pearl.v_ride.HomeScreen
 import com.pearl.v_ride.R
+import com.pearl.v_ride.VerificationActivity
 import com.pearl.v_ride_lib.BaseClass
 import com.pearl.v_ride_lib.Global
 import com.pearl.v_ride_lib.PrefManager
@@ -184,6 +185,7 @@ class DocumentStatus : BaseClass() {
     var isMerchantVisible = false
     var isBankVisible = false
     var isPancardVisible = false
+
     override fun setLayoutXml() {
         setContentView(R.layout.activity_document_status)
         prefManager = PrefManager(this)
@@ -440,7 +442,7 @@ class DocumentStatus : BaseClass() {
 
 //                Log.d("image","$CODE")
 
-                if (isSelfie) {
+                if (req_code==1) {
                     loadingDialog.startLoadingDialog()
                     selfieDetails()
                 } else {
@@ -453,29 +455,28 @@ class DocumentStatus : BaseClass() {
 
         if (doc_aadharError.isVisible) {
             doc_aadhar_showMore.setOnClickListener {
-                doc_constraintLayout.visibility = View.VISIBLE
+                /*doc_constraintLayout.visibility = View.VISIBLE
                 doc_aadhar_showLess.visibility = View.VISIBLE
-                doc_aadhar_showMore.visibility = View.GONE
+                doc_aadhar_showMore.visibility = View.GONE*/
+                adharOpen()
             }
         }
         doc_aadhar_showLess.setOnClickListener {
-            doc_constraintLayout.visibility = View.GONE
+            /*doc_constraintLayout.visibility = View.GONE
             doc_aadhar_showLess.visibility = View.GONE
-            doc_aadhar_showMore.visibility = View.VISIBLE
+            doc_aadhar_showMore.visibility = View.VISIBLE*/
+            adharClose()
         }
         doc_aadharLL.setOnClickListener {
             if (isAadharVisible) {
-                doc_constraintLayout.visibility = View.GONE
-                doc_aadhar_showLess.visibility = View.GONE
-                doc_aadhar_showMore.visibility = View.VISIBLE
+                adharClose()
             } else {
-                doc_constraintLayout.visibility = View.VISIBLE
-                doc_aadhar_showLess.visibility = View.VISIBLE
-                doc_aadhar_showMore.visibility = View.GONE
+                adharOpen()
             }
             isAadharVisible = !isAadharVisible
         }
         doc_submitAdharBT.setOnClickListener {
+            buttonEffect(doc_submitAdharBT)
             adharNo = doc_adharNoET.text.toString().trim()
 
             loadingDialog.startLoadingDialog()
@@ -650,8 +651,20 @@ class DocumentStatus : BaseClass() {
         }
 
         okBT.setOnClickListener {
-            startActivity(Intent(this@DocumentStatus, HomeScreen::class.java))
-            finish()
+            if (isSelfie == true && isAdharcard == true && isAddress== true && isMerchant== true && isPancard == true&& isBank== true) {
+                if (prefManager.getCode() == 1) {
+
+                    startActivity(Intent(this@DocumentStatus, HomeScreen::class.java))
+                    finish()
+                }else  {
+                    startActivity(Intent(this@DocumentStatus, VerificationActivity::class.java))
+                    finish()
+                }
+
+            }else{
+
+                Toast.makeText(this, "please fill the all details first", Toast.LENGTH_SHORT).show()
+            }
         }
 
         submitAlreadyBT.setOnClickListener {
@@ -810,6 +823,16 @@ class DocumentStatus : BaseClass() {
 
     }
 
+    fun adharClose() {
+        doc_constraintLayout.visibility = View.GONE
+        doc_aadhar_showLess.visibility = View.GONE
+        doc_aadhar_showMore.visibility = View.VISIBLE
+    }
+    fun adharOpen() {
+        doc_constraintLayout.visibility = View.VISIBLE
+        doc_aadhar_showLess.visibility = View.VISIBLE
+        doc_aadhar_showMore.visibility = View.GONE
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -828,7 +851,7 @@ class DocumentStatus : BaseClass() {
                         uri
                 )
                 b64 = BitMapToString(bitmap).toString()
-                req_code =1
+
 
                 Log.d("Image64QQ", "XXX " + b64)
                 req_code = 2
@@ -864,7 +887,7 @@ class DocumentStatus : BaseClass() {
             } /*else if (image_type == 5) {
                 licenceIV.setImageURI(uri)
             }*/ else if (image_type == 6) {
-                val file = File(uri.path)
+
                 doc_profile.setImageURI(uri)
 //                val bitmap = BitmapFactory.decodeFile(file.toString())
 
@@ -873,8 +896,8 @@ class DocumentStatus : BaseClass() {
                         uri
                 )
                 b64 = BitMapToString(bitmap).toString()
-                isSelfie = true
-
+//                isSelfie = true
+                req_code =1
                 Log.d("Image64QQ", "XXX " + b64)
                 Log.d("Image64XX", "YY " + BitMapToString(bitmap))
             }
@@ -947,7 +970,7 @@ class DocumentStatus : BaseClass() {
                                 doc_selfie_showLess.visibility = View.GONE
                                 doc_selfie_showMore.visibility = View.VISIBLE
                                 doc_selfieUpdateBT.visibility = View.GONE
-                                doc_adharNoET.isEnabled = false
+                                isSelfie = true
                             }, 4000) // 4 seconds
                         }
                         Log.d("msgSelfie", msg)
@@ -1002,19 +1025,19 @@ class DocumentStatus : BaseClass() {
                         val status = responseData.status
                         // Process the response data as needed
                         runOnUiThread {
-                            Handler().postDelayed({
+                            Handler(Looper.myLooper()!!).postDelayed({
                                 // After 4 seconds
                                 loadingDialog.dismissDialog()
 
-                                doc_constraintLayout.visibility = View.GONE
-                                doc_aadhar_showLess.visibility = View.GONE
-                                doc_aadhar_showMore.visibility = View.VISIBLE
+                               adharClose()
                                 doc_aadharError.visibility = View.GONE
                                 doc_aadharOK.visibility = View.VISIBLE
                                 doc_submitAdharBT.visibility = View.GONE
                                 adhadharF.isEnabled = false
 //            adhadharF.visibility = View.GONE
                                 adhadharR.isEnabled = false
+                                doc_adharNoET.isEnabled = false
+                                isAdharcard = true
 //            adhadharR.visibility = View.GONE
                             }, 4000) // 4 seconds
                         }
@@ -1085,6 +1108,7 @@ class DocumentStatus : BaseClass() {
                                 panNoET.isEnabled = false
                                 panNameET.isEnabled = false
                                 addPan.isEnabled = false
+                                isPancard = true
                             }, 4000) // 4 seconds
                         }
                         Log.d("msg", msg + panNo + status)
@@ -1154,6 +1178,7 @@ class DocumentStatus : BaseClass() {
                                 pin_code.isEnabled = false
                                 doc_select_state.isEnabled = false
                                 addressProofTV.isEnabled = false
+                                isAddress = true
                             }, 4000) // 4 seconds
                         }
                         Log.d("msg", message)
@@ -1216,6 +1241,7 @@ class DocumentStatus : BaseClass() {
                                 raccountNOET.isEnabled = false
                                 ifsc_code.isEnabled = false
                                 addPassbook.isEnabled = false
+                                isBank = true
                             }, 4000) // 4 seconds
                         }
                     } else {
@@ -1279,9 +1305,6 @@ class DocumentStatus : BaseClass() {
 
                             }
 
-
-
-
                             Log.d("checkBox", "$merchants")
                         }
                     } else {
@@ -1344,6 +1367,7 @@ class DocumentStatus : BaseClass() {
                                     doc_merchant_showMore.visibility = View.VISIBLE
                                     doc_merchantOK.visibility = View.VISIBLE
                                     doc_submitMerchantBT.visibility = View.GONE
+                                    isMerchant = true
 
                                 }else{
                                     Toast.makeText(this@DocumentStatus,"please select merchants",Toast.LENGTH_SHORT).show()
@@ -1499,17 +1523,17 @@ class DocumentStatus : BaseClass() {
                             addPan.isEnabled = false
                         }
 
-//                        if (merchant != null) {
+                     /*   if (merchant != null) {
 
 //                            checkBox.text = merchant
-                            /*  checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
+                             checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
                                if (isChecked) {
                                       selectedMerchantIds.add(merchant)
                                       Log.d("CheckBox2", "Merchant $checkBoxId selected")
                                   }
-                              }*/
+                              }
 //                            adapterCheckBox
-//                        }
+                        }*/
 
                         Log.d("profile", "" + profilePicUrl)
                         Log.d("profile", "$profile $otherDetails $merchants")
@@ -1531,7 +1555,7 @@ class DocumentStatus : BaseClass() {
                                 doc_merchantError.visibility = View.GONE
                                 doc_merchantOK.visibility = View.VISIBLE
                                 checkboxLL.isClickable = false
-
+                                isMerchant = true
                             }else{
                               /*  merchantWorkingLL.visibility = View.VISIBLE
                                 checkboxLL.visibility = View.GONE

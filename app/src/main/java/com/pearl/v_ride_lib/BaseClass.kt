@@ -8,12 +8,15 @@ import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -21,7 +24,6 @@ import android.view.inputmethod.InputMethodManager
 import android.webkit.MimeTypeMap
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.Spinner
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -87,6 +89,25 @@ abstract  class BaseClass: AppCompatActivity() {
     }
 
 
+    @SuppressLint("ClickableViewAccessibility")
+    open fun buttonEffect(button: View) {
+        button.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    v.background.setColorFilter(
+                        Color.parseColor("#044935"),
+                        PorterDuff.Mode.SRC_OVER
+                    )
+                    v.invalidate()
+                }
+                MotionEvent.ACTION_UP -> {
+                    v.background.clearColorFilter()
+                    v.invalidate()
+                }
+            }
+            false
+        }
+    }
     @SuppressLint("MissingPermission")
     fun isNetworkConnected(context: Context): Boolean {
         val cm: ConnectivityManager =
@@ -735,7 +756,7 @@ abstract  class BaseClass: AppCompatActivity() {
             var result: Boolean
             result = true
 
-            if (number.length==11) {
+            if (number.length < 12) {
                 result = false
             }
 

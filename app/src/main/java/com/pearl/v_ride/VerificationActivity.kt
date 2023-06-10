@@ -45,6 +45,7 @@ class VerificationActivity : BaseClass() {
         }
         getDocStatus()
 
+        prefManager.setCode(0)
 //          var name:String = pref.getDriverName()
 
 //        prefManager.setRegistrationToken("Done")

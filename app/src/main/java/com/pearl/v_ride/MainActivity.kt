@@ -118,6 +118,7 @@ class MainActivity : BaseClass() {
 
         otpBt.setOnClickListener {
 
+            buttonEffect(otpBt)
             phoneNumber = usrID.text.toString().trim()
 //                if(validateNumber(usrID)) {
 
