@@ -173,7 +173,7 @@ class DocumentStatus : BaseClass() {
     var isBank = false
     var isMerchant = false
     lateinit var checkBoxRV: RecyclerView
-    val listCard = ArrayList<Merchant>()
+    private val listCard = ArrayList<Merchant>()
     val adapterCheckBox = CheckboxAdapter(this, listCard)
     val selectedMerchantIds = mutableListOf<Int>()
     lateinit var checkBox: CheckBox
@@ -191,10 +191,13 @@ class DocumentStatus : BaseClass() {
         prefManager = PrefManager(this)
         checkBox = CheckBox(this@DocumentStatus)
         getDocStatus()
+        if (isSelfie || isAdharcard || isAddress || isMerchant || isPancard || isBank) {
+            Log.d("isSelfie", isSelfie.toString())
+            prefManager.setCode(0)
+        }
     }
 
     override fun initializeViews() {
-
 
         loadingDialog = Dialog(this)
 //        inner Layouts
@@ -652,6 +655,7 @@ class DocumentStatus : BaseClass() {
 
         okBT.setOnClickListener {
             if (isSelfie == true && isAdharcard == true && isAddress== true && isMerchant== true && isPancard == true&& isBank== true) {
+                Log.d("isSelfiee", isSelfie.toString())
                 if (prefManager.getCode() == 1) {
 
                     startActivity(Intent(this@DocumentStatus, HomeScreen::class.java))

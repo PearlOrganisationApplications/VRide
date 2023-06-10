@@ -138,10 +138,10 @@ class SignUpActivity : BaseClass() {
 
         }
 
-   /*     if (sPhone.text.length == 10){
+       /* if (sPhone.text.length == 10){
             signup_otpLL.visibility = View.VISIBLE
-        }*/
-       /* sPhone.setOnFocusChangeListener { _, hasFocus ->
+        }
+        sPhone.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 if (!sPhone.text.startsWith(prefix)) {
                     sPhone.setText(prefix + sPhone.text)
@@ -152,8 +152,10 @@ class SignUpActivity : BaseClass() {
                 }
             }
         }*/
+
         // for otp verification
-     /*   sPhone.addTextChangedListener(object : TextWatcher {
+
+        /*sPhone.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }

@@ -6,7 +6,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/card_bg"
+        android:background="@color/background_combo"
         android:orientation="vertical">
 
         <include
@@ -185,7 +185,6 @@
                             </com.google.android.material.textfield.TextInputLayout>
 
 
-
                             <!--
                                                     <com.google.android.material.textfield.TextInputLayout
                                                        android:id="@+id/DriverAadharNoTL"
@@ -207,6 +206,7 @@
                                                             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
                                                     </com.google.android.material.textfield.TextInputLayout>
                             -->
+
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:id="@+id/aadharCardTL"
@@ -353,6 +353,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0.5"
                                 app:layout_constraintStart_toStartOf="parent" />
+
                             <Button
                                 android:id="@+id/editprofile"
                                 android:layout_width="match_parent"
