@@ -156,7 +156,6 @@
 
                 </LinearLayout>
 
-
                 <!--
                                 <LinearLayout
                                     android:id="@+id/otpLL"
@@ -255,7 +254,6 @@
                    android:text="Forgot Password?"
                    android:textColor="@color/black"
                    android:textStyle="bold" />-->
-
 
                 <Button
                     android:id="@+id/loginBT"

@@ -88,7 +88,7 @@ class MainActivity : BaseClass() {
         gooleSignIn = findViewById(R.id.google_signIn)
         signup = findViewById<TextView>(R.id.signupBt)
         login = findViewById<Button>(R.id.loginBT)
-//        forgotPassword = findViewById<TextView>(R.id.forgotPassword)
+//      forgotPassword = findViewById<TextView>(R.id.forgotPassword)
         mAuth = FirebaseAuth.getInstance()
         loginOtp = findViewById(R.id.loginOtp)
         otpBt = findViewById(R.id.otpBT)
@@ -102,19 +102,17 @@ class MainActivity : BaseClass() {
 
     }
 
-
     @SuppressLint("SuspiciousIndentation")
     override fun initializeClickListners() {
 
         gooleSignIn.setOnClickListener {
             signIn()
         }
+
         signup.setOnClickListener {
             startActivity(Intent(this@MainActivity, SignUpActivity::class.java))
 //            finish()
         }
-
-
 
         otpBt.setOnClickListener {
 
@@ -134,7 +132,7 @@ class MainActivity : BaseClass() {
 
                         view_timer.visibility = View.VISIBLE
                         phoneNumber = "+91$phoneNumber"
-                        progressBar.visibility = View.VISIBLE
+//                        progressBar.visibility = View.VISIBLE
 //                                loadingDialog.startLoadingDialog()
 
 //                                Handler(Looper.getMainLooper()).postDelayed({
@@ -147,7 +145,8 @@ class MainActivity : BaseClass() {
                                 .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
                                 .build()
                         PhoneAuthProvider.verifyPhoneNumber(options)
-                        startTimer()
+                        loadingDialog.startLoadingDialog()
+//                        startTimer()
 //                                },2500)
 //                                checkLogin()
                     } else {
@@ -160,19 +159,26 @@ class MainActivity : BaseClass() {
 
             }
 //                startTimer()
-//            }
         }
 
-        if (::resentToken.isInitialized) {
-            resend_otp.setOnClickListener {
-                loginOtp.visibility = View.VISIBLE
+ /*       if (::resentToken.isInitialized) {
 
-                resentOtp()
-                startTimer()
-                resentTVVisibility()
-            }
         } else {
             resend_otp.visibility = View.GONE
+        }*/
+        resend_otp.setOnClickListener {
+//                loginOtp.visibility = View.VISIBLE
+            val options = PhoneAuthOptions.newBuilder(mAuth)
+                .setPhoneNumber(phoneNumber) // Phone number to verify
+                .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                .setActivity(this) // Activity (for callback binding)
+                .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
+                .setForceResendingToken(resentToken)
+                .build()
+            PhoneAuthProvider.verifyPhoneNumber(options)
+
+            resend_otp.visibility = View.GONE
+                           resentTVVisibility()
         }
 
         login.setOnClickListener {
@@ -186,8 +192,9 @@ class MainActivity : BaseClass() {
                     Log.d("OTPOTP", verifyOTP + "  " + otpCode)
                     if (vOTP == verifyOTP) {
 //                        Toast.makeText(this@MainActivity, "Please enter correct 1 OTP", Toast.LENGTH_SHORT).show()
-                        progressBar.visibility = View.VISIBLE
-                        loginOtp.visibility = View.GONE
+//                        loginOtp.visibility = View.GONE
+//                        progressBar.visibility = View.VISIBLE
+                        loadingDialog.startLoadingDialog()
                         signInWithPhoneAuthCredential(credential)
                     } else {
                         Toast.makeText(this@MainActivity, "Please enter correct OTP", Toast.LENGTH_SHORT).show()
@@ -205,12 +212,9 @@ class MainActivity : BaseClass() {
         }
     }
 
-    override fun initializeInputs() {
-    }
+    override fun initializeInputs() {}
 
-    override fun initializeLabels() {
-
-    }
+    override fun initializeLabels() {}
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -314,6 +318,7 @@ class MainActivity : BaseClass() {
     }
 
     private var doubleBackToExitPressedOnce = false
+
     override fun onBackPressed() {
         if (doubleBackToExitPressedOnce) {
             super.onBackPressed()
@@ -336,6 +341,7 @@ class MainActivity : BaseClass() {
             //     detect the incoming verification SMS and perform verification without
             //     user action.
             signInWithPhoneAuthCredential(credential)
+            loadingDialog.dismissDialog()
         }
 
         override fun onVerificationFailed(e: FirebaseException) {
@@ -353,6 +359,7 @@ class MainActivity : BaseClass() {
             }
 
             // Show a message and update the UI
+            loadingDialog.dismissDialog()
         }
 
         override fun onCodeSent(
@@ -366,23 +373,33 @@ class MainActivity : BaseClass() {
             loginOtp.visibility = View.VISIBLE
             login.visibility = View.VISIBLE
             otpBt.visibility = View.GONE
-            resend_otp.visibility = View.VISIBLE
+//            resend_otp.visibility = View.VISIBLE
             progressBar.visibility = View.GONE
             verifyOTP = verificationId
             vOTP = verificationId
             resentToken = token
 
-
+            loadingDialog.dismissDialog()
             // Save verification ID and resending token so we can use them later
             /*       storedVerificationId = verificationId
                    resendToken = token*/
+            startTimer()
+        }
+        override fun onCodeAutoRetrievalTimeOut(verificationId: String) {
+            super.onCodeAutoRetrievalTimeOut(verificationId)
+            // Hide the resend_otp button
+/*            resend_otp.visibility = View.VISIBLE
+            signup_otpVerifyBT.visibility = View.GONE*/
+            resend_otp.visibility = View.VISIBLE
+            resentTVVisibility()
+            startTimer()
         }
     }
 
     override fun onStart() {
         super.onStart()
         if (mAuth.currentUser != null) {
-            startActivity(Intent(this@MainActivity, HomeScreen::class.java))
+//            startActivity(Intent(this@MainActivity, HomeScreen::class.java))
         }
     }
 
@@ -391,7 +408,7 @@ class MainActivity : BaseClass() {
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
-
+                        loadingDialog.dismissDialog()
                         startActivity(Intent(this@MainActivity, HomeScreen::class.java))
                         finish()
                         val user = task.result?.user
@@ -402,20 +419,13 @@ class MainActivity : BaseClass() {
                         }
                         // Update UI
                     }
-                    progressBar.visibility = View.VISIBLE
+//                    progressBar.visibility = View.VISIBLE
+                    loadingDialog.dismissDialog()
+                    Toast.makeText(this@MainActivity,"Please Enter valid otp ",Toast.LENGTH_SHORT).show()
                 }
     }
 
-    private fun resentOtp() {
-        val options = PhoneAuthOptions.newBuilder(mAuth)
-                .setPhoneNumber(phoneNumber) // Phone number to verify
-                .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-                .setActivity(this) // Activity (for callback binding)
-                .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
-                .setForceResendingToken(resentToken)
-                .build()
-        PhoneAuthProvider.verifyPhoneNumber(options)
-    }
+
 
     private fun resentTVVisibility() {
         loginOtp.setText("")
@@ -430,32 +440,20 @@ class MainActivity : BaseClass() {
     }
 
     fun startTimer() {
-
         cTimer = object : CountDownTimer(60000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                view_timer.setText("00:00: " + (millisUntilFinished / 1000).toString())
+                view_timer.text = "00:00: " + (millisUntilFinished / 1000).toString()
             }
 
             override fun onFinish() {
-                view_timer.setText("Re send OTP!")
+//                view_timer.setText("Re send OTP!")
+                view_timer.visibility = View.GONE
                 resend_otp.visibility = View.VISIBLE
 
             }
         }
         cTimer.start()
     }
-
-/*    fun postData(){
-        val apiService = LoginRestApiService()
-        val userInfo = LoginInfo(
-            mobileNo = "mobileNo"
-        )
-        apiService.addUserLogin(userInfo){
-            if (it?.phoneNumber != null){
-
-            }
-        }
-    }*/
 
     fun checkLogin() {
         /*   if(phoneNumber == "")
@@ -492,7 +490,8 @@ class MainActivity : BaseClass() {
                             val dialog = builder.create()
                             dialog.show()
                         }, 4000) // 4 seconds
-                    } else if (createdUser?.signin.equals("1") && createdUser?.profile.equals("-4") && createdUser?.verification.equals("0")) {
+                    }
+                    else if (createdUser?.signin.equals("1") && createdUser?.profile.equals("-4") && createdUser?.verification.equals("0")) {
                         // profile no
                         Log.d("status1 ", "${createdUser?.profile}")
                         Handler().postDelayed({
@@ -521,7 +520,6 @@ class MainActivity : BaseClass() {
                             }
                         val dialog = builder.create()
                         dialog.show()
-
                     }*/
                     else if (createdUser?.signin.equals("1") && createdUser?.profile.equals("2") || createdUser?.profile.equals("1") && createdUser?.verification.equals("0")) {
                         // validation page
@@ -592,103 +590,3 @@ class MainActivity : BaseClass() {
     }
 
 }
-
-
-/* override fun onRequestPermissionsResult(
-     requestCode: Int,
-     permissions: Array<String>,
-     grantResults: IntArray
- ) {
-     super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-     when (requestCode) {
-         REQUEST_CODE -> {
-             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-             }
-         }
-     }
- }*/
-/*   override fun onRequestPermissionsResult(
-       requestCode: Int,
-       permissions: Array<String>,
-       grantResults: IntArray
-   ) {
-       super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-       when (requestCode) {
-           REQUEST_CODE -> {
-               if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                   // Permission granted, do something
-               } else {
-                   // Permission denied, re-prompt the user for permission
-                   ActivityCompat.requestPermissions(
-                       this,
-                       arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                       REQUEST_CODE
-                   )
-               }
-           }
-       }
-   }*/
-
-/*
-   private fun checkLocationPermission() {
-       if (ContextCompat.checkSelfPermission(
-               this,
-               Manifest.permission.ACCESS_FINE_LOCATION
-           ) != PackageManager.PERMISSION_GRANTED
-       ) {
-           if (ActivityCompat.shouldShowRequestPermissionRationale(
-                   this,
-                   Manifest.permission.ACCESS_FINE_LOCATION
-               )
-           ) {
-               // Explain why the permission is necessary
-               AlertDialog.Builder(this)
-                   .setTitle("Location Permission Required")
-                   .setMessage("This app requires location permission to function properly.")
-                   .setPositiveButton("OK") { _, _ ->
-                       // Request the permission again
-                       ActivityCompat.requestPermissions(
-                           this,
-                           arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                           REQUEST_CODE
-                       )
-                   }
-                   .setNegativeButton("Cancel", null)
-                   .show()
-           } else {
-               // Show a message and open the app's settings page
-               AlertDialog.Builder(this)
-                   .setTitle("Location Permission Denied")
-                   .setMessage("This app requires location permission to function properly. Please grant the permission manually.")
-                   .setPositiveButton("Open Settings") { _, _ ->
-                       val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                       intent.data = Uri.fromParts("package", packageName, null)
-                       startActivity(intent)
-                   }
-                   .setNegativeButton("Cancel", null)
-                   .show()
-           }
-       } else {
-           // Permission granted, do something
-       }
-   }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            REQUEST_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Permission granted, do something
-                } else {
-                    // Permission denied, handle the lack of permission
-                    checkLocationPermission()
-                }
-            }
-        }
-    }
-
-*/

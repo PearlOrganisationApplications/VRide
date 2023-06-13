@@ -42,8 +42,8 @@ class SplashScreenActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Global.language(this,resources)
         setContentView(R.layout.activity_splash_screen)
+        Global.language(this,resources)
         prefManager = PrefManager(this)
 
         /*       prefManager = PrefManager(this@SplashScreenActivity)
@@ -91,7 +91,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
 
 
-/*        Handler(Looper.getMainLooper()).postDelayed({
+            /*        Handler(Looper.getMainLooper()).postDelayed({
 
             if (prefManager!!.getPr()){
                 if (prefManager!!.getLogin().equals("yes")) {
