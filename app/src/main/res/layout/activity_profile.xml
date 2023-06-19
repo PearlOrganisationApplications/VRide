@@ -93,6 +93,7 @@
                                 android:layout_height="wrap_content"
                                 android:enabled="false"
                                 android:hint="@string/email_id"
+                                android:visibility="gone"
                                 app:startIconDrawable="@drawable/ic_email"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 >
@@ -115,7 +116,7 @@
                                 android:layout_marginTop="20dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:enabled="false"
+                                android:enabled="true"
                                 android:hint="@string/mobile_no"
                                 app:startIconDrawable="@drawable/ic_baseline_phone_"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -128,7 +129,7 @@
                                     android:imeOptions="actionDone"
                                     android:inputType="numberDecimal"
                                     android:textColor="@color/black"
-                                    android:drawableEnd="@drawable/ic_baseline_edit"
+                                    android:focusable="false"
                                     android:maxLength="10"
                                     android:padding="15dp"
                                     android:textSize="13sp"/>
@@ -363,6 +364,7 @@
                                 android:backgroundTint="@color/color_secondary"
                                 android:text="@string/edit_profile"
                                 android:textColor="@color/white"
+                                android:visibility="gone"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0.5"

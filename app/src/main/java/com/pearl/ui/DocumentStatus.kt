@@ -1615,8 +1615,5 @@ class DocumentStatus : BaseClass() {
 
     }
 
-
     // Utility function to show Toast messages
-
-
 }

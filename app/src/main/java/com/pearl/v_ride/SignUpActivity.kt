@@ -41,6 +41,7 @@ class SignUpActivity : BaseClass() {
         private const val RC_SIGN_IN = 1
         private const val TAG = "PhoneAUTH"
     }
+
     lateinit var prefManager: PrefManager
     lateinit var dob: EditText
     lateinit var signup: Button

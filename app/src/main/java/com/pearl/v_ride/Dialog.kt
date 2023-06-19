@@ -13,7 +13,7 @@ class Dialog(private val activity: Activity) {
         val builder = AlertDialog.Builder(activity)
         val inflater = activity.layoutInflater
         builder.setView(inflater.inflate(R.layout.waiting, null))
-        builder.setCancelable(true)
+        builder.setCancelable(false)
 
         dialog = builder.create()
         dialog?.show()

@@ -43,14 +43,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/mpin_gradinet"
+                    android:background="@color/background_combo"
                     android:orientation="vertical">
 
                     <LinearLayout
                         android:id="@+id/doc_selfieeLL"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/pie_chart"
+                        android:background="@color/color_secondary"
                         android:gravity="center"
                         android:minHeight="@dimen/_35sdp"
                         android:orientation="horizontal"
@@ -61,7 +61,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
                             android:padding="@dimen/_5sdp"
-                            android:textColor="@color/white"
+                            android:textColor="@color/black"
                             android:text="@string/your_selfie"
                             android:textSize="@dimen/_18ssp" />
 
@@ -73,7 +73,7 @@
                             android:layout_weight=".7"
                             android:src="@drawable/check"
                             android:visibility="gone"
-                            app:tint="@color/white" />
+                            app:tint="@color/darkGreeen" />
 
                         <ImageView
                             android:id="@+id/doc_selfieError"
@@ -91,7 +91,7 @@
                             android:layout_gravity="center"
                             android:layout_weight=".3"
                             android:src="@drawable/ic_right"
-                            app:tint="@color/white" />
+                            app:tint="@color/white"/>
 
                         <ImageView
                             android:id="@+id/doc_selfie_showLess"
@@ -128,7 +128,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:textColor="@color/white"
+                                android:textColor="@color/black"
                                 android:padding="@dimen/_5sdp"
                                 android:text="@string/selfie" />
 
@@ -178,7 +178,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/mpin_gradinet"
+                    android:background="@color/background_combo"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -186,7 +186,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:background="@color/pie_chart"
+                        android:background="@color/color_secondary"
                         android:minHeight="@dimen/_35sdp"
                         android:orientation="horizontal"
                         android:weightSum="3">
@@ -196,7 +196,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
                             android:padding="@dimen/_5sdp"
-                            android:textColor="@color/white"
+                            android:textColor="@color/black"
                             android:text="@string/aadhar_card"
                             android:textSize="@dimen/_18ssp" />
 
@@ -208,7 +208,7 @@
                             android:layout_weight=".7"
                             android:src="@drawable/check"
                             android:visibility="gone"
-                            app:tint="@color/white"/>
+                            app:tint="@color/darkGreeen"/>
 
                         <ImageView
                             android:id="@+id/doc_aadharError"
@@ -271,7 +271,7 @@
                             android:layout_marginTop="25dp"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/aadhar_n_front"
-                            android:textColor="@color/white"
+                            android:textColor="@color/black"
                             android:textSize="12sp"
                             app:layout_constraintStart_toEndOf="@+id/doc_adharFrotIV"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -284,7 +284,7 @@
                             android:text="@string/aadhar_n_rear"
                             android:padding="@dimen/_5sdp"
                             android:textSize="12sp"
-                            android:textColor="@color/white"
+                            android:textColor="@color/black"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toEndOf="@+id/doc_adharrearIV"
@@ -332,15 +332,14 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="10dp"
+                                android:backgroundTint="@color/darkGreeen"
+                                android:enabled="true"
                                 android:hint="@string/aadhar_card_no"
                                 android:imeOptions="actionDone"
                                 android:inputType="number"
                                 android:maxLength="12"
-                                android:enabled="true"
-                                android:backgroundTint="@color/white"
-                                android:textColorHint="@color/white"
-                                android:textColor="@color/white"
-                                />
+                                android:textColor="@color/black"
+                                android:textColorHint="@color/black" />
 
                             <Button
                                 android:id="@+id/doc_submitAdharBT"
@@ -372,7 +371,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/mpin_gradinet"
+                    android:background="@color/background_combo"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -380,7 +379,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:background="@color/pie_chart"
+                        android:background="@color/color_secondary"
                         android:minHeight="@dimen/_35sdp"
                         android:orientation="horizontal"
                         android:weightSum="3">
@@ -391,7 +390,7 @@
                             android:layout_weight="2"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/current_address"
-                            android:textColor="@color/white"
+                            android:textColor="@color/black"
                             android:textSize="@dimen/_18ssp" />
 
                         <ImageView
@@ -402,7 +401,7 @@
                             android:layout_weight=".7"
                             android:src="@drawable/check"
                             android:visibility="gone"
-                            app:tint="@color/white"/>
+                            app:tint="@color/darkGreeen"/>
 
                         <ImageView
                             android:id="@+id/doc_addressError"
@@ -445,29 +444,50 @@
 
                         <EditText
                             android:id="@+id/doc_address"
-                            android:backgroundTint="@color/white"
+                            android:backgroundTint="@color/darkGreeen"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10ssp"
                             android:hint="@string/address"
-                            android:textColorHint="@color/white"
+                             android:textColorHint="@color/black"
                             android:imeOptions="actionNext"
-                            android:textColor="@color/white"
+                            android:textColor="@color/black"
                             android:inputType="textPostalAddress"
                             android:maxLines="2" />
 
-                        <EditText
-                            android:id="@+id/doc_city"
+                        <LinearLayout
+                            android:weightSum="2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_10ssp"
-                            android:hint="@string/city"
-                            android:backgroundTint="@color/white"
-                            android:textColorHint="@color/white"
-                            android:imeOptions="actionNext"
-                            android:textColor="@color/white"
-                            android:inputType="textPostalAddress"
-                            android:maxLines="1" />
+                            >
+                            <EditText
+                                android:layout_weight="1"
+                                android:id="@+id/doc_city"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_10ssp"
+                                android:hint="@string/city"
+                                android:backgroundTint="@color/darkGreeen"
+                                android:textColorHint="@color/black"
+                                android:imeOptions="actionNext"
+                                android:textColor="@color/black"
+                                android:inputType="textPostalAddress"
+                                android:maxLines="1" />
+
+                            <EditText
+                                android:layout_weight="1"
+                                android:id="@+id/doc_landmark"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_10ssp"
+                                android:hint="Landmark"
+                                android:backgroundTint="@color/darkGreeen"
+                                android:textColorHint="@color/black"
+                                android:imeOptions="actionNext"
+                                android:textColor="@color/black"
+                                android:inputType="textPostalAddress"
+                                android:maxLines="1" />
+                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -488,11 +508,11 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:textColor="@color/white"
+                                android:textColor="@color/black"
                                 android:autofillHints="postalCode"
                                 android:hint="@string/pin_code"
-                                android:backgroundTint="@color/white"
-                                android:textColorHint="@color/white"
+                                android:backgroundTint="@color/darkGreeen"
+                                 android:textColorHint="@color/black"
                                 android:imeOptions="actionDone"
                                 android:inputType="number"
                                 android:maxLength="6" />
@@ -550,7 +570,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/mpin_gradinet"
+                    android:background="@color/background_combo"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -558,7 +578,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:background="@color/pie_chart"
+                        android:background="@color/color_secondary"
                         android:minHeight="@dimen/_35sdp"
                         android:orientation="horizontal"
                         android:weightSum="3">
@@ -569,7 +589,7 @@
                             android:layout_weight="2"
                             android:padding="@dimen/_5sdp"
                             android:text="Merchant"
-                            android:textColor="@color/white"
+                            android:textColor="@color/black"
                             android:textSize="@dimen/_18ssp" />
 
                         <ImageView
@@ -580,7 +600,7 @@
                             android:layout_weight=".7"
                             android:src="@drawable/check"
                             android:visibility="gone"
-                            app:tint="@color/white"/>
+                            app:tint="@color/darkGreeen"/>
 
                         <ImageView
                             android:id="@+id/doc_merchantError"
@@ -716,7 +736,7 @@
                                 android:id="@+id/doc_enter_merchant_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/white"
+                                android:textColor="@color/black"
                                 android:text="@string/enter_merchant_name" />
 
                             <EditText
@@ -730,7 +750,7 @@
                                 android:id="@+id/doc_enter_merchant_id"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/white"
+                                android:textColor="@color/black"
                                 android:text="@string/enter_merchant_id" />
 
                             <EditText
@@ -879,7 +899,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/mpin_gradinet"
+                    android:background="@color/background_combo"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -888,7 +908,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:minHeight="@dimen/_35sdp"
-                        android:background="@color/pie_chart"
+                        android:background="@color/color_secondary"
                         android:orientation="horizontal"
                         android:weightSum="3">
 
@@ -897,7 +917,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
                             android:padding="@dimen/_5sdp"
-                            android:textColor="@color/white"
+                            android:textColor="@color/black"
                             android:text="@string/pan_card"
                             android:textSize="@dimen/_18ssp" />
 
@@ -909,7 +929,7 @@
                             android:layout_weight=".7"
                             android:src="@drawable/check"
                             android:visibility="gone"
-                            app:tint="@color/white"/>
+                            app:tint="@color/darkGreeen"/>
 
                         <ImageView
                             android:id="@+id/doc_panError"
@@ -966,7 +986,7 @@
                             android:layout_marginTop="31dp"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/pan_card"
-                            android:textColor="@color/white"
+                            android:textColor="@color/black"
                             android:textSize="12sp"
                             app:layout_constraintStart_toEndOf="@+id/doc_pan_frontIV"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -999,9 +1019,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/pan_no"
-                                android:backgroundTint="@color/white"
-                                android:textColor="@color/white"
-                                android:textColorHint="@color/white"
+                                android:backgroundTint="@color/darkGreeen"
+                                android:textColor="@color/black"
+                                 android:textColorHint="@color/black"
                                 android:imeOptions="actionNext"
                                 android:inputType="textCapCharacters"
                                 android:maxLength="10"
@@ -1015,9 +1035,9 @@
                                 android:imeOptions="actionDone"
                                 android:inputType="textPersonName"
                                 android:minHeight="48dp"
-                                android:backgroundTint="@color/white"
-                                android:textColor="@color/white"
-                                android:textColorHint="@color/white"
+                                android:backgroundTint="@color/darkGreeen"
+                                android:textColor="@color/black"
+                                 android:textColorHint="@color/black"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/doc_panNoET" />
@@ -1050,14 +1070,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/mpin_gradinet"
+                    android:background="@color/background_combo"
                     android:orientation="vertical">
 
                     <LinearLayout
                         android:id="@+id/doc_bankLL"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/pie_chart"
+                        android:background="@color/color_secondary"
                         android:gravity="center"
                         android:minHeight="@dimen/_35sdp"
                         android:orientation="horizontal"
@@ -1069,7 +1089,7 @@
                             android:layout_weight="2"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/bank_details"
-                            android:textColor="@color/white"
+                            android:textColor="@color/black"
                             android:textSize="@dimen/_18ssp" />
 
                         <ImageView
@@ -1080,7 +1100,7 @@
                             android:layout_weight=".7"
                             android:src="@drawable/check"
                             android:visibility="gone"
-                            app:tint="@color/white"/>
+                            app:tint="@color/darkGreeen"/>
 
                         <ImageView
                             android:id="@+id/doc_bankError"
@@ -1139,7 +1159,7 @@
                             android:layout_marginTop="20dp"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/bank_n_details"
-                            android:textColor="@color/white"
+                            android:textColor="@color/black"
                             android:textSize="12sp"
                             app:layout_constraintStart_toEndOf="@+id/doc_bankPassbookIV"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -1171,9 +1191,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/bank_name"
-                                android:backgroundTint="@color/white"
-                                android:textColor="@color/white"
-                                android:textColorHint="@color/white"
+                                android:backgroundTint="@color/darkGreeen"
+                                android:textColor="@color/black"
+                                 android:textColorHint="@color/black"
                                 android:imeOptions="actionNext"
                                 android:inputType="textCapWords"
                                 android:minHeight="48dp" />
@@ -1181,9 +1201,9 @@
                             <EditText
                                 android:id="@+id/doc_accountNOET"
                                 android:layout_width="match_parent"
-                                android:backgroundTint="@color/white"
-                                android:textColor="@color/white"
-                                android:textColorHint="@color/white"
+                                android:backgroundTint="@color/darkGreeen"
+                                android:textColor="@color/black"
+                                 android:textColorHint="@color/black"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/please_enter_your_account_no"
                                 android:imeOptions="actionNext"
@@ -1198,9 +1218,9 @@
                                 android:id="@+id/doc_raccountNOET"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:backgroundTint="@color/white"
-                                android:textColor="@color/white"
-                                android:textColorHint="@color/white"
+                                android:backgroundTint="@color/darkGreeen"
+                                android:textColor="@color/black"
+                                 android:textColorHint="@color/black"
                                 android:hint="@string/renter_your_account_no"
                                 android:imeOptions="actionNext"
                                 android:inputType="text"
@@ -1213,9 +1233,9 @@
                                 android:id="@+id/doc_ifscCode"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:backgroundTint="@color/white"
-                                android:textColor="@color/white"
-                                android:textColorHint="@color/white"
+                                android:backgroundTint="@color/darkGreeen"
+                                android:textColor="@color/black"
+                                 android:textColorHint="@color/black"
                                 android:hint="@string/ifsc_code"
                                 android:imeOptions="actionDone"
                                 android:inputType="text"

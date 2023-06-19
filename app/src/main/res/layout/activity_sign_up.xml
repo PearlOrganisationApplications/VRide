@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FAEBD7"
     tools:context="com.pearl.v_ride.SignUpActivity">
 
 
@@ -35,11 +34,10 @@
             android:id="@+id/signup_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawablePadding="8dp"
             android:layout_marginBottom="@dimen/_20ssp"
             android:text="@string/create_new_account"
-            android:textAlignment="center"
-            android:textSize="36sp" />
+            android:textAlignment="viewStart"
+            android:textSize="30sp" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -47,7 +45,7 @@
             app:cardCornerRadius="@dimen/_15ssp"
             app:cardElevation="@dimen/_15ssp"
             android:layout_marginTop="@dimen/_30ssp"
-            app:cardBackgroundColor="#EFEADD"
+            app:cardBackgroundColor="@color/background_combo"
             >
             <LinearLayout
                 android:layout_width="match_parent"

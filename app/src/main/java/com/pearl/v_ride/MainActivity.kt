@@ -6,6 +6,7 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.*
+import android.text.Html
 import android.util.Log
 import android.view.View
 
@@ -76,8 +77,10 @@ class MainActivity : BaseClass() {
     lateinit var resentToken: PhoneAuthProvider.ForceResendingToken
     lateinit var resend_otp: TextView
     lateinit var view_timer: TextView
+    lateinit var textView: TextView
     lateinit var cTimer: CountDownTimer
     private lateinit var loadingDialog: com.pearl.v_ride.Dialog
+    var text = ""
 
     override fun setLayoutXml() {
         setContentView(R.layout.activity_main)
@@ -93,6 +96,7 @@ class MainActivity : BaseClass() {
         loginOtp = findViewById(R.id.loginOtp)
         otpBt = findViewById(R.id.otpBT)
         usrID = findViewById(R.id.userID)
+        textView = findViewById(R.id.textView)
         phoneNumber = usrID.text.toString()
         progressBar = findViewById(R.id.progressBar)
         resend_otp = findViewById(R.id.resend_otp)
@@ -104,6 +108,12 @@ class MainActivity : BaseClass() {
 
     @SuppressLint("SuspiciousIndentation")
     override fun initializeClickListners() {
+
+         text = "<font color=#000000>By clicking \"Login\" above, you agree to our   </font> " +
+                "<font color=#0C805F>terms &amp; conditiions</font><font color=#000000> and </font>" +
+                "<font color=#0C805F>privacy policy.</font>"
+
+        textView.setText(Html.fromHtml(text))
 
         gooleSignIn.setOnClickListener {
             signIn()
@@ -151,6 +161,7 @@ class MainActivity : BaseClass() {
 //                                checkLogin()
                     } else {
                         loadingDialog.startLoadingDialog()
+
                         checkLogin()
                     }
                 } else {
@@ -178,7 +189,9 @@ class MainActivity : BaseClass() {
             PhoneAuthProvider.verifyPhoneNumber(options)
 
             resend_otp.visibility = View.GONE
-                           resentTVVisibility()
+            loadingDialog.startLoadingDialog()
+            loginOtp.setText("")
+//                           resentTVVisibility()
         }
 
         login.setOnClickListener {
@@ -208,7 +221,6 @@ class MainActivity : BaseClass() {
 
 //             startActivity(Intent(this,HomeScreen::class.java))
 
-
         }
     }
 
@@ -227,6 +239,7 @@ class MainActivity : BaseClass() {
         initializeInputs()
         initializeLabels()
         internetChangeBroadCast()
+
 
 //        resentTVVisibility()
 
@@ -348,18 +361,21 @@ class MainActivity : BaseClass() {
             // This callback is invoked in an invalid request for verification is made,
             // for instance if the the phone number format is not valid.
 
+            loadingDialog.dismissDialog()
+
             if (e is FirebaseAuthInvalidCredentialsException) {
                 // Invalid request
                 Log.d("TAG", "verificationFailed ${e.toString()}")
             } else if (e is FirebaseTooManyRequestsException) {
                 // The SMS quota for the project has been exceeded
+                Toast.makeText(this@MainActivity,"we are having Some internal issues please try again later",Toast.LENGTH_SHORT).show()
                 Log.d("TAG", "FirebaseTooManyRequestsException ${e.toString()}")
             } else if (e is FirebaseAuthMissingActivityForRecaptchaException) {
                 // reCAPTCHA verification attempted with null Activity
             }
 
             // Show a message and update the UI
-            loadingDialog.dismissDialog()
+
         }
 
         override fun onCodeSent(
@@ -383,6 +399,7 @@ class MainActivity : BaseClass() {
             // Save verification ID and resending token so we can use them later
             /*       storedVerificationId = verificationId
                    resendToken = token*/
+            view_timer.visibility = View.VISIBLE
             startTimer()
         }
         override fun onCodeAutoRetrievalTimeOut(verificationId: String) {
@@ -391,8 +408,8 @@ class MainActivity : BaseClass() {
 /*            resend_otp.visibility = View.VISIBLE
             signup_otpVerifyBT.visibility = View.GONE*/
             resend_otp.visibility = View.VISIBLE
-            resentTVVisibility()
-            startTimer()
+//            resentTVVisibility()
+//            startTimer()
         }
     }
 
@@ -521,6 +538,7 @@ class MainActivity : BaseClass() {
                         val dialog = builder.create()
                         dialog.show()
                     }*/
+
                     else if (createdUser?.signin.equals("1") && createdUser?.profile.equals("2") || createdUser?.profile.equals("1") && createdUser?.verification.equals("0")) {
                         // validation page
                         /* Log.d("status123 " ,"${createdUser?.profile}")
@@ -539,6 +557,16 @@ class MainActivity : BaseClass() {
                             startActivity(Intent(this@MainActivity, VerificationActivity::class.java))
                             finish()
                         }, 4000) // 4 seconds
+                    }else if (createdUser?.signin.equals("1") && createdUser?.profile.equals("1") || createdUser?.profile.equals("2") && createdUser?.verification.equals("1")) {
+                        // Handle the error response
+                        loadingDialog.dismissDialog()
+                        Log.d("ElseLogin ", "t.toString()")
+                        val errorResponseCode = response.code()
+                        val errorResponseBody = response.errorBody()?.string()
+                        // Handle the error response code and body
+                        Log.e("API Error", "Response Code: $errorResponseCode, Body: $errorResponseBody")
+                        // Show a generic error message to the user
+                        showErrorDialog("You can log in now you are verified user.", "OK")
                     } else {
                         //profile 2
                         Log.d("status12 ", "${createdUser?.profile}")
@@ -547,27 +575,18 @@ class MainActivity : BaseClass() {
                             loadingDialog.dismissDialog()
                             val builder = AlertDialog.Builder(this@MainActivity)
                             builder.setTitle("Document Details")
-                                    .setMessage("Some Details are missing,\n please fill registration from first ")
-                                    .setPositiveButton("ok") { dialog, _ ->
-                                        dialog.dismiss()
-                                        startActivity(Intent(this@MainActivity, DocumentStatus::class.java))
-                                    }
+                                .setMessage("Some Details are missing,\n please fill registration from first ")
+                                .setPositiveButton("ok") { dialog, _ ->
+                                    dialog.dismiss()
+                                    startActivity(Intent(this@MainActivity, DocumentStatus::class.java))
+                                }
                             val dialog = builder.create()
                             dialog.show()
                         }, 4000) // 4 seconds
 
                     }
                 }
-                if (createdUser?.signin.equals("1") && createdUser?.profile.equals("1") && createdUser?.verification.equals("1")) {
-                    // Handle the error response
-                    Log.d("ElseLogin ", "t.toString()")
-                    val errorResponseCode = response.code()
-                    val errorResponseBody = response.errorBody()?.string()
-                    // Handle the error response code and body
-                    Log.e("API Error", "Response Code: $errorResponseCode, Body: $errorResponseBody")
-                    // Show a generic error message to the user
-                    showErrorDialog("An error occurred. Please try again later.", "OK")
-                }
+
             }
 
             override fun onFailure(call: Call<LoginInfo>, t: Throwable) {
