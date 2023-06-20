@@ -177,6 +177,7 @@ class MainActivity : BaseClass() {
         } else {
             resend_otp.visibility = View.GONE
         }*/
+
         resend_otp.setOnClickListener {
 //                loginOtp.visibility = View.VISIBLE
             val options = PhoneAuthOptions.newBuilder(mAuth)
@@ -279,10 +280,6 @@ class MainActivity : BaseClass() {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_wait)
         dialog.setCanceledOnTouchOutside(false)
-    }
-
-
-    private fun validateForm() {
     }
 
     private fun signIn() {
@@ -435,14 +432,13 @@ class MainActivity : BaseClass() {
                             // The verification code entered was invalid
                         }
                         // Update UI
+                        loadingDialog.dismissDialog()
+                        Toast.makeText(this@MainActivity,"Please Enter valid otp ",Toast.LENGTH_SHORT).show()
                     }
 //                    progressBar.visibility = View.VISIBLE
-                    loadingDialog.dismissDialog()
-                    Toast.makeText(this@MainActivity,"Please Enter valid otp ",Toast.LENGTH_SHORT).show()
+
                 }
     }
-
-
 
     private fun resentTVVisibility() {
         loginOtp.setText("")

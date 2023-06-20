@@ -382,6 +382,19 @@ abstract  class BaseClass: AppCompatActivity() {
             true
         }
     }
+
+    fun validateLandnark(landmark: EditText): Boolean {
+        val dob_id: String = landmark.getText().toString().trim { it <= ' ' }
+        setCustomError(null, landmark)
+        return if (dob_id.isEmpty()) {
+            val sMessage = "landmark is must required ..!!"
+            setCustomError(sMessage, landmark)
+            false
+        } else {
+            setCustomErrorDisabled(landmark)
+            true
+        }
+    }
     fun validateWorkState(workState: EditText): Boolean {
         val dob_id: String = workState.getText().toString().trim { it <= ' ' }
         setCustomError(null, workState)

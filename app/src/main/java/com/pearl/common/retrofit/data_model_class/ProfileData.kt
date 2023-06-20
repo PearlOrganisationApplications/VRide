@@ -18,6 +18,7 @@ data class Profile(
     @SerializedName("address") val address: String?,
     @SerializedName("state") val state: String?,
     @SerializedName("city") val city: String?,
+    @SerializedName("landmark") val landmark: String?,
     @SerializedName("pincode") val pincode: String?,
     @SerializedName("adhar_no") val adharNo: String?,
     @SerializedName("profile_pic") val profilePic: String?,
