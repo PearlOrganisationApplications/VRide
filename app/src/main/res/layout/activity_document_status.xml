@@ -588,7 +588,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
                             android:padding="@dimen/_5sdp"
-                            android:text="Merchant"
+                            android:text="Want to work with"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_18ssp" />
 

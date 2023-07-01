@@ -1266,7 +1266,7 @@ class DocumentStatus : BaseClass() {
                                 ifsc_code.isEnabled = false
                                 addPassbook.isEnabled = false
                                 isBank = true
-                            }, 4000) // 4 seconds
+                            }, 2000) // 4 seconds
                         }
                     } else {
                         Log.d("else", "t.toString")
@@ -1299,12 +1299,12 @@ class DocumentStatus : BaseClass() {
                 if (response.isSuccessful) {
                     val responseData = response.body()
                     if (responseData != null) {
+
                         val merchants = responseData.merchants
                         // Switch to the main thread to update UI
 //                        withContext(`ispatchers.Main)
 
                         runOnUiThread {
-
 
                             for (merchant in merchants) {
                                 val checkBoxId = merchant.id

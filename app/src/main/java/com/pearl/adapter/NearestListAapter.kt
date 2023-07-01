@@ -8,13 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.pearl.common.retrofit.data_model_class.ServiceCenter
+import com.pearl.common.retrofit.data_model_class.Station
 import com.pearl.v_ride.R
 
 
-class NearestListAapter(private val context: Context, private  val nearestList: ArrayList<ServiceCenter>):
+class NearestListAapter(private val context: Context, private val nearestList: ArrayList<Station>):
     RecyclerView.Adapter<NearestListAapter.MyViewHolder>() {
 
 
@@ -35,15 +34,14 @@ class NearestListAapter(private val context: Context, private  val nearestList: 
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = nearestList[position]
-        holder.title.text =currentItem.locationName
-        holder.cityName.text = currentItem.city
-        holder.stateName.text = currentItem.state
+        holder.title.text =currentItem.serviceLocation
+        holder.cityName.text = currentItem.stationInstallerName
+        holder.stateName.text = currentItem.zone
 
         holder.navigateMap.setOnClickListener {
            val lat = currentItem.latitude
-           val lng = currentItem.latitude
-            val label =""
-                 holder.title.toString()
+           val lng = currentItem.longitude
+            val label = holder.title.toString()
 
 //            val geoUri = "http://maps.google.com/maps?q=loc:$lat,$lng + ${holder.title} "
 //            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
@@ -51,7 +49,7 @@ class NearestListAapter(private val context: Context, private  val nearestList: 
 
 //            val gmmIntentUri = Uri.parse("geo:$lat,$lng?q=$lat,$lng(${holder.title})")
             val geoUri =
-                "http://maps.google.com/maps?q=loc:$lng,$lat($label) "
+                "http://maps.google.com/maps?q=loc:$lat,$lng"
             val mapIntent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
 //            mapIntent.setPackage("com.google.android.apps.maps") // Specify the package to ensure opening in Google Maps app
 

@@ -500,6 +500,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                          drawerLayout.closeDrawers()
 
                      }*/
+
                 R.id.history -> {
 
                     startActivity(Intent(this@HomeScreen, UserHistoryActivity::class.java))
@@ -509,6 +510,10 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                 R.id.nearest_service -> {
 
                     startActivity(Intent(this@HomeScreen, NearestServiceActivity::class.java))
+                    drawerLayout.closeDrawers()
+                }
+                R.id.nearest_swap ->{
+                    startActivity(Intent(this@HomeScreen, SwapCenter::class.java))
                     drawerLayout.closeDrawers()
                 }
                 R.id.issue -> {
@@ -522,6 +527,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                     drawerLayout.closeDrawers()
                 }
                 R.id.language -> {
+
                     /*  startActivity(Intent(this@HomeScreen, LanguageActivity::class.java))
                       drawerLayout.closeDrawers()*/
 

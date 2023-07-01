@@ -15,10 +15,65 @@
         android:layout_marginTop="@dimen/_30sdp"
         android:orientation="vertical"
         >
-        <ImageView
-            android:layout_width="138dp"
-            android:layout_height="44dp"
-            android:src="@drawable/splash"/>
+        <LinearLayout
+            android:weightSum="2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight=".8"
+                android:src="@drawable/splash"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1.2"
+                android:gravity="end"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/select_language"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/_22ssp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:weightSum="2">
+
+                   <!-- <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/hindi" />
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/eng"
+                        android:layout_weight="1"/>-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lang_eng"
+                        android:textSize="@dimen/_22ssp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="/"
+                        android:textSize="@dimen/_22ssp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lang_hindi"
+                        android:textSize="@dimen/_22ssp"/>
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
         <TextView
             android:layout_marginTop="15dp"
             android:layout_width="wrap_content"

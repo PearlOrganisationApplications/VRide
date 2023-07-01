@@ -12,7 +12,6 @@ import com.pearl.adapter.NearestListAapter
 import com.pearl.common.retrofit.data_model_class.Station
 import com.pearl.common.retrofit.rest_api_interface.StationApi
 import com.pearl.v_ride_lib.BaseClass
-
 import com.pearl.v_ride_lib.Global
 import com.pearl.v_ride_lib.PrefManager
 import kotlinx.coroutines.CoroutineScope
@@ -21,57 +20,47 @@ import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class NearestServiceActivity : BaseClass() {
-    private lateinit var recyclerView: RecyclerView
+class SwapCenter : BaseClass() {
+
+    lateinit var nearestSRV: RecyclerView
+    private lateinit var loadingDialog: Dialog
     lateinit var ivback: AppCompatImageView
     lateinit var apptitle: AppCompatTextView
     lateinit var prefManager: PrefManager
     private lateinit var resourcess: Resources
-    private lateinit var loadingDialog: Dialog
 
-    //    private lateinit var newArrayList: ArrayList<NearestList>
-/*    lateinit var placeName: Array<String>
-    lateinit var placeAddress: Array<String*/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        prefManager = PrefManager(this)
-        Global.language(this, resources)
-        setLayoutXml()
+       setLayoutXml()
         initializeViews()
         initializeClickListners()
 
         loadingDialog.startLoadingDialog()
-        nearestService()
-
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-        apptitle.text = resourcess.getString(R.string.my_nearest_service)
+        nearestSwapCenter()
 
     }
 
     override fun setLayoutXml() {
-        setContentView(R.layout.activity_nearest_service)
+        setContentView(R.layout.activity_swap_center)
         resourcess = Global.language(this, resources)
+        loadingDialog = Dialog(this)
+        prefManager = PrefManager(this)
+        Global.language(this, resources)
+
     }
 
     override fun initializeViews() {
-        loadingDialog = Dialog(this)
         ivback = findViewById(R.id.ivBack)
         apptitle = findViewById(R.id.titleTVAppbar)
 
-        apptitle.setText(R.string.my_nearest_service)
+        apptitle.setText(R.string.my_nearest_swap_center)
+        nearestSRV= findViewById(R.id.nearestSRV)
 
-
-        recyclerView = findViewById(R.id.nearestRV)
-
-
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        nearestSRV.layoutManager = LinearLayoutManager(this)
     }
 
     override fun initializeClickListners() {
+
         ivback.setOnClickListener {
             onBackPressed()
         }
@@ -85,76 +74,12 @@ class NearestServiceActivity : BaseClass() {
         TODO("Not yet implemented")
     }
 
-    /*fun nearestService() {
+    override fun onResume() {
+        super.onResume()
+        apptitle.text = resourcess.getString(R.string.my_nearest_swap_center)
+    }
 
-        val bearerToken = prefManager.getToken()// Replace with your actual bearer token
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl(Global.baseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val service = retrofit.create(NearestServiceApi::class.java)
-
-        val call = service.getNearestServiceCenters("Bearer $bearerToken")
-
-        call.enqueue(object : Callback<ServiceResponseData> {
-            override fun onResponse(
-                call: Call<ServiceResponseData>,
-                response: Response<ServiceResponseData>
-            ) {
-                if (response.isSuccessful) {
-                    val responseData = response.body()
-                    if (responseData != null) {
-                        val serviceCenters = responseData.nearestServiceCenters
-                        // Handle the list of service centers as per your requirements
-                        val listCard = ArrayList<ServiceCenter>()
-                        for (serviceCenter in serviceCenters) {
-                            val locationName = serviceCenter.locationName
-                            val latitude = serviceCenter.latitude
-                            val longitude = serviceCenter.longitude
-                            val state = serviceCenter.state
-                            val city = serviceCenter.city
-                            // Process the data as needed
-                            Log.d("Response1", locationName + latitude + longitude)
-
-                            listCard.add(
-                                ServiceCenter(
-                                    locationName,
-                                    latitude,
-                                    longitude,
-                                    0,
-                                    0,
-                                    city,
-                                    state
-                                )
-                            )
-
-                        }
-                        val recyclerViewAapter = NearestListAapter(context = this@NearestServiceActivity,listCard)
-                        recyclerView.adapter = recyclerViewAapter
-                    }
-                } else {
-                    // Handle unsuccessful response
-                    val errorResponseCode = response.code()
-                    val errorResponseBody = response.errorBody()?.string()
-                    // Handle the error response code and body
-                    Log.e(
-                        "API Error",
-                        "Response Code: $errorResponseCode, Body: $errorResponseBody"
-                    )
-                }
-            }
-
-            override fun onFailure(call: Call<ServiceResponseData>, t: Throwable) {
-                // Handle failure
-                Log.d("failure", t.toString())
-            }
-        })
-
-    }*/
-
-    fun nearestService() {
+    fun nearestSwapCenter() {
 
         val retrofit = Retrofit.Builder()
             .baseUrl("https://smartnetwork-dev.azure-api.net/clone/api/Station/")
@@ -204,9 +129,9 @@ class NearestServiceActivity : BaseClass() {
                         }
 
                         runOnUiThread {
-                            recyclerView.layoutManager = LinearLayoutManager(this@NearestServiceActivity)
-                            val recyclerViewAdapter = NearestListAapter(this@NearestServiceActivity, listCard)
-                            recyclerView.adapter = recyclerViewAdapter
+                            nearestSRV.layoutManager = LinearLayoutManager(this@SwapCenter)
+                            val recyclerViewAdapter = NearestListAapter(this@SwapCenter, listCard)
+                            nearestSRV.adapter = recyclerViewAdapter
                         }
                     }
                 } else {
@@ -220,20 +145,4 @@ class NearestServiceActivity : BaseClass() {
         }
 
     }
-
-
 }
-
-/*
-lateinit var ivback: AppCompatImageView
-lateinit var apptitle: AppCompatTextView
-
-ivback=findViewById(R.id.ivBack)
-apptitle = findViewById(R.id.titleTVAppbar)
-
-apptitle.text =title
-ivback.setOnClickListener {
-    onBackPressed()
-}
-
-*/
