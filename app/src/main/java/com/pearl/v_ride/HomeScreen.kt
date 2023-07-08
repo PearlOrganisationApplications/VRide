@@ -7,6 +7,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Color
@@ -37,6 +38,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
@@ -54,16 +57,14 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
 import com.pearl.adapter.AttendanceAdapter
-import com.pearl.v_ride_lib.Global
 import com.pearl.adapter.NotificationAdapter
 import com.pearl.common.retrofit.data_model_class.*
 import com.pearl.common.retrofit.rest_api_interface.LocationApi
 import com.pearl.common.retrofit.rest_api_interface.ProfileApi
 import com.pearl.ui.DocumentStatus
-import com.pearl.v_ride_lib.BaseClass
-import com.pearl.v_ride_lib.PrefManager
-import com.pearl.v_ride_lib.SessionManager
+import com.pearl.v_ride_lib.*
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.CoroutineScope
@@ -145,42 +146,13 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     lateinit var menu: Menu
     lateinit var context: Context
     private lateinit var dialog: Dialog
+    private val senderID = "YOUR_SENDER_ID"
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onStart() {
         super.onStart()
         internetChangeBroadCast()
-        if (!isOnline(this@HomeScreen)) {
 
-            val alertDialog2: AlertDialog.Builder = AlertDialog.Builder(
-                this@HomeScreen
-            )
-            alertDialog2.setTitle("No Internet Connection")
-            alertDialog2.setPositiveButton("Try Again",
-                DialogInterface.OnClickListener { dialog, which ->
-                    val intent = intent
-                    finish()
-                    startActivity(intent)
-                })
-            alertDialog2.setNegativeButton("Cancel",
-                DialogInterface.OnClickListener { dialog, which ->
-                    dialog.cancel()
-                    finishAffinity()
-                    System.exit(0)
-                })
-            alertDialog2.setCancelable(false)
-            alertDialog2.show()
-
-        }
-        if (isOnline(this@HomeScreen)) {
-            getLocation()
-        }
-
-      /*  if (Global.imageString != "") {
-            val uri = Uri.parse(Global.imageString)
-            dImage.setImageURI(uri)
-            Log.d("abc", Global.imageString)
-        }*/
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -195,13 +167,19 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
         prefManager.setLogin(true)
 
+        registerReceiver(gpsBroadcastReceiver, filter)
+//        val filter = IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION)
+
         setLayoutXml()
         initializeViews()
         initializeClickListners()
         initializeInputs()
         initializeLabels()
-        getDocStatus()
-
+//        getDocStatus()
+        getToken()
+//        startService(Intent(this@HomeScreen,MyService::class.java))
+        val workRequest = OneTimeWorkRequest.Builder(LocationWorker::class.java).build()
+        WorkManager.getInstance(this).enqueue(workRequest)
 
 
         resourcess = Global.language(this, resources)
@@ -222,7 +200,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
 
         getLocation()
-        sendLocation()
+//        sendLocation()
 
 
         /*    {       val mapFragment = supportFragmentManager
@@ -264,7 +242,6 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                    notificationI.visibility =View.GONE
                    appbar.visibility = View.GONE
             onBackPressed()
-
         }*/
 
         notificationCard.add(
@@ -375,8 +352,29 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         notificationRV.adapter = nAdapter
         
 //        startService(Intent(this,MyService::class.java))
+//        f9P3VrgZQdK2qvvs1_6SqM:APA91bHBC-CEYGwoLU5o8KAf4OVYAgqb0enzB10G3U3gYnEHWdpGKPglzLfXUrmvfefWLGGFerciuM3_5RyZC4QvqX0FshjT1MCpkwvH7RW5IvlBAwwA9xlz0K-HT6TN5jZrY333eYo2
+//I/OSG-null__BroadcastReceiver: func1com.pearl.v_ride_lib.BaseClass$IChangeReceiver$1@9df8e07
 
     }
+
+    private fun getToken() {
+        Thread(Runnable {
+            try {
+                FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val token = task.result
+                        Log.d("Token -->", token)
+                        prefManager.setNotificationToken(token)
+                    } else {
+                        Log.d("Failed_FCM_token:" ,"${task.exception}")
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }).start()
+    }
+
 
     override fun setLayoutXml() {
 
@@ -385,6 +383,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
     @SuppressLint("CutPasteId")
     override fun initializeViews() {
+
 
 
         context = SessionManager.setLocale(this@HomeScreen, prefManager.getLanID().toString())
@@ -633,7 +632,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
     override fun onDestroy() {
         super.onDestroy()
-        unregisterBroadcast()
+        unregisterReceiver(gpsBroadcastReceiver)
     }
 
 
@@ -708,6 +707,8 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
         val isConnected = isNetworkConnected(this.applicationContext)
 
+        registerReceiver(gpsBroadcastReceiver, filter)
+
 
     }
 
@@ -776,7 +777,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         mMap = googleMap
 
         getLocation()
-        sendLocation()
+//        sendLocation()
 /*
         val task: Task<Location> = fusedLocationProviderClient.lastLocation
         task.addOnSuccessListener { location ->
@@ -1158,7 +1159,8 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                 val bearerToken = prefManager.getToken()
                 val requestData = LocationRequest(
                     lat = to_lat.toString(),
-                    lon = to_lng.toString()
+                    lon = to_lng.toString(),
+                    device_token = ""
 
                 )
                 Log.d("latlon", "$to_lat $to_lng")

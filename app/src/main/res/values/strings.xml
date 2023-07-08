@@ -136,4 +136,8 @@
     <string name="hide_report">Hide Report</string>
     <string name="my_nearest_swap_center">My Nearest Swap Center</string>
 
+    <string name="channel_id" translatable="false">com.pearl.v_ride_lib</string>
+    <string name="channel_name" translatable="false">V-Run</string>
+    <string name="str_firebase_push_notification_demo">Firebase Push Notification Android Example</string>
+
 </resources>

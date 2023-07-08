@@ -10,6 +10,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Build
@@ -49,7 +50,11 @@ abstract  class BaseClass: AppCompatActivity() {
     var STORAGE_PERMISSION_CODE = 1
     var session: Session? = null
     var classname = "Login"
-
+    val gpsBroadcastReceiver = GPSBroadcastReceiver()
+    val filter = IntentFilter().apply {
+        addAction(LocationManager.PROVIDERS_CHANGED_ACTION)
+        addAction(ConnectivityManager.CONNECTIVITY_ACTION)
+    }
 
     fun setBaseApcContextParent(
         cnt: Context?,

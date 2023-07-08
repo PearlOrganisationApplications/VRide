@@ -2,7 +2,10 @@ package com.pearl.v_ride
 
 import android.app.Activity
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.res.Resources
+import android.location.LocationManager
+import android.net.ConnectivityManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -22,6 +25,8 @@ import com.pearl.common.retrofit.data_model_class.ResponseData
 import com.pearl.common.retrofit.data_model_class.ServiceRequestData
 import com.pearl.common.retrofit.rest_api_interface.ServiceApi
 import com.pearl.v_ride.databinding.ActivityIssueRequestBinding
+import com.pearl.v_ride_lib.Dialog
+import com.pearl.v_ride_lib.GPSBroadcastReceiver
 
 
 import com.pearl.v_ride_lib.Global
@@ -50,6 +55,11 @@ class IssueRequestActivity : AppCompatActivity() {
     private lateinit var loadingDialog: Dialog
     var subject = ""
     var description = ""
+    private val gpsBroadcastReceiver = GPSBroadcastReceiver()
+    private val filter = IntentFilter().apply {
+        addAction(LocationManager.PROVIDERS_CHANGED_ACTION)
+        addAction(ConnectivityManager.CONNECTIVITY_ACTION)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,6 +107,9 @@ class IssueRequestActivity : AppCompatActivity() {
         subjectTIL.hint = resourcess.getString(R.string.service_request)
         descriptionET.hint = resourcess.getString(R.string.issue_description)
 
+
+        registerReceiver(gpsBroadcastReceiver, filter)
+//        gpsBroadcastReceiver.showNetworkDisconnectedDialog(this)
     }
 
     fun issueRequest() {
@@ -166,6 +179,12 @@ class IssueRequestActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        unregisterReceiver(gpsBroadcastReceiver)
     }
 
 }

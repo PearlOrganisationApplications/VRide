@@ -15,8 +15,6 @@ import android.widget.*
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.get
-import androidx.core.view.isNotEmpty
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,7 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.pearl.adapter.CheckboxAdapter
 import com.pearl.common.retrofit.data_model_class.*
 import com.pearl.common.retrofit.rest_api_interface.*
-import com.pearl.v_ride.Dialog
+import com.pearl.v_ride_lib.Dialog
 import com.pearl.v_ride.HomeScreen
 import com.pearl.v_ride.R
 import com.pearl.v_ride.VerificationActivity
@@ -43,7 +41,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.File
 import java.io.IOException
 import java.net.SocketTimeoutException
 import java.util.*
@@ -188,6 +185,15 @@ class DocumentStatus : BaseClass() {
     var isBankVisible = false
     var isPancardVisible = false
 
+    override fun onResume() {
+        super.onResume()
+        registerReceiver(gpsBroadcastReceiver, filter)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(gpsBroadcastReceiver)
+    }
     override fun setLayoutXml() {
         setContentView(R.layout.activity_document_status)
         prefManager = PrefManager(this)
@@ -1383,7 +1389,7 @@ class DocumentStatus : BaseClass() {
                         Log.d("ResponseM", "$merchants ")
                         // Handle the response accordingly
                         runOnUiThread {
-                            Handler().postDelayed({
+
                                 // After 4 seconds
                                 loadingDialog.dismissDialog()
                                 if (selectedMerchantIds.isNotEmpty()) {
@@ -1404,7 +1410,6 @@ class DocumentStatus : BaseClass() {
                                     ).show()
                                 }
 
-                            }, 4000) // 4 seconds
 
                         }
                     } else {

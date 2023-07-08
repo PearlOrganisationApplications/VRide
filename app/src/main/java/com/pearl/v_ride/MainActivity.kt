@@ -79,11 +79,13 @@ class MainActivity : BaseClass() {
     lateinit var view_timer: TextView
     lateinit var textView: TextView
     lateinit var cTimer: CountDownTimer
-    private lateinit var loadingDialog: com.pearl.v_ride.Dialog
+    private lateinit var loadingDialog: com.pearl.v_ride_lib.Dialog
     var text = ""
 
     override fun setLayoutXml() {
         setContentView(R.layout.activity_main)
+        registerReceiver(gpsBroadcastReceiver, filter)
+//        gpsBroadcastReceiver.showNetworkDisconnectedDialog(this)
         prefManager = PrefManager(this)
     }
 
@@ -101,7 +103,7 @@ class MainActivity : BaseClass() {
         progressBar = findViewById(R.id.progressBar)
         resend_otp = findViewById(R.id.resend_otp)
         view_timer = findViewById(R.id.view_timer)
-        loadingDialog = com.pearl.v_ride.Dialog(this)
+        loadingDialog = com.pearl.v_ride_lib.Dialog(this)
 //        checkLogin()
 
     }
@@ -232,7 +234,7 @@ class MainActivity : BaseClass() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        registerReceiver(gpsBroadcastReceiver, filter)
         setLayoutXml()
         val isConnected = isNetworkConnected(this.applicationContext)
         initializeViews()
@@ -246,7 +248,7 @@ class MainActivity : BaseClass() {
 
 //        validateNumber+
 
-        if (!isConnected) {
+        /*if (!isConnected) {
 
             val alertDialog2: AlertDialog.Builder = AlertDialog.Builder(
                     this@MainActivity
@@ -267,7 +269,7 @@ class MainActivity : BaseClass() {
             alertDialog2.setCancelable(false)
             alertDialog2.show()
 
-        }
+        }*/
 
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -602,6 +604,16 @@ class MainActivity : BaseClass() {
             }
         })
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        registerReceiver(gpsBroadcastReceiver, filter)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        registerReceiver(gpsBroadcastReceiver, filter)
     }
 
 }

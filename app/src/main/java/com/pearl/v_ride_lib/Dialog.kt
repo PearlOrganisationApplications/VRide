@@ -1,9 +1,10 @@
-package com.pearl.v_ride
+package com.pearl.v_ride_lib
 
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
-import android.view.LayoutInflater
+import android.util.Log
+import com.pearl.v_ride.R
 
 class Dialog(private val activity: Activity) {
     private var dialog: AlertDialog? = null
@@ -16,7 +17,12 @@ class Dialog(private val activity: Activity) {
         builder.setCancelable(false)
 
         dialog = builder.create()
-        dialog?.show()
+        try {
+            dialog?.show()
+        } catch (e: Exception) {
+            Log.d("catchBlock ",e.localizedMessage)
+        }
+
     }
 
     fun dismissDialog() {

@@ -369,7 +369,6 @@ class
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         setLayoutXml()
         initializeViews()
         initializeClickListners()
@@ -416,6 +415,8 @@ class
             walletProfile.setImageURI(uri)
             Log.d("abc", Global.imageString)
         }*/
+        registerReceiver(gpsBroadcastReceiver, filter)
+
         withdrawTV.text = resourcess.getString(R.string.withdraw)
         rechargeTV.text = resourcess.getString(R.string.recharge)
         payDueTV.text = resourcess.getString(R.string.pay_due)
@@ -470,6 +471,11 @@ class
     override fun onPaymentError(i: Int, s: String?) {
         Toast.makeText(this, "Payment failed$i", Toast.LENGTH_SHORT).show()
 
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(gpsBroadcastReceiver)
     }
 
 

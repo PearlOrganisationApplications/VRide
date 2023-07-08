@@ -52,6 +52,16 @@ class VerificationActivity : BaseClass() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        registerReceiver(gpsBroadcastReceiver, filter)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(gpsBroadcastReceiver)
+    }
+
     override fun setLayoutXml() {
         setContentView(R.layout.activity_verification)
         supportActionBar?.height

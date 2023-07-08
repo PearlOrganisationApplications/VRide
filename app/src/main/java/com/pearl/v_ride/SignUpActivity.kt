@@ -7,7 +7,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -73,7 +72,7 @@ class SignUpActivity : BaseClass() {
     private lateinit var otpCode: String
     private lateinit var vOTP: String*/
     private lateinit var credential: PhoneAuthCredential
-    private lateinit var loadingDialog: com.pearl.v_ride.Dialog
+    private lateinit var loadingDialog: com.pearl.v_ride_lib.Dialog
 
     override fun setLayoutXml() {
         setContentView(R.layout.activity_sign_up)
@@ -95,7 +94,7 @@ class SignUpActivity : BaseClass() {
         prefixEditTex = findViewById(R.id.prefixEditTex)
         resend_otp = findViewById(R.id.resend_otp)
         prefManager = PrefManager(this)
-        loadingDialog = com.pearl.v_ride.Dialog(this)
+        loadingDialog = com.pearl.v_ride_lib.Dialog(this)
 
 
 
@@ -305,6 +304,16 @@ class SignUpActivity : BaseClass() {
         initializeLabels()
 
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        registerReceiver(gpsBroadcastReceiver, filter)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(gpsBroadcastReceiver)
     }
 
     private fun showDatePicker() {

@@ -172,6 +172,7 @@ class ProfileActivity : BaseClass() {
 
     override fun onResume() {
         super.onResume()
+        registerReceiver(gpsBroadcastReceiver, filter)
         apptitle.text = resourcess.getString(R.string.profile)
         edtProfile.text = resourcess.getString(R.string.edit_profile)
         update_profileBT.text = resourcess.getString(R.string.update_profile)
@@ -183,6 +184,10 @@ class ProfileActivity : BaseClass() {
 
     }
 
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(gpsBroadcastReceiver)
+    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {

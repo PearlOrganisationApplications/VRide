@@ -1,7 +1,6 @@
 package com.pearl.v_ride
 
 import android.content.res.Resources
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.widget.AppCompatImageView
@@ -12,6 +11,7 @@ import com.pearl.adapter.NearestListAapter
 import com.pearl.common.retrofit.data_model_class.Station
 import com.pearl.common.retrofit.rest_api_interface.StationApi
 import com.pearl.v_ride_lib.BaseClass
+import com.pearl.v_ride_lib.Dialog
 import com.pearl.v_ride_lib.Global
 import com.pearl.v_ride_lib.PrefManager
 import kotlinx.coroutines.CoroutineScope
@@ -76,6 +76,7 @@ class SwapCenter : BaseClass() {
 
     override fun onResume() {
         super.onResume()
+        registerReceiver(gpsBroadcastReceiver, filter)
         apptitle.text = resourcess.getString(R.string.my_nearest_swap_center)
     }
 
@@ -144,5 +145,10 @@ class SwapCenter : BaseClass() {
             }
         }
 
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(gpsBroadcastReceiver)
     }
 }

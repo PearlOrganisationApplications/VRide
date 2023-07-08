@@ -195,5 +195,13 @@ class PrefManager(var context: Context) {
         return  pref?.getFloat("long",0.0f)!!
     }
 
+    fun setNotificationToken(token: String){
+        editor!!.putString("tkn", token)
+        editor!!.commit()
+    }
+    fun getNotificationToken(): String {
+        return pref?.getString("tkn","").toString()
+    }
+
  }
 
