@@ -254,7 +254,7 @@ class SwapCenter : BaseClass(), NearestListAapter.NearestAdapterCallback {
     }*/
 
     override fun onCartClicked(stationSerialNumber: String, callback: (List<StationRes>) -> Unit) {
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Main).launch {
             val result = getBP()
             callback(result)
         }

@@ -3,6 +3,7 @@ package com.pearl.adapter
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.JsonReader
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +14,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.pearl.common.retrofit.data_model_class.PostApiRequest
-import com.pearl.common.retrofit.data_model_class.QueryParams
-import com.pearl.common.retrofit.data_model_class.Station
-import com.pearl.common.retrofit.data_model_class.StationRes
+import com.google.gson.Gson
+import com.pearl.common.retrofit.data_model_class.*
 import com.pearl.common.retrofit.rest_api_interface.StationApiService
 import com.pearl.v_ride.R
 import com.pearl.v_ride_lib.PrefManager
@@ -89,6 +88,7 @@ class NearestListAapter(private val context: Context, private val nearestList: A
                 holder.detailMoreLL.visibility = View.VISIBLE
                 Toast.makeText(context,stationSerialNumber,Toast.LENGTH_SHORT).show()
                 var res = listOf<StationRes>()
+                Log.d("stationSerialNumber",stationSerialNumber)
                 callback.onCartClicked(stationSerialNumber) { result ->
                     res=result
                     Log.d("ResResult",res.toString())
@@ -96,17 +96,21 @@ class NearestListAapter(private val context: Context, private val nearestList: A
                     // For example, update UI or perform further processing
                     // with the received list of StationRes objects
                     // ...
+                    for(response in res){
+                        var x = Gson().fromJson<StationData>(response.toString(),StationData::class.java)
+                        Log.d("ResXXResult",res.toString())
+//                    val totalSwap = response.totalSwap
+
+                        holder.totalSwapTextView.text = x.sunmccuData.toString()
+                        holder.totalSwapFailTextView.text = response.totalSwapFail.toString()
+                        holder.totalBpCountTextView.text = response.totalBpCount.toString()
+                        holder.totalSwapSuccessfulTextView.text = response.totalSwapSuccessful.toString()
+                        holder.upsVoltageTextView.text = response.upsVoltage.toString()
+
+                    }
                 }
                 Log.d("AdapterRes",res.toString())
-                for(response in res){
-//                    val totalSwap = response.totalSwap
-                    holder.totalSwapTextView.text = response.totalSwap.toString()
-                    holder.totalSwapFailTextView.text = response.totalSwapFail.toString()
-                    holder.totalBpCountTextView.text = response.totalBpCount.toString()
-                    holder.totalSwapSuccessfulTextView.text = response.totalSwapSuccessful.toString()
-                    holder.upsVoltageTextView.text = response.upsVoltage.toString()
 
-                }
                 Log.d("AdapterRes1",res.toString())
             } else {
                 holder.detailMoreLL.visibility = View.GONE
