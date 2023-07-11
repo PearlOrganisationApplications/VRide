@@ -7,6 +7,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Color
@@ -37,6 +38,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
@@ -54,19 +57,24 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
 import com.pearl.adapter.AttendanceAdapter
-import com.pearl.v_ride_lib.Global
 import com.pearl.adapter.NotificationAdapter
-import com.pearl.common.retrofit.data_model_class.AttendanceList
-import com.pearl.common.retrofit.data_model_class.NotificationList
+import com.pearl.common.retrofit.data_model_class.*
+import com.pearl.common.retrofit.rest_api_interface.LocationApi
+import com.pearl.common.retrofit.rest_api_interface.ProfileApi
 import com.pearl.ui.DocumentStatus
-import com.pearl.v_ride_lib.BaseClass
-import com.pearl.v_ride_lib.PrefManager
-import com.pearl.v_ride_lib.SessionManager
+import com.pearl.v_ride_lib.*
+import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import okhttp3.*
-import org.json.JSONObject
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
+import java.net.SocketTimeoutException
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -74,9 +82,10 @@ import kotlin.collections.ArrayList
 class HomeScreen : BaseClass(), OnMapReadyCallback {
     lateinit var toggle: ActionBarDrawerToggle
     lateinit var navView: NavigationView
-    lateinit var drawerLayout:DrawerLayout
-    lateinit var  appbar: MaterialToolbar
-//    lateinit var notificationI: ImageView
+    lateinit var drawerLayout: DrawerLayout
+    lateinit var appbar: MaterialToolbar
+
+    //    lateinit var notificationI: ImageView
     lateinit var notificationLL: LinearLayout
     lateinit var ivback: AppCompatImageView
     lateinit var apptitle: AppCompatTextView
@@ -84,18 +93,20 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     lateinit var nBell: ImageView
     private lateinit var mMap: GoogleMap
     lateinit var mapLL: LinearLayout
-    lateinit var  dImage: CircleImageView
+    lateinit var dImage: CircleImageView
+    lateinit var drawerName: TextView
     private var hasGps = false
     private var hasNetwork = false
-    var to_lat :String ?= ""
-    var from_lat :String ?= ""
-    var to_lng :String ?= ""
+    var to_lat: String? = ""
+    var from_lat: String? = ""
+    var to_lng: String? = ""
     val apiKey = R.string.google_api_key
-    var from_lng :String ?= ""
+    var from_lng: String? = ""
     private var locationByGps: Location? = null
     private var locationByNetwork: Location? = null
     lateinit var locationManager: LocationManager
-    private lateinit var  location:LatLng
+    private lateinit var location: LatLng
+
     //    lateinit var mapFragment: Fragment
     private lateinit var currentLocation: Location
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -119,7 +130,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     lateinit var hideCalendar: TextView
     lateinit var rate_list: TextView
     lateinit var monthly_pay: TextView
-    private lateinit var resourcess : Resources
+    private lateinit var resourcess: Resources
     private lateinit var homeMenuItem: MenuItem
     private lateinit var profileMenuItem: MenuItem
     private lateinit var walletMenuItem: MenuItem
@@ -133,20 +144,249 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     private lateinit var hindiLL: LinearLayout
     private lateinit var cancelLang: TextView
     lateinit var menu: Menu
-    lateinit var context : Context
-    private lateinit var  dialog : Dialog
+    lateinit var context: Context
+    private lateinit var dialog: Dialog
+    private val senderID = "YOUR_SENDER_ID"
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun onStart() {
+        super.onStart()
+        internetChangeBroadCast()
+
+    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+
+        /*val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.homeScreenmap) as SupportMapFragment
+        fetchLocation()*/
+
+
+        prefManager = PrefManager(this)
+
+        prefManager.setLogin(true)
+
+        registerReceiver(gpsBroadcastReceiver, filter)
+//        val filter = IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION)
+
+        setLayoutXml()
+        initializeViews()
+        initializeClickListners()
+        initializeInputs()
+        initializeLabels()
+//        getDocStatus()
+        getToken()
+//        startService(Intent(this@HomeScreen,MyService::class.java))
+        val workRequest = OneTimeWorkRequest.Builder(LocationWorker::class.java).build()
+        WorkManager.getInstance(this).enqueue(workRequest)
+
+
+        resourcess = Global.language(this, resources)
+        homeMenuItem.title = resourcess.getString(R.string.home)
+        profileMenuItem.title = resourcess.getString(R.string.profile)
+        walletMenuItem.title = resourcess.getString(R.string.wallet)
+//        earning.title = resourcess.getString(R.string.my_earning)
+        history.title = resourcess.getString(R.string.history)
+        nearest_service.title = resourcess.getString(R.string.my_nearest_service)
+        issue.title = resourcess.getString(R.string.service_request)
+        document.title = resourcess.getString(R.string.document)
+        language1.title = resourcess.getString(R.string.language)
+
+
+
+        pieChart()
+        showAttendance()
+
+
+        getLocation()
+//        sendLocation()
+
+
+        /*    {       val mapFragment = supportFragmentManager
+               .findFragmentById(R.id.homeScreenmap) as SupportMapFragment?
+           mapFragment!!.getMapAsync(this)*/
+
+/*        val ai: ApplicationInfo = applicationContext.packageManager
+            ?.getApplicationInfo(applicationContext.applicationContext!!.packageName, PackageManager.GET_META_DATA)!!
+        val value = ai.metaData["com.google.android.geo.${R.string.google_map_api_key}"]
+        val apiKey = value.toString()
+        // Initializing the Places API with the help of our API_KEY
+        if (!Places.isInitialized()) {
+            Places.initialize(applicationContext.applicationContext,apiKey)
+        }
+
+            /*  mapFragment.getMapAsync {
+                  mMap = it
+
+                  val originLocation = LatLng( 30.2891496, 78.0437616)
+
+                  mMap.addMarker(MarkerOptions().position(originLocation).title("hey"))
+                  mMap.moveCamera(CameraUpdateFactory.newLatLng(originLocation))
+
+                  mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(originLocation, 15F))
+              }*/
+            //  fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        }*/
+
+        val notificationCard = ArrayList<NotificationList>()
+
+        setUpViews()
+
+
+        apptitle.text = "Notification"
+
+
+/*        notificationI.setOnClickListener {
+                   notificationLL.visibility = View.VISIBLE
+                   notificationI.visibility =View.GONE
+                   appbar.visibility = View.GONE
+            onBackPressed()
+        }*/
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title", "this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title", "this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title", "this is my notification body"
+            )
+        )
+        notificationCard.add(
+            NotificationList(
+                "Notification Title", "this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title", "this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title", "this is my notification body"
+            )
+        )
+        notificationCard.add(
+            NotificationList(
+                "Notification Title", "this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title", "this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title", "this is my notification body"
+            )
+        )
+        notificationCard.add(
+            NotificationList(
+                "Notification Title", "this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title", "this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title", "this is my notification body"
+            )
+        )
+        notificationCard.add(
+            NotificationList(
+                "Notification Title", "this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title", "this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title", "this is my notification body"
+            )
+        )
+        notificationCard.add(
+            NotificationList(
+                "Notification Title", "this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title", "this is my notification body"
+            )
+        )
+
+        notificationCard.add(
+            NotificationList(
+                "Notification Title", "this is my notification body"
+            )
+        )
+
+        notificationRV.layoutManager = LinearLayoutManager(this)
+        val nAdapter = NotificationAdapter(notificationCard)
+        notificationRV.adapter = nAdapter
+        
+//        startService(Intent(this,MyService::class.java))
+//        f9P3VrgZQdK2qvvs1_6SqM:APA91bHBC-CEYGwoLU5o8KAf4OVYAgqb0enzB10G3U3gYnEHWdpGKPglzLfXUrmvfefWLGGFerciuM3_5RyZC4QvqX0FshjT1MCpkwvH7RW5IvlBAwwA9xlz0K-HT6TN5jZrY333eYo2
+//I/OSG-null__BroadcastReceiver: func1com.pearl.v_ride_lib.BaseClass$IChangeReceiver$1@9df8e07
+
+    }
+
+    private fun getToken() {
+        Thread(Runnable {
+            try {
+                FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val token = task.result
+                        Log.d("Token -->", token)
+                        prefManager.setNotificationToken(token)
+                    } else {
+                        Log.d("Failed_FCM_token:" ,"${task.exception}")
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }).start()
+    }
 
 
     override fun setLayoutXml() {
-        setContentView(R.layout.activity_home_screen)
 
+        setContentView(R.layout.activity_home_screen)
     }
 
     @SuppressLint("CutPasteId")
     override fun initializeViews() {
 
 
-        context = SessionManager.setLocale(this@HomeScreen,prefManager.getLanID().toString())
+
+        context = SessionManager.setLocale(this@HomeScreen, prefManager.getLanID().toString())
         appbar = findViewById<MaterialToolbar>(R.id.appBar)
 
         drawerLayout = findViewById(R.id.drawerLayout)
@@ -161,11 +401,12 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         headerLayout = navView.inflateHeaderView(R.layout.nav_header)
 //        navView.inflateMenu(R.menu.nav_menu)
         dImage = headerLayout.findViewById(R.id.drawerImage)
+        drawerName = headerLayout.findViewById(R.id.drawerName)
         val dName = headerLayout.findViewById<TextView>(R.id.drawerName)
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         hasGps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
         hasNetwork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-        ivback=findViewById(R.id.ivBack)
+        ivback = findViewById(R.id.ivBack)
         apptitle = findViewById(R.id.titleTVAppbar)
 
         cityTextView = findViewById(R.id.stateTV)
@@ -203,14 +444,12 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         dialog = Dialog(this)
 
 
-
-
     }
 
     override fun initializeClickListners() {
 
 
-            toggle_on.setOnClickListener {
+        toggle_on.setOnClickListener {
             on_duty.visibility = View.GONE
             off_duty.visibility = View.VISIBLE
             toggle_off.visibility = View.VISIBLE
@@ -224,7 +463,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         }
         nBell.setOnClickListener {
 //            onBackPressed()
-            notificationLL.visibility=View.VISIBLE
+            notificationLL.visibility = View.VISIBLE
             appbar.visibility = View.GONE
             mapLL.setVisibility(View.GONE)
         }
@@ -235,7 +474,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         navView.setNavigationItemSelectedListener {
 
 //           it.isChecked = true
-            when(it.itemId){
+            when (it.itemId) {
 
                 R.id.homemenu -> {
                     startActivity(Intent(this@HomeScreen, HomeScreen::class.java))
@@ -246,15 +485,21 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                     drawerLayout.closeDrawers()
                 }
                 R.id.wallet -> {
-                    startActivity(Intent(this@HomeScreen, MyWalletActivity::class.java).putExtra("key", 1))
+                    startActivity(
+                            Intent(
+                                    this@HomeScreen,
+                                    MyWalletActivity::class.java
+                            ).putExtra("key", 1)
+                    )
                     drawerLayout.closeDrawers()
 
                 }
-           /*     R.id.earning-> {
-                    startActivity(Intent(this@HomeScreen, MyWalletActivity::class.java).putExtra("key",0))
-                    drawerLayout.closeDrawers()
+                /*     R.id.earning-> {
+                         startActivity(Intent(this@HomeScreen, MyWalletActivity::class.java).putExtra("key",0))
+                         drawerLayout.closeDrawers()
 
-                }*/
+                     }*/
+
                 R.id.history -> {
 
                     startActivity(Intent(this@HomeScreen, UserHistoryActivity::class.java))
@@ -266,25 +511,33 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                     startActivity(Intent(this@HomeScreen, NearestServiceActivity::class.java))
                     drawerLayout.closeDrawers()
                 }
+                R.id.nearest_swap ->{
+                    startActivity(Intent(this@HomeScreen, SwapCenter::class.java))
+                    drawerLayout.closeDrawers()
+                }
                 R.id.issue -> {
                     startActivity(Intent(this@HomeScreen, IssueRequestActivity::class.java))
                     drawerLayout.closeDrawers()
                     it.isChecked = false
                 }
-                R.id.document-> {
+                R.id.document -> {
 
                     startActivity(Intent(this@HomeScreen, DocumentStatus::class.java))
                     drawerLayout.closeDrawers()
                 }
                 R.id.language -> {
-                  /*  startActivity(Intent(this@HomeScreen, LanguageActivity::class.java))
-                    drawerLayout.closeDrawers()*/
+
+                    /*  startActivity(Intent(this@HomeScreen, LanguageActivity::class.java))
+                      drawerLayout.closeDrawers()*/
 
 
 
                     drawerLayout.closeDrawers()
                     dialog.setContentView(R.layout.language_dialog)
-                    dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                    dialog.window?.setLayout(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT
+                    )
                     dialog.setCancelable(false)
                     hindiLL = dialog.findViewById(R.id.hindiLL)!!
                     englishLL = dialog.findViewById(R.id.englishLL)!!
@@ -313,7 +566,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                         dialog.dismiss()*/
                     }
 //                    hindiLang.isVisible = !hindiLang.isVisible
-                   //navView.menu.clear()
+                    //navView.menu.clear()
 
 
                     // Inflate the new menu
@@ -324,17 +577,17 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
 
                     mAuth = FirebaseAuth.getInstance()
-               if (::mAuth.isInitialized) {
-                         mAuth.signOut()
- //                        GoogleSignIn.
-                         Toast.makeText(applicationContext,"Logout", Toast.LENGTH_SHORT).show()
-                         finish()
-                     }
+                    if (::mAuth.isInitialized) {
+                        mAuth.signOut()
+                        //                        GoogleSignIn.
+                        Toast.makeText(applicationContext, "Logout", Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
 
 
                     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestEmail()
-                        .build()
+                            .requestEmail()
+                            .build()
                     mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 //                    mGoogleSignInClient= GoogleSignInClient
 
@@ -343,7 +596,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                         finish()
                     }
                     mAuth.signOut()
-                    Toast.makeText(applicationContext,"Logout", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "Logout", Toast.LENGTH_SHORT).show()
 
                     prefManager.setLogin(false)
                 }
@@ -360,217 +613,27 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         }
 
         monthlyCal.setOnClickListener {
-            calendarRV.visibility = View.VISIBLE
-            hideCalendar.visibility = View.VISIBLE
-            monthlyCal.visibility = View.GONE
+            /*  calendarRV.visibility = View.VISIBLE
+              hideCalendar.visibility = View.VISIBLE
+              monthlyCal.visibility = View.GONE*/
         }
         hideCalendar.setOnClickListener {
             calendarRV.visibility = View.GONE
-            monthlyCal.visibility= View.VISIBLE
+            monthlyCal.visibility = View.VISIBLE
             hideCalendar.visibility = View.GONE
         }
     }
 
     override fun initializeInputs() {
     }
+
     override fun initializeLabels() {
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-
-        /*val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.homeScreenmap) as SupportMapFragment
-        fetchLocation()*/
-
-
-        prefManager = PrefManager(this)
-
-        prefManager.setLogin(true)
-
-        setLayoutXml()
-        initializeViews()
-        initializeClickListners()
-        initializeInputs()
-        initializeLabels()
-
-        resourcess = Global.language(this,resources)
-        homeMenuItem.title = resourcess.getString(R.string.home)
-        profileMenuItem.title = resourcess.getString(R.string.profile)
-        walletMenuItem.title = resourcess.getString(R.string.wallet)
-//        earning.title = resourcess.getString(R.string.my_earning)
-        history.title = resourcess.getString(R.string.history)
-        nearest_service.title = resourcess.getString(R.string.my_nearest_service)
-        issue.title = resourcess.getString(R.string.service_request)
-        document.title = resourcess.getString(R.string.document)
-        language1.title = resourcess.getString(R.string.language)
-
-        internetChangeBroadCast()
-
-        pieChart()
-        showAttendance()
-
-
-
-
-        /*    {       val mapFragment = supportFragmentManager
-               .findFragmentById(R.id.homeScreenmap) as SupportMapFragment?
-           mapFragment!!.getMapAsync(this)*/
-
-/*        val ai: ApplicationInfo = applicationContext.packageManager
-            ?.getApplicationInfo(applicationContext.applicationContext!!.packageName, PackageManager.GET_META_DATA)!!
-        val value = ai.metaData["com.google.android.geo.${R.string.google_map_api_key}"]
-        val apiKey = value.toString()
-        // Initializing the Places API with the help of our API_KEY
-        if (!Places.isInitialized()) {
-            Places.initialize(applicationContext.applicationContext,apiKey)
-        }
-
-            /*  mapFragment.getMapAsync {
-                  mMap = it
-
-                  val originLocation = LatLng( 30.2891496, 78.0437616)
-
-                  mMap.addMarker(MarkerOptions().position(originLocation).title("hey"))
-                  mMap.moveCamera(CameraUpdateFactory.newLatLng(originLocation))
-
-                  mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(originLocation, 15F))
-              }*/
-            //  fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-        }*/
-
-        val notificationCard = ArrayList<NotificationList>()
-
-        setUpViews()
-
-
-        apptitle.text ="Notification"
-
-
-/*        notificationI.setOnClickListener {
-                   notificationLL.visibility = View.VISIBLE
-                   notificationI.visibility =View.GONE
-                   appbar.visibility = View.GONE
-            onBackPressed()
-
-        }*/
-
-        notificationCard.add(
-            NotificationList(
-                "Notification Title","this is my notification body"
-            )
-        )
-
-        notificationCard.add(
-            NotificationList(
-                "Notification Title","this is my notification body"
-            )
-        )
-
-        notificationCard.add(
-            NotificationList(
-                "Notification Title","this is my notification body"
-            )
-        )
-        notificationCard.add(
-            NotificationList(
-                "Notification Title","this is my notification body"
-            )
-        )
-
-        notificationCard.add(
-            NotificationList(
-                "Notification Title","this is my notification body"
-            )
-        )
-
-        notificationCard.add(
-            NotificationList(
-                "Notification Title","this is my notification body"
-            )
-        )
-        notificationCard.add(
-            NotificationList(
-                "Notification Title","this is my notification body"
-            )
-        )
-
-        notificationCard.add(
-            NotificationList(
-                "Notification Title","this is my notification body"
-            )
-        )
-
-        notificationCard.add(
-            NotificationList(
-                "Notification Title","this is my notification body"
-            )
-        )
-        notificationCard.add(
-            NotificationList(
-                "Notification Title","this is my notification body"
-            )
-        )
-
-        notificationCard.add(
-            NotificationList(
-                "Notification Title","this is my notification body"
-            )
-        )
-
-        notificationCard.add(
-            NotificationList(
-                "Notification Title","this is my notification body"
-            )
-        )
-        notificationCard.add(
-            NotificationList(
-                "Notification Title","this is my notification body"
-            )
-        )
-
-        notificationCard.add(
-            NotificationList(
-                "Notification Title","this is my notification body"
-            )
-        )
-
-        notificationCard.add(
-            NotificationList(
-                "Notification Title","this is my notification body"
-            )
-        )
-        notificationCard.add(
-            NotificationList(
-                "Notification Title","this is my notification body"
-            )
-        )
-
-        notificationCard.add(
-            NotificationList(
-                "Notification Title","this is my notification body"
-            )
-        )
-
-        notificationCard.add(
-            NotificationList(
-                "Notification Title","this is my notification body"
-            )
-        )
-
-        notificationRV.layoutManager = LinearLayoutManager(this)
-        val nAdapter = NotificationAdapter(notificationCard)
-        notificationRV.adapter = nAdapter
-
-
-
-//        startService(Intent(this,MyService::class.java))
-        unregisterBroadcast()
-
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(gpsBroadcastReceiver)
     }
-
 
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -582,29 +645,30 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         val x = connectivityManager.activeNetworkInfo
 
         if (x != null) {
-            if (!x.isConnected&&!x.isConnectedOrConnecting&&!x.isAvailable&&x.isFailover)
+            if (!x.isConnected && !x.isConnectedOrConnecting && !x.isAvailable && x.isFailover)
                 return false
-        }else {
+        } else {
             return false
         }
         if (connectivityManager != null) {
-            val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+            val capabilities =
+                connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
 
 
-                    if (capabilities != null) {
+            if (capabilities != null) {
 
-                        if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
 
-                            return true
-                        } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                    return true
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
 
-                            return true
-                        } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                    return true
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
 
-                            return true
-                        }
-                    }
+                    return true
+                }
             }
+        }
 
         return false
     }
@@ -612,17 +676,17 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onResume() {
         super.onResume()
-        context = SessionManager.setLocale(this@HomeScreen,prefManager.getLanID().toString())
+        context = SessionManager.setLocale(this@HomeScreen, prefManager.getLanID().toString())
 
-        resourcess = Global.language(this,resources)
+        resourcess = Global.language(this, resources)
         earnTxt.text = resourcess.getString(R.string.net_earn)
-        cityTextView.text = resourcess.getString(R.string.state)
+//        cityTextView.text = resourcess.getString(R.string.state)
 //        R.id.earning = resourcess.getString(R.string.my_earning)
         on_duty.text = resourcess.getString(R.string.on_duty)
         off_duty.text = resourcess.getString(R.string.off_duty)
         rate_list.text = resourcess.getString(R.string.rate_list)
-        monthlyCal.text = resourcess.getString(R.string.monthly_calender)
-        hideCalendar.text = resourcess.getString(R.string.hide_calender)
+        monthlyCal.text = resourcess.getString(R.string.monthly_report)
+        hideCalendar.text = resourcess.getString(R.string.hide_report)
         rate_list.text = resourcess.getString(R.string.rate_list)
         monthly_pay.text = resourcess.getString(R.string.monthly_pay)
         if (::cancelLang.isInitialized) {
@@ -641,40 +705,11 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         language1.title = resourcess.getString(R.string.language)
 
 
-
         val isConnected = isNetworkConnected(this.applicationContext)
 
-        if(!isOnline(this@HomeScreen)){
+        registerReceiver(gpsBroadcastReceiver, filter)
 
-            val alertDialog2: AlertDialog.Builder = AlertDialog.Builder(
-                this@HomeScreen
-            )
-            alertDialog2.setTitle("No Internet Connection")
-            alertDialog2.setPositiveButton("Try Again",
-                DialogInterface.OnClickListener { dialog, which ->
-                    val intent = intent
-                    finish()
-                    startActivity(intent)
-                })
-            alertDialog2.setNegativeButton("Cancel",
-                DialogInterface.OnClickListener { dialog, which ->
-                    dialog.cancel()
-                    finishAffinity()
-                    System.exit(0)
-                })
-            alertDialog2.setCancelable(false)
-            alertDialog2.show()
 
-        }
-        if(isOnline(this@HomeScreen)) {
-            getLocation()
-        }
-
-        if(Global.imageString != "") {
-            val uri = Uri.parse(Global.imageString)
-            dImage.setImageURI(uri)
-            Log.d("abc", Global.imageString)
-        }
     }
 
 
@@ -697,13 +732,13 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     override fun onBackPressed() {
         //startActivity(Intent(this@HomeScreen,HomeScreen::class.java))
 //        finish()
-        if(notificationLL.visibility == View.GONE){
+        if (notificationLL.visibility == View.GONE) {
             //finish
 /*            notificationLL.visibility = View.VISIBLE
             notificationI.visibility =View.GONE
             appbar.visibility = View.GONE   */
             finish()
-        }else{
+        } else {
             appbar.visibility = View.VISIBLE
             notificationLL.visibility = View.GONE
             mapLL.visibility = View.VISIBLE
@@ -715,55 +750,25 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (toggle.onOptionsItemSelected(item)){
+        if (toggle.onOptionsItemSelected(item)) {
             return true
         }
 
         return super.onOptionsItemSelected(item)
     }
 
-    fun setUpViews(){
+    fun setUpViews() {
         setUpDrawerLayout()
     }
 
     private fun setUpDrawerLayout() {
 
         setSupportActionBar(appbar)
-        toggle= ActionBarDrawerToggle( this,drawerLayout,R.string.open,R.string.close)
+        toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
     }
 
-    @SuppressLint("MissingPermission")
-    private fun fetchLocation() {
-
-/*        if (ActivityCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                REQUEST_CODE
-            )
-        }
-        val task: Task<Location> = fusedLocationProviderClient.lastLocation
-        task.addOnSuccessListener { location ->
-            if (location != null) {
-                currentLocation = location
-                Toast.makeText(
-                    applicationContext,
-                    "${currentLocation.latitude} ${currentLocation.longitude}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }*/
-    }
 
 
     @SuppressLint("MissingPermission")
@@ -772,6 +777,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         mMap = googleMap
 
         getLocation()
+//        sendLocation()
 /*
         val task: Task<Location> = fusedLocationProviderClient.lastLocation
         task.addOnSuccessListener { location ->
@@ -798,7 +804,6 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         }*/
 
 
-
     }
 
     override fun onRequestPermissionsResult(
@@ -806,7 +811,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         permissions: Array<String>,
         grantResults: IntArray
     ) {
-        super.onRequestPermissionsResult(requestCode, permissions , grantResults)
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             REQUEST_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -863,31 +868,31 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         lastKnownLocationByNetwork?.let {
             locationByNetwork = lastKnownLocationByNetwork
         }
-     //------------------------------------------------------//
+        //------------------------------------------------------//
         if (locationByGps != null && locationByNetwork != null) {
-            Log.d("locaitonGPS3",locationByGps.toString()+" "+locationByNetwork)
+            Log.d("locaitonGPS3", locationByGps.toString() + " " + locationByNetwork)
             if (locationByGps!!.accuracy > locationByNetwork!!.accuracy) {
 
 
                 to_lat = locationByGps?.latitude.toString()
                 to_lng = locationByGps?.longitude.toString()
 
-            }else{
+            } else {
 
                 to_lat = locationByNetwork?.latitude.toString()
                 to_lng = locationByNetwork?.longitude.toString()
 
             }
-        }else {
+        } else {
 
             if (locationByNetwork == null) {
                 // Toast.makeText(this, "No Network", Toast.LENGTH_LONG).show()
-                Log.d("locaitonGPS1"," "+locationByNetwork)
+                Log.d("locaitonGPS1", " " + locationByNetwork)
                 to_lat = locationByGps?.latitude.toString()
                 to_lng = locationByGps?.longitude.toString()
 
             } else {
-                Log.d("locaitonGPS2",locationByGps.toString()+" ")
+                Log.d("locaitonGPS2", locationByGps.toString() + " ")
                 to_lat = locationByNetwork?.latitude.toString()
                 to_lng = locationByNetwork?.longitude.toString()
 
@@ -903,10 +908,11 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
         geocoder = Geocoder(this, Locale.getDefault())
 
-        var strAdd : String? = null
+        var strAdd: String? = null
         try {
-            Log.d("addressX",to_lat+" "+to_lng)
-            val url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=$to_lat,$to_lng&language=hi&key=$apiKey"
+            Log.d("addressX", to_lat + " " + to_lng)
+            val url =
+                "https://maps.googleapis.com/maps/api/geocode/json?latlng=$to_lat,$to_lng&language=hi&key=$apiKey"
 
             val request = Request.Builder()
                 .url(url)
@@ -922,7 +928,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                     val responseBody = response.body?.string()
                     // Parse the response and extract the city name in Hindi
                     // Update the UI with the localized city name
-                    Log.d("responseBody",responseBody.toString()+"")
+                    Log.d("responseBody", responseBody.toString() + "")
                 }
             })
 
@@ -931,17 +937,23 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                 val returnedAddress = addresses[0]
                 val strReturnedAddress = java.lang.StringBuilder("")
 
-                val cityState = returnedAddress.locality +","+returnedAddress.adminArea;
-               /* if (prefManager.getLanID() == "hi") {
-                    strAdd =
+                val cityState = returnedAddress.locality + "," + returnedAddress.adminArea;
+                /* if (prefManager.getLanID() == "hi") {
+                     strAdd =
 
-                }else{
-                    strAdd = cityState
-                }*/
+                 }else{
+                     strAdd = cityState
+                 }*/
                 strAdd = cityState
 
+                cityTextView.text = returnedAddress.locality + "," + returnedAddress.adminArea
 
-                Log.d("cityX",returnedAddress.toString()+"")
+//                cityTextView.text = cityState
+                Log.d("strAdd",strAdd.toString())
+                Log.d("cityState",cityState.toString())
+                Log.d("cityTextView",cityTextView.toString())
+
+                Log.d("cityX", returnedAddress.toString() + "")
             } else {
 //                Log.w(" Current loction address", "No Address returned!")
             }
@@ -950,7 +962,8 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
             //Log.w(" Current loction address",  e.printStackTrace().toString())
         }
 
-       cityTextView.text = strAdd.toString()
+
+
 /*
 
         location = LatLng(to_lat.toString().toDouble(), to_lng.toString().toDouble())
@@ -968,6 +981,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 */
 
     }
+
     val gpsLocationListener: LocationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
             locationByGps = location
@@ -980,7 +994,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     }
     val networkLocationListener: LocationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
-            locationByNetwork= location
+            locationByNetwork = location
         }
 
         override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
@@ -988,7 +1002,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         override fun onProviderDisabled(provider: String) {}
     }
 
-    private fun pieChart(){
+    private fun pieChart() {
 
         // on below line we are setting user percent value,
         // setting description as enabled and offset for pie chart
@@ -1077,46 +1091,45 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
     }
 
-
-    private fun showAttendance(){
+    private fun showAttendance() {
         attendanceCard.add(
             AttendanceList(
-                "10:00 AM","7.00 PM","20/12/2022",R.drawable.online
+                "10:00 AM", "7.00 PM", "20/12/2022", R.drawable.online
             )
         )
         attendanceCard.add(
             AttendanceList(
-                "10 AM","7.00 PM","20/12/2022",R.drawable.online
+                "10 AM", "7.00 PM", "20/12/2022", R.drawable.online
             )
         )
         attendanceCard.add(
             AttendanceList(
-                "10 AM","7.00 PM","20/12/2022",R.drawable.online
+                "10 AM", "7.00 PM", "20/12/2022", R.drawable.online
             )
         )
         attendanceCard.add(
             AttendanceList(
-                "10 AM","7.00 PM","20/12/2022",R.drawable.online
+                "10 AM", "7.00 PM", "20/12/2022", R.drawable.online
             )
         )
         attendanceCard.add(
             AttendanceList(
-                "10 AM","7.00 PM","20/12/2022",R.drawable.red_dot
+                "10 AM", "7.00 PM", "20/12/2022", R.drawable.red_dot
             )
         )
         attendanceCard.add(
             AttendanceList(
-                "10 AM","7.00 PM","20/12/2022",R.drawable.online
+                "10 AM", "7.00 PM", "20/12/2022", R.drawable.online
             )
         )
         attendanceCard.add(
             AttendanceList(
-                "10 AM","7.00 PM","20/12/2022",R.drawable.red_dot
+                "10 AM", "7.00 PM", "20/12/2022", R.drawable.red_dot
             )
         )
         attendanceCard.add(
             AttendanceList(
-                "10 AM","7.00 PM","20/12/2022",R.drawable.online
+                "10 AM", "7.00 PM", "20/12/2022", R.drawable.online
             )
         )
         calendarRV.layoutManager = LinearLayoutManager(this)
@@ -1124,53 +1137,200 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         calendarRV.adapter = calAdapter
     }
 
+    fun sendLocation() {
 
-
-    private fun requestCityName(latitude: Double, longitude: Double) {
-
-        val language = "hi" // Specify the desired language code, e.g., "fr" for French
-
-        val client = OkHttpClient()
-        val url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=$to_lat,$to_lng&language=hi&key=$apiKey&language=$language"
-        val request = Request.Builder()
-            .url(url)
+        val retrofit = Retrofit.Builder()
+            .baseUrl(Global.baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                e.printStackTrace()
+
+        val locationApi = retrofit.create(LocationApi::class.java)
+
+
+        /*    val lat = to_lat.toString()
+            val lon = to_lng.toString()*/
+
+/*
+        val params = mapOf("lat" to lat, "lon" to lon)
+         Log.d("MAP",params.toString())*/
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val bearerToken = prefManager.getToken()
+                val requestData = LocationRequest(
+                    lat = to_lat.toString(),
+                    lon = to_lng.toString(),
+                    device_token = ""
+
+                )
+                Log.d("latlon", "$to_lat $to_lng")
+
+                val response = locationApi.updateLocation("Bearer $bearerToken", requestData)
+
+
+                if (response.isSuccessful) {
+                    val responseData = response.body()
+                    if (responseData != null) {
+                        val msg = responseData.msg
+                        val status = responseData.status
+                        // Process the response data as needed
+                        Log.d("Response", response.body().toString())
+                        Log.d("LATLONRES", msg+" "+status)
+                    } else {
+                        // Handle case when responseData is null
+
+                        response.body()?.let { Log.d("else", it.msg) }
+                    }
+                } else {
+                    // Handle unsuccessful response
+                    val errorBody = response.errorBody()
+                    val errorMessage = errorBody?.string()
+//                    showErrorDialog(errorMessage.toString(),"ok")
+                    // Handle the case when the API call is unsuccessful
+                    // Log or display the error message
+                    Log.e("API Error", "body: $errorBody, errorMessage: $errorMessage")
+                }
+
+            } catch (e: Exception) {
+                // Handle network or API error
+                Log.e(
+                    "API Exception",
+                    "${e.message}  ${e.printStackTrace()}  ${e.localizedMessage}"
+                )
             }
 
-            override fun onResponse(call: Call, response: Response) {
-                val responseData = response.body?.string()
-                if (response.isSuccessful && responseData != null) {
-                    try {
-                        val jsonObject = JSONObject(responseData)
-                        val results = jsonObject.getJSONArray("results")
-                        if (results.length() > 0) {
-                            val addressComponents =
-                                results.getJSONObject(0).getJSONArray("address_components")
-                            for (i in 0 until addressComponents.length()) {
-                                val component = addressComponents.getJSONObject(i)
-                                val types = component.getJSONArray("types")
-                                if (types.toString().contains("locality")) {
-                                    val city = component.getString("long_name")
-                                    runOnUiThread {
-                                        cityTextView.text = city
-                                    }
-                                    break
-                                }
-                            }
-                        }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
+        }
+
+    }
+
+    fun getDocStatus() {
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl(Global.baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+//            .client(createOkHttpClient())
+            .build()
+
+
+        val profileService = retrofit.create(ProfileApi::class.java)
+
+
+//                val response = profileApi.getProfileData()
+
+        val token = prefManager.getToken()
+        val call = profileService.getProfileData("Bearer $token")
+        Log.d("Bearer token",token)
+        call.enqueue(object : retrofit2.Callback<ProfileData> {
+            override fun onResponse(call: retrofit2.Call<ProfileData>, response: retrofit2.Response<ProfileData>) {
+                if (response.isSuccessful) {
+                    val profileData = response.body()
+                    if (profileData != null) {
+                        val profile = profileData.profileData
+                        val message = profileData.message
+                        val profilePicUrl = profile?.profilePic
+                        val profileName = profile?.name
+
+
+                        drawerName.text = profileName
+
+                        Picasso.get().load(profilePicUrl).placeholder(R.drawable.profile).into(dImage)
+
+                        Log.d("profile", ""+profilePicUrl)
+                        Log.d("msg", "$message")
+//                        showErrorDialog("$message","ok")
+
+                        // Use the profile data as needed
+
+                    }  else {
+                        Log.d("ElseSignup ","t.toString()")
+                        val errorResponseCode = response.code()
+                        val errorResponseBody = response.errorBody()?.string()
+                        // Handle the error response code and body
+                        Log.e("API Error3", "Response Code: $errorResponseCode, Body: $errorResponseBody")
+                        Log.d("responserror","${response.body()?.message} ${response.body()?.status}")
                     }
                 }
             }
-        })
-    }
 
-    companion object {
-        private const val PERMISSION_REQUEST_LOCATION = 100
+            override fun onFailure(call: retrofit2.Call<ProfileData>, t: Throwable) {
+                when (t) {
+                    is SocketTimeoutException -> {
+                        // Handle SocketTimeoutException
+                        Log.d("fail1", "Socket Timeout: ${t.message}")
+                        val errorMessage = "Socket Timeout: ${t.message}"
+                        showErrorToast(errorMessage)
+                    }
+                    is IOException -> {
+                        // Handle IOException
+                        Log.d("fail", "IO Exception: ${t.message}")
+                        val errorMessage = "IO Exception: ${t.message}"
+                        showErrorToast(errorMessage)
+                    }
+                    else -> {
+                        // Handle other types of exceptions or generic error
+                        val errorMessage = "Error: ${t.message}"
+                        Log.d("fail3", "Error: ${t.message}")
+                        showErrorToast(errorMessage)
+                    }
+                }
+            }
+
+        })
+
+
+
     }
 
 }
+
+
+
+
+/*
+private fun requestCityName(latitude: Double, longitude: Double) {
+
+    val language = "hi" // Specify the desired language code, e.g., "fr" for French
+
+    val client = OkHttpClient()
+    val url =
+        "https://maps.googleapis.com/maps/api/geocode/json?latlng=$to_lat,$to_lng&language=hi&key=$apiKey&language=$language"
+    val request = Request.Builder()
+        .url(url)
+        .build()
+    client.newCall(request).enqueue(object : Callback {
+        override fun onFailure(call: Call, e: IOException) {
+            e.printStackTrace()
+        }
+
+        override fun onResponse(call: Call, response: Response) {
+            val responseData = response.body?.string()
+            if (response.isSuccessful && responseData != null) {
+                try {
+                    val jsonObject = JSONObject(responseData)
+                    val results = jsonObject.getJSONArray("results")
+                    if (results.length() > 0) {
+                        val addressComponents =
+                            results.getJSONObject(0).getJSONArray("address_components")
+                        for (i in 0 until addressComponents.length()) {
+                            val component = addressComponents.getJSONObject(i)
+                            val types = component.getJSONArray("types")
+                            if (types.toString().contains("locality")) {
+                                val city = component.getString("long_name")
+                                runOnUiThread {
+                                    cityTextView.text = city
+                                }
+                                break
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+    })
+}
+
+companion object {
+    private const val PERMISSION_REQUEST_LOCATION = 100
+}*/

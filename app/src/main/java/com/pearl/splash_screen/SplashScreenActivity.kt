@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
@@ -43,8 +42,8 @@ class SplashScreenActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Global.language(this,resources)
         setContentView(R.layout.activity_splash_screen)
+        Global.language(this,resources)
         prefManager = PrefManager(this)
 
         /*       prefManager = PrefManager(this@SplashScreenActivity)
@@ -92,7 +91,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
 
 
-/*        Handler(Looper.getMainLooper()).postDelayed({
+            /*        Handler(Looper.getMainLooper()).postDelayed({
 
             if (prefManager!!.getPr()){
                 if (prefManager!!.getLogin().equals("yes")) {

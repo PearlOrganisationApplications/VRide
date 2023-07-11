@@ -9,13 +9,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pearl.adapter.HistoryAdapter
 import com.pearl.common.retrofit.data_model_class.HistoryList
+import com.pearl.v_ride_lib.BaseClass
 import com.pearl.v_ride_lib.Global
 
-class UserHistoryActivity : AppCompatActivity() {
+class UserHistoryActivity : BaseClass() {
 
     private lateinit var historyRV: RecyclerView
     lateinit var ivback: AppCompatImageView
     lateinit var apptitle: AppCompatTextView
+
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,7 +96,7 @@ class UserHistoryActivity : AppCompatActivity() {
         )
         histroyListCard.add(
             HistoryList(
-                R.drawable.profile,"Dehradoon","hello there hiw are you hello there hiw are youhello there hiw are you","13/03/2023","11.43"
+                R.drawable.profile,"Dehradoon, Transport nagar","hello there hiw are you hello there hiw are youhello there hiw are you","13/03/2023","11.43"
             )
         )
 
@@ -104,6 +106,36 @@ class UserHistoryActivity : AppCompatActivity() {
         val historyRVAdapter = HistoryAdapter(histroyListCard)
 
         historyRV.adapter = historyRVAdapter
+    }
+
+    override fun onResume() {
+        super.onResume()
+        registerReceiver(gpsBroadcastReceiver, filter)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(gpsBroadcastReceiver)
+    }
+
+    override fun setLayoutXml() {
+
+    }
+
+    override fun initializeViews() {
+        TODO("Not yet implemented")
+    }
+
+    override fun initializeClickListners() {
+        TODO("Not yet implemented")
+    }
+
+    override fun initializeInputs() {
+        TODO("Not yet implemented")
+    }
+
+    override fun initializeLabels() {
+        TODO("Not yet implemented")
     }
 }
 

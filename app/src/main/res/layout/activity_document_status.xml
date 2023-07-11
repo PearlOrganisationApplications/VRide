@@ -43,13 +43,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/mpin_gradinet"
+                    android:background="@color/background_combo"
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/doc_selfieeLL"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/color_primary"
+                        android:background="@color/color_secondary"
                         android:gravity="center"
                         android:minHeight="@dimen/_35sdp"
                         android:orientation="horizontal"
@@ -60,22 +61,24 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
                             android:padding="@dimen/_5sdp"
+                            android:textColor="@color/black"
                             android:text="@string/your_selfie"
                             android:textSize="@dimen/_18ssp" />
 
                         <ImageView
                             android:id="@+id/doc_selfieOK"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
                             android:layout_gravity="center"
                             android:layout_weight=".7"
                             android:src="@drawable/check"
-                            android:visibility="gone" />
+                            android:visibility="gone"
+                            app:tint="@color/darkGreeen" />
 
                         <ImageView
                             android:id="@+id/doc_selfieError"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
                             android:layout_gravity="center"
                             android:layout_weight=".7"
                             android:src="@drawable/warning"
@@ -83,17 +86,17 @@
 
                         <ImageView
                             android:id="@+id/doc_selfie_showMore"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
                             android:layout_gravity="center"
                             android:layout_weight=".3"
                             android:src="@drawable/ic_right"
-                            app:tint="@color/white" />
+                            app:tint="@color/white"/>
 
                         <ImageView
                             android:id="@+id/doc_selfie_showLess"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
                             android:layout_gravity="center"
                             android:layout_weight=".3"
                             android:src="@drawable/ic_arrow_down"
@@ -117,6 +120,7 @@
                             android:layout_height="wrap_content"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
+
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
@@ -124,13 +128,14 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:textColor="@color/black"
                                 android:padding="@dimen/_5sdp"
                                 android:text="@string/selfie" />
 
                             <de.hdodenhof.circleimageview.CircleImageView
                                 android:id="@+id/doc_doc_selfie"
                                 android:layout_width="65dp"
-                                android:layout_height="65dp"
+                                android:layout_height="match_parent"
                                 android:src="@drawable/profile" />
 
                         </LinearLayout>
@@ -140,16 +145,18 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_5sdp"
-                            android:layout_marginTop="@dimen/_5sdp"
                             android:backgroundTint="@color/color_secondary"
                             android:text="update"
+                            android:visibility="visible"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent" />
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/doc_selfieLL" />
 
                         <ImageView
                             android:id="@+id/doc_add_selfie"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
+                            android:visibility="gone"
                             android:layout_marginTop="8dp"
                             android:layout_marginRight="15dp"
                             android:src="@drawable/ic_camera"
@@ -171,14 +178,15 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/mpin_gradinet"
+                    android:background="@color/background_combo"
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/doc_aadharLL"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:background="@color/color_primary"
+                        android:background="@color/color_secondary"
                         android:minHeight="@dimen/_35sdp"
                         android:orientation="horizontal"
                         android:weightSum="3">
@@ -188,22 +196,24 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
                             android:padding="@dimen/_5sdp"
+                            android:textColor="@color/black"
                             android:text="@string/aadhar_card"
                             android:textSize="@dimen/_18ssp" />
 
                         <ImageView
                             android:id="@+id/doc_aadharOK"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
                             android:layout_gravity="center"
                             android:layout_weight=".7"
                             android:src="@drawable/check"
-                            android:visibility="gone" />
+                            android:visibility="gone"
+                            app:tint="@color/darkGreeen"/>
 
                         <ImageView
                             android:id="@+id/doc_aadharError"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
                             android:layout_gravity="center"
                             android:layout_weight=".7"
                             android:src="@drawable/warning"
@@ -211,8 +221,8 @@
 
                         <ImageView
                             android:id="@+id/doc_aadhar_showMore"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
                             android:layout_gravity="center"
                             android:layout_weight=".3"
                             android:src="@drawable/ic_right"
@@ -220,8 +230,8 @@
 
                         <ImageView
                             android:id="@+id/doc_aadhar_showLess"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
                             android:layout_gravity="center"
                             android:layout_weight=".3"
                             android:src="@drawable/ic_arrow_down"
@@ -234,22 +244,22 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:padding="20dp"
+                        android:padding="10dp"
                         android:visibility="gone">
 
                         <ImageView
                             android:id="@+id/doc_adharFrotIV"
-                            android:layout_width="90dp"
-                            android:layout_height="50dp"
+                            android:layout_width="@dimen/_90sdp"
+                            android:layout_height="@dimen/_70sdp"
                             android:src="@drawable/dummy_aadhar"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageView
                             android:id="@+id/doc_adharrearIV"
-                            android:layout_width="90dp"
-                            android:layout_height="50dp"
-                            android:layout_marginStart="18dp"
+                            android:layout_width="@dimen/_90sdp"
+                            android:layout_height="@dimen/_70sdp"
+                            android:layout_marginStart="8dp"
                             android:src="@drawable/dummy_aadhar"
                             app:layout_constraintStart_toEndOf="@+id/doc_aadhar_n_front"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -258,9 +268,10 @@
                             android:id="@+id/doc_aadhar_n_front"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="31dp"
-                            android:layout_marginEnd="85dp"
+                            android:layout_marginTop="25dp"
+                            android:padding="@dimen/_5sdp"
                             android:text="@string/aadhar_n_front"
+                            android:textColor="@color/black"
                             android:textSize="12sp"
                             app:layout_constraintStart_toEndOf="@+id/doc_adharFrotIV"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -269,10 +280,11 @@
                             android:id="@+id/doc_aadhar_n_rear"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="31dp"
-                            android:layout_marginEnd="6dp"
+                            android:layout_marginTop="25dp"
                             android:text="@string/aadhar_n_rear"
+                            android:padding="@dimen/_5sdp"
                             android:textSize="12sp"
+                            android:textColor="@color/black"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toEndOf="@+id/doc_adharrearIV"
@@ -282,6 +294,7 @@
                             android:id="@+id/doc_addfront"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
+                            android:visibility="gone"
                             android:layout_marginStart="20dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
@@ -294,6 +307,7 @@
                             android:id="@+id/doc_addrear"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
+                            android:visibility="gone"
                             android:layout_marginStart="@dimen/_10sdp"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
@@ -309,32 +323,36 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            app:layout_constraintBottom_toTopOf="@+id/doc_submitAdharBT"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="1.0"
-                            app:layout_constraintStart_toStartOf="parent">
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/doc_adharrearIV">
 
                             <EditText
                                 android:id="@+id/doc_adharNoET"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="10dp"
+                                android:backgroundTint="@color/darkGreeen"
+                                android:enabled="true"
                                 android:hint="@string/aadhar_card_no"
                                 android:imeOptions="actionDone"
                                 android:inputType="number"
                                 android:maxLength="12"
-                                tools:ignore="TouchTargetSizeCheck" />
+                                android:textColor="@color/black"
+                                android:textColorHint="@color/black" />
+
+                            <Button
+                                android:id="@+id/doc_submitAdharBT"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/color_secondary"
+                                android:text="Update"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent" />
 
                         </LinearLayout>
 
-                        <Button
-                            android:id="@+id/doc_submitAdharBT"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@color/color_secondary"
-                            android:text="Update"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent" />
+
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
@@ -353,14 +371,15 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/mpin_gradinet"
+                    android:background="@color/background_combo"
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/doc_adrsLL"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:background="@color/color_primary"
+                        android:background="@color/color_secondary"
                         android:minHeight="@dimen/_35sdp"
                         android:orientation="horizontal"
                         android:weightSum="3">
@@ -371,30 +390,33 @@
                             android:layout_weight="2"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/current_address"
+                            android:textColor="@color/black"
                             android:textSize="@dimen/_18ssp" />
 
                         <ImageView
                             android:id="@+id/doc_addressOK"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
                             android:layout_gravity="center"
                             android:layout_weight=".7"
                             android:src="@drawable/check"
-                            android:visibility="visible" />
+                            android:visibility="gone"
+                            app:tint="@color/darkGreeen"/>
 
                         <ImageView
                             android:id="@+id/doc_addressError"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
                             android:layout_gravity="center"
                             android:layout_weight=".7"
                             android:src="@drawable/warning"
-                            android:visibility="gone" />
+                            android:visibility="visible"
+                            />
 
                         <ImageView
                             android:id="@+id/doc_address_showMore"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
                             android:layout_gravity="center"
                             android:layout_weight=".3"
                             android:src="@drawable/ic_right"
@@ -402,8 +424,8 @@
 
                         <ImageView
                             android:id="@+id/doc_address_showLess"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
                             android:layout_gravity="center"
                             android:layout_weight=".3"
                             android:src="@drawable/ic_arrow_down"
@@ -422,23 +444,50 @@
 
                         <EditText
                             android:id="@+id/doc_address"
+                            android:backgroundTint="@color/darkGreeen"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10ssp"
                             android:hint="@string/address"
+                             android:textColorHint="@color/black"
                             android:imeOptions="actionNext"
+                            android:textColor="@color/black"
                             android:inputType="textPostalAddress"
                             android:maxLines="2" />
 
-                        <EditText
-                            android:id="@+id/doc_city"
+                        <LinearLayout
+                            android:weightSum="2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_10ssp"
-                            android:hint="@string/city"
-                            android:imeOptions="actionNext"
-                            android:inputType="textPostalAddress"
-                            android:maxLines="1" />
+                            >
+                            <EditText
+                                android:layout_weight="1"
+                                android:id="@+id/doc_city"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_10ssp"
+                                android:hint="@string/city"
+                                android:backgroundTint="@color/darkGreeen"
+                                android:textColorHint="@color/black"
+                                android:imeOptions="actionNext"
+                                android:textColor="@color/black"
+                                android:inputType="textPostalAddress"
+                                android:maxLines="1" />
+
+                            <EditText
+                                android:layout_weight="1"
+                                android:id="@+id/doc_landmark"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_10ssp"
+                                android:hint="Landmark"
+                                android:backgroundTint="@color/darkGreeen"
+                                android:textColorHint="@color/black"
+                                android:imeOptions="actionNext"
+                                android:textColor="@color/black"
+                                android:inputType="textPostalAddress"
+                                android:maxLines="1" />
+                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -448,7 +497,9 @@
                             <Spinner
                                 android:id="@+id/doc_statelistSP"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
+                                android:backgroundTint="@color/black"
+
                                 android:layout_gravity="center"
                                 android:layout_weight="1" />
 
@@ -457,8 +508,11 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:textColor="@color/black"
                                 android:autofillHints="postalCode"
                                 android:hint="@string/pin_code"
+                                android:backgroundTint="@color/darkGreeen"
+                                 android:textColorHint="@color/black"
                                 android:imeOptions="actionDone"
                                 android:inputType="number"
                                 android:maxLength="6" />
@@ -466,16 +520,20 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:weightSum="2"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/_5sdp">
 
                             <ImageView
                                 android:id="@+id/doc_addressProofIV"
-                                android:layout_width="90dp"
-                                android:layout_height="50dp"
+                                android:layout_weight="1"
+                                android:layout_width="@dimen/_90sdp"
+                                android:layout_height="@dimen/_70sdp"
                                 android:src="@drawable/profile" />
 
                             <TextView
+                                android:layout_weight="1"
                                 android:id="@+id/doc_addressProofTV"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -484,9 +542,11 @@
                                 android:text="@string/address_proof"
                                 android:textSize="@dimen/_15ssp"
                                 android:textStyle="bold" />
+
                         </LinearLayout>
 
                         <Button
+                            android:id="@+id/doc_updateAddressBT"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_5sdp"
@@ -510,14 +570,15 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/mpin_gradinet"
+                    android:background="@color/background_combo"
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/doc_merchantLayout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:background="@color/color_primary"
+                        android:background="@color/color_secondary"
                         android:minHeight="@dimen/_35sdp"
                         android:orientation="horizontal"
                         android:weightSum="3">
@@ -527,22 +588,24 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
                             android:padding="@dimen/_5sdp"
-                            android:text="Merchant"
+                            android:text="Want to work with"
+                            android:textColor="@color/black"
                             android:textSize="@dimen/_18ssp" />
 
                         <ImageView
                             android:id="@+id/doc_merchantOK"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
                             android:layout_gravity="center"
                             android:layout_weight=".7"
                             android:src="@drawable/check"
-                            android:visibility="gone" />
+                            android:visibility="gone"
+                            app:tint="@color/darkGreeen"/>
 
                         <ImageView
                             android:id="@+id/doc_merchantError"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
                             android:layout_gravity="center"
                             android:layout_weight=".7"
                             android:src="@drawable/warning"
@@ -550,8 +613,8 @@
 
                         <ImageView
                             android:id="@+id/doc_merchant_showMore"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
                             android:layout_gravity="center"
                             android:layout_weight=".3"
                             android:src="@drawable/ic_right"
@@ -559,8 +622,8 @@
 
                         <ImageView
                             android:id="@+id/doc_merchant_showLess"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
                             android:layout_gravity="center"
                             android:layout_weight=".3"
                             android:src="@drawable/ic_arrow_down"
@@ -593,6 +656,7 @@
                                 android:id="@+id/doc_merchant"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/black"
                                 android:text="@string/merchant" />
 
                             <LinearLayout
@@ -635,11 +699,13 @@
                                 android:id="@+id/doc_enter_all_merchant_name_you_are_working_with"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/black"
                                 android:text="@string/enter_all_merchant_name_you_are_working_with"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
                             <ListView
+                                android:layout_marginTop="@dimen/_20sdp"
                                 android:id="@+id/doc_merchantList"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -656,10 +722,19 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent" />
 
+                            <Button
+                                android:id="@+id/alreadySubmitBT"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/submit"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent" />
+
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
                         <!-- 2merchand detail-->
+
                         <LinearLayout
                             android:id="@+id/doc_merchantAlready"
                             android:layout_width="match_parent"
@@ -672,6 +747,7 @@
                                 android:id="@+id/doc_enter_merchant_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/black"
                                 android:text="@string/enter_merchant_name" />
 
                             <EditText
@@ -685,6 +761,7 @@
                                 android:id="@+id/doc_enter_merchant_id"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/black"
                                 android:text="@string/enter_merchant_id" />
 
                             <EditText
@@ -706,50 +783,17 @@
 
                         </LinearLayout>
 
-                        <!--    <LinearLayout
-                            android:id="@+id/doc_merchantanotherWorkingLL"
-                            android:visibility="gone"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/another_merchant"/>
-                            <LinearLayout
-                                android:layout_marginTop="@dimen/_20sdp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                >
-                                <Button
-                                    android:id="@+id/doc_merchantAYes"
-                                    android:layout_width="wrap_content"
-                                    android:backgroundTint="@color/color_secondary"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="@dimen/_30sdp"
-                                    android:text="@string/yes"/>
-                                <Button
-                                    android:id="@+id/doc_merchantANo"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:backgroundTint="@color/red"
-                                    android:text="@string/no"/>
-
-                            </LinearLayout>
-
-                        </LinearLayout>-->
 
 
                         <LinearLayout
                             android:id="@+id/doc_checkboxLL"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/card_bg"
                             android:orientation="vertical"
                             android:visibility="gone">
 
-                            <LinearLayout
+                     <!--       <LinearLayout
+                                android:id="@+id/checkboxLayout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@color/card_bg">
@@ -769,14 +813,14 @@
                                     android:text="Swiggi" />
 
 
-                                <!--<Spinner
+                                &lt;!&ndash;<Spinner
                                 android:padding="5dp"
                                 android:id="@+id/doc_merchantSL"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Select Merchant"
                                 android:textAlignment="center"
-                                />-->
+                                />&ndash;&gt;
                             </LinearLayout>
 
                             <LinearLayout
@@ -819,7 +863,12 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:text="Other" />
-                            </LinearLayout>
+                            </LinearLayout>-->
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/checkBoxRV"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
 
                             <Button
                                 android:id="@+id/doc_submitMerchantBT"
@@ -861,15 +910,16 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/mpin_gradinet"
+                    android:background="@color/background_combo"
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/doc_pancardLL"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:minHeight="@dimen/_35sdp"
-                        android:background="@color/color_primary"
+                        android:background="@color/color_secondary"
                         android:orientation="horizontal"
                         android:weightSum="3">
 
@@ -878,22 +928,24 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
                             android:padding="@dimen/_5sdp"
+                            android:textColor="@color/black"
                             android:text="@string/pan_card"
                             android:textSize="@dimen/_18ssp" />
 
                         <ImageView
                             android:id="@+id/doc_panOK"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
                             android:layout_gravity="center"
                             android:layout_weight=".7"
                             android:src="@drawable/check"
-                            android:visibility="gone" />
+                            android:visibility="gone"
+                            app:tint="@color/darkGreeen"/>
 
                         <ImageView
                             android:id="@+id/doc_panError"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
                             android:layout_gravity="center"
                             android:layout_weight=".7"
                             android:src="@drawable/warning"
@@ -901,8 +953,8 @@
 
                         <ImageView
                             android:id="@+id/doc_pan_showMore"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
                             android:layout_gravity="center"
                             android:layout_weight=".3"
                             android:src="@drawable/ic_right"
@@ -910,8 +962,8 @@
 
                         <ImageView
                             android:id="@+id/doc_pan_showLess"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
                             android:layout_gravity="center"
                             android:layout_weight=".3"
                             android:src="@drawable/ic_arrow_down"
@@ -931,8 +983,8 @@
 
                         <ImageView
                             android:id="@+id/doc_pan_frontIV"
-                            android:layout_width="90dp"
-                            android:layout_height="50dp"
+                            android:layout_width="@dimen/_90sdp"
+                            android:layout_height="@dimen/_70sdp"
                             android:src="@drawable/dummy_pancard"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -943,8 +995,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="31dp"
-                            android:layout_marginEnd="65dp"
+                            android:padding="@dimen/_5sdp"
                             android:text="@string/pan_card"
+                            android:textColor="@color/black"
                             android:textSize="12sp"
                             app:layout_constraintStart_toEndOf="@+id/doc_pan_frontIV"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -957,7 +1010,7 @@
                             android:orientation="vertical"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/doc_pancardTV">
+                            app:layout_constraintTop_toBottomOf="@+id/doc_pan_frontIV">
 
                             <ImageView
                                 android:id="@+id/doc_add_pan_cam"
@@ -966,6 +1019,7 @@
                                 android:layout_marginStart="20dp"
                                 android:layout_marginTop="10dp"
                                 android:src="@drawable/ic_camera"
+                                android:visibility="gone"
                                 app:layout_constraintBottom_toTopOf="@+id/doc_panLL"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/doc_pan_frontIV" />
@@ -976,9 +1030,12 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/pan_no"
+                                android:backgroundTint="@color/darkGreeen"
+                                android:textColor="@color/black"
+                                 android:textColorHint="@color/black"
                                 android:imeOptions="actionNext"
                                 android:inputType="textCapCharacters"
-                                android:maxLength="8"
+                                android:maxLength="10"
                                 android:minHeight="48dp" />
 
                             <EditText
@@ -989,27 +1046,13 @@
                                 android:imeOptions="actionDone"
                                 android:inputType="textPersonName"
                                 android:minHeight="48dp"
+                                android:backgroundTint="@color/darkGreeen"
+                                android:textColor="@color/black"
+                                 android:textColorHint="@color/black"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/doc_panNoET" />
 
-
-                            <EditText
-                                android:id="@+id/doc_pan_dobET"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:clickable="false"
-                                android:cursorVisible="false"
-                                android:drawablePadding="8dp"
-                                android:focusable="false"
-                                android:focusableInTouchMode="false"
-                                android:hint="@string/dd_mm_yy"
-                                android:imeOptions="actionNext"
-                                android:minHeight="48dp"
-                                android:padding="8dp"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/doc_panNameET" />
 
                             <Button
                                 android:id="@+id/doc_submitPanBT"
@@ -1038,13 +1081,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/mpin_gradinet"
+                    android:background="@color/background_combo"
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/doc_bankLL"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/color_primary"
+                        android:background="@color/color_secondary"
                         android:gravity="center"
                         android:minHeight="@dimen/_35sdp"
                         android:orientation="horizontal"
@@ -1056,30 +1100,33 @@
                             android:layout_weight="2"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/bank_details"
+                            android:textColor="@color/black"
                             android:textSize="@dimen/_18ssp" />
 
                         <ImageView
                             android:id="@+id/doc_bankOk"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
                             android:layout_gravity="center"
                             android:layout_weight=".7"
                             android:src="@drawable/check"
-                            android:visibility="visible" />
+                            android:visibility="gone"
+                            app:tint="@color/darkGreeen"/>
 
                         <ImageView
                             android:id="@+id/doc_bankError"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
                             android:layout_gravity="center"
                             android:layout_weight=".7"
                             android:src="@drawable/warning"
-                            android:visibility="gone" />
+                            android:visibility="visible"
+                            />
 
                         <ImageView
                             android:id="@+id/doc_bank_showMore"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
                             android:layout_gravity="center"
                             android:layout_weight=".3"
                             android:src="@drawable/ic_right"
@@ -1087,8 +1134,8 @@
 
                         <ImageView
                             android:id="@+id/doc_bank_showLess"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
                             android:layout_gravity="center"
                             android:layout_weight=".3"
                             android:src="@drawable/ic_arrow_down"
@@ -1109,8 +1156,8 @@
 
                         <ImageView
                             android:id="@+id/doc_bankPassbookIV"
-                            android:layout_width="90dp"
-                            android:layout_height="50dp"
+                            android:layout_width="@dimen/_90sdp"
+                            android:layout_height="@dimen/_70sdp"
                             android:src="@drawable/passbook"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -1120,10 +1167,10 @@
                             android:id="@+id/doc_passbookTV"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="2dp"
                             android:layout_marginTop="20dp"
-                            android:layout_marginEnd="65dp"
+                            android:padding="@dimen/_5sdp"
                             android:text="@string/bank_n_details"
+                            android:textColor="@color/black"
                             android:textSize="12sp"
                             app:layout_constraintStart_toEndOf="@+id/doc_bankPassbookIV"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -1136,7 +1183,7 @@
                             android:orientation="vertical"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/doc_passbookTV">
+                            app:layout_constraintTop_toBottomOf="@+id/doc_bankPassbookIV">
 
                             <ImageView
                                 android:id="@+id/doc_add_passbook_cam"
@@ -1145,6 +1192,7 @@
                                 android:layout_marginStart="20dp"
                                 android:layout_marginTop="10dp"
                                 android:src="@drawable/ic_camera"
+                                android:visibility="gone"
                                 app:layout_constraintBottom_toTopOf="@+id/doc_bankDetailLL"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/doc_bankPassbookIV" />
@@ -1154,6 +1202,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/bank_name"
+                                android:backgroundTint="@color/darkGreeen"
+                                android:textColor="@color/black"
+                                 android:textColorHint="@color/black"
                                 android:imeOptions="actionNext"
                                 android:inputType="textCapWords"
                                 android:minHeight="48dp" />
@@ -1161,6 +1212,9 @@
                             <EditText
                                 android:id="@+id/doc_accountNOET"
                                 android:layout_width="match_parent"
+                                android:backgroundTint="@color/darkGreeen"
+                                android:textColor="@color/black"
+                                 android:textColorHint="@color/black"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/please_enter_your_account_no"
                                 android:imeOptions="actionNext"
@@ -1175,6 +1229,9 @@
                                 android:id="@+id/doc_raccountNOET"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:backgroundTint="@color/darkGreeen"
+                                android:textColor="@color/black"
+                                 android:textColorHint="@color/black"
                                 android:hint="@string/renter_your_account_no"
                                 android:imeOptions="actionNext"
                                 android:inputType="text"
@@ -1187,9 +1244,13 @@
                                 android:id="@+id/doc_ifscCode"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:backgroundTint="@color/darkGreeen"
+                                android:textColor="@color/black"
+                                 android:textColorHint="@color/black"
                                 android:hint="@string/ifsc_code"
                                 android:imeOptions="actionDone"
                                 android:inputType="text"
+                                android:maxLength="12"
                                 android:minHeight="48dp"
                                 android:padding="8dp"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -1222,10 +1283,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/color_secondary"
-        android:text="OK"
+        android:text ="OK"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginVertical="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

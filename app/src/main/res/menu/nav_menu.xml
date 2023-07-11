@@ -36,6 +36,11 @@
         android:title="@string/my_nearest_service"
         android:icon="@drawable/nearby"
         />
+    <item
+        android:id="@+id/nearest_swap"
+        android:title="@string/my_nearest_swap_center"
+        android:icon="@drawable/nearby"
+    />
 
     <item
         android:id="@+id/issue"
@@ -57,8 +62,8 @@
     <item
         android:id="@+id/btnHindiLang"
         android:title="@string/lang_hindi"
-
         />
+
     <item
         android:id="@+id/btnEngLang"
         android:title="@string/lang_eng"

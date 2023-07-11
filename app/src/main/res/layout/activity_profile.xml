@@ -6,6 +6,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/background_combo"
         android:orientation="vertical">
 
         <include
@@ -73,10 +74,12 @@
                                 >
 
                                 <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/fullNameET"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:imeOptions="actionNext"
                                     android:inputType="text"
+                                    android:textColor="@color/black"
                                     android:padding="15dp"
                                     android:enabled="false"
                                     android:textSize="13sp" />
@@ -90,6 +93,7 @@
                                 android:layout_height="wrap_content"
                                 android:enabled="false"
                                 android:hint="@string/email_id"
+                                android:visibility="gone"
                                 app:startIconDrawable="@drawable/ic_email"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 >
@@ -112,19 +116,20 @@
                                 android:layout_marginTop="20dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:enabled="false"
+                                android:enabled="true"
                                 android:hint="@string/mobile_no"
                                 app:startIconDrawable="@drawable/ic_baseline_phone_"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 >
 
                                 <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/mobileNoEt"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:imeOptions="actionDone"
                                     android:inputType="numberDecimal"
                                     android:textColor="@color/black"
-                                    android:drawableEnd="@drawable/ic_baseline_edit"
+                                    android:focusable="false"
                                     android:maxLength="10"
                                     android:padding="15dp"
                                     android:textSize="13sp"/>
@@ -166,18 +171,19 @@
                                 >
 
                                 <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/panNoTIT"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:imeOptions="actionNext"
                                     android:textAllCaps="true"
                                     android:inputType="textCapCharacters"
                                     android:enabled="false"
+                                    android:textColor="@color/black"
                                     android:maxLength="8"
                                     android:padding="15dp"
                                     android:textSize="13sp"/>
 
                             </com.google.android.material.textfield.TextInputLayout>
-
 
 
                             <!--
@@ -202,6 +208,7 @@
                                                     </com.google.android.material.textfield.TextInputLayout>
                             -->
 
+
                             <com.google.android.material.textfield.TextInputLayout
                                 android:id="@+id/aadharCardTL"
                                 android:layout_marginTop="20dp"
@@ -212,11 +219,13 @@
                                 >
 
                                 <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/adharNo"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:imeOptions="actionDone"
                                     android:textAllCaps="true"
                                     android:inputType="numberDecimal"
+                                    android:textColor="@color/black"
                                     android:enabled="false"
                                     android:maxLength="12"
                                     android:padding="15dp"
@@ -345,6 +354,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0.5"
                                 app:layout_constraintStart_toStartOf="parent" />
+
                             <Button
                                 android:id="@+id/editprofile"
                                 android:layout_width="match_parent"
@@ -354,6 +364,7 @@
                                 android:backgroundTint="@color/color_secondary"
                                 android:text="@string/edit_profile"
                                 android:textColor="@color/white"
+                                android:visibility="gone"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0.5"

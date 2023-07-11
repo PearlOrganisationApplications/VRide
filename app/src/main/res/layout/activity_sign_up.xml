@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FAEBD7"
     tools:context="com.pearl.v_ride.SignUpActivity">
 
 
@@ -35,11 +34,10 @@
             android:id="@+id/signup_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawablePadding="8dp"
             android:layout_marginBottom="@dimen/_20ssp"
             android:text="@string/create_new_account"
-            android:textAlignment="center"
-            android:textSize="36sp" />
+            android:textAlignment="viewStart"
+            android:textSize="30sp" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -47,7 +45,7 @@
             app:cardCornerRadius="@dimen/_15ssp"
             app:cardElevation="@dimen/_15ssp"
             android:layout_marginTop="@dimen/_30ssp"
-            app:cardBackgroundColor="#EFEADD"
+            app:cardBackgroundColor="@color/background_combo"
             >
             <LinearLayout
                 android:layout_width="match_parent"
@@ -93,7 +91,6 @@
                         android:drawableLeft="@drawable/ic_baseline_phone_"
                         android:text="+91"
                         android:drawablePadding="@dimen/_2sdp"
-                        android:textStyle="bold"
                         android:background="@drawable/empty_edt"
                         android:minHeight="48dp"
                         android:editable="false"
@@ -146,10 +143,21 @@
                         android:layout_width="0dp"
                         android:text="Verify"
                         android:layout_height="wrap_content"
-
                         android:drawablePadding="8dp"
                         android:minHeight="48dp"
                         android:padding="8dp" />
+                    <Button
+                        android:layout_weight="1"
+                        android:id="@+id/resend_otp"
+                        android:visibility="gone"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:layout_width="0dp"
+                        android:textSize="12sp"
+                        android:text="@string/resend_otp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:padding="8dp"
+                         />
 
                 </LinearLayout>
 
@@ -162,6 +170,7 @@
                     android:drawableLeft="@drawable/ic_baseline_phone_"
                     android:drawablePadding="8dp"
                     android:hint="@string/email_id"
+                    android:visibility="gone"
                     android:inputType="textEmailAddress"
                     android:minHeight="48dp"
                     android:padding="8dp" />

@@ -1,29 +1,27 @@
 package com.pearl.v_ride
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.Dialog
-import android.content.ContentValues.TAG
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
-import android.service.controls.ControlsProviderService.TAG
+import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
 import com.pearl.common.retrofit.data_model_class.SignUpInfo
-import com.pearl.common.retrofit.rest_api_interface.LoginApi
 import com.pearl.common.retrofit.rest_api_interface.SignupApi
-import com.pearl.ui.DocumentActivity
+import com.pearl.ui.DocumentStatus
 import com.pearl.v_ride_lib.BaseClass
 import com.pearl.v_ride_lib.Global
+import com.pearl.v_ride_lib.Global.baseUrl
+import com.pearl.v_ride_lib.PrefManager
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -42,6 +40,8 @@ class SignUpActivity : BaseClass() {
         private const val RC_SIGN_IN = 1
         private const val TAG = "PhoneAUTH"
     }
+
+    lateinit var prefManager: PrefManager
     lateinit var dob: EditText
     lateinit var signup: Button
     private val myCalendar = Calendar.getInstance()
@@ -53,18 +53,27 @@ class SignUpActivity : BaseClass() {
     lateinit var sPhone: EditText
     lateinit var signup_otp: EditText
     lateinit var signup_otpVerifyBT: Button
+    lateinit var resend_otp: Button
     lateinit var signup_otpLL: LinearLayout
     private lateinit var signup_email: EditText
+    private lateinit var prefixEditTex: EditText
     private lateinit var mAuth: FirebaseAuth
     private lateinit var phoneNumber: String
-    var verifyOTP = ""
+    lateinit var resentToken: PhoneAuthProvider.ForceResendingToken
+    var verificationID = ""
     var otpCode = ""
     var vOTP = ""
     var full_name = ""
     var email = ""
     var signup_dob = ""
     val prefix = "+91"
-    lateinit var credential: PhoneAuthCredential
+    var tkn = ""
+    /*private lateinit var verifyOTP: String
+    private lateinit var otpCode: String
+    private lateinit var vOTP: String*/
+    private lateinit var credential: PhoneAuthCredential
+    private lateinit var loadingDialog: com.pearl.v_ride_lib.Dialog
+
     override fun setLayoutXml() {
         setContentView(R.layout.activity_sign_up)
 //        checkSignUp()
@@ -82,6 +91,10 @@ class SignUpActivity : BaseClass() {
         signup_otp = findViewById(R.id.signup_otp)
         signup_otpLL = findViewById(R.id.signup_otpLL)
         signup_otpVerifyBT = findViewById(R.id.signup_otpVerifyBT)
+        prefixEditTex = findViewById(R.id.prefixEditTex)
+        resend_otp = findViewById(R.id.resend_otp)
+        prefManager = PrefManager(this)
+        loadingDialog = com.pearl.v_ride_lib.Dialog(this)
 
 
 
@@ -104,41 +117,31 @@ class SignUpActivity : BaseClass() {
             full_name = sName.text.toString().trim()
             signup_dob = dob.text.toString().trim()
             Log.d("dob","$signup_dob,$phoneNumber, $full_name")
+            loadingDialog.startLoadingDialog()
             checkSignUp()
 
+        }
+        resend_otp.setOnClickListener {
+            // Resend the OTP
+            val options = PhoneAuthOptions.newBuilder(mAuth)
+                .setPhoneNumber(phoneNumber) // Phone number to verify
+                .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                .setActivity(this@SignUpActivity) // Activity (for callback binding)
+                .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
+                .setForceResendingToken(resentToken) // Use the token received in onCodeSent
+                .build()
+            PhoneAuthProvider.verifyPhoneNumber(options)
 
-           /* if (validateName(sName) && validateNumber(sPhone) && validateDob(dob)){
-                dialog.setContentView(R.layout.activity_forgot_password)
-            dialog.window?.setLayout(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-            dialog.setCancelable(false)
-            dialog.window?.attributes?.windowAnimations = R.style.animation
-
-            verify = dialog.findViewById(R.id.otp_Verify_button)
-            cancel = dialog.findViewById(R.id.view_cancel_dialog)
-
-            verify.setOnClickListener {
-                dialog.dismiss()
-                Toast.makeText(this, "okay clicked", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this@SignUpActivity, DocumentActivity::class.java))
-            }
-
-            cancel.setOnClickListener {
-                dialog.dismiss()
-                Toast.makeText(this@SignUpActivity, "Cancel clicked", Toast.LENGTH_SHORT).show()
-            }
-
-            dialog.show()
-        }*/
-
+            // Hide the resend_otp button again
+            loadingDialog.startLoadingDialog()
+            resend_otp.visibility = View.GONE
+            signup_otpVerifyBT.visibility = View.VISIBLE
         }
 
-   /*     if (sPhone.text.length == 10){
+       /* if (sPhone.text.length == 10){
             signup_otpLL.visibility = View.VISIBLE
-        }*/
-/*        sPhone.setOnFocusChangeListener { _, hasFocus ->
+        }
+        sPhone.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 if (!sPhone.text.startsWith(prefix)) {
                     sPhone.setText(prefix + sPhone.text)
@@ -150,19 +153,25 @@ class SignUpActivity : BaseClass() {
             }
         }*/
 
-        sPhone.addTextChangedListener(object : TextWatcher{
+        // for otp verification
+
+        sPhone.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
+                val editText = s?.trim().toString()
+                if (editText.isNotEmpty()){
+                    prefixEditTex.setTextColor(Color.parseColor("#000000"))
+                }else{
+                    prefixEditTex.setTextColor(Color.parseColor("#FFAAAAAA"))
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {
                 phoneNumber = s.toString().trim()
                 if (phoneNumber.length == 10) {
-                    signup_otpLL.visibility = View.VISIBLE
                     if (validateNumber(sPhone)) {
                         if (phoneNumber.length == 10){
 
@@ -175,6 +184,12 @@ class SignUpActivity : BaseClass() {
                                 .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
                                 .build()
                             PhoneAuthProvider.verifyPhoneNumber(options)
+                            loadingDialog.startLoadingDialog()
+                            /*Handler(Looper.getMainLooper()).postDelayed({
+                                resend_otp.visibility = View.VISIBLE
+                                signup_otpVerifyBT.visibility = View.GONE
+
+                            },60000)*/
                         }else{
 //                            Toast.makeText(this,"please Enter correct no",Toast.LENGTH_SHORT).show()
                         }
@@ -191,23 +206,18 @@ class SignUpActivity : BaseClass() {
             otpCode = signup_otp.getText().toString()
             if (otpCode.isNotEmpty()) {
                 if (otpCode.length == 6){
-                    credential = PhoneAuthProvider.getCredential(verifyOTP, otpCode)
-                    vOTP = verifyOTP
-                    Log.d("OTPOTP",verifyOTP+""+otpCode)
-                    if (vOTP == verifyOTP)  {
-//                        Toast.makeText(this@MainActivity, "Please enter correct 1 OTP", Toast.LENGTH_SHORT).show()
-                    /*    progressBar.visibility = View.VISIBLE
-                        loginOtp.visibility = View.GONE*/
-                        signInWithPhoneAuthCredential(credential)
-                    }
-                    else{
-                        Toast.makeText(this@SignUpActivity, "Please enter correct OTP", Toast.LENGTH_SHORT).show()
-                    }
+                    Log.d("verifyOTP",verificationID)
+                    Log.d("vOTP",vOTP)
+
+                    // Verify the OTP code
+                    credential = PhoneAuthProvider.getCredential(verificationID, otpCode)
+                    Log.d("Credential ",credential.smsCode.toString())
+                    signInWithPhoneAuthCredential(credential)
                 }else{
                     Toast.makeText(this@SignUpActivity, "Please enter 6 digits OTP", Toast.LENGTH_SHORT).show()
                 }
             } else {
-                Toast.makeText(this@SignUpActivity, "Please enter the OTP", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@SignUpActivity, " Please enter the OTP ", Toast.LENGTH_SHORT).show()
             }
 
 //             startActivity(Intent(this,HomeScreen::class.java))
@@ -215,6 +225,63 @@ class SignUpActivity : BaseClass() {
 
 
         }
+
+        /*
+        if(verificationID != null && vOTP != null) {
+
+                     credential = PhoneAuthProvider.getCredential(verificationID, otpCode)
+                     Log.d("Credential ",credential.smsCode.toString())
+                     otpCode = verificationID
+
+                     Log.d("OTPOTP", verificationID + "" + otpCode)
+                     Log.d("otpCode", otpCode)
+                     if (vOTP == verificationID) {
+//                        Toast.makeText(this@MainActivity, "Please enter correct 1 OTP", Toast.LENGTH_SHORT).show()
+                         /* progressBar.visibility = View.VISIBLE
+                        loginOtp.visibility = View.GONE*/
+
+                         signInWithPhoneAuthCredential(credential)
+                     } else {
+                         Toast.makeText(
+                             this@SignUpActivity,
+                             "Please enter correct OTP",
+                             Toast.LENGTH_SHORT
+                         ).show()
+                     }
+                 }else{
+                     Toast.makeText(this@SignUpActivity, "Please try again", Toast.LENGTH_SHORT).show()
+                 }
+
+        signup_otpVerifyBT.setOnClickListener {
+            otpCode = signup_otp.text.toString()
+            if (otpCode.isNotEmpty()) {
+                if (otpCode.length == 6) {
+                    vOTP = verifyOTP
+                    Log.d("OTPOTP",verifyOTP+""+otpCode)
+                    Log.d("otpCode",otpCode)
+                    if (vOTP == verifyOTP) {
+                        // Start a coroutine in the background thread
+                        CoroutineScope(Dispatchers.Default).launch {
+                            try {
+                                val credential = PhoneAuthProvider.getCredential(verifyOTP, otpCode)
+                                signInWithPhoneAuthCredential(credential)
+                            } catch (e: Exception) {
+                                // Handle any exceptions that occur during verification
+                                withContext(Dispatchers.Main) {
+                                    Toast.makeText(this@SignUpActivity, "Failed to verify OTP", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+                    } else {
+                        Toast.makeText(this@SignUpActivity, "Please enter correct OTP", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this@SignUpActivity, "Please enter 6 digits OTP", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(this@SignUpActivity, "Please enter the OTP", Toast.LENGTH_SHORT).show()
+            }
+        }*/
 
     }
 
@@ -237,6 +304,16 @@ class SignUpActivity : BaseClass() {
         initializeLabels()
 
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        registerReceiver(gpsBroadcastReceiver, filter)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(gpsBroadcastReceiver)
     }
 
     private fun showDatePicker() {
@@ -285,7 +362,11 @@ class SignUpActivity : BaseClass() {
             // 2 - Auto-retrieval. On some devices Google Play services can automatically
             //     detect the incoming verification SMS and perform verification without
             //     user action.
+            this@SignUpActivity.credential = credential
             signInWithPhoneAuthCredential(credential)
+           loadingDialog.dismissDialog()
+            signup_otpLL.visibility = View.VISIBLE
+
         }
 
         override fun onVerificationFailed(e: FirebaseException) {
@@ -303,6 +384,8 @@ class SignUpActivity : BaseClass() {
             }
 
             // Show a message and update the UI
+            loadingDialog.dismissDialog()
+            signup_otpLL.visibility = View.VISIBLE
         }
 
         override fun onCodeSent(
@@ -318,23 +401,33 @@ class SignUpActivity : BaseClass() {
             signup_otpVerifyBT.visibility = View.GONE
             resend_otp.visibility = View.VISIBLE*/
 //            progressBar.visibility = View.GONE
-            verifyOTP =  verificationId
+            verificationID =  verificationId
             vOTP =  verificationId
-//            resentToken = token
+            resentToken = token
 
+            loadingDialog.dismissDialog()
+            signup_otpLL.visibility = View.VISIBLE
+//            resend_otp.visibility = View.VISIBLE
 
             // Save verification ID and resending token so we can use them later
             /*       storedVerificationId = verificationId
-                   resendToken = token*/
+                   resendToken = token */
+        }
+        override fun onCodeAutoRetrievalTimeOut(verificationId: String) {
+            super.onCodeAutoRetrievalTimeOut(verificationId)
+            // Hide the resend_otp button
+            resend_otp.visibility = View.VISIBLE
+            signup_otpVerifyBT.visibility = View.GONE
         }
     }
 
     override fun onStart() {
         super.onStart()
         if (mAuth.currentUser != null){
-            startActivity(Intent(this@SignUpActivity,HomeScreen::class.java))
+//            startActivity(Intent(this@SignUpActivity,HomeScreen::class.java))
         }
     }
+
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
         mAuth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
@@ -349,6 +442,7 @@ class SignUpActivity : BaseClass() {
                     // Sign in failed, display a message and update the UI
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
                         // The verification code entered was invalid
+                        Toast.makeText(this@SignUpActivity,"please enter valid otp",Toast.LENGTH_SHORT).show()
                     }
                     // Update UI
 
@@ -363,7 +457,7 @@ class SignUpActivity : BaseClass() {
                Toast.makeText(this,"Please Enter Name",Toast.LENGTH_SHORT).show()
            }else{*/
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://test.pearl-developer.com/vrun/public/")
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val userService  = retrofit.create(SignupApi::class.java)
@@ -375,12 +469,24 @@ class SignUpActivity : BaseClass() {
         call.enqueue(object : Callback<SignUpInfo> {
             override fun onResponse(call: Call<SignUpInfo>, response: Response<SignUpInfo>) {
                 if (response.isSuccessful) {
+                    val STATUSCODE = response.body()?.status
                     val createdUser = response.body()
                     Log.d("ResponseSignup ",createdUser.toString())
                     // Handle the created user object
 //                    showErrorDialog("successful","OK")
-                    if (validateName(sName) && validateNumber(sPhone) && validateDob(dob)){
-                        startActivity(Intent(this@SignUpActivity, DocumentActivity::class.java))
+                    if (response.body()?.status?.toInt() != 501) {
+                       tkn = response.body()?.token.toString()
+                        prefManager.setToken(tkn)
+                        Log.d("tkn","$tkn")
+                        if (validateName(sName) && validateNumber(sPhone) && validateDob(dob)) {
+                            Log.d("STATUSCODE","$STATUSCODE")
+                            Handler().postDelayed({
+                                // After 4 seconds
+                                loadingDialog.dismissDialog()
+                            startActivity(Intent(this@SignUpActivity, DocumentStatus::class.java))
+                            }, 4000) // 4 seconds
+
+                        }
                     }
                 } else {
                     // Handle the error response
@@ -411,6 +517,7 @@ class SignUpActivity : BaseClass() {
                             }
                             if (dobError != null) {
                                 // Display dob validation error
+
                                 showErrorDialog(dobError,"")
                             }
                         } catch (e: JSONException) {
@@ -421,6 +528,7 @@ class SignUpActivity : BaseClass() {
                         }
                     } else {
                         // Show a generic error message to the user
+                        Log.d("errormsg","${response.code()}")
                         showErrorDialog("An else error occurred. Please try again later.","Ok")
                     }
                 }
@@ -447,5 +555,3 @@ class SignUpActivity : BaseClass() {
     }
 
 }
-
-//16|KkhIddFekLgRBkFV3b3dQT3ac9czyJttxOa9Srzg

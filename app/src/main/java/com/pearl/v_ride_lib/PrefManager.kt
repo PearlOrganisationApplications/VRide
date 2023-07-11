@@ -2,11 +2,11 @@ package com.pearl.v_ride_lib
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 
-
-
- class PrefManager(var context: Context) {
+class PrefManager(var context: Context) {
      // Shared preferences file name
      private val PREF_NAME = "welcome"
      private val IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch"
@@ -141,5 +141,67 @@ import android.content.SharedPreferences
      fun getLanID():String{
          return pref?.getString("lanID", "en").toString()
      }
+     fun setToken(token: String){
+         editor!!.putString("token", token)
+         editor!!.commit()
+     }
+     fun getToken(): String{
+         return  pref?.getString("token","").toString()
+     }
+     fun setCode(code1: Int){
+         editor!!.putInt("code1", code1)
+         editor!!.commit()
+     }
+     fun getCode(): Int{
+         return  pref?.getInt("code1",0)!!.toInt()
+     }
+     fun setIds(id: String) {
+         editor!!.putString("id",id)
+         editor!!.commit()
+     }
+     fun getIds(): String {
+         return pref?.getString("id", "id").toString()
+     }
+
+     fun setList(list: List<String>?) {
+         val gson = Gson()
+         val listJson = gson.toJson(list)
+         editor?.putString("list_key", listJson)
+         editor?.commit()
+     }
+
+     fun getList(): List<String> {
+         val gson = Gson()
+         val listJson = pref?.getString("list_key", null)
+         if (listJson != null) {
+             val type = object : TypeToken<List<Int>>() {}.type
+             return gson.fromJson(listJson, type)
+         }
+         return emptyList()
+     }
+
+    fun setlatitude(lat:Float){
+        editor?.putFloat("lat",lat)
+        editor?.commit()
+    }
+    fun getlatitude():Float{
+        return  pref?.getFloat("lat",0.0f)!!
+    }
+    fun setlongitude(long:Float){
+        editor?.putFloat("long",long)
+        editor?.commit()
+    }
+    fun getlongitude():Float{
+        return  pref?.getFloat("long",0.0f)!!
+    }
+
+    fun setNotificationToken(token: String){
+        editor!!.putString("tkn", token)
+        editor!!.commit()
+    }
+    fun getNotificationToken(): String {
+        return pref?.getString("tkn","").toString()
+    }
+
  }
 

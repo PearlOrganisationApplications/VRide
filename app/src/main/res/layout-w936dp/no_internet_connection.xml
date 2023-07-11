@@ -26,24 +26,23 @@
         android:gravity="center"
         android:textSize="12sp"
         android:layout_marginTop="150dp"
-
         android:text="Please check your internet connection or restart your app"/>
 
- <!--   <TextView
+    <TextView
         android:id="@+id/try_again"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="200dp"
-        android:background="@drawable/btn_bg"
+        android:layout_marginTop="300dp"
         android:fontFamily="sans-serif"
         android:gravity="center"
+        android:background="@drawable/btn_backgraund"
         android:paddingBottom="7dp"
         android:text="Try again"
         android:textAllCaps="false"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="12sp"
         android:textStyle="normal"
-        android:visibility="visible" />-->
+        android:visibility="visible" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

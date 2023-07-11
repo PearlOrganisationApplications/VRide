@@ -22,7 +22,7 @@
     <string name="net_earn">"This Month Net Earning"</string>
     <string name="state">"Uttarakhand"</string>
     <string name="lang_hindi">हिंदी</string>
-    <string name="lang_eng">"English"</string>
+    <string name="lang_eng">English</string>
     <string name="monthly_pay">"Monthly Payout"</string>
     <string name="address_proof">Upload address proof</string>
     <string name="yes">Yes</string>
@@ -132,8 +132,9 @@
     <string name="make_payment">Make Payment</string>
     <string name="enter_your_upi_id">Enter your UPI Id</string>
     <string name="cancel">Cancel</string>
-
-
+    <string name="monthly_report">Monthly Report</string>
+    <string name="hide_report">Hide Report</string>
+    <string name="my_nearest_swap_center">My Nearest Swap Center</string>
 
 
 </resources>

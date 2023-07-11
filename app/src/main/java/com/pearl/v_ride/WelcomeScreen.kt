@@ -38,6 +38,7 @@ class WelcomeScreen : BaseClass() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        registerReceiver(gpsBroadcastReceiver, filter)
         Global.language(this,resources)
 
 
@@ -164,6 +165,11 @@ class WelcomeScreen : BaseClass() {
                 )
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(gpsBroadcastReceiver)
     }
 
 }

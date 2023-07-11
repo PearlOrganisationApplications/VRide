@@ -50,7 +50,6 @@
                     android:textOn=""
                     android:textOff=""/>-->
 
-
              <!--   <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/customSwitch"
                     android:layout_width="wrap_content"
@@ -69,6 +68,7 @@
                     app:trackTint="@color/green"
                     app:trackTintMode="screen"
                     app:track="@drawable/track" />-->
+
                 <androidx.cardview.widget.CardView
                     android:layout_width="@dimen/_82sdp"
                     android:layout_gravity="end"
@@ -270,7 +270,7 @@
                            android:textSize="@dimen/_13ssp"
                            android:textStyle="bold"
                            android:padding="@dimen/_2ssp"
-                           android:text="@string/state"/>
+                           android:text=  "@string/state"/>
                    </LinearLayout>
 
             <androidx.cardview.widget.CardView
@@ -398,7 +398,7 @@
                            android:minHeight="48dp"
                            android:padding="@dimen/_2ssp"
                            android:textColor="@color/color_primary"
-                           android:text="@string/monthly_calender"/>
+                           android:text="@string/monthly_report"/>
                        <TextView
                            android:visibility="gone"
                            android:id="@+id/hideCalendar"
@@ -413,7 +413,7 @@
                            android:minHeight="48dp"
                            android:padding="@dimen/_2ssp"
                            android:textColor="@color/color_primary"
-                           android:text="@string/hide_calender"/>
+                           android:text="@string/hide_report"/>
                        <TextView
                            android:id="@+id/rate_list"
                            android:layout_weight=".6"
@@ -433,7 +433,7 @@
                    </LinearLayout>
 
                    <androidx.recyclerview.widget.RecyclerView
-                       android:visibility="gone"
+                       android:visibility="visible"
                        android:layout_width="match_parent"
                        android:layout_height="wrap_content"
                        android:id="@+id/calenderRV"/>
