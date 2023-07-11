@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pearl.adapter.NearestListAapter
 import com.pearl.common.retrofit.data_model_class.Station
+import com.pearl.common.retrofit.data_model_class.StationRes
 import com.pearl.common.retrofit.rest_api_interface.StationApi
 import com.pearl.v_ride_lib.BaseClass
 import com.pearl.v_ride_lib.Dialog
@@ -28,6 +29,7 @@ class NearestServiceActivity : BaseClass(),NearestListAapter.NearestAdapterCallb
     lateinit var prefManager: PrefManager
     private lateinit var resourcess: Resources
     private lateinit var loadingDialog: Dialog
+    val nearestList = ArrayList<StationRes>()
 
     //    private lateinit var newArrayList: ArrayList<NearestList>
 /*    lateinit var placeName: Array<String>
@@ -212,7 +214,7 @@ class NearestServiceActivity : BaseClass(),NearestListAapter.NearestAdapterCallb
 
                         runOnUiThread {
                             recyclerView.layoutManager = LinearLayoutManager(this@NearestServiceActivity)
-                            val recyclerViewAdapter = NearestListAapter(this@NearestServiceActivity, listCard,this@NearestServiceActivity)
+                            val recyclerViewAdapter = NearestListAapter(this@NearestServiceActivity, listCard,nearestList,this@NearestServiceActivity)
                             recyclerView.adapter = recyclerViewAdapter
                         }
                     }

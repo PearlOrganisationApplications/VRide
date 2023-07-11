@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.pearl.common.retrofit.data_model_class.PostApiRequest
@@ -26,12 +27,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-class NearestListAapter(private val context: Context, private val nearestList: ArrayList<Station>, val callback: NearestAdapterCallback):
+class NearestListAapter(private val context: Context, private val nearestList: ArrayList<Station>, private val stationRes: ArrayList<StationRes> , val callback: NearestAdapterCallback):
     RecyclerView.Adapter<NearestListAapter.MyViewHolder>() {
 
     var prefManager: PrefManager = PrefManager(context)
     var isDetaisVisible = false
-    val stationRes: ArrayList<StationRes> = ArrayList()
+//    val stationRes: ArrayList<StationRes> = ArrayList()
 
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
@@ -86,7 +87,7 @@ class NearestListAapter(private val context: Context, private val nearestList: A
                 prefManager.setStationSerialNumber(stationSerialNumber)
                 holder.showMore.setText(R.string.show_less)
                 holder.detailMoreLL.visibility = View.VISIBLE
-
+                Toast.makeText(context,stationSerialNumber,Toast.LENGTH_SHORT).show()
                 callback.onCartClicked(stationSerialNumber)
             } else {
                 holder.detailMoreLL.visibility = View.GONE
