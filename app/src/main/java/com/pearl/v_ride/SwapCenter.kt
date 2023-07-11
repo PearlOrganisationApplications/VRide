@@ -22,10 +22,14 @@ import com.pearl.v_ride_lib.PrefManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class SwapCenter : BaseClass(),NearestListAapter.NearestAdapterCallback {
+class SwapCenter : BaseClass(), NearestListAapter.NearestAdapterCallback {
 
     lateinit var nearestSRV: RecyclerView
     private lateinit var loadingDialog: Dialog
@@ -38,10 +42,9 @@ class SwapCenter : BaseClass(),NearestListAapter.NearestAdapterCallback {
     lateinit var recyclerViewAdapter: NearestListAapter
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       setLayoutXml()
+        setLayoutXml()
         initializeViews()
         initializeClickListners()
 
@@ -56,7 +59,7 @@ class SwapCenter : BaseClass(),NearestListAapter.NearestAdapterCallback {
         loadingDialog = Dialog(this)
         prefManager = PrefManager(this)
         Global.language(this, resources)
-        recyclerViewAdapter = NearestListAapter(this,listCard,nearestList,this)
+        recyclerViewAdapter = NearestListAapter(this, listCard, nearestList, this)
 
     }
 
@@ -65,7 +68,7 @@ class SwapCenter : BaseClass(),NearestListAapter.NearestAdapterCallback {
         apptitle = findViewById(R.id.titleTVAppbar)
 
         apptitle.setText(R.string.my_nearest_swap_center)
-        nearestSRV= findViewById(R.id.nearestSRV)
+        nearestSRV = findViewById(R.id.nearestSRV)
 
         nearestSRV.layoutManager = LinearLayoutManager(this)
         /*val adapter = NearestListAapter(this, listCard, this)
@@ -148,7 +151,10 @@ class SwapCenter : BaseClass(),NearestListAapter.NearestAdapterCallback {
 
                         runOnUiThread {
                             nearestSRV.layoutManager = LinearLayoutManager(this@SwapCenter)
-                            recyclerViewAdapter = NearestListAapter(this@SwapCenter, listCard,nearestList ,this@SwapCenter)
+                            recyclerViewAdapter = NearestListAapter(this@SwapCenter,
+                                listCard,
+                                nearestList,
+                                this@SwapCenter)
                             nearestSRV.adapter = recyclerViewAdapter
                         }
                     }
@@ -165,9 +171,43 @@ class SwapCenter : BaseClass(),NearestListAapter.NearestAdapterCallback {
     }
 
 
+/*   suspend fun getBPX(): List<StationRes> {
+        var res = listOf<StationRes>()
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://stationapiserver.azurewebsites.net/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        val apiService = retrofit.create(StationApiService::class.java)
 
-    fun getBP() {
+        val queryParams = QueryParams(
+            station_serial_number = prefManager.getStationSerialNumber(),
+            sunmccu_recordtype = "STATION-HEARTBEAT"
+        )
+        val call: Call<List<StationRes>> = apiService.getBPAvailability(PostApiRequest(queryParams))
+        call.enqueue(object : Callback<List<StationRes>> {
+            override fun onResponse(
+                call: Call<List<StationRes>>,
+                response: Response<List<StationRes>>,
+            ) {
+                if (response.isSuccessful) {
+                    val result = response.body()
+                    if (result != null) {
+                        res = result
 
+                    }
+                    Log.d("dkjlfkds", response.message())
+                    Log.d("response", result.toString())
+                }
+            }
+
+            override fun onFailure(call: Call<List<StationRes>>, t: Throwable) {
+            }
+
+        })
+
+        return res
+    }*/
+    suspend fun getBP(): List<StationRes> {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://stationapiserver.azurewebsites.net/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -179,27 +219,26 @@ class SwapCenter : BaseClass(),NearestListAapter.NearestAdapterCallback {
             sunmccu_recordtype = "STATION-HEARTBEAT"
         )
 
-        val request = PostApiRequest(query = queryParams)
-        CoroutineScope(Dispatchers.IO).launch {
+        return withContext(Dispatchers.IO) {
             try {
-                val response = apiService.getBPAvailability(request)
+                val response = apiService.getBPAvailability(PostApiRequest(queryParams))
                 if (response.isSuccessful) {
-                    val result = response.body()
-
-                    Log.d("dkjlfkds",response.message())
-                    Log.d("response",result.toString())
+                    response.body() ?: emptyList()
                 } else {
-                    // Handle error case
-                    val errorBody = response.errorBody().toString()
-                    // Handle the error body if needed
+                    emptyList()
                 }
             } catch (e: Exception) {
-                // Handle exception
-                e.printStackTrace()
+                emptyList()
             }
-
         }
     }
+
+
+
+
+
+
+
 
 
 
@@ -208,9 +247,17 @@ class SwapCenter : BaseClass(),NearestListAapter.NearestAdapterCallback {
         unregisterReceiver(gpsBroadcastReceiver)
     }
 
-    override fun onCartClicked(stationSerialNumber: String) {
+/*    override fun onCartClicked(stationSerialNumber: String): List<StationRes> {
 //        getBP(stationSerialNumber)
-        getBP()
+
+        return getBP()
+    }*/
+
+    override fun onCartClicked(stationSerialNumber: String, callback: (List<StationRes>) -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val result = getBP()
+            callback(result)
+        }
     }
 }
 

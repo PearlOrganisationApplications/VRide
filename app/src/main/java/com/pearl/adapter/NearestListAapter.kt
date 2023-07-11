@@ -88,7 +88,26 @@ class NearestListAapter(private val context: Context, private val nearestList: A
                 holder.showMore.setText(R.string.show_less)
                 holder.detailMoreLL.visibility = View.VISIBLE
                 Toast.makeText(context,stationSerialNumber,Toast.LENGTH_SHORT).show()
-                callback.onCartClicked(stationSerialNumber)
+                var res = listOf<StationRes>()
+                callback.onCartClicked(stationSerialNumber) { result ->
+                    res=result
+                    Log.d("ResResult",res.toString())
+                    // Handle the result here
+                    // For example, update UI or perform further processing
+                    // with the received list of StationRes objects
+                    // ...
+                }
+                Log.d("AdapterRes",res.toString())
+                for(response in res){
+//                    val totalSwap = response.totalSwap
+                    holder.totalSwapTextView.text = response.totalSwap.toString()
+                    holder.totalSwapFailTextView.text = response.totalSwapFail.toString()
+                    holder.totalBpCountTextView.text = response.totalBpCount.toString()
+                    holder.totalSwapSuccessfulTextView.text = response.totalSwapSuccessful.toString()
+                    holder.upsVoltageTextView.text = response.upsVoltage.toString()
+
+                }
+                Log.d("AdapterRes1",res.toString())
             } else {
                 holder.detailMoreLL.visibility = View.GONE
                 holder.showMore.setText(R.string.show_more)
@@ -137,7 +156,7 @@ class NearestListAapter(private val context: Context, private val nearestList: A
     }
 
     interface NearestAdapterCallback{
-        fun onCartClicked(stationSerialNumber: String)
+        fun onCartClicked(stationSerialNumber: String, callback: (List<StationRes>) -> Unit)
     }
 }
 

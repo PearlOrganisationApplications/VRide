@@ -235,9 +235,14 @@ class NearestServiceActivity : BaseClass(),NearestListAapter.NearestAdapterCallb
         unregisterReceiver(gpsBroadcastReceiver)
     }
 
-    override fun onCartClicked(stationSerialNumber: String) {
+   /* override fun onCartClicked(stationSerialNumber: String): List<StationRes> {
+        TODO("Not yet implemented")
+    }*/
 
+    override fun onCartClicked(stationSerialNumber: String, callback: (List<StationRes>) -> Unit) {
+        TODO("Not yet implemented")
     }
+
 
 }
 
