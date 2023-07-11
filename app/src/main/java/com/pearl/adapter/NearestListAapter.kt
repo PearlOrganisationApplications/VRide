@@ -3,19 +3,35 @@ package com.pearl.adapter
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.pearl.common.retrofit.data_model_class.PostApiRequest
+import com.pearl.common.retrofit.data_model_class.QueryParams
 import com.pearl.common.retrofit.data_model_class.Station
+import com.pearl.common.retrofit.data_model_class.StationRes
+import com.pearl.common.retrofit.rest_api_interface.StationApiService
 import com.pearl.v_ride.R
+import com.pearl.v_ride_lib.PrefManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
-class NearestListAapter(private val context: Context, private val nearestList: ArrayList<Station>):
+class NearestListAapter(private val context: Context, private val nearestList: ArrayList<Station>, val callback: NearestAdapterCallback):
     RecyclerView.Adapter<NearestListAapter.MyViewHolder>() {
 
+    var prefManager: PrefManager = PrefManager(context)
+    var isDetaisVisible = false
+    val stationRes: ArrayList<StationRes> = ArrayList()
 
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
@@ -23,6 +39,16 @@ class NearestListAapter(private val context: Context, private val nearestList: A
         val cityName = itemView.findViewById<TextView>(R.id.placeAddress)
         val stateName = itemView.findViewById<TextView>(R.id.stateName)
         val navigateMap = itemView.findViewById<ImageView>(R.id.navigateMap)
+        val listCard = itemView.findViewById<CardView>(R.id.listCard)
+        val detailMoreLL = itemView.findViewById<LinearLayout>(R.id.detailMoreLL)
+        val showMore = itemView.findViewById<TextView>(R.id.showMore)
+
+        // New TextViews for additional fields
+        val totalSwapTextView = itemView.findViewById<TextView>(R.id.totalSwapTextView)
+        val upsVoltageTextView = itemView.findViewById<TextView>(R.id.upsVoltageTextView)
+        val totalBpCountTextView = itemView.findViewById<TextView>(R.id.totalBpCountTextView)
+        val totalSwapFailTextView = itemView.findViewById<TextView>(R.id.totalSwapFailTextView)
+        val totalSwapSuccessfulTextView = itemView.findViewById<TextView>(R.id.totalSwapSuccessfulTextView)
 
 
     }
@@ -34,31 +60,70 @@ class NearestListAapter(private val context: Context, private val nearestList: A
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = nearestList[position]
+        val stationItem: StationRes? = if (position < stationRes.size) stationRes[position] else null
         holder.title.text =currentItem.serviceLocation
         holder.cityName.text = currentItem.stationInstallerName
         holder.stateName.text = currentItem.zone
+
+        if (stationItem != null) {
+            holder.totalSwapTextView.text = stationItem.totalSwap.toString()
+            holder.totalSwapFailTextView.text = stationItem.totalSwapFail.toString()
+            holder.totalBpCountTextView.text = stationItem.totalBpCount.toString()
+            holder.totalSwapSuccessfulTextView.text = stationItem.totalSwapSuccessful.toString()
+            holder.upsVoltageTextView.text = stationItem.upsVoltage.toString()
+        } else {
+            // Handle the case when stationItem is null or not available
+            holder.totalSwapTextView.text = "-"
+            holder.totalSwapFailTextView.text = "-"
+            holder.totalBpCountTextView.text = "-"
+            holder.totalSwapSuccessfulTextView.text = "-"
+            holder.upsVoltageTextView.text = "-"
+        }
+
+        holder.showMore.setOnClickListener {
+            if (!isDetaisVisible) {
+                val stationSerialNumber = currentItem.stationSerialNumber
+                prefManager.setStationSerialNumber(stationSerialNumber)
+                holder.showMore.setText(R.string.show_less)
+                holder.detailMoreLL.visibility = View.VISIBLE
+
+                callback.onCartClicked(stationSerialNumber)
+            } else {
+                holder.detailMoreLL.visibility = View.GONE
+                holder.showMore.setText(R.string.show_more)
+            }
+            isDetaisVisible = !isDetaisVisible
+        }
+
+        /*
+        holder.showMore.setOnClickListener {
+            if (!isDetaisVisible) {
+                val stationSerialNumber = currentItem.stationSerialNumber
+                prefManager.setStationSerialNumber(stationSerialNumber)
+                holder.showMore.setText(R.string.show_less)
+                holder.detailMoreLL.visibility = View.VISIBLE
+                callback.onCartClicked(stationSerialNumber)
+            }else{
+                holder.detailMoreLL.visibility = View.GONE
+                holder.showMore.setText(R.string.show_more)
+            }
+            isDetaisVisible = !isDetaisVisible
+        }*/
 
         holder.navigateMap.setOnClickListener {
            val lat = currentItem.latitude
            val lng = currentItem.longitude
             val label = holder.title.toString()
 
-//            val geoUri = "http://maps.google.com/maps?q=loc:$lat,$lng + ${holder.title} "
-//            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
-//            startActivity(,Intent(Intent.ACTION_VIEW, Uri.parse(geoUri)))
-
-//            val gmmIntentUri = Uri.parse("geo:$lat,$lng?q=$lat,$lng(${holder.title})")
             val geoUri =
                 "http://maps.google.com/maps?q=loc:$lat,$lng"
             val mapIntent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
-//            mapIntent.setPackage("com.google.android.apps.maps") // Specify the package to ensure opening in Google Maps app
 
             // Check if Google Maps app is available
             if (mapIntent.resolveActivity(context.packageManager) != null) {
                 context.startActivity(mapIntent)
             } else {
-                // Handle the case when Google Maps app is not installed
-                // You can redirect the user to the Play Store to download the app, or use a different approach
+
             }
 
 
@@ -69,4 +134,56 @@ class NearestListAapter(private val context: Context, private val nearestList: A
     override fun getItemCount(): Int {
         return  nearestList.size
     }
+
+    interface NearestAdapterCallback{
+        fun onCartClicked(stationSerialNumber: String)
+    }
 }
+
+
+/*
+fun getBP(stationSerialNumber: String) {
+    val retrofit = Retrofit.Builder()
+        .baseUrl("https://stationapiserver.azurewebsites.net/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+    val apiService = retrofit.create(StationApiService::class.java)
+
+    val queryParams = QueryParams(
+        station_serial_number = stationSerialNumber,
+        sunmccu_recordtype = "STATION-HEARTBEAT"
+    )
+
+    val request = PostApiRequest(query = queryParams)
+    CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val response = apiService.getBPAvailability(request)
+            if (response.isSuccessful) {
+                val result = response.body()
+                val totalSwap = result?.totalSwap
+                val totalSwapFail = result?.totalSwapFail
+                val totalBPCount = result?.totalBpCount
+                val totalSwapScuccesful = result?.totalSwapSuccessful
+                val upsVoltage = result?.upsVoltage
+
+                // Update UI with the retrieved data
+                holder.totalSwapTextView.text = totalSwap.toString()
+                holder.totalSwapFailTextView.text = totalSwapFail.toString()
+                holder.totalBpCountTextView.text = totalBPCount.toString()
+                holder.totalSwapSuccessfulTextView.text = totalSwapScuccesful.toString()
+                holder.upsVoltageTextView.text = upsVoltage.toString()
+
+
+                Log.d("dkjlfkds", response.message())
+                Log.d("response", result.toString())
+            } else {
+                // Handle error case
+                val errorBody = response.errorBody().toString()
+                // Handle the error body if needed
+            }
+        } catch (e: Exception) {
+            // Handle exception
+            e.printStackTrace()
+        }
+    }
+}*/

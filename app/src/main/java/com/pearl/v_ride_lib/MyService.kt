@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.os.IBinder
 import android.os.Looper
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.work.Data
 import androidx.work.ExistingPeriodicWorkPolicy
@@ -27,9 +28,14 @@ class MyService : Service() {
         super.onCreate()
         prefManager = PrefManager(applicationContext)
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+
+
         createLocationRequest()
         createLocationCallback()
         startLocationUpdates()
+
+        Log.d("onCreateService"," onCreate")
+
     }
 
     private fun createLocationRequest() {
@@ -59,8 +65,14 @@ class MyService : Service() {
     }*/
 
     private fun handleLocationUpdate(location: Location) {
-        val lat = location.latitude
-        val lon = location.longitude
+        prefManager.setlatitude(location.latitude)
+        prefManager.setlongitude(location.longitude)
+        Log.d("handleLocationUpdate",location.latitude.toString()+" "+location.longitude.toString())
+        val lat =prefManager.getlatitude().toDouble()
+        val lon =  prefManager.getlongitude().toDouble()
+        /*val lat = location.latitude
+        val lon = location.longitude*/
+
         sendLocationToServer(lat, lon)
     }
 

@@ -3,13 +3,18 @@ package com.pearl.v_ride
 import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pearl.adapter.NearestListAapter
+import com.pearl.common.retrofit.data_model_class.PostApiRequest
+import com.pearl.common.retrofit.data_model_class.QueryParams
 import com.pearl.common.retrofit.data_model_class.Station
+import com.pearl.common.retrofit.data_model_class.StationRes
 import com.pearl.common.retrofit.rest_api_interface.StationApi
+import com.pearl.common.retrofit.rest_api_interface.StationApiService
 import com.pearl.v_ride_lib.BaseClass
 import com.pearl.v_ride_lib.Dialog
 import com.pearl.v_ride_lib.Global
@@ -20,7 +25,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class SwapCenter : BaseClass() {
+class SwapCenter : BaseClass(),NearestListAapter.NearestAdapterCallback {
 
     lateinit var nearestSRV: RecyclerView
     private lateinit var loadingDialog: Dialog
@@ -28,6 +33,11 @@ class SwapCenter : BaseClass() {
     lateinit var apptitle: AppCompatTextView
     lateinit var prefManager: PrefManager
     private lateinit var resourcess: Resources
+    val listCard = ArrayList<Station>()
+    val nearestList = ArrayList<StationRes>()
+    lateinit var recyclerViewAdapter: NearestListAapter
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +56,7 @@ class SwapCenter : BaseClass() {
         loadingDialog = Dialog(this)
         prefManager = PrefManager(this)
         Global.language(this, resources)
+        recyclerViewAdapter = NearestListAapter(this,listCard,this)
 
     }
 
@@ -57,6 +68,8 @@ class SwapCenter : BaseClass() {
         nearestSRV= findViewById(R.id.nearestSRV)
 
         nearestSRV.layoutManager = LinearLayoutManager(this)
+        /*val adapter = NearestListAapter(this, listCard, this)
+        recyclerView.adapter = adapter*/
     }
 
     override fun initializeClickListners() {
@@ -96,7 +109,7 @@ class SwapCenter : BaseClass() {
 
                     val stationResponse = response.body()
                     val stations = stationResponse?.stations
-                    val listCard = ArrayList<Station>()
+
                     stations?.let { stationList ->
                         for (station in stationList) {
                             val locationName = station.serviceLocation
@@ -123,7 +136,12 @@ class SwapCenter : BaseClass() {
                                         longitude,
                                         locationName,
                                         cityName,
-                                        stateName,
+                                        stateName
+                                        /*0,
+                                        0.0,
+                                        0,
+                                        0,
+                                        0,*/
                                     )
                                 )
                             }
@@ -131,7 +149,7 @@ class SwapCenter : BaseClass() {
 
                         runOnUiThread {
                             nearestSRV.layoutManager = LinearLayoutManager(this@SwapCenter)
-                            val recyclerViewAdapter = NearestListAapter(this@SwapCenter, listCard)
+                            recyclerViewAdapter = NearestListAapter(this@SwapCenter, listCard,this@SwapCenter)
                             nearestSRV.adapter = recyclerViewAdapter
                         }
                     }
@@ -147,8 +165,116 @@ class SwapCenter : BaseClass() {
 
     }
 
+      fun getBP() {
+
+      val retrofit = Retrofit.Builder()
+          .baseUrl("https://stationapiserver.azurewebsites.net/")
+          .addConverterFactory(GsonConverterFactory.create())
+          .build()
+      val apiService = retrofit.create(StationApiService::class.java)
+
+      val queryParams = QueryParams(
+          station_serial_number = prefManager.getStationSerialNumber(),
+          sunmccu_recordtype = "STATION-HEARTBEAT"
+      )
+
+      val request = PostApiRequest(query = queryParams)
+      CoroutineScope(Dispatchers.IO).launch {
+          try {
+              val response = apiService.getBPAvailability(request)
+              if (response.isSuccessful) {
+                  val result = response.body()
+                  /*val totalSwap = result?.totalSwap
+                  val totalSwapFail = result?.totalSwapFail
+                  val totalBPCount = result?.totalBpCount
+                  val totalSwapScuccesful = result?.totalSwapSuccessful
+                  val upsVoltage = result?.upsVoltage
+                  // Handle the response here
+                  */
+                  if (result != null && result.isNotEmpty()) {
+                      val stationRes = result[0] // Get the first element from the response list
+                      val sunmccuData = stationRes.sunmccuData
+                      val totalSwap = sunmccuData.totalSwap
+                      val totalSwapFail =
+                      val totalBPCount = result?.totalBpCount
+                      val totalSwapScuccesful = result?.totalSwapSuccessful
+                      val upsVoltage = result?.upsVoltage
+                  }
+
+
+                  Log.d("dkjlfkds",response.message())
+                  Log.d("response",result.toString())
+              } else {
+                  // Handle error case
+                  val errorBody = response.errorBody().toString()
+                  // Handle the error body if needed
+              }
+          } catch (e: Exception) {
+              // Handle exception
+              e.printStackTrace()
+          }
+
+      }
+  }
+
+/*    fun getBP(stationSerialNumber: String) {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://stationapiserver.azurewebsites.net/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        val apiService = retrofit.create(StationApiService::class.java)
+
+        val queryParams = QueryParams(
+            station_serial_number = stationSerialNumber,
+            sunmccu_recordtype = "STATION-HEARTBEAT"
+        )
+
+        val request = PostApiRequest(query = queryParams)
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = apiService.getBPAvailability(request)
+                if (response.isSuccessful) {
+                    val result = response.body()
+                    if (result != null && result.isNotEmpty()) {
+                        val stationRes = result[0] // Get the first element from the response list
+                        // Update the stationRes list in the adapter
+                        updateStationRes(adapterPosition, stationRes)
+                        // Refresh the adapter to update the UI
+                        notifyDataSetChanged()
+                    } else {
+                        // Handle the case when the response is empty or null
+                    }
+                } else {
+                    // Handle error case
+                    val errorBody = response.errorBody().toString()
+                    // Handle the error body if needed
+                }
+            } catch (e: Exception) {
+                // Handle exception
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun updateStationRes(position: Int, updatedStationRes: StationRes) {
+        if (position >= 0 && position < stationRes.size) {
+            stationRes[position] = updatedStationRes
+            notifyDataSetChanged() // Notify the adapter that the data has changed
+        }
+    }*/
+
+
+
+
+
     override fun onPause() {
         super.onPause()
         unregisterReceiver(gpsBroadcastReceiver)
     }
+
+    override fun onCartClicked(stationSerialNumber: String) {
+//        getBP(stationSerialNumber)
+    }
 }
+
+

@@ -30,6 +30,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.firebase.messaging.FirebaseMessaging
 import com.pearl.v_ride.R
 import java.io.ByteArrayOutputStream
 import java.util.regex.Matcher
@@ -41,7 +42,6 @@ abstract  class BaseClass: AppCompatActivity() {
     protected val REQUEST_ID_MULTIPLE_PERMISSIONS = 101
     // var mIsUpdateAppTask: IsAppUpdated? = null
     protected var baseApcContext: Context? = null
-    protected lateinit var baseApcContext2: Context
     protected lateinit var imageView: ImageView
     protected var activityIn: AppCompatActivity? = null
     protected var LogTag: String? = null
@@ -50,6 +50,10 @@ abstract  class BaseClass: AppCompatActivity() {
     var STORAGE_PERMISSION_CODE = 1
     var session: Session? = null
     var classname = "Login"
+    protected lateinit var baseApcContext2: Context
+    // ...
+
+//    var pref: PrefManager? = null
     val gpsBroadcastReceiver = GPSBroadcastReceiver()
     val filter = IntentFilter().apply {
         addAction(LocationManager.PROVIDERS_CHANGED_ACTION)
@@ -92,6 +96,8 @@ abstract  class BaseClass: AppCompatActivity() {
             window.statusBarColor = getResources().getColor(R.color.white)
         }
     }
+
+
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -838,5 +844,23 @@ abstract  class BaseClass: AppCompatActivity() {
     }
      fun showToast(message: String) {
         Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+    }
+
+    public fun getToken(pref: PrefManager) {
+        Thread(Runnable {
+            try {
+                FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val token = task.result
+                        Log.d("Token -->", token)
+                        pref.setNotificationToken(token)
+                    } else {
+                        Log.d("Failed_FCM_token:" ,"${task.exception}")
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }).start()
     }
 }

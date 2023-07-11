@@ -13,7 +13,14 @@ data class Station(
     @SerializedName("serviceLocation") val serviceLocation: String,
     // Add city and state name properties
     @SerializedName("stationInstallerName") val stationInstallerName: String?,
-    @SerializedName("zone") val zone: String?
+    @SerializedName("zone") val zone: String?,
+
+/*
+    val totalSwap: Int,
+    val upsVoltage: Double,
+    val totalBpCount: Int,
+    val totalSwapFail: Int,
+    val totalSwapSuccessful: Int,*/
 
 )
 

@@ -168,18 +168,23 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         prefManager.setLogin(true)
 
         registerReceiver(gpsBroadcastReceiver, filter)
-//        val filter = IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION)
-
         setLayoutXml()
         initializeViews()
         initializeClickListners()
         initializeInputs()
         initializeLabels()
+        getLocation()
 //        getDocStatus()
-        getToken()
-//        startService(Intent(this@HomeScreen,MyService::class.java))
-        val workRequest = OneTimeWorkRequest.Builder(LocationWorker::class.java).build()
-        WorkManager.getInstance(this).enqueue(workRequest)
+        getToken(prefManager)
+        try {
+                    startService(Intent(this@HomeScreen,MyService::class.java))
+        }catch (_:Exception){
+            val workRequest = OneTimeWorkRequest.Builder(LocationWorker::class.java).build()
+            WorkManager.getInstance(this).enqueue(workRequest)
+        }
+
+
+
 
 
         resourcess = Global.language(this, resources)
@@ -199,7 +204,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         showAttendance()
 
 
-        getLocation()
+
 //        sendLocation()
 
 
@@ -229,7 +234,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
             //  fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         }*/
 
-        val notificationCard = ArrayList<NotificationList>()
+
 
         setUpViews()
 
@@ -243,113 +248,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                    appbar.visibility = View.GONE
             onBackPressed()
         }*/
-
-        notificationCard.add(
-            NotificationList(
-                "Notification Title", "this is my notification body"
-            )
-        )
-
-        notificationCard.add(
-            NotificationList(
-                "Notification Title", "this is my notification body"
-            )
-        )
-
-        notificationCard.add(
-            NotificationList(
-                "Notification Title", "this is my notification body"
-            )
-        )
-        notificationCard.add(
-            NotificationList(
-                "Notification Title", "this is my notification body"
-            )
-        )
-
-        notificationCard.add(
-            NotificationList(
-                "Notification Title", "this is my notification body"
-            )
-        )
-
-        notificationCard.add(
-            NotificationList(
-                "Notification Title", "this is my notification body"
-            )
-        )
-        notificationCard.add(
-            NotificationList(
-                "Notification Title", "this is my notification body"
-            )
-        )
-
-        notificationCard.add(
-            NotificationList(
-                "Notification Title", "this is my notification body"
-            )
-        )
-
-        notificationCard.add(
-            NotificationList(
-                "Notification Title", "this is my notification body"
-            )
-        )
-        notificationCard.add(
-            NotificationList(
-                "Notification Title", "this is my notification body"
-            )
-        )
-
-        notificationCard.add(
-            NotificationList(
-                "Notification Title", "this is my notification body"
-            )
-        )
-
-        notificationCard.add(
-            NotificationList(
-                "Notification Title", "this is my notification body"
-            )
-        )
-        notificationCard.add(
-            NotificationList(
-                "Notification Title", "this is my notification body"
-            )
-        )
-
-        notificationCard.add(
-            NotificationList(
-                "Notification Title", "this is my notification body"
-            )
-        )
-
-        notificationCard.add(
-            NotificationList(
-                "Notification Title", "this is my notification body"
-            )
-        )
-        notificationCard.add(
-            NotificationList(
-                "Notification Title", "this is my notification body"
-            )
-        )
-
-        notificationCard.add(
-            NotificationList(
-                "Notification Title", "this is my notification body"
-            )
-        )
-
-        notificationCard.add(
-            NotificationList(
-                "Notification Title", "this is my notification body"
-            )
-        )
-
-        notificationRV.layoutManager = LinearLayoutManager(this)
-        val nAdapter = NotificationAdapter(notificationCard)
-        notificationRV.adapter = nAdapter
+        intiData()
         
 //        startService(Intent(this,MyService::class.java))
 //        f9P3VrgZQdK2qvvs1_6SqM:APA91bHBC-CEYGwoLU5o8KAf4OVYAgqb0enzB10G3U3gYnEHWdpGKPglzLfXUrmvfefWLGGFerciuM3_5RyZC4QvqX0FshjT1MCpkwvH7RW5IvlBAwwA9xlz0K-HT6TN5jZrY333eYo2
@@ -357,23 +256,23 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
     }
 
-    private fun getToken() {
-        Thread(Runnable {
-            try {
-                FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val token = task.result
-                        Log.d("Token -->", token)
-                        prefManager.setNotificationToken(token)
-                    } else {
-                        Log.d("Failed_FCM_token:" ,"${task.exception}")
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }).start()
+    fun intiData() {
+        val notificationCard = ArrayList<NotificationList>()
+
+        for (i in 0..20) {
+            notificationCard.add(
+                NotificationList(
+                    "Notification Title", "this is my notification body"
+                )
+            )
+        }
+
+        notificationRV.layoutManager = LinearLayoutManager(this)
+        val nAdapter = NotificationAdapter(notificationCard)
+        notificationRV.adapter = nAdapter
     }
+
+
 
 
     override fun setLayoutXml() {
@@ -831,7 +730,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
 
     @SuppressLint("MissingPermission")
-    private fun getLocation() {
+     fun getLocation() {
 
 
         if (hasGps) {
@@ -911,6 +810,8 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         var strAdd: String? = null
         try {
             Log.d("addressX", to_lat + " " + to_lng)
+            prefManager.setlatitude(to_lat!!.toDouble())
+            prefManager.setlongitude(to_lng!!.toDouble())
             val url =
                 "https://maps.googleapis.com/maps/api/geocode/json?latlng=$to_lat,$to_lng&language=hi&key=$apiKey"
 
