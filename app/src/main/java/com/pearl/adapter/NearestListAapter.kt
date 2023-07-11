@@ -65,7 +65,7 @@ class NearestListAapter(private val context: Context, private val nearestList: A
         holder.cityName.text = currentItem.stationInstallerName
         holder.stateName.text = currentItem.zone
 
-        if (stationItem != null) {
+    /*    if (stationItem != null) {
             holder.totalSwapTextView.text = stationItem.totalSwap.toString()
             holder.totalSwapFailTextView.text = stationItem.totalSwapFail.toString()
             holder.totalBpCountTextView.text = stationItem.totalBpCount.toString()
@@ -78,7 +78,7 @@ class NearestListAapter(private val context: Context, private val nearestList: A
             holder.totalBpCountTextView.text = "-"
             holder.totalSwapSuccessfulTextView.text = "-"
             holder.upsVoltageTextView.text = "-"
-        }
+        }*/
 
         holder.showMore.setOnClickListener {
             if (!isDetaisVisible) {

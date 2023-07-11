@@ -80,7 +80,6 @@ class SwapCenter : BaseClass(),NearestListAapter.NearestAdapterCallback {
     }
 
     override fun initializeInputs() {
-        TODO("Not yet implemented")
     }
 
     override fun initializeLabels() {
