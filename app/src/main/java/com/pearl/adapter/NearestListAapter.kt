@@ -34,7 +34,7 @@ class NearestListAapter(private val context: Context, private val nearestList: A
     var isDetaisVisible = false
 //    val stationRes: ArrayList<StationRes> = ArrayList()
 
-    class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    inner class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
         val title = itemView.findViewById<TextView>(R.id.placeName)
         val cityName = itemView.findViewById<TextView>(R.id.placeAddress)
@@ -50,6 +50,13 @@ class NearestListAapter(private val context: Context, private val nearestList: A
         val totalBpCountTextView = itemView.findViewById<TextView>(R.id.totalBpCountTextView)
         val totalSwapFailTextView = itemView.findViewById<TextView>(R.id.totalSwapFailTextView)
         val totalSwapSuccessfulTextView = itemView.findViewById<TextView>(R.id.totalSwapSuccessfulTextView)
+
+
+        fun bind(stationSerialNumber: String){
+            itemView.setOnClickListener{
+
+            }
+        }
 
 
     }
@@ -96,17 +103,18 @@ class NearestListAapter(private val context: Context, private val nearestList: A
                     // For example, update UI or perform further processing
                     // with the received list of StationRes objects
                     // ...
+                    for(response in res){
+//                    val totalSwap = response.totalSwap
+                        holder.totalSwapTextView.text = response.totalSwap.toString()
+                        holder.totalSwapFailTextView.text = response.totalSwapFail.toString()
+                        holder.totalBpCountTextView.text = response.totalBpCount.toString()
+                        holder.totalSwapSuccessfulTextView.text = response.totalSwapSuccessful.toString()
+                        holder.upsVoltageTextView.text = response.upsVoltage.toString()
+
+                    }
                 }
                 Log.d("AdapterRes",res.toString())
-                for(response in res){
-//                    val totalSwap = response.totalSwap
-                    holder.totalSwapTextView.text = response.totalSwap.toString()
-                    holder.totalSwapFailTextView.text = response.totalSwapFail.toString()
-                    holder.totalBpCountTextView.text = response.totalBpCount.toString()
-                    holder.totalSwapSuccessfulTextView.text = response.totalSwapSuccessful.toString()
-                    holder.upsVoltageTextView.text = response.upsVoltage.toString()
 
-                }
                 Log.d("AdapterRes1",res.toString())
             } else {
                 holder.detailMoreLL.visibility = View.GONE
