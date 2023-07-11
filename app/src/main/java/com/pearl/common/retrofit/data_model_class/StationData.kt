@@ -1,12 +1,14 @@
 package com.pearl.common.retrofit.data_model_class
 
+import com.google.gson.annotations.SerializedName
+
 data class StationData(
     val stationSerialNumber: String,
     val sunmccuModelName: String,
     val sunmccuTime: Long,
     val sunmccuRecordType: String,
     val sunmccuTxidKey: String,
-    val sunmccuData: SunmccuData,
+    val sunmccuData: String,
     val location: String,
     val zone: String
 )
@@ -16,6 +18,7 @@ data class SunmccuData(
     val upsInput: Double,
     val upsState: Int,
     val commError: Boolean,
+    @SerializedName("total-swap")
     val totalSwap: Int,
     val upsVoltage: Double,
     val energyError: Boolean,

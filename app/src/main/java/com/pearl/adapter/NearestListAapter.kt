@@ -97,11 +97,10 @@ class NearestListAapter(private val context: Context, private val nearestList: A
                     // with the received list of StationRes objects
                     // ...
                     for(response in res){
-                        var x = Gson().fromJson<StationData>(response.toString(),StationData::class.java)
-                        Log.d("ResXXResult",res.toString())
+                        var x = Gson().fromJson<SunmccuData>(response.sunmccuData,SunmccuData::class.java)
+                        Log.d("ResXXResult",x.toString())
 //                    val totalSwap = response.totalSwap
-
-                        holder.totalSwapTextView.text = x.sunmccuData.toString()
+                        holder.totalSwapTextView.text = x.totalSwap.toString()
                         holder.totalSwapFailTextView.text = response.totalSwapFail.toString()
                         holder.totalBpCountTextView.text = response.totalBpCount.toString()
                         holder.totalSwapSuccessfulTextView.text = response.totalSwapSuccessful.toString()
