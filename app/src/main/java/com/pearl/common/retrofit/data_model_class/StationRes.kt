@@ -2,9 +2,9 @@ package com.pearl.common.retrofit.data_model_class
 
 import com.google.gson.annotations.SerializedName
 
-/*data class StationRes(
+data class StationRes(
     @SerializedName("station_serial_number")
-    val stationSerialNumber: String,*//*
+    val stationSerialNumber: String,
     @SerializedName("sunmccu_modelname")
     val sunmccuModelName: String,
     @SerializedName("sunmccu_time")
@@ -18,7 +18,7 @@ import com.google.gson.annotations.SerializedName
     @SerializedName("location")
     val location: String,
     @SerializedName("zone")
-    val zone: String,*//*
+    val zone: String,
     @SerializedName("total-swap")
     var totalSwap: Int,
     @SerializedName("UPS-Voltage")
@@ -29,8 +29,8 @@ import com.google.gson.annotations.SerializedName
     var totalSwapFail: Int,
     @SerializedName("total-swap-successful")
     var totalSwapSuccessful: Int,
-)*/
-data class StationRes(
+)
+/*data class StationRes(
     @SerializedName("station_serial_number")
     val stationSerialNumber: String,
     @SerializedName("sunmccu_modelname")
@@ -56,7 +56,7 @@ data class StationData(
     val totalSwapFail: Int,
     @SerializedName("total-swap-successful")
     val totalSwapSuccessful: Int
-)
+)*/
 
 data class PostApiRequest(
     @SerializedName("\$query")

@@ -56,7 +56,7 @@ class SwapCenter : BaseClass(),NearestListAapter.NearestAdapterCallback {
         loadingDialog = Dialog(this)
         prefManager = PrefManager(this)
         Global.language(this, resources)
-        recyclerViewAdapter = NearestListAapter(this,listCard,this)
+        recyclerViewAdapter = NearestListAapter(this,listCard,nearestList,this)
 
     }
 
@@ -149,7 +149,7 @@ class SwapCenter : BaseClass(),NearestListAapter.NearestAdapterCallback {
 
                         runOnUiThread {
                             nearestSRV.layoutManager = LinearLayoutManager(this@SwapCenter)
-                            recyclerViewAdapter = NearestListAapter(this@SwapCenter, listCard,this@SwapCenter)
+                            recyclerViewAdapter = NearestListAapter(this@SwapCenter, listCard,nearestList ,this@SwapCenter)
                             nearestSRV.adapter = recyclerViewAdapter
                         }
                     }
@@ -165,62 +165,10 @@ class SwapCenter : BaseClass(),NearestListAapter.NearestAdapterCallback {
 
     }
 
-     /* fun getBP() {
-
-      val retrofit = Retrofit.Builder()
-          .baseUrl("https://stationapiserver.azurewebsites.net/")
-          .addConverterFactory(GsonConverterFactory.create())
-          .build()
-      val apiService = retrofit.create(StationApiService::class.java)
-
-      val queryParams = QueryParams(
-          station_serial_number = prefManager.getStationSerialNumber(),
-          sunmccu_recordtype = "STATION-HEARTBEAT"
-      )
-
-      val request = PostApiRequest(query = queryParams)
-      CoroutineScope(Dispatchers.IO).launch {
-          try {
-              val response = apiService.getBPAvailability(request)
-              if (response.isSuccessful) {
-                  val result = response.body()
-                  *//*val totalSwap = result?.totalSwap
-                  val totalSwapFail = result?.totalSwapFail
-                  val totalBPCount = result?.totalBpCount
-                  val totalSwapScuccesful = result?.totalSwapSuccessful
-                  val upsVoltage = result?.upsVoltage
-                  // Handle the response here
-                  *//*
-                  if (result != null && result.isNotEmpty()) {
-                      val stationRes = result[0] // Get the first element from the response list
-                      val sunmccuData = stationRes.sunmccuData
-                      val totalSwap = sunmccuData.totalSwap
-                      val totalSwapFail =
-                      val totalBPCount = result?.totalBpCount
-                      val totalSwapScuccesful = result?.totalSwapSuccessful
-                      val upsVoltage = result?.upsVoltage
-                  }
 
 
-                  Log.d("dkjlfkds",response.message())
-                  Log.d("response",result.toString())
-              } else {
-                  // Handle error case
-                  val errorBody = response.errorBody().toString()
-                  // Handle the error body if needed
-              }
-          } catch (e: Exception) {
-              // Handle exception
-              e.printStackTrace()
-          }
+    fun getBP() {
 
-      }
-  }*/
-
-
-
-
-/*    fun getBP(stationSerialNumber: String) {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://stationapiserver.azurewebsites.net/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -228,7 +176,7 @@ class SwapCenter : BaseClass(),NearestListAapter.NearestAdapterCallback {
         val apiService = retrofit.create(StationApiService::class.java)
 
         val queryParams = QueryParams(
-            station_serial_number = stationSerialNumber,
+            station_serial_number = prefManager.getStationSerialNumber(),
             sunmccu_recordtype = "STATION-HEARTBEAT"
         )
 
@@ -238,15 +186,9 @@ class SwapCenter : BaseClass(),NearestListAapter.NearestAdapterCallback {
                 val response = apiService.getBPAvailability(request)
                 if (response.isSuccessful) {
                     val result = response.body()
-                    if (result != null && result.isNotEmpty()) {
-                        val stationRes = result[0] // Get the first element from the response list
-                        // Update the stationRes list in the adapter
-                        updateStationRes(adapterPosition, stationRes)
-                        // Refresh the adapter to update the UI
-                        notifyDataSetChanged()
-                    } else {
-                        // Handle the case when the response is empty or null
-                    }
+
+                    Log.d("dkjlfkds",response.message())
+                    Log.d("response",result.toString())
                 } else {
                     // Handle error case
                     val errorBody = response.errorBody().toString()
@@ -256,17 +198,9 @@ class SwapCenter : BaseClass(),NearestListAapter.NearestAdapterCallback {
                 // Handle exception
                 e.printStackTrace()
             }
+
         }
     }
-
-    private fun updateStationRes(position: Int, updatedStationRes: StationRes) {
-        if (position >= 0 && position < stationRes.size) {
-            stationRes[position] = updatedStationRes
-            notifyDataSetChanged() // Notify the adapter that the data has changed
-        }
-    }*/
-
-
 
 
 
@@ -277,7 +211,17 @@ class SwapCenter : BaseClass(),NearestListAapter.NearestAdapterCallback {
 
     override fun onCartClicked(stationSerialNumber: String) {
 //        getBP(stationSerialNumber)
+        getBP()
     }
 }
 
 
+/*                    val totalSwap = result?.totalSwap
+                    val totalSwapFail = result?.totalSwapFail
+                    val totalBPCount = result?.totalBpCount
+                    val totalSwapScuccesful = result?.totalSwapSuccessful
+                    val upsVoltage = result?.upsVoltage*/
+// Handle the response here
+/*  runOnUiThread{
+      Toast.makeText(this@SwapCenter,response.isSuccessful,Toast.LENGTH_SHORT).show()
+  }*/
