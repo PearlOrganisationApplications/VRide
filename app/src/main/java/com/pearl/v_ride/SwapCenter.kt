@@ -165,7 +165,7 @@ class SwapCenter : BaseClass(),NearestListAapter.NearestAdapterCallback {
 
     }
 
-      fun getBP() {
+     /* fun getBP() {
 
       val retrofit = Retrofit.Builder()
           .baseUrl("https://stationapiserver.azurewebsites.net/")
@@ -184,13 +184,13 @@ class SwapCenter : BaseClass(),NearestListAapter.NearestAdapterCallback {
               val response = apiService.getBPAvailability(request)
               if (response.isSuccessful) {
                   val result = response.body()
-                  /*val totalSwap = result?.totalSwap
+                  *//*val totalSwap = result?.totalSwap
                   val totalSwapFail = result?.totalSwapFail
                   val totalBPCount = result?.totalBpCount
                   val totalSwapScuccesful = result?.totalSwapSuccessful
                   val upsVoltage = result?.upsVoltage
                   // Handle the response here
-                  */
+                  *//*
                   if (result != null && result.isNotEmpty()) {
                       val stationRes = result[0] // Get the first element from the response list
                       val sunmccuData = stationRes.sunmccuData
@@ -215,7 +215,10 @@ class SwapCenter : BaseClass(),NearestListAapter.NearestAdapterCallback {
           }
 
       }
-  }
+  }*/
+
+
+
 
 /*    fun getBP(stationSerialNumber: String) {
         val retrofit = Retrofit.Builder()
