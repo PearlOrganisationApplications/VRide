@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class NearestServiceActivity : BaseClass() {
+class NearestServiceActivity : BaseClass(),NearestListAapter.NearestAdapterCallback {
     private lateinit var recyclerView: RecyclerView
     lateinit var ivback: AppCompatImageView
     lateinit var apptitle: AppCompatTextView
@@ -199,6 +199,12 @@ class NearestServiceActivity : BaseClass() {
                                         locationName,
                                         cityName,
                                         stateName,
+                                        /*0,
+                                        0.0,
+                                        0,
+                                        0,
+                                        0,
+*/
                                     )
                                 )
                             }
@@ -206,7 +212,7 @@ class NearestServiceActivity : BaseClass() {
 
                         runOnUiThread {
                             recyclerView.layoutManager = LinearLayoutManager(this@NearestServiceActivity)
-                            val recyclerViewAdapter = NearestListAapter(this@NearestServiceActivity, listCard)
+                            val recyclerViewAdapter = NearestListAapter(this@NearestServiceActivity, listCard,this@NearestServiceActivity)
                             recyclerView.adapter = recyclerViewAdapter
                         }
                     }
@@ -225,6 +231,10 @@ class NearestServiceActivity : BaseClass() {
     override fun onPause() {
         super.onPause()
         unregisterReceiver(gpsBroadcastReceiver)
+    }
+
+    override fun onCartClicked(stationSerialNumber: String) {
+
     }
 
 }

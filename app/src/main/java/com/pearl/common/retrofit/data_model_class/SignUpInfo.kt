@@ -10,4 +10,5 @@ data class SignUpInfo(
     val msg: String,
     val status: String,
     val token: String,
+    val device_token:String
 )

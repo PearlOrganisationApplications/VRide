@@ -99,6 +99,7 @@ class SignUpActivity : BaseClass() {
 
 
         dialog = Dialog(this)
+        getToken(prefManager)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -155,7 +156,7 @@ class SignUpActivity : BaseClass() {
 
         // for otp verification
 
-        sPhone.addTextChangedListener(object : TextWatcher {
+        /*sPhone.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }
@@ -185,11 +186,11 @@ class SignUpActivity : BaseClass() {
                                 .build()
                             PhoneAuthProvider.verifyPhoneNumber(options)
                             loadingDialog.startLoadingDialog()
-                            /*Handler(Looper.getMainLooper()).postDelayed({
+                            *//*Handler(Looper.getMainLooper()).postDelayed({
                                 resend_otp.visibility = View.VISIBLE
                                 signup_otpVerifyBT.visibility = View.GONE
 
-                            },60000)*/
+                            },60000)*//*
                         }else{
 //                            Toast.makeText(this,"please Enter correct no",Toast.LENGTH_SHORT).show()
                         }
@@ -198,7 +199,7 @@ class SignUpActivity : BaseClass() {
                 }
             }
 
-        })
+        })*/
 
         signup_otpVerifyBT.setOnClickListener {
 
@@ -464,7 +465,12 @@ class SignUpActivity : BaseClass() {
         val parameters = mapOf(
             "mobileNo" to phoneNumber,
             "name" to full_name,
-            "dob" to signup_dob)
+            "dob" to signup_dob,
+            "device_token" to prefManager.getNotificationToken()
+        )
+
+        Log.d("device_token", prefManager.getNotificationToken())
+
         val call = userService.addUser(parameters)
         call.enqueue(object : Callback<SignUpInfo> {
             override fun onResponse(call: Call<SignUpInfo>, response: Response<SignUpInfo>) {
@@ -478,6 +484,7 @@ class SignUpActivity : BaseClass() {
                        tkn = response.body()?.token.toString()
                         prefManager.setToken(tkn)
                         Log.d("tkn","$tkn")
+                        Log.d("device_tkn","${prefManager.getNotificationToken()}")
                         if (validateName(sName) && validateNumber(sPhone) && validateDob(dob)) {
                             Log.d("STATUSCODE","$STATUSCODE")
                             Handler().postDelayed({

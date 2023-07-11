@@ -513,12 +513,78 @@
                                 android:hint="@string/pin_code"
                                 android:backgroundTint="@color/darkGreeen"
                                  android:textColorHint="@color/black"
-                                android:imeOptions="actionDone"
+                                android:imeOptions="actionNext"
                                 android:inputType="number"
                                 android:maxLength="6" />
 
                         </LinearLayout>
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/_5ssp">
+                            <EditText
+                                android:id="@+id/doc_reference1Name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textColor="@color/black"
+                                android:autofillHints="postalCode"
+                                android:hint="Reference1 Name "
+                                android:backgroundTint="@color/darkGreeen"
+                                android:textColorHint="@color/black"
+                                android:imeOptions="actionNext"
+                                android:inputType="textPersonName"
+                                android:maxLines="1"
+                                />
+
+                            <EditText
+                                android:id="@+id/doc_reference1mob"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textColor="@color/black"
+                                android:autofillHints="postalCode"
+                                android:hint="Reference' mobile No"
+                                android:backgroundTint="@color/darkGreeen"
+                                android:textColorHint="@color/black"
+                                android:imeOptions="actionDone"
+                                android:inputType="number"
+                                android:maxLength="10" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/_5ssp">
+                            <EditText
+                                android:id="@+id/doc_reference2Name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textColor="@color/black"
+                                android:autofillHints="postalCode"
+                                android:hint="Reference2 Name "
+                                android:backgroundTint="@color/darkGreeen"
+                                android:textColorHint="@color/black"
+                                android:imeOptions="actionNext"
+                                android:inputType="textPersonName"
+                                android:maxLines="1"
+                                />
+
+                            <EditText
+                                android:id="@+id/doc_reference2mob"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textColor="@color/black"
+                                android:autofillHints="postalCode"
+                                android:hint="Reference' mobile No"
+                                android:backgroundTint="@color/darkGreeen"
+                                android:textColorHint="@color/black"
+                                android:imeOptions="actionDone"
+                                android:inputType="number"
+                                android:maxLength="10" />
+                        </LinearLayout>
                         <LinearLayout
                             android:weightSum="2"
                             android:layout_width="match_parent"
@@ -530,7 +596,7 @@
                                 android:layout_weight="1"
                                 android:layout_width="@dimen/_90sdp"
                                 android:layout_height="@dimen/_70sdp"
-                                android:src="@drawable/profile" />
+                                android:src="@drawable/passbook" />
 
                             <TextView
                                 android:layout_weight="1"

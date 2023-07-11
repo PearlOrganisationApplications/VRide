@@ -40,6 +40,9 @@ class LocationWorker(appContext: Context, workerParams: WorkerParameters):
                         Log.d("Response", response.body().toString())
                         Log.d("LATLONRES", "$msg $status")
 
+                        Log.d("device_token1", prefManager.getNotificationToken())
+//                        Log.d("devicxeL", "$latitude  ---   $longitude")
+
                         Log.d("latlong","${prefManager.getlatitude()} ${prefManager.getlongitude()}")
                     } else {
                         response.body()?.let { Log.d("else", it.msg) }

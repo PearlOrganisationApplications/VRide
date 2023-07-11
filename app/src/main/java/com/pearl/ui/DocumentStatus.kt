@@ -139,6 +139,10 @@ class DocumentStatus : BaseClass() {
     private lateinit var raccountNOET: EditText
     private lateinit var ifsc_code: EditText
     private lateinit var doc_adharNoET: EditText
+    private lateinit var doc_reference1Name: EditText
+    private lateinit var doc_reference1mob: EditText
+    private lateinit var doc_reference2Name: EditText
+    private lateinit var doc_reference2mob: EditText
     private lateinit var doc_selfieUpdateBT: Button
     private lateinit var doc_submitAdharBT: Button
     private lateinit var doc_submitPanBT: Button
@@ -165,6 +169,10 @@ class DocumentStatus : BaseClass() {
     var landmark: String = ""
     var addrass: String = ""
     var pinCode: String = ""
+    var reference1N = ""
+    var reference2N = ""
+    var reference1M = ""
+    var reference2M = ""
     var isSelfie = false
     var isAdharcard = false
     var isPancard = false
@@ -241,6 +249,10 @@ class DocumentStatus : BaseClass() {
         pin_code = findViewById(R.id.doc_pin_code)
         doc_updateAddressBT = findViewById(R.id.doc_updateAddressBT)
         doc_adrsLL = findViewById(R.id.doc_adrsLL)
+        doc_reference1Name = findViewById(R.id.doc_reference1Name)
+        doc_reference1mob = findViewById(R.id.doc_reference1mob)
+        doc_reference2Name = findViewById(R.id.doc_reference2Name)
+        doc_reference2mob = findViewById(R.id.doc_reference2mob)
 
 //        merchant
         doc_merchantOK = findViewById(R.id.doc_merchantOK)
@@ -537,11 +549,16 @@ class DocumentStatus : BaseClass() {
             addrass = doc_address.text.toString()
             pinCode = pin_code.text.toString()
             landmark = doc_landmark.text.toString()
+            reference1N = doc_reference1Name.text.toString()
+            reference1M = doc_reference1mob.text.toString()
+            reference2N = doc_reference2Name.text.toString()
+            reference2M = doc_reference2mob.text.toString()
 
             loadingDialog.startLoadingDialog()
             Log.d("selectedItem1", selectedItem)
             if (validateAddress1(doc_address) && validateCity(doc_city) && validateLandnark(doc_landmark) && validatePincode(pin_code) && selectedItem.isNotEmpty()
-                && req_code == 6
+                && validateName(doc_reference1Name) && validateNumber(doc_reference1mob)&& validateName(doc_reference2Name)
+                && validateNumber(doc_reference2mob) && req_code == 6
             ) {
                 addressDetails()
             } else {
@@ -1183,19 +1200,27 @@ class DocumentStatus : BaseClass() {
                     landmark,
                     addrass,
                     pinCode,
-                    b64
+                    b64,
+                    reference1N,
+                    reference1M,
+                    reference2N,
+                    reference2M
+//                "","","",""
+
                 )
                 val response = addressApi.updateProfileData("Bearer $token", requestData)
                 Log.d("ResponseBody", response.body().toString())
                 if (response.isSuccessful) {
+                    loadingDialog.dismissDialog()
                     val responseData = response.body()
+                    val message = responseData?.msg
                     if (responseData != null) {
-                        val message = responseData.msg
+
                         // Handle the success message as needed
                         runOnUiThread {
-                            Handler().postDelayed({
+//                            Handler().postDelayed({
                                 // After 4 seconds
-                                loadingDialog.dismissDialog()
+
                                 doc_updateAddressBT.visibility = View.GONE
                                 doc_addressLL.visibility = View.GONE
                                 doc_address_showLess.visibility = View.GONE
@@ -1208,17 +1233,24 @@ class DocumentStatus : BaseClass() {
                                 pin_code.isEnabled = false
                                 doc_select_state.isEnabled = false
                                 addressProofTV.isEnabled = false
+                                doc_reference1Name.isEnabled = false
+                                doc_reference2Name.isEnabled = false
+                                doc_reference1mob.isEnabled = false
+                                doc_reference2mob.isEnabled = false
                                 isAddress = true
-                            }, 4000) // 4 seconds
+//                            }, 4000) // 4 seconds
                         }
-                        Log.d("msg", message)
+                        Log.d("msg", "$message")
                     } else {
                         // Handle the case when responseData is null or status is not "201"
-                        Log.d("else", "t.toString")
+                        val errorBody = response.errorBody()?.string()
+                        Log.d("else", errorBody.toString())
+                        loadingDialog.showErrorBottomSheetDialog(message.toString())
                     }
                 } else {
                     // Handle the case when the API call is unsuccessful
                     val errorBody = response.errorBody()?.string()
+                    loadingDialog.dismissDialog()
                     // Log or handle the error response as needed
                     Log.d("Api Error", "$errorBody")
                 }
@@ -1226,8 +1258,9 @@ class DocumentStatus : BaseClass() {
                 // Handle the network or other errors
                 Log.e(
                     "API ErrorC",
-                    "Error: ${e.message} ${e.localizedMessage} ${e.cause} ${e.stackTrace}"
+                    "Error: ${e.message} ---${e.localizedMessage} ----${e.cause} ----${e.stackTrace}"
                 )
+                loadingDialog.dismissDialog()
             }
         }
 

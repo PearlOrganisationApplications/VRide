@@ -180,19 +180,19 @@ class PrefManager(var context: Context) {
          return emptyList()
      }
 
-    fun setlatitude(lat:Float){
-        editor?.putFloat("lat",lat)
+    fun setlatitude(lat:Double){
+        editor?.putFloat("lat", lat.toFloat())
         editor?.commit()
     }
-    fun getlatitude():Float{
-        return  pref?.getFloat("lat",0.0f)!!
+    fun getlatitude():Double{
+        return  pref?.getFloat("lat",0.0f)!!.toDouble()
     }
-    fun setlongitude(long:Float){
-        editor?.putFloat("long",long)
+    fun setlongitude(long:Double){
+        editor?.putFloat("long",long.toFloat())
         editor?.commit()
     }
-    fun getlongitude():Float{
-        return  pref?.getFloat("long",0.0f)!!
+    fun getlongitude():Double{
+        return  pref?.getFloat("long",0.0f)!!.toDouble()
     }
 
     fun setNotificationToken(token: String){
@@ -201,6 +201,14 @@ class PrefManager(var context: Context) {
     }
     fun getNotificationToken(): String {
         return pref?.getString("tkn","").toString()
+    }
+
+    fun setStationSerialNumber(serialNo: String) {
+        editor!!.putString("serialNo",serialNo)
+        editor!!.commit()
+    }
+    fun getStationSerialNumber(): String {
+        return pref?.getString("serialNo", null).toString()
     }
 
  }
