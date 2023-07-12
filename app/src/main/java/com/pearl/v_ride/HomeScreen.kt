@@ -2,12 +2,9 @@ package com.pearl.v_ride
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Color
@@ -63,20 +60,26 @@ import com.pearl.adapter.NotificationAdapter
 import com.pearl.common.retrofit.data_model_class.*
 import com.pearl.common.retrofit.rest_api_interface.LocationApi
 import com.pearl.common.retrofit.rest_api_interface.ProfileApi
+import com.pearl.common.retrofit.rest_api_interface.ShiftApiInterface
 import com.pearl.ui.DocumentStatus
 import com.pearl.v_ride_lib.*
+import com.pearl.v_ride_lib.Global.baseUrl
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.*
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 import java.net.SocketTimeoutException
 import java.util.*
 import kotlin.collections.ArrayList
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class HomeScreen : BaseClass(), OnMapReadyCallback {
@@ -85,7 +88,6 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     lateinit var drawerLayout: DrawerLayout
     lateinit var appbar: MaterialToolbar
 
-    //    lateinit var notificationI: ImageView
     lateinit var notificationLL: LinearLayout
     lateinit var ivback: AppCompatImageView
     lateinit var apptitle: AppCompatTextView
@@ -107,7 +109,6 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
     lateinit var locationManager: LocationManager
     private lateinit var location: LatLng
 
-    //    lateinit var mapFragment: Fragment
     private lateinit var currentLocation: Location
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private val REQUEST_CODE = 101
@@ -176,22 +177,18 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         getLocation()
 //        getDocStatus()
         getToken(prefManager)
+
         try {
-                    startService(Intent(this@HomeScreen,MyService::class.java))
+            startService(Intent(this@HomeScreen,MyService::class.java))
         }catch (_:Exception){
             val workRequest = OneTimeWorkRequest.Builder(LocationWorker::class.java).build()
             WorkManager.getInstance(this).enqueue(workRequest)
         }
 
-
-
-
-
         resourcess = Global.language(this, resources)
         homeMenuItem.title = resourcess.getString(R.string.home)
         profileMenuItem.title = resourcess.getString(R.string.profile)
         walletMenuItem.title = resourcess.getString(R.string.wallet)
-//        earning.title = resourcess.getString(R.string.my_earning)
         history.title = resourcess.getString(R.string.history)
         nearest_service.title = resourcess.getString(R.string.my_nearest_service)
         issue.title = resourcess.getString(R.string.service_request)
@@ -253,7 +250,6 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 //        startService(Intent(this,MyService::class.java))
 //        f9P3VrgZQdK2qvvs1_6SqM:APA91bHBC-CEYGwoLU5o8KAf4OVYAgqb0enzB10G3U3gYnEHWdpGKPglzLfXUrmvfefWLGGFerciuM3_5RyZC4QvqX0FshjT1MCpkwvH7RW5IvlBAwwA9xlz0K-HT6TN5jZrY333eYo2
 //I/OSG-null__BroadcastReceiver: func1com.pearl.v_ride_lib.BaseClass$IChangeReceiver$1@9df8e07
-
     }
 
     fun intiData() {
@@ -372,7 +368,6 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
         }
         navView.setNavigationItemSelectedListener {
 
-//           it.isChecked = true
             when (it.itemId) {
 
                 R.id.homemenu -> {
@@ -393,11 +388,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                     drawerLayout.closeDrawers()
 
                 }
-                /*     R.id.earning-> {
-                         startActivity(Intent(this@HomeScreen, MyWalletActivity::class.java).putExtra("key",0))
-                         drawerLayout.closeDrawers()
 
-                     }*/
 
                 R.id.history -> {
 
@@ -812,7 +803,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
             Log.d("addressX", to_lat + " " + to_lng)
             prefManager.setlatitude(to_lat!!.toDouble())
             prefManager.setlongitude(to_lng!!.toDouble())
-            val url =
+            /*val url =
                 "https://maps.googleapis.com/maps/api/geocode/json?latlng=$to_lat,$to_lng&language=hi&key=$apiKey"
 
             val request = Request.Builder()
@@ -831,7 +822,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                     // Update the UI with the localized city name
                     Log.d("responseBody", responseBody.toString() + "")
                 }
-            })
+            })*/
 
             val addresses = geocoder.getFromLocation(to_lat!!.toDouble(), to_lng!!.toDouble(), 1)
             if (addresses != null) {
@@ -985,24 +976,47 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
 
         // undo all highlights
         pieChart.highlightValues(null)
-
         // loading chart
         pieChart.invalidate()
-
-
     }
 
     private fun showAttendance() {
+
+        calendarRV.layoutManager = LinearLayoutManager(this)
+        val shiftApi = Global.retrofit.create(ShiftApiInterface::class.java)
+        var call:Call<KotlinShiftDM> = shiftApi.getShifts("Bearer "+prefManager.getToken())
+        call.enqueue(object :Callback<KotlinShiftDM>{
+            override fun onResponse(
+                call: Call<KotlinShiftDM>,
+                response: Response<KotlinShiftDM>,
+            ) {
+                if(response.isSuccessful){
+                    var data = response.body()
+                    Log.d("ShiftApi",data.toString())
+
+                    val calAdapter = data?.let { AttendanceAdapter(it.shifts) }
+                    calendarRV.adapter = calAdapter
+                }
+                else {
+                    val errorBody = response.errorBody()?.string()
+                    val errorMessage = response.message()
+                    Log.d("ShiftApi", "Failed Response: $errorBody $errorMessage")
+                }
+
+            }
+            override fun onFailure(call: Call<KotlinShiftDM>, t: Throwable) {
+                Log.d("ShiftApi",""+t.message)
+            }
+        })
+
         attendanceCard.add(
             AttendanceList(
                 "10:00 AM", "7.00 PM", "20/12/2022", R.drawable.online
-            )
-        )
+            ))
         attendanceCard.add(
             AttendanceList(
                 "10 AM", "7.00 PM", "20/12/2022", R.drawable.online
-            )
-        )
+            ))
         attendanceCard.add(
             AttendanceList(
                 "10 AM", "7.00 PM", "20/12/2022", R.drawable.online
@@ -1033,9 +1047,7 @@ class HomeScreen : BaseClass(), OnMapReadyCallback {
                 "10 AM", "7.00 PM", "20/12/2022", R.drawable.online
             )
         )
-        calendarRV.layoutManager = LinearLayoutManager(this)
-        val calAdapter = AttendanceAdapter(attendanceCard)
-        calendarRV.adapter = calAdapter
+
     }
 
     fun sendLocation() {
